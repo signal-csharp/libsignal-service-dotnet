@@ -1,0 +1,49 @@
+/**
+ * Copyright (C) 2014-2015 Open WhisperSystems
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+syntax = "proto3";
+package textsecure;
+option csharp_namespace = "libsignalservice.websocket";
+option java_package = "org.whispersystems.textsecure.internal.websocket";
+option java_outer_classname = "WebSocketProtos";
+
+message WebSocketRequestMessage {
+    oneof verb_oneof						{ string verb    = 1; }
+    oneof path_oneof						{ string path    = 2; }
+    oneof body_oneof						{ bytes  body    = 3; }
+	repeated string headers = 5;
+    oneof id_oneof							{ uint64 id      = 4; }
+}
+
+message WebSocketResponseMessage {
+    oneof id_oneof							{ uint64 id      = 1; }
+    oneof status_oneof						{ uint32 status  = 2; }
+    oneof message_oneof						{ string message = 3; }
+	repeated string headers = 5;
+    oneof body_oneof						{ bytes  body    = 4; }
+}
+
+message WebSocketMessage {
+    enum Type {
+        UNKNOWN  = 0;
+        REQUEST  = 1;
+        RESPONSE = 2;
+    }
+
+    oneof type_oneof						{ Type                     type     = 1; }
+    oneof request_oneof						{ WebSocketRequestMessage  request  = 2; }
+    oneof response_oneof					{ WebSocketResponseMessage response = 3; }
+}

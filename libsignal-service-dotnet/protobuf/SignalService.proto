@@ -1,0 +1,134 @@
+syntax = "proto3";
+package textsecure;
+option csharp_namespace = "libsignalservice.push";
+option java_package = "org.whispersystems.textsecure.internal.push";
+option java_outer_classname = "SignalServiceProtos";
+
+message Envelope {
+  enum Type {
+    UNKNOWN       = 0;
+    CIPHERTEXT    = 1;
+    KEY_EXCHANGE  = 2;
+    PREKEY_BUNDLE = 3;
+    RECEIPT       = 5;
+  }
+
+  oneof type_oneof						{ Type   type          = 1; }
+  oneof source_oneof					{ string source        = 2; }
+  oneof sourceDevice_oneof				{ uint32 sourceDevice  = 7; }
+  oneof relay_oneof						{ string relay         = 3; }
+  oneof timestamp_oneof					{ uint64 timestamp     = 5; }
+  oneof legacyMessage_oneof				{ bytes  legacyMessage = 6; } // Contains an encrypted DataMessage
+  oneof content_oneof					{ bytes  content       = 8; } // Contains an encrypted Content
+}
+
+message Content {
+  oneof dataMessage_oneof				{ DataMessage dataMessage = 1; }
+  oneof syncMessage_oneof				{ SyncMessage syncMessage = 2; }
+}
+
+message DataMessage {
+  enum Flags {
+    ZERO_PLACEHOLDER = 0;
+    END_SESSION = 1;
+    EXPIRATION_TIMER_UPDATE = 2;
+  }
+
+  oneof body_oneof						{ string             body        = 1; }
+  repeated AttachmentPointer  attachments = 2;
+  oneof group_oneof						{ GroupContext       group       = 3; }
+  oneof flags_oneof						{ uint32             flags       = 4; }
+  oneof expireTimer_oneof				{ uint32             expireTimer = 5; }
+}
+
+message SyncMessage {
+  message Sent {
+    oneof destination_oneof					{ string      destination              = 1; }
+    oneof timestamp_oneof					{ uint64      timestamp                = 2; }
+    oneof message_oneof						{ DataMessage message                  = 3; }
+    oneof expirationStartTimestamp_oneof	{ uint64	     expirationStartTimestamp = 4; }
+  }
+
+  message Contacts {
+    oneof blob_oneof						{ AttachmentPointer blob = 1; }
+  }
+
+  message Groups {
+    oneof blob_oneof						{ AttachmentPointer blob = 1; }
+  }
+
+  message Blocked {
+    repeated string numbers = 1;
+  }
+
+  message Request {
+    enum Type {
+      UNKNOWN  = 0;
+      CONTACTS = 1;
+      GROUPS   = 2;
+	  BLOCKED  = 3;
+    }
+
+    oneof type_oneof						{ Type type = 1; }
+  }
+
+  message Read {
+	oneof sender_oneof						{ string sender    = 1; }
+	oneof timestamp_oneof					{ uint64 timestamp = 2; }
+  }
+
+  oneof sent_oneof							{ Sent     sent     = 1; }
+  oneof contacts_oneof						{ Contacts contacts = 2; }
+  oneof groups_oneof						{ Groups   groups   = 3; }
+  oneof request_oneof						{ Request  request  = 4; }
+  repeated Read read = 5;
+  oneof blocked_oneof						{ Blocked  blocked  = 6; }
+}
+
+message AttachmentPointer {
+  oneof id_oneof							{ fixed64 id          = 1; }
+  oneof contentType_oneof					{ string  contentType = 2; }
+  oneof key_oneof							{ bytes   key         = 3; }
+  oneof size_oneof							{ uint32  size		   = 4; }
+  oneof thumbnail_oneof						{ bytes   thumbnail   = 5; }
+}
+
+message GroupContext {
+  enum Type {
+    UNKNOWN      = 0;
+    UPDATE       = 1;
+    DELIVER      = 2;
+    QUIT         = 3;
+	REQUEST_INFO = 4;
+  }
+  oneof id_oneof					{ bytes             id      = 1; }
+  oneof type_oneof					{ Type              type    = 2; }
+  oneof name_oneof					{ string            name    = 3; }
+  repeated string members = 4;
+  oneof avatar_oneof				{ AttachmentPointer avatar  = 5; }
+}
+
+message ContactDetails {
+  message Avatar {
+    oneof contentType_oneof				{ string contentType = 1; }
+    oneof length_oneof					{ uint32 length      = 2; }
+  }
+
+  oneof number_oneof				{ string number = 1; }
+  oneof name_oneof					{ string name   = 2; }
+  oneof avatar_oneof				{ Avatar avatar = 3; }
+  oneof color_oneof					{ string color  = 4; }
+}
+
+message GroupDetails {
+  message Avatar {
+    oneof contentType_oneof				{ string contentType = 1; }
+    oneof length_oneof					{ uint32 length      = 2; }
+  }
+
+  oneof id_oneof					{ bytes  id      = 1; }
+  oneof name_oneof					{ string name    = 2; }
+  repeated string members = 3;
+  oneof avatar_oneof				{ Avatar avatar  = 4; }
+  oneof active_oneof				{ bool   active  = 5; } //[default = true] ### }
+}
