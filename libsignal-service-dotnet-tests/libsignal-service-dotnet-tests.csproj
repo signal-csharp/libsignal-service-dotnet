@@ -171,12 +171,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\libsignal-service-dotnet\libsignal-service-dotnet.csproj">
-      <Project>{2e711751-68a7-4ba9-b384-01e8f324ae48}</Project>
-      <Name>libsignal-service-dotnet</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>

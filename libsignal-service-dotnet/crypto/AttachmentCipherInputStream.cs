@@ -23,7 +23,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using libsignalservice.util;
-using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace libsignalservice.src.api.crypto
 {

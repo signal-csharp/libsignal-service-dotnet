@@ -17,7 +17,6 @@
 
 using System;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using libsignal;
 using libsignal.util;
 using libsignalservice.push;

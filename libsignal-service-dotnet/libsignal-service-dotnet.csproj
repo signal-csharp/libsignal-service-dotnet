@@ -5,7 +5,7 @@
     <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{2E711751-68A7-4BA9-B384-01E8F324AE48}</ProjectGuid>
+    <ProjectGuid>{4932E9D9-D764-4B73-8A1A-F193FD8ECF3E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>libsignal_service_dotnet</RootNamespace>
@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="AsyncHelper.cs" />
     <Compile Include="Base64.cs" />
+    <Compile Include="Class1.cs" />
     <Compile Include="crypto\AttachmentCipherInputStream.cs" />
     <Compile Include="crypto\ProvisioningCipher.cs" />
     <Compile Include="crypto\SignalServiceCipher.cs" />
