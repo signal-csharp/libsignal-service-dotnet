@@ -43,8 +43,8 @@ namespace libsignalservice
         private readonly PushServiceSocket socket;
         private readonly SignalProtocolStore store;
         private readonly SignalServiceAddress localAddress;
-        private readonly May<SignalServiceMessagePipe> pipe;
-        private readonly May<EventListener> eventListener;
+        private readonly SignalServiceMessagePipe pipe;
+        private readonly EventListener eventListener;
 
         /// <summary>
         /// Construct a SignalServiceMessageSender
@@ -59,8 +59,8 @@ namespace libsignalservice
         public SignalServiceMessageSender(SignalServiceUrl[] urls,
                                        string user, string password,
                                        SignalProtocolStore store,
-                                       May<SignalServiceMessagePipe> pipe,
-                                       May<EventListener> eventListener, string userAgent)
+                                       SignalServiceMessagePipe pipe,
+                                       EventListener eventListener, string userAgent)
         {
             this.socket = new PushServiceSocket(urls, new StaticCredentialsProvider(user, password, null), userAgent);
             this.store = store;
@@ -92,19 +92,19 @@ namespace libsignalservice
             bool silent = message.getGroupInfo().HasValue && message.getGroupInfo().ForceGetValue().getType() == SignalServiceGroup.Type.REQUEST_INFO;
             SendMessageResponse response = await sendMessage(recipient, timestamp, content, true, silent);
 
-            if (response != null && response.getNeedsSync())
+            if(response != null && response.getNeedsSync())
             {
                 byte[] syncMessage = createMultiDeviceSentTranscriptContent(content, new May<SignalServiceAddress>(recipient), (ulong)timestamp);
                 await sendMessage(localAddress, timestamp, syncMessage, false, false);
             }
 
-            if (message.isEndSession())
+            if(message.isEndSession())
             {
                 store.DeleteAllSessions(recipient.getNumber());
 
-                if (eventListener.HasValue)
+                if(eventListener != null)
                 {
-                    eventListener.ForceGetValue().onSecurityEvent(recipient);
+                    eventListener.onSecurityEvent(recipient);
                 }
             }
         }
@@ -358,12 +358,12 @@ namespace libsignalservice
                 {
                     OutgoingPushMessageList messages = await getEncryptedMessages(socket, recipient, timestamp, content, legacy, silent);
 
-                    if (pipe.HasValue)
+                    if(pipe != null)
                     {
                         try
                         {
                             Debug.WriteLine("Transmitting over pipe...");
-                            return pipe.ForceGetValue().send(messages);
+                            return pipe.send(messages);
                         }
                         catch (IOException e)
                         {
@@ -486,9 +486,9 @@ namespace libsignalservice
                         }
                     }
 
-                    if (eventListener.HasValue)
+                    if(eventListener != null)
                     {
-                        eventListener.ForceGetValue().onSecurityEvent(recipient);
+                        eventListener.onSecurityEvent(recipient);
                     }
                 }
                 catch (InvalidKeyException e)
@@ -500,8 +500,7 @@ namespace libsignalservice
             return cipher.encrypt(signalProtocolAddress, plaintext, legacy, silent);
         }
 
-        private async Task handleMismatchedDevices(PushServiceSocket socket, SignalServiceAddress recipient,
-                                           MismatchedDevices mismatchedDevices)
+        private async Task handleMismatchedDevices(PushServiceSocket socket, SignalServiceAddress recipient, MismatchedDevices mismatchedDevices)
         {
             try
             {

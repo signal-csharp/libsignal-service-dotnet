@@ -596,6 +596,11 @@ namespace libsignalservice.push
             return response;
         }
 
+        private bool Func(HttpRequestMessage a, X509Certificate2 b, X509Chain c, SslPolicyErrors d)
+        {
+            return true;
+        }
+
         private async Task<HttpResponseMessage> getConnection(string urlFragment, string method, string body)
         {
             try
@@ -622,11 +627,12 @@ namespace libsignalservice.push
 
                 //HttpURLConnection connection = (HttpURLConnection)url.openConnection();
                 //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-                HttpClientHandler handler = new HttpClientHandler();
-                handler.ClientCertificateOptions = ClientCertificateOption.Manual;
-                handler.ServerCertificateCustomValidationCallback = delegate(HttpRequestMessage a, X509Certificate2 b, X509Chain c, SslPolicyErrors d) { return true; };
-                HttpClient connection = new HttpClient(handler);
-                
+                //HttpClientHandler handler = new HttpClientHandler();
+                //handler.ClientCertificateOptions = ClientCertificateOption.Manual;
+                //handler.ServerCertificateCustomValidationCallback = new Func<HttpRequestMessage, X509Certificate2, X509Chain, SslPolicyErrors, bool>((HttpRequestMessage a, X509Certificate2 b, X509Chain c, SslPolicyErrors d) => { return true; });
+                //handler.ServerCertificateCustomValidationCallback = Func;
+                //HttpClient connection = new HttpClient(handler);
+                HttpClient connection = new HttpClient();
                 //connection.
 
                 /*if (ENFORCE_SSL)
@@ -685,7 +691,6 @@ namespace libsignalservice.push
                     default:
                         throw new Exception("Unknown method: " + method);
                 }
-
             }
             catch (UriFormatException e)
             {
