@@ -63,7 +63,7 @@ namespace libsignalservice.crypto
             }
 
             return new OutgoingPushMessage(type,
-                destination.getDeviceId(),
+                destination.DeviceId,
                 remoteRegistrationId,
                 legacy ? body : null,
                 legacy ? null : body,
