@@ -31,11 +31,9 @@ namespace libsignalservice.push.exceptions
         {
             this.exception = exception;
         }
-
-        public PushNetworkException(String s)
-            : base(s)
+        public override string ToString()
         {
+            return base.ToString() + " [" + exception + "]";
         }
-
     }
 }

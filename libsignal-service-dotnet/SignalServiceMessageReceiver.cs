@@ -105,15 +105,15 @@ namespace libsignalservice
             return new SignalServiceMessagePipe(webSocket, credentialsProvider);
         }
 
-        public async Task<List<SignalServiceEnvelope>> retrieveMessages()
+        public List<SignalServiceEnvelope> retrieveMessages()
         {
-            return await retrieveMessages(new NullMessageReceivedCallback());
+            return retrieveMessages(new NullMessageReceivedCallback());
         }
 
-        public async Task<List<SignalServiceEnvelope>> retrieveMessages(MessageReceivedCallback callback)
+        public List<SignalServiceEnvelope> retrieveMessages(MessageReceivedCallback callback)
         {
             List<SignalServiceEnvelope> results = new List<SignalServiceEnvelope>();
-            List<SignalServiceEnvelopeEntity> entities = await socket.getMessages();
+            List<SignalServiceEnvelopeEntity> entities = socket.getMessages();
 
             foreach (SignalServiceEnvelopeEntity entity in entities)
             {

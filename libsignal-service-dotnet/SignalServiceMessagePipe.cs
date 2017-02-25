@@ -45,7 +45,7 @@ namespace libsignalservice
             //this.websocket.MessageReceived += OnMessageReceived; //TODO
             this.credentialsProvider = credentialsProvider;
 
-            this.websocket.connect();
+            //this.websocket.connect();
         }
 
         private void OnMessageReceived(WebSocketConnection sender, WebSocketRequestMessage request)

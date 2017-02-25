@@ -62,15 +62,15 @@ namespace libsignalservice
         /// </summary>
         /// <param name="wnsRegistrationId">The GCM id to register.  A call with an absent value will unregister.</param>
         /// <returns></returns>
-        public async Task<bool> setWnsId(May<string> wnsRegistrationId)// throws IOException
+        public bool setWnsId(May<string> wnsRegistrationId)// throws IOException
         {
             if (wnsRegistrationId.HasValue)
             {
-                return await this.pushServiceSocket.registerWnsId(wnsRegistrationId.ForceGetValue());
+                return this.pushServiceSocket.registerWnsId(wnsRegistrationId.ForceGetValue());
             }
             else
             {
-                return await this.pushServiceSocket.unregisterWnsId();
+                return this.pushServiceSocket.unregisterWnsId();
             }
         }
 
@@ -81,7 +81,7 @@ namespace libsignalservice
         /// <returns></returns>
         public void requestSmsVerificationCode()// throws IOException
         {
-            this.pushServiceSocket.createAccount(false).Wait();
+            this.pushServiceSocket.createAccount(false);
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace libsignalservice
         /// <returns></returns>
         public void requestVoiceVerificationCode()// throws IOException
         {
-            this.pushServiceSocket.createAccount(true).Wait();
+            this.pushServiceSocket.createAccount(true);
         }
 
         /// <summary>
@@ -106,10 +106,10 @@ namespace libsignalservice
         /// for separate installs.</param>
         /// <param name="voice">A boolean that indicates whether the client supports secure voice (RedPhone) calls. </param>
         /// <returns></returns>
-        public async Task verifyAccountWithCode(string verificationCode, string signalingKey,
+        public void verifyAccountWithCode(string verificationCode, string signalingKey,
                                    uint signalProtocolRegistrationId, bool voice)
         {
-            await this.pushServiceSocket.verifyAccountCode(verificationCode, signalingKey,
+            this.pushServiceSocket.verifyAccountCode(verificationCode, signalingKey,
                                                  signalProtocolRegistrationId, voice);
         }
 
@@ -124,9 +124,9 @@ namespace libsignalservice
         /// for separate installs.</param>
         /// <param name="voice">A boolean that indicates whether the client supports secure voice (RedPhone) calls.</param>
         /// <returns></returns>
-        public async Task verifyAccountWithToken(string verificationToken, string signalingKey, uint signalProtocolRegistrationId, bool voice)
+        public void verifyAccountWithToken(string verificationToken, string signalingKey, uint signalProtocolRegistrationId, bool voice)
         {
-            await this.pushServiceSocket.verifyAccountToken(verificationToken, signalingKey, signalProtocolRegistrationId, voice);
+            this.pushServiceSocket.verifyAccountToken(verificationToken, signalingKey, signalProtocolRegistrationId, voice);
         }
 
         /// <summary>
@@ -139,9 +139,9 @@ namespace libsignalservice
         /// separate installs.</param>
         /// <param name="voice">A boolean that indicates whether the client supports secure voice (RedPhone)</param>
         /// <returns></returns>
-        public async Task setAccountAttributes(string signalingKey, uint signalProtocolRegistrationId, bool voice)
+        public void setAccountAttributes(string signalingKey, uint signalProtocolRegistrationId, bool voice)
         {
-            await this.pushServiceSocket.setAccountAttributes(signalingKey, signalProtocolRegistrationId, voice, true);
+            this.pushServiceSocket.setAccountAttributes(signalingKey, signalProtocolRegistrationId, voice, true);
         }
 
         /// <summary>
@@ -153,10 +153,10 @@ namespace libsignalservice
         /// <param name="signedPreKey">The client's signed prekey.</param>
         /// <param name="oneTimePreKeys">The client's list of one-time prekeys.</param>
         /// <returns></returns>
-        public async Task<bool> setPreKeys(IdentityKey identityKey, PreKeyRecord lastResortKey,
+        public bool setPreKeys(IdentityKey identityKey, PreKeyRecord lastResortKey,
             SignedPreKeyRecord signedPreKey, IList<PreKeyRecord> oneTimePreKeys)//throws IOException
         {
-            await this.pushServiceSocket.registerPreKeys(identityKey, lastResortKey, signedPreKey, oneTimePreKeys);
+            this.pushServiceSocket.registerPreKeys(identityKey, lastResortKey, signedPreKey, oneTimePreKeys);
             return true;
         }
 
@@ -164,27 +164,27 @@ namespace libsignalservice
         /// 
         /// </summary>
         /// <returns>The server's count of currently available (eg. unused) prekeys for this user.</returns>
-        public async Task<int> getPreKeysCount()// throws IOException
+        public int getPreKeysCount()// throws IOException
         {
-            return await this.pushServiceSocket.getAvailablePreKeys();
+            return this.pushServiceSocket.getAvailablePreKeys();
         }
 
         /// <summary>
         /// Set the client's signed prekey.
         /// </summary>
         /// <param name="signedPreKey">The client's new signed prekey.</param>
-        public async void setSignedPreKey(SignedPreKeyRecord signedPreKey)// throws IOException
+        public void setSignedPreKey(SignedPreKeyRecord signedPreKey)// throws IOException
         {
-            await this.pushServiceSocket.setCurrentSignedPreKey(signedPreKey);
+            this.pushServiceSocket.setCurrentSignedPreKey(signedPreKey);
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <returns>The server's view of the client's current signed prekey.</returns>
-        public async Task<SignedPreKeyEntity> getSignedPreKey()// throws IOException
+        public SignedPreKeyEntity getSignedPreKey()// throws IOException
         {
-            return await this.pushServiceSocket.getCurrentSignedPreKey();
+            return this.pushServiceSocket.getCurrentSignedPreKey();
         }
 
         /// <summary>
@@ -192,10 +192,10 @@ namespace libsignalservice
         /// </summary>
         /// <param name="e164number">The contact to check.</param>
         /// <returns>An optional ContactTokenDetails, present if registered, absent if not.</returns>
-        public async Task<May<ContactTokenDetails>> getContact(string e164number)// throws IOException
+        public May<ContactTokenDetails> getContact(string e164number)// throws IOException
         {
             string contactToken = createDirectoryServerToken(e164number, true);
-            ContactTokenDetails contactTokenDetails = await this.pushServiceSocket.getContactTokenDetails(contactToken);
+            ContactTokenDetails contactTokenDetails = this.pushServiceSocket.getContactTokenDetails(contactToken);
 
             if (contactTokenDetails != null)
             {
@@ -210,10 +210,10 @@ namespace libsignalservice
         /// </summary>
         /// <param name="e164numbers">The contacts to check.</param>
         /// <returns>A list of ContactTokenDetails for the registered users.</returns>
-        public async Task<List<ContactTokenDetails>> getContacts(IList<string> e164numbers)
+        public List<ContactTokenDetails> getContacts(IList<string> e164numbers)
         {
             IDictionary<string, string> contactTokensMap = createDirectoryServerTokenMap(e164numbers);
-            List<ContactTokenDetails> activeTokens = await this.pushServiceSocket.retrieveDirectory(contactTokensMap.Keys);
+            List<ContactTokenDetails> activeTokens = this.pushServiceSocket.retrieveDirectory(contactTokensMap.Keys);
 
             foreach (ContactTokenDetails activeToken in activeTokens)
             {
@@ -225,17 +225,17 @@ namespace libsignalservice
             return activeTokens;
         }
 
-        public async Task<string> getAccoountVerificationToken()
+        public string getAccoountVerificationToken()
         {
-            return await this.pushServiceSocket.getAccountVerificationToken();
+            return this.pushServiceSocket.getAccountVerificationToken();
         }
 
-        public async Task<string> getNewDeviceVerificationCode()// throws IOException
+        public string getNewDeviceVerificationCode()// throws IOException
         {
-            return await this.pushServiceSocket.getNewDeviceVerificationCode();
+            return this.pushServiceSocket.getNewDeviceVerificationCode();
         }
 
-        public async void addDevice(string deviceIdentifier,
+        public void addDevice(string deviceIdentifier,
                               ECPublicKey deviceKey,
                               IdentityKeyPair identityKeyPair,
                               string code)//throws InvalidKeyException, IOException
@@ -250,17 +250,17 @@ namespace libsignalservice
             };
 
             byte[] ciphertext = cipher.encrypt(message);
-            await this.pushServiceSocket.sendProvisioningMessage(deviceIdentifier, ciphertext);
+            this.pushServiceSocket.sendProvisioningMessage(deviceIdentifier, ciphertext);
         }
 
-        public async Task<List<DeviceInfo>> getDevices()
+        public List<DeviceInfo> getDevices()
         {
-            return await this.pushServiceSocket.getDevices();
+            return this.pushServiceSocket.getDevices();
         }
 
-        public async void removeDevice(long deviceId)
+        public void removeDevice(long deviceId)
         {
-            await this.pushServiceSocket.removeDevice(deviceId);
+            this.pushServiceSocket.removeDevice(deviceId);
         }
 
         private string createDirectoryServerToken(string e164number, bool urlSafe)

@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>libsignal-service-dotnet</id>
-    <version>1.4.6</version>
+    <version>1.4.17</version>
     <authors>Benni</authors>
     <owners>Benni</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -17,6 +17,8 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="bin\Release\libsignal-service-dotnet.dll" target="lib\netstandard1.4\libsignal-service-dotnet.dll" />
+    <file src="bin\Debug\libsignal-service-dotnet.dll" target="lib\netstandard1.4\libsignal-service-dotnet.dll" />
+    <file src="bin\Debug\libsignal-service-dotnet.pdb" target="lib\netstandard1.4\libsignal-service-dotnet.pdb" />
+    <file src="**\*.cs" target="src" />
   </files>
 </package>
