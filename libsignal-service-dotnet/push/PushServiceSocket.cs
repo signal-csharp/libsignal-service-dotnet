@@ -613,7 +613,7 @@ namespace libsignalservice.push
                 context.init(null, trustManagers, null);*/
 
                 Uri uri = new Uri(string.Format("{0}{1}", url, urlFragment));
-                Debug.WriteLine(String.Format("Uri {}", uri),TAG);
+                Debug.WriteLine(String.Format("Uri {0}", uri),TAG);
                 //Log.w(TAG, "Push service URL: " + serviceUrl);
                 //Log.w(TAG, "Opening URL: " + url);
                 /*var filter = new HttpBaseProtocolFilter(); //TODO
@@ -694,16 +694,11 @@ namespace libsignalservice.push
                         throw new Exception("Unknown method: " + method);
                 }
             }
-            catch (UriFormatException e)
-            {
-                throw new Exception(string.Format("Uri {0} {1} is wrong", "", urlFragment));
-            }
             catch (Exception e)
             {
-                Debug.WriteLine(string.Format("Other exception {0}{1} is wrong", "", urlFragment));
+                Debug.WriteLine(string.Format("Exception {0} occured:\n{1}", e.Message, e.StackTrace), TAG);
                 throw new PushNetworkException(e);
             }
-
         }
 
 
