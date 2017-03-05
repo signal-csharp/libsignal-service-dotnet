@@ -180,7 +180,7 @@ namespace libsignalservice.push
                 if (responseText == null) return new SendMessageResponse(false);
                 else return JsonUtil.fromJson<SendMessageResponse>(responseText);
             }
-            catch (Exception nfe)
+            catch (NotFoundException nfe)
             {
                 throw new UnregisteredUserException(bundle.getDestination(), nfe);
             }
@@ -512,32 +512,22 @@ namespace libsignalservice.push
         private string makeRequest(string urlFragment, string method, string body)
         //throws NonSuccessfulResponseCodeException, PushNetworkException
         {
-            try
-            {
-                string response = makeBaseRequest(urlFragment, method, body);
-
-                return response;
-            }
-            catch (Exception ioe)
-            {
-                throw new PushNetworkException(ioe);
-            }
-        }
-
-        private string makeBaseRequest(string urlFragment, string method, string body)
-        {
             HttpResponseMessage connection = getConnection(urlFragment, method, body);
             HttpStatusCode responseCode;
             string responseMessage;
-            string response;
+            string responseBody;
 
             try
             {
                 responseCode = connection.StatusCode;
-                responseMessage = connection.Content.ReadAsStringAsync().Result;
+                responseMessage = connection.ReasonPhrase;
+                responseBody = connection.Content.ReadAsStringAsync().Result;
+                
             }
             catch (Exception ioe)
             {
+                Debug.WriteLine(ioe.Message);
+                Debug.WriteLine(ioe.StackTrace);
                 throw new PushNetworkException(ioe);
             }
 
@@ -551,35 +541,44 @@ namespace libsignalservice.push
                 case HttpStatusCode.NotFound: // 404
                     throw new NotFoundException("Not found");
                 case HttpStatusCode.Conflict: // 409
+                    MismatchedDevices mismatchedDevices = null;
                     try
                     {
-                        response = connection.Content.ReadAsStringAsync().Result;
+                        mismatchedDevices = JsonUtil.fromJson<MismatchedDevices>(responseBody);
                     }
-                    catch (/*IO*/Exception e)
+                    catch(Exception e)
                     {
+                        Debug.WriteLine(e);
+                        Debug.WriteLine(e.StackTrace);
                         throw new PushNetworkException(e);
                     }
-                    throw new MismatchedDevicesException(JsonUtil.fromJson<MismatchedDevices>(response));
+                    throw new MismatchedDevicesException(mismatchedDevices);
                 case HttpStatusCode.Gone: // 410
+                    StaleDevices staleDevices = null;
                     try
                     {
-                        response = connection.Content.ReadAsStringAsync().Result;  //Util.readFully(connection.getErrorStream());
-                    }
-                    catch (/*IO*/Exception e)
-                    {
-                        throw new PushNetworkException(e);
-                    }
-                    throw new StaleDevicesException(JsonUtil.fromJson<StaleDevices>(response));
-                case HttpStatusCode.LengthRequired://411:
-                    try
-                    {
-                        response = connection.Content.ReadAsStringAsync().Result;  //Util.readFully(connection.getErrorStream());
+                        staleDevices = JsonUtil.fromJson<StaleDevices>(responseBody);
                     }
                     catch (Exception e)
                     {
+                        Debug.WriteLine(e);
+                        Debug.WriteLine(e.StackTrace);
                         throw new PushNetworkException(e);
                     }
-                    throw new DeviceLimitExceededException(JsonUtil.fromJson<DeviceLimit>(response));
+                    throw new StaleDevicesException(staleDevices);
+                case HttpStatusCode.LengthRequired://411:
+                    DeviceLimit deviceLimit = null;
+                    try
+                    {
+                        deviceLimit = JsonUtil.fromJson<DeviceLimit>(responseBody);
+                    }
+                    catch(Exception e)
+                    {
+                        Debug.WriteLine(e);
+                        Debug.WriteLine(e.StackTrace);
+                        throw new PushNetworkException(e);
+                    }
+                    throw new DeviceLimitExceededException(deviceLimit);
                 case HttpStatusCode.ExpectationFailed: // 417
                     throw new ExpectationFailedException();
 
@@ -591,8 +590,7 @@ namespace libsignalservice.push
                                                              responseMessage);
             }
 
-            response = connection.Content.ReadAsStringAsync().Result;
-            return response;
+            return responseBody;
         }
 
         private bool Func(HttpRequestMessage a, X509Certificate2 b, X509Chain c, SslPolicyErrors d)
