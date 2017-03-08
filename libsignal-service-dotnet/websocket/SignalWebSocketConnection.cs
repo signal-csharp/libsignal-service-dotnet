@@ -77,7 +77,14 @@ namespace libsignalservice.websocket
         {
             lock(obj)
             {
-                incomingRequests.AddLast(WebSocketMessage.Parser.ParseFrom(obj).Request);
+                var msg = WebSocketMessage.Parser.ParseFrom(obj);
+                if(msg.Type == WebSocketMessage.Types.Type.Request)
+                {
+                    incomingRequests.AddLast(msg.Request);
+                } else if(msg.Type == WebSocketMessage.Types.Type.Response)
+                {
+                    Debug.WriteLine("received response id=" + msg.Response.Id);
+                }
             }
         }
 

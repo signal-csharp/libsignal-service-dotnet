@@ -652,7 +652,9 @@ namespace libsignalservice.push
             }
             catch (Exception e)
             {
-                Debug.WriteLine(string.Format("Exception {0} occured:\n{1}", e.Message, e.StackTrace), TAG);
+                Debug.WriteLine("getConnection() failed:", TAG);
+                Debug.WriteLine(e.Message);
+                Debug.WriteLine(e.StackTrace);
                 throw new PushNetworkException(e);
             }
         }
