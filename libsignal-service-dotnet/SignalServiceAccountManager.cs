@@ -60,17 +60,17 @@ namespace libsignalservice
         /// <summary>
         /// Register/Unregister a Google Cloud Messaging registration ID.
         /// </summary>
-        /// <param name="wnsRegistrationId">The GCM id to register.  A call with an absent value will unregister.</param>
+        /// <param name="gcmRegistrationId">The GCM id to register.  A call with an absent value will unregister.</param>
         /// <returns></returns>
-        public bool setWnsId(May<string> wnsRegistrationId)// throws IOException
+        public void setGcmId(May<string> gcmRegistrationId)// throws IOException
         {
-            if (wnsRegistrationId.HasValue)
+            if (gcmRegistrationId.HasValue)
             {
-                return this.pushServiceSocket.registerWnsId(wnsRegistrationId.ForceGetValue());
+                this.pushServiceSocket.registerGcmId(gcmRegistrationId.ForceGetValue());
             }
             else
             {
-                return this.pushServiceSocket.unregisterWnsId();
+                this.pushServiceSocket.unregisterGcmId();
             }
         }
 

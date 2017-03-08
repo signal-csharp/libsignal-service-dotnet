@@ -21,6 +21,7 @@ using libsignalservice.messages;
 using libsignalservice.push;
 using libsignalservice.util;
 using libsignalservice.websocket;
+using System.Threading;
 
 namespace libsignalservice
 {
@@ -32,47 +33,44 @@ namespace libsignalservice
     public class SignalServiceMessagePipe
     {
         private const string TAG = "SignalServiceMessagePipe";
-
-        private readonly WebSocketConnection websocket;
+        private readonly SignalWebSocketConnection websocket;
         private readonly CredentialsProvider credentialsProvider;
 
-        //public event TypedEventHandler<SignalServiceMessagePipe, SignalServiceEnvelope> MessageReceived;
-
-        public SignalServiceMessagePipe(WebSocketConnection websocket, CredentialsProvider credentialsProvider)
+        public SignalServiceMessagePipe(SignalWebSocketConnection websocket, CredentialsProvider credentialsProvider)
         {
             this.websocket = websocket;
-
-            //this.websocket.MessageReceived += OnMessageReceived; //TODO
             this.credentialsProvider = credentialsProvider;
-
-            //this.websocket.connect();
+            this.websocket.Connect();
         }
 
-        private void OnMessageReceived(WebSocketConnection sender, WebSocketRequestMessage request)
+        public void Read(MessagePipeCallback callback)
         {
-            WebSocketResponseMessage response = createWebSocketResponse(request);
-
-            Debug.WriteLine($"Verb: {request.Verb}, Path {request.Path}, Body({request.Body.Length}): {request.Body}, Id: {request.Id}");
-
-            try
+            WebSocketRequestMessage request = websocket.readRequest();
+            if(request != null)
             {
-                if (isSignalServiceEnvelope(request))
+                var response = createWebSocketResponse(request);
+
+                try
                 {
-                    SignalServiceEnvelope envelope = new SignalServiceEnvelope(request.Body.ToByteArray(),
-                                                                         credentialsProvider.GetSignalingKey());
-
-                    //MessageReceived(this, envelope);
+                    if (isSignalServiceEnvelope(request))
+                    {
+                        var envelope = new SignalServiceEnvelope(request.Body.ToByteArray(), credentialsProvider.GetSignalingKey());
+                        if (callback != null)
+                        {
+                            callback.onMessage(envelope);
+                        }
+                    }
                 }
-            }
-            //catch (Exception e) { } // ignore for now
-            finally
-            {
-                websocket.sendResponse(response);
+                finally
+                {
+                    websocket.sendResponse(response);
+                }
             }
         }
 
         public SendMessageResponse send(OutgoingPushMessageList list)
         {
+
             throw new NotImplementedException();
             //try
             //{
@@ -92,7 +90,7 @@ namespace libsignalservice
         /// </summary>
         public void shutdown()
         {
-            websocket.disconnect();
+            websocket.Disconnect();
         }
 
         private bool isSignalServiceEnvelope(WebSocketRequestMessage message)
@@ -126,16 +124,14 @@ namespace libsignalservice
          * For receiving a callback when a new message has been
          * received.
          */
-        /*public interface MessagePipeCallback
+        public interface MessagePipeCallback
         {
-            void onMessage(TextSecureEnvelope envelope);
+            void onMessage(SignalServiceEnvelope envelope);
         }
 
         private class NullMessagePipeCallback : MessagePipeCallback
         {
-
-            public void onMessage(TextSecureEnvelope envelope) { }
-        }*/
-
+            public void onMessage(SignalServiceEnvelope envelope) { }
+        }
     }
 }

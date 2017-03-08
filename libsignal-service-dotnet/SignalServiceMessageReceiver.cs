@@ -1,21 +1,4 @@
-﻿/** 
- * Copyright (C) 2015-2017 smndtrl, golf1052
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -41,7 +24,6 @@ namespace libsignalservice
         /// Construct a SignalServiceMessageReceiver
         /// </summary>
         /// <param name="urls">The URL of the Signal Service.</param>
-        /// the server's TLS signing certificate</param>
         /// <param name="user">The Signal Service username (eg. phone number).</param>
         /// <param name="password">The Signal Service user password.</param>
         /// <param name="signalingKey">The 52 byte signaling key assigned to this user at registration</param>
@@ -101,7 +83,7 @@ namespace libsignalservice
         /// <returns>A SignalServiceMessagePipe for receiving Signal Service messages.</returns>
         public SignalServiceMessagePipe createMessagePipe()
         {
-            WebSocketConnection webSocket = new WebSocketConnection(urls[0].getUrl(), urls[0].getTrustStore(), credentialsProvider, userAgent);
+            SignalWebSocketConnection webSocket = new SignalWebSocketConnection(urls[0].getUrl(), urls[0].getTrustStore(), credentialsProvider, userAgent);
             return new SignalServiceMessagePipe(webSocket, credentialsProvider);
         }
 

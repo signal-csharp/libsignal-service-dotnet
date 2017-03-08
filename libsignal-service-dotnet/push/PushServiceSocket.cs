@@ -40,12 +40,11 @@ namespace libsignalservice.push
     {
         private static readonly string TAG = "PushServiceSocket";
 
-        private static readonly string CREATE_ACCOUNT_DEBUG_PATH = "/v1/accounts/test/code/{0}";
         private static readonly string CREATE_ACCOUNT_SMS_PATH = "/v1/accounts/sms/code/{0}";
         private static readonly string CREATE_ACCOUNT_VOICE_PATH = "/v1/accounts/voice/code/{0}";
         private static readonly string VERIFY_ACCOUNT_CODE_PATH = "/v1/accounts/code/{0}";
         private static readonly string VERIFY_ACCOUNT_TOKEN_PATH = "/v1/accounts/token/{0}";
-        private static readonly string REGISTER_WNS_PATH = "/v1/accounts/wns/";
+        private static readonly string REGISTER_GCM_PATH = "/v1/accounts/gcm/";
         private static readonly string REQUEST_TOKEN_PATH = "/v1/accounts/token";
         private static readonly string SET_ACCOUNT_ATTRIBUTES = "/v1/accounts/attributes";
 
@@ -159,15 +158,15 @@ namespace libsignalservice.push
             return true;
         }
 
-        public bool registerWnsId(string wnsRegistrationId)// throws IOException
+        public void registerGcmId(String gcmRegistrationId)
         {
-            WnsRegistrationId registration = new WnsRegistrationId(wnsRegistrationId);
-            return makeRequest(REGISTER_WNS_PATH, "PUT", JsonUtil.toJson(registration)) != null;
+            GcmRegistrationId registration = new GcmRegistrationId(gcmRegistrationId, true);
+            makeRequest(REGISTER_GCM_PATH, "PUT", JsonUtil.toJson(registration));
         }
 
-        public bool unregisterWnsId()// throws IOException
+        public void unregisterGcmId()
         {
-            return makeRequest(REGISTER_WNS_PATH, "DELETE", null) != null;
+            makeRequest(REGISTER_GCM_PATH, "DELETE", null);
         }
 
         public SendMessageResponse sendMessage(OutgoingPushMessageList bundle)
@@ -605,44 +604,11 @@ namespace libsignalservice.push
                 SignalConnectionInformation connectionInformation = getRandom(signalConnectionInformation);
                 string url = connectionInformation.getUrl();
                 May<string> hostHeader = connectionInformation.getHostHeader();
-                //TrustManger[] trustManagers = connectionInformation.getTrustManagers();
-
-                /*SSLContext context = SSLContext.getInstance("TLS");
-                context.init(null, trustManagers, null);*/
-
                 Uri uri = new Uri(string.Format("{0}{1}", url, urlFragment));
-                Debug.WriteLine(String.Format("Uri {0}", uri),TAG);
-                //Log.w(TAG, "Push service URL: " + serviceUrl);
-                //Log.w(TAG, "Opening URL: " + url);
-                /*var filter = new HttpBaseProtocolFilter(); //TODO
-
-                if (HttpClientCertificatePolicyState.Policy == HttpClientCertificatePolicy.DevelopmentMode)
-                {
-                    filter.IgnorableServerCertificateErrors.Add(Windows.Security.Cryptography.Certificates.ChainValidationResult.Expired);
-                    filter.IgnorableServerCertificateErrors.Add(Windows.Security.Cryptography.Certificates.ChainValidationResult.Untrusted);
-                    filter.IgnorableServerCertificateErrors.Add(Windows.Security.Cryptography.Certificates.ChainValidationResult.InvalidName);
-                }*/
-
-                //HttpURLConnection connection = (HttpURLConnection)url.openConnection();
-                //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-                HttpClientHandler handler = new HttpClientHandler();
-                //handler.ClientCertificateOptions = ClientCertificateOption.Manual;
-                handler.ServerCertificateCustomValidationCallback = new Func<HttpRequestMessage, X509Certificate2, X509Chain, SslPolicyErrors, bool>((HttpRequestMessage a, X509Certificate2 b, X509Chain c, SslPolicyErrors d) => { return true; });
-                //handler.ServerCertificateCustomValidationCallback = Func;
-                //HttpClient connection = new HttpClient(handler);
-                HttpClient connection = new HttpClient(handler);
-                //connection.
-
-                /*if (ENFORCE_SSL)
-                {
-                    ((HttpsURLConnection)connection).setSSLSocketFactory(context.getSocketFactory());
-                    ((HttpsURLConnection)connection).setHostnameVerifier(new StrictHostnameVerifier());
-                }*/
+                Debug.WriteLine("{0}: Uri {1}", TAG, uri);
+                HttpClient connection = new HttpClient();
 
                 var headers = connection.DefaultRequestHeaders;
-
-                //connection.setRequestMethod(method);
-                //headers.Add("Content-Type", "application/json");
 
                 if (credentialsProvider.GetPassword() != null)
                 {
@@ -660,13 +626,6 @@ namespace libsignalservice.push
                 {
                     headers.Host = hostHeader.ForceGetValue();
                 }
-
-                /*if (body != null)
-                {
-                    connection.setDoOutput(true);
-                }*/
-
-                //connection.connect();
 
                 StringContent content;
                 if (body != null)
@@ -719,21 +678,21 @@ namespace libsignalservice.push
     }
 
 
-    class WnsRegistrationId
+    class GcmRegistrationId
     {
 
         [JsonProperty]
         private string wnsRegistrationId;
 
-        /*[JsonProperty]
-        private bool webSocketChannel;*/
+        [JsonProperty]
+        private bool webSocketChannel;
 
-        public WnsRegistrationId() { }
+        public GcmRegistrationId() { }
 
-        public WnsRegistrationId(string wnsRegistrationId)
+        public GcmRegistrationId(string wnsRegistrationId, bool webSocketChannel)
         {
             this.wnsRegistrationId = wnsRegistrationId;
-            //this.webSocketChannel = webSocketChannel;
+            this.webSocketChannel = webSocketChannel;
         }
     }
 

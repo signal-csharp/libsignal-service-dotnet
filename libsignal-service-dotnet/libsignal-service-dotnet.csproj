@@ -128,8 +128,11 @@
     <Compile Include="util\PhoneNumberFormatter.cs" />
     <Compile Include="util\StaticCredentialsProvider.cs" />
     <Compile Include="util\Util.cs" />
-    <Compile Include="websocket\WebSocketConnection.cs" />
+    <Compile Include="websocket\AsyncLock.cs" />
+    <Compile Include="websocket\SignalWebSocketConnection.cs" />
+    <Compile Include="websocket\WebsocketConnection.cs" />
     <Compile Include="websocket\WebSocketProtos.cs" />
+    <Compile Include="websocket\WebSocketWrapper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
