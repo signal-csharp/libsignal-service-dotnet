@@ -365,7 +365,7 @@ namespace libsignalservice
                             Debug.WriteLine("Transmitting over pipe...");
                             return pipe.send(messages);
                         }
-                        catch (IOException e)
+                        catch (Exception e)
                         {
                             Debug.WriteLine(e.Message + " - falling back to new connection...");
                         }
@@ -376,16 +376,20 @@ namespace libsignalservice
                 }
                 catch (MismatchedDevicesException mde)
                 {
-                    Debug.WriteLine(mde.Message, TAG);
+                    Debug.WriteLine("MismatchedDevicesException");
+                    Debug.WriteLine(mde.Message);
+                    Debug.WriteLine(mde.StackTrace);
                     handleMismatchedDevices(socket, recipient, mde.getMismatchedDevices());
                 }
                 catch (StaleDevicesException ste)
                 {
-                    Debug.WriteLine(ste.Message, TAG);
+                    Debug.WriteLine("MismatchedDevicesException");
+                    Debug.WriteLine(ste.Message);
+                    Debug.WriteLine(ste.StackTrace);
                     handleStaleDevices(recipient, ste.getStaleDevices());
                 }
             }
-
+            Debug.WriteLine("Failed to resolve conflicts after 3 attempts!");
             throw new Exception("Failed to resolve conflicts after 3 attempts!");
         }
 

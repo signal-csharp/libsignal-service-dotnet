@@ -170,7 +170,6 @@ namespace libsignalservice.push
         }
 
         public SendMessageResponse sendMessage(OutgoingPushMessageList bundle)
-        //throws IOException
         {
             try
             {
