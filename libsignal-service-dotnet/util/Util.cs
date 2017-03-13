@@ -21,6 +21,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace libsignalservice.util
@@ -176,18 +177,6 @@ namespace libsignalservice.util
                 throw new AssertionError(e);
             }
         }*/
-
-        public static void wait(Object locki, ulong millis)
-        {
-            /*try
-            {
-                locki.wait(millis);
-            }
-            catch (InterruptedException e)
-            {
-                throw new Exception(e);
-            }*/
-        }
 
         public static int toIntExact(long value)
         {

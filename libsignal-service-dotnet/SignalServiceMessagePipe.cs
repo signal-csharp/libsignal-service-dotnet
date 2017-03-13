@@ -22,6 +22,10 @@ using libsignalservice.push;
 using libsignalservice.util;
 using libsignalservice.websocket;
 using System.Threading;
+using Google.Protobuf;
+using System.Text;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace libsignalservice
 {
@@ -33,64 +37,65 @@ namespace libsignalservice
     public class SignalServiceMessagePipe
     {
         private const string TAG = "SignalServiceMessagePipe";
-        private readonly SignalWebSocketConnection websocket;
-        private readonly CredentialsProvider credentialsProvider;
+        private readonly SignalWebSocketConnection Websocket;
+        private readonly CredentialsProvider CredentialsProvider;
+        CancellationToken Token;
 
-        public SignalServiceMessagePipe(SignalWebSocketConnection websocket, CredentialsProvider credentialsProvider)
+        public SignalServiceMessagePipe(CancellationToken token, SignalWebSocketConnection websocket, CredentialsProvider credentialsProvider)
         {
-            this.websocket = websocket;
-            this.credentialsProvider = credentialsProvider;
-            this.websocket.Connect();
+            this.Token = token;
+            this.Websocket = websocket;
+            this.CredentialsProvider = credentialsProvider;
+            this.Websocket.Connect();
         }
 
-        public void Read(MessagePipeCallback callback)
+        public void ReadBlocking(MessagePipeCallback callback)
         {
-            WebSocketRequestMessage request = websocket.readRequest();
-            if(request != null)
+            LinkedList<WebSocketRequestMessage> requests = Websocket.readRequests();
+            int amount = requests.Count;
+            SignalServiceEnvelope[] envelopes = new SignalServiceEnvelope[amount];
+            WebSocketResponseMessage[] responses = new WebSocketResponseMessage[amount];
+            for(int i = 0;i<amount;i++)
             {
-                var response = createWebSocketResponse(request);
-
-                try
+                WebSocketRequestMessage msg = requests.First.Value;
+                requests.RemoveFirst();
+                if (isSignalServiceEnvelope(msg))
                 {
-                    if (isSignalServiceEnvelope(request))
-                    {
-                        var envelope = new SignalServiceEnvelope(request.Body.ToByteArray(), credentialsProvider.GetSignalingKey());
-                        if (callback != null)
-                        {
-                            callback.onMessage(envelope);
-                        }
-                    }
+                    envelopes[i] = new SignalServiceEnvelope(msg.Body.ToByteArray(), CredentialsProvider.GetSignalingKey());
+                    responses[i] = createWebSocketResponse(msg);
                 }
-                finally
+            }
+            try
+            {
+                callback.onMessages(envelopes);
+            }
+            finally
+            {
+                foreach(WebSocketResponseMessage response in responses)
                 {
-                    websocket.sendResponse(response);
-                }
+                    Websocket.SendResponse(response);
+                }              
             }
         }
 
-        public SendMessageResponse send(OutgoingPushMessageList list)
+        public void Send(OutgoingPushMessageList list)
         {
-
-            throw new NotImplementedException();
-            //try
-            //{
-            //    WebSocketRequestMessage requestmessage = WebSocketRequestMessage.CreateBuilder()
-            //        .SetId((ulong)CryptographicBuffer.GenerateRandomNumber())
-            //        .SetVerb("PUT")
-            //        .SetPath($"/v1/messages/{list.getDestination()}")
-            //        .AddHeaders("content-type:application/json")
-            //        .SetBody(ByteString.CopyFrom(Encoding.UTF8.GetBytes(JsonUtil.toJson(list))))
-            //        .Build();
-
-            //}
+            WebSocketRequestMessage requestmessage = new WebSocketRequestMessage() {
+                Id = (ulong)42,
+                Verb = "PUT",
+                Path = $"/v1/messages/{list.getDestination()}",
+                Body = ByteString.CopyFrom(Encoding.UTF8.GetBytes(JsonUtil.toJson(list)))
+            };
+            requestmessage.Headers.Add("content-type:application/json");
+            Websocket.SendRequest(requestmessage);
         }
 
         /// <summary>
         /// Close this connection to the server.
         /// </summary>
-        public void shutdown()
+        public void Shutdown()
         {
-            websocket.Disconnect();
+            Websocket.Disconnect();
         }
 
         private bool isSignalServiceEnvelope(WebSocketRequestMessage message)
@@ -126,12 +131,7 @@ namespace libsignalservice
          */
         public interface MessagePipeCallback
         {
-            void onMessage(SignalServiceEnvelope envelope);
-        }
-
-        private class NullMessagePipeCallback : MessagePipeCallback
-        {
-            public void onMessage(SignalServiceEnvelope envelope) { }
+            void onMessages(SignalServiceEnvelope[] envelopes);
         }
     }
 }

@@ -7,6 +7,7 @@ using libsignalservice.push;
 using libsignalservice.util;
 using libsignalservice.websocket;
 using static libsignalservice.messages.SignalServiceAttachment;
+using System.Threading;
 
 namespace libsignalservice
 {
@@ -19,20 +20,7 @@ namespace libsignalservice
         private readonly SignalServiceUrl[] urls;
         private readonly CredentialsProvider credentialsProvider;
         private readonly string userAgent;
-
-        /// <summary>
-        /// Construct a SignalServiceMessageReceiver
-        /// </summary>
-        /// <param name="urls">The URL of the Signal Service.</param>
-        /// <param name="user">The Signal Service username (eg. phone number).</param>
-        /// <param name="password">The Signal Service user password.</param>
-        /// <param name="signalingKey">The 52 byte signaling key assigned to this user at registration</param>
-        /// <param name="userAgent"></param>
-        public SignalServiceMessageReceiver(SignalServiceUrl[] urls,
-                                         string user, string password, string signalingKey, string userAgent)
-            : this(urls, new StaticCredentialsProvider(user, password, signalingKey), userAgent)
-        {
-        }
+        private readonly CancellationToken Token;
 
         /// <summary>
         /// Construct a SignalServiceMessageReceiver.
@@ -40,8 +28,9 @@ namespace libsignalservice
         /// <param name="urls">The URL of the Signal Service.</param>
         /// <param name="credentials">The Signal Service user's credentials</param>
         /// <param name="userAgent"></param>
-        public SignalServiceMessageReceiver(SignalServiceUrl[] urls, CredentialsProvider credentials, string userAgent)
+        public SignalServiceMessageReceiver(CancellationToken token, SignalServiceUrl[] urls, CredentialsProvider credentials, string userAgent)
         {
+            this.Token = token;
             this.urls = urls;
             this.credentialsProvider = credentials;
             this.socket = new PushServiceSocket(urls, credentials, userAgent);
@@ -78,18 +67,13 @@ namespace libsignalservice
         /// <summary>
         /// Creates a pipe for receiving SignalService messages.
         /// 
-        /// Callers must call <see cref="SignalServiceMessagePipe.shutdown()"/> when finished with the pipe.
+        /// Callers must call <see cref="SignalServiceMessagePipe.Shutdown()"/> when finished with the pipe.
         /// </summary>
         /// <returns>A SignalServiceMessagePipe for receiving Signal Service messages.</returns>
         public SignalServiceMessagePipe createMessagePipe()
         {
-            SignalWebSocketConnection webSocket = new SignalWebSocketConnection(urls[0].getUrl(), urls[0].getTrustStore(), credentialsProvider, userAgent);
-            return new SignalServiceMessagePipe(webSocket, credentialsProvider);
-        }
-
-        public List<SignalServiceEnvelope> retrieveMessages()
-        {
-            return retrieveMessages(new NullMessageReceivedCallback());
+            SignalWebSocketConnection webSocket = new SignalWebSocketConnection(Token, urls[0].getUrl(), urls[0].getTrustStore(), credentialsProvider, userAgent);
+            return new SignalServiceMessagePipe(Token, webSocket, credentialsProvider);
         }
 
         public List<SignalServiceEnvelope> retrieveMessages(MessageReceivedCallback callback)
@@ -109,7 +93,6 @@ namespace libsignalservice
 
                 socket.acknowledgeMessage(entity.getSource(), entity.getTimestamp());
             }
-
             return results;
         }
 
@@ -118,11 +101,5 @@ namespace libsignalservice
         {
             void onMessage(SignalServiceEnvelope envelope);
         }
-
-        public class NullMessageReceivedCallback : MessageReceivedCallback
-        {
-            public void onMessage(SignalServiceEnvelope envelope) { }
-        }
-
     }
 }

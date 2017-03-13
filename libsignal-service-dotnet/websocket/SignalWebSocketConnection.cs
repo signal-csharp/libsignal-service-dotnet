@@ -28,6 +28,8 @@ using libsignalservice.push;
 using libsignalservice.util;
 using System.Net.WebSockets;
 using System.Runtime.CompilerServices;
+using System.Collections.Concurrent;
+using Coe.WebSocketWrapper;
 
 namespace libsignalservice.websocket
 {
@@ -37,35 +39,33 @@ namespace libsignalservice.websocket
         private static readonly int KEEPALIVE_TIMEOUT_SECONDS = 55;
         private static readonly Object obj = new Object();
 
-        private readonly LinkedList<WebSocketRequestMessage> incomingRequests = new LinkedList<WebSocketRequestMessage>();
+        private readonly BlockingCollection<WebSocketRequestMessage> IncomingRequests = new BlockingCollection<WebSocketRequestMessage>(new ConcurrentQueue<WebSocketRequestMessage>());
 
         private readonly string wsUri;
         private readonly TrustStore trustStore;
         private readonly CredentialsProvider credentialsProvider;
         private readonly string userAgent;
-        WebsocketConnection Connection;
-        public CancellationTokenSource tokenSource = new CancellationTokenSource();
+        private WebSocketWrapper WebSocket;
+        private CancellationToken Token;
 
-        public SignalWebSocketConnection(string httpUri, TrustStore trustStore, CredentialsProvider credentialsProvider, string userAgent)
+        public SignalWebSocketConnection(CancellationToken token, string httpUri, TrustStore trustStore, CredentialsProvider credentialsProvider, string userAgent)
         {
+            this.Token = token;
             this.trustStore = trustStore;
             this.credentialsProvider = credentialsProvider;
             this.userAgent = userAgent;
             this.wsUri = httpUri.Replace("https://", "wss://")
                 .Replace("http://", "ws://") + $"/v1/websocket/?login={credentialsProvider.GetUser()}&password={credentialsProvider.GetPassword()}";
             this.userAgent = userAgent;
+            WebSocket = new WebSocketWrapper(wsUri, token);
+            WebSocket.OnConnect(Connection_OnOpened);
+            WebSocket.OnMessage(Connection_OnMessage);
         }
 
         public void Connect()
         {
             Debug.WriteLine("WebSocketConnection: connect()...");
-            if (Connection == null)
-            {
-                Connection = new WebsocketConnection();
-                Connection.OnMessage += Connection_OnMessage;
-                Connection.OnOpened += Connection_OnOpened;
-            }
-            Connection.Open(wsUri);
+            WebSocket.Connect();
         }
 
         private void Connection_OnOpened()
@@ -75,88 +75,74 @@ namespace libsignalservice.websocket
 
         private void Connection_OnMessage(byte[] obj)
         {
-            lock(obj)
+            var msg = WebSocketMessage.Parser.ParseFrom(obj);
+            if(msg.Type == WebSocketMessage.Types.Type.Request)
             {
-                var msg = WebSocketMessage.Parser.ParseFrom(obj);
-                if(msg.Type == WebSocketMessage.Types.Type.Request)
-                {
-                    incomingRequests.AddLast(msg.Request);
-                } else if(msg.Type == WebSocketMessage.Types.Type.Response)
-                {
-                    Debug.WriteLine("received response id=" + msg.Response.Id);
-                }
+                IncomingRequests.Add(msg.Request);
+            } else if(msg.Type == WebSocketMessage.Types.Type.Response)
+            {
+                Debug.WriteLine("SignalWebSocketConnection received response id={0}, message={1}, status={2} body={3}", msg.Response.Id, msg.Response.Message, msg.Response.Id, msg.Response.Body);
             }
         }
 
         public void Disconnect()
         {
             Debug.WriteLine("WebSocketConnection disconnect()...");
-            if (Connection != null)
-            {
-                Connection.Close();
-                Connection = null;
-            }
+            throw new NotImplementedException();
         }
 
-        public WebSocketRequestMessage readRequest()
+        public LinkedList<WebSocketRequestMessage> readRequests()
         {
-            lock(obj)
+            LinkedList<WebSocketRequestMessage> requests = new LinkedList<WebSocketRequestMessage>();
+
+            WebSocketRequestMessage item;
+            while (IncomingRequests.TryTake(out item))
             {
-                if(incomingRequests.Count > 0)
-                {
-                    var m = incomingRequests.First.Value;
-                    incomingRequests.RemoveFirst();
-                    return m;
-                }
+                requests.AddLast(item);
             }
-            return null;
+            if(requests.Count > 0)
+            {
+                return requests;
+            }
+            requests.AddLast(IncomingRequests.Take(Token));
+            return requests;
         }
 
         public void SendRequest(WebSocketRequestMessage request)
         {
-            if (Connection == null || !Connection.IsOpen)
-            {
-                throw new IOException("No connection!");
-            }
             WebSocketMessage message = new WebSocketMessage
             {
                 Type = WebSocketMessage.Types.Type.Request,
                 Request = request
             };
-            Connection.Send(message.ToByteArray());
+            WebSocket.SendMessage(message.ToByteArray());
         }
 
-        public void sendResponse(WebSocketResponseMessage response)
+        public void SendResponse(WebSocketResponseMessage response)
         {
-            if (Connection == null || !Connection.IsOpen)
-            {
-                throw new Exception("Connection closed!");
-            }
             WebSocketMessage message = new WebSocketMessage
             {
                 Type = WebSocketMessage.Types.Type.Response,
                 Response = response
             };
-            Connection.Send(message.ToByteArray());
+            WebSocket.SendMessage(message.ToByteArray());
         }
 
-        private void sendKeepAlive(object state)
+        private void sendKeepAlive(CancellationToken token, object state)
         {
-            if (Connection != null && Connection.IsOpen)
+            Debug.WriteLine("keepAlive");
+            WebSocketMessage message = new WebSocketMessage
             {
-                Debug.WriteLine("keepAlive");
-                WebSocketMessage message = new WebSocketMessage
+                Type = WebSocketMessage.Types.Type.Request,
+                Request = new WebSocketRequestMessage
                 {
-                    Type = WebSocketMessage.Types.Type.Request,
-                    Request = new WebSocketRequestMessage
-                    {
-                        Id = KeyHelper.getTime(),
-                        Path = "/v1/keepalive",
-                        Verb = "GET"
-                    },
-                };
-                Connection.Send(message.ToByteArray());
-            }
+                    Id = KeyHelper.getTime(),
+                    Path = "/v1/keepalive",
+                    Verb = "GET"
+                },
+            };
+            WebSocket.SendMessage( message.ToByteArray());
+
         }
     }
 }

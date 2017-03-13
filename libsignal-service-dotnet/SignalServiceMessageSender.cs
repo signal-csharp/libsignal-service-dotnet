@@ -30,6 +30,7 @@ using libsignalservice.push.exceptions;
 using libsignalservice.util;
 using Strilanc.Value;
 using Google.Protobuf;
+using System.Threading;
 
 namespace libsignalservice
 {
@@ -45,6 +46,7 @@ namespace libsignalservice
         private readonly SignalServiceAddress localAddress;
         private readonly SignalServiceMessagePipe pipe;
         private readonly EventListener eventListener;
+        private readonly CancellationToken Token;
 
         /// <summary>
         /// Construct a SignalServiceMessageSender
@@ -56,12 +58,13 @@ namespace libsignalservice
         /// <param name="eventListener">An optional event listener, which fires whenever sessions are
         /// setup or torn down for a recipient.</param>
         /// <param name="userAgent"></param>
-        public SignalServiceMessageSender(SignalServiceUrl[] urls,
+        public SignalServiceMessageSender(CancellationToken token, SignalServiceUrl[] urls,
                                        string user, string password,
                                        SignalProtocolStore store,
                                        SignalServiceMessagePipe pipe,
                                        EventListener eventListener, string userAgent)
         {
+            this.Token = token;
             this.socket = new PushServiceSocket(urls, new StaticCredentialsProvider(user, password, null), userAgent);
             this.store = store;
             this.localAddress = new SignalServiceAddress(user);
@@ -90,9 +93,9 @@ namespace libsignalservice
             byte[] content = createMessageContent(message);
             long timestamp = message.getTimestamp();
             bool silent = message.getGroupInfo().HasValue && message.getGroupInfo().ForceGetValue().getType() == SignalServiceGroup.Type.REQUEST_INFO;
-            SendMessageResponse response = sendMessage(recipient, timestamp, content, true, silent);
+            sendMessage(recipient, timestamp, content, true, silent);
 
-            if(response != null && response.getNeedsSync())
+            if(false) //TODO determine if need sync
             {
                 byte[] syncMessage = createMultiDeviceSentTranscriptContent(content, new May<SignalServiceAddress>(recipient), (ulong)timestamp);
                 sendMessage(localAddress, timestamp, syncMessage, false, false);
@@ -118,11 +121,11 @@ namespace libsignalservice
         {
             byte[] content = createMessageContent(message);
             long timestamp = message.getTimestamp();
-            SendMessageResponse response = sendMessage(recipients, timestamp, content, true);
+            sendMessage(recipients, timestamp, content, true);
 
             try
             {
-                if (response != null && response.getNeedsSync())
+                if (false) //TODO
                 {
                     byte[] syncMessage = createMultiDeviceSentTranscriptContent(content, May<SignalServiceAddress>.NoValue, (ulong)timestamp);
                     sendMessage(localAddress, timestamp, syncMessage, false, false);
@@ -311,19 +314,17 @@ namespace libsignalservice
             return groupContext;
         }
 
-        private SendMessageResponse sendMessage(List<SignalServiceAddress> recipients, long timestamp, byte[] content, bool legacy)
+        private void sendMessage(List<SignalServiceAddress> recipients, long timestamp, byte[] content, bool legacy)
         {
             IList<UntrustedIdentityException> untrustedIdentities = new List<UntrustedIdentityException>(); // was linkedlist
             IList<UnregisteredUserException> unregisteredUsers = new List<UnregisteredUserException>();
             IList<NetworkFailureException> networkExceptions = new List<NetworkFailureException>();
 
-            SendMessageResponse response = null;
-
             foreach (SignalServiceAddress recipient in recipients)
             {
                 try
                 {
-                    response = sendMessage(recipient, timestamp, content, legacy, false);
+                    sendMessage(recipient, timestamp, content, legacy, false);
                 }
                 catch (UntrustedIdentityException e)
                 {
@@ -346,24 +347,22 @@ namespace libsignalservice
             {
                 throw new EncapsulatedExceptions(untrustedIdentities, unregisteredUsers, networkExceptions);
             }
-
-            return response;
         }
 
-        private SendMessageResponse sendMessage(SignalServiceAddress recipient, long timestamp, byte[] content, bool legacy, bool silent)
+        private void sendMessage(SignalServiceAddress recipient, long timestamp, byte[] content, bool legacy, bool silent)
         {
             for (int i = 0; i < 3; i++)
             {
                 try
                 {
                     OutgoingPushMessageList messages = getEncryptedMessages(socket, recipient, timestamp, content, legacy, silent);
-
-                    if(pipe != null && false)
+                    if(pipe != null)
                     {
                         try
                         {
                             Debug.WriteLine("Transmitting over pipe...");
-                            return pipe.send(messages);
+                            pipe.Send(messages);
+                            return;
                         }
                         catch (Exception e)
                         {
@@ -372,7 +371,8 @@ namespace libsignalservice
                     }
 
                     Debug.WriteLine("Not transmitting over pipe...");
-                    return socket.sendMessage(messages);
+                    socket.sendMessage(messages);
+                    return;
                 }
                 catch (MismatchedDevicesException mde)
                 {

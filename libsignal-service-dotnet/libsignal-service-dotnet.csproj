@@ -105,7 +105,6 @@
     <Compile Include="push\PushAttachmentData.cs" />
     <Compile Include="push\PushServiceSocket.cs" />
     <Compile Include="push\PushTransportDetails.cs" />
-    <Compile Include="push\SendMessageResponse.cs" />
     <Compile Include="push\SignalServiceAddress.cs" />
     <Compile Include="push\SignalServiceEnvelopeEntity.cs" />
     <Compile Include="push\SignalServiceEnvelopeEntityList.cs" />
@@ -128,9 +127,7 @@
     <Compile Include="util\PhoneNumberFormatter.cs" />
     <Compile Include="util\StaticCredentialsProvider.cs" />
     <Compile Include="util\Util.cs" />
-    <Compile Include="websocket\AsyncLock.cs" />
     <Compile Include="websocket\SignalWebSocketConnection.cs" />
-    <Compile Include="websocket\WebsocketConnection.cs" />
     <Compile Include="websocket\WebSocketProtos.cs" />
     <Compile Include="websocket\WebSocketWrapper.cs" />
   </ItemGroup>
