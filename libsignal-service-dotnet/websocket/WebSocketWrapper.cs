@@ -1,6 +1,7 @@
 ﻿using libsignalservice.websocket;
 using System;
 using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.IO;
 using System.Net.WebSockets;
 using System.Text;
@@ -108,9 +109,18 @@ namespace Coe.WebSocketWrapper
 
         private async void ConnectAsync()
         {
-            await _ws.ConnectAsync(_uri, _cancellationToken);
-            CallOnConnected();
-            StartListen();
+            try
+            {
+                await _ws.ConnectAsync(_uri, _cancellationToken);
+                CallOnConnected();
+                StartListen();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("ConnectAsync crashed.");
+                Debug.WriteLine(e.Message);
+                Debug.WriteLine(e.StackTrace);
+            }
         }
 
         private async void StartListen()
@@ -175,7 +185,19 @@ namespace Coe.WebSocketWrapper
 
         private static void RunInTask(Action action)
         {
-            Task.Factory.StartNew(action);
+            Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    action();
+                }
+                catch(Exception e)
+                {
+                    Debug.WriteLine("RunInTask failed. " + action);
+                    Debug.WriteLine(e.Message);
+                    Debug.WriteLine(e.StackTrace);
+                }
+            });
         }
     }
 }
