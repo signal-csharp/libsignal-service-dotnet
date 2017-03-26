@@ -16,7 +16,6 @@
  */
 
 using System;
-using Strilanc.Value;
 
 namespace libsignalservice.messages
 {
@@ -30,22 +29,22 @@ namespace libsignalservice.messages
 
         private readonly ulong id;
         private readonly byte[] key;
-        private readonly May<String> relay;
-        private readonly May<uint> size;
-        private readonly May<byte[]> preview;
+        private readonly string relay;
+        private readonly uint size;
+        private readonly byte[] preview;
 
-        public SignalServiceAttachmentPointer(ulong id, String contentType, byte[] key, String relay, May<uint> size, May<byte[]> preview)
+        public SignalServiceAttachmentPointer(ulong id, string contentType, byte[] key, string relay, uint size, byte[] preview)
             : base(contentType)
         {
             this.id = id;
             this.key = key;
-            this.relay = new May<String>(relay);
+            this.relay = relay;
             this.size = size;
             this.preview = preview;
         }
 
         public SignalServiceAttachmentPointer(ulong id, String contentType, byte[] key, String relay)
-        : this(id, contentType, key, relay, May<uint>.NoValue, May<byte[]>.NoValue)
+        : this(id, contentType, key, relay, 0, null)
         { }
 
 
@@ -70,7 +69,7 @@ namespace libsignalservice.messages
             return true;
         }
 
-        public May<String> getRelay()
+        public string getRelay()
         {
             return relay;
         }

@@ -255,10 +255,6 @@ namespace libsignalservice.messages
                 }
             }
             catch (InvalidKeyException e) { }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
         }
 
         private byte[] getCipherKey(String signalingKey)// throws IOException

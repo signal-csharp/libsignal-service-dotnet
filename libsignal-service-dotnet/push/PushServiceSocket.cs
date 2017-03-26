@@ -33,6 +33,7 @@ using System.Net.Http;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using System.Net.Security;
+using System.IO;
 
 namespace libsignalservice.push
 {
@@ -380,8 +381,8 @@ namespace libsignalservice.push
             throw new NotImplementedException("PushServiceSocket sendAttachment");
             return attachmentKey.getId();
         }
-        /*
-        public void retrieveAttachment(string relay, long attachmentId, File destination)// throws IOException
+
+        public void retrieveAttachment(string relay, ulong attachmentId, FileStream tmpDestination, int maxSizeBytes)
         {
             string path = string.Format(ATTACHMENT_PATH, attachmentId.ToString());
 
@@ -391,14 +392,13 @@ namespace libsignalservice.push
             }
 
             string response = makeRequest(path, "GET", null);
-            //AttachmentDescriptor descriptor = JsonUtil.fromJson(response, AttachmentDescriptor.class);
+            Debug.WriteLine("PushServiceSocket: Received resp " + response);
+            AttachmentDescriptor descriptor = JsonUtil.fromJson<AttachmentDescriptor>(response);
 
-            //Log.w(TAG, "Attachment: " + attachmentId + " is at: " + descriptor.getLocation());
+            Debug.WriteLine("PushServiceSocket: Attachment: " + attachmentId + " is at: " + descriptor.getLocation());
 
-            //downloadExternalFile(descriptor.getLocation(), destination);
-
-            throw new NotImplementedException();
-        }*/
+            downloadExternalFile(descriptor.getLocation(), tmpDestination);
+        }
 
         public List<ContactTokenDetails> retrieveDirectory(ICollection<string> contactTokens) // TODO: whacky
                                                                                               //throws NonSuccessfulResponseCodeException, PushNetworkException
@@ -423,45 +423,46 @@ namespace libsignalservice.push
                 return null;
             }
         }
-        /*
-        private void downloadExternalFile(string url, File localDestination)
-        //throws IOException
-        {
-            URL downloadUrl = new URL(url);
-            HttpURLConnection connection = (HttpURLConnection)downloadUrl.openConnection();
-            connection.setRequestProperty("Content-Type", "application/octet-stream");
-            connection.setRequestMethod("GET");
-            connection.setDoInput(true);
 
+        private void downloadExternalFile(string url, FileStream localDestination)
+        {
             try
             {
-                if (connection.getResponseCode() != 200)
+                HttpClient connection = new HttpClient();
+                var headers = connection.DefaultRequestHeaders;
+                Debug.WriteLine("downloading " + url);
+                HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Get,url);
+                req.Content = new StringContent("");
+                req.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
+                using (var resp = connection.SendAsync(req).Result)
                 {
-                    throw new NonSuccessfulResponseCodeException("Bad response: " + connection.getResponseCode());
+                    Stream input = resp.Content.ReadAsStreamAsync().Result;
+                    byte[] buffer = new byte[4096];
+                    int read = 0;
+                    while (true)
+                    {
+                        read = input.Read(buffer, 0, 4096);
+                        if (read == 0)
+                        {
+                            localDestination.Seek(-32, SeekOrigin.End);
+                            byte[] hash = new byte[32];
+                            localDestination.Read(hash, 0, 32);
+                            localDestination.SetLength(localDestination.Length - 32);
+                            Debug.WriteLine("PushServiceSocket Downloaded: " + url + " to: " + localDestination);
+                            //TODO compare ciphertext hash!
+                            return;
+                        }
+                        localDestination.Write(buffer, 0, read);
+                    }
                 }
-
-                OutputStream output = new FileOutputStream(localDestination);
-                InputStream input = connection.getInputStream();
-                byte[] buffer = new byte[4096];
-                int read;
-
-                while ((read = input.read(buffer)) != -1)
-                {
-                    output.write(buffer, 0, read);
-                }
-
-                output.close();
-                Log.w(TAG, "Downloaded: " + url + " to: " + localDestination.getAbsolutePath());
             }
-            catch (IOException ioe)
+            catch (Exception ioe)
             {
+                Debug.WriteLine(ioe.Message);
+                Debug.WriteLine(ioe.StackTrace);
                 throw new PushNetworkException(ioe);
             }
-            finally
-            {
-                connection.disconnect();
-            }
-        }*/
+        }
 
         /*
         private void uploadAttachment(string method, string url, InputStream data, long dataSize, byte[] key)

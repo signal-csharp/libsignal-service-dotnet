@@ -146,8 +146,8 @@ namespace libsignalservice.crypto
                                                                 pointer.ContentType,
                                                                 pointer.Key.ToByteArray(),
                                                                 envelope.getRelay(),
-                                                                pointer.SizeOneofCase == AttachmentPointer.SizeOneofOneofCase.Size ? new May<uint>(pointer.Size) : May<uint>.NoValue,
-                                                                pointer.ThumbnailOneofCase == AttachmentPointer.ThumbnailOneofOneofCase.Thumbnail ? new May<byte[]>(pointer.Thumbnail.ToByteArray()) : May<byte[]>.NoValue));
+                                                                pointer.SizeOneofCase == AttachmentPointer.SizeOneofOneofCase.Size ? pointer.Size : 0,
+                                                                pointer.ThumbnailOneofCase == AttachmentPointer.ThumbnailOneofOneofCase.Thumbnail ? pointer.Thumbnail.ToByteArray() : null));
             }
 
             return new SignalServiceDataMessage(envelope.getTimestamp(), groupInfo, attachments,
