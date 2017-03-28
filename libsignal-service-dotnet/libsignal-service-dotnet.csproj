@@ -45,7 +45,6 @@
   <ItemGroup>
     <Compile Include="AsyncHelper.cs" />
     <Compile Include="Base64.cs" />
-    <Compile Include="crypto\AttachmentCipherInputStream.cs" />
     <Compile Include="crypto\ProvisioningCipher.cs" />
     <Compile Include="crypto\SignalServiceCipher.cs" />
     <Compile Include="crypto\UntrustedIdentityException.cs" />
