@@ -82,7 +82,7 @@ namespace libsignalservice
         public void Send(OutgoingPushMessageList list)
         {
             WebSocketRequestMessage requestmessage = new WebSocketRequestMessage() {
-                Id = (ulong)42,
+                Id = BitConverter.ToUInt64(Util.getSecretBytes(sizeof(long)), 0),
                 Verb = "PUT",
                 Path = $"/v1/messages/{list.getDestination()}",
                 Body = ByteString.CopyFrom(Encoding.UTF8.GetBytes(JsonUtil.toJson(list)))
