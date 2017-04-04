@@ -80,10 +80,10 @@ namespace Coe.WebSocketWrapper
         /// <param name="message">The message to send</param>
         public void SendMessage(byte[] message)
         {
-            SendMessageAsync(message);
+            SendMessageAsync(message).Wait();
         }
 
-        private async void SendMessageAsync(byte[] messageBuffer)
+        private async Task SendMessageAsync(byte[] messageBuffer)
         {
             if (_ws.State != WebSocketState.Open)
             {

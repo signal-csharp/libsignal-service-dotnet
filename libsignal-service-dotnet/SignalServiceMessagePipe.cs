@@ -26,6 +26,7 @@ using Google.Protobuf;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.IO;
 
 namespace libsignalservice
 {
@@ -87,7 +88,20 @@ namespace libsignalservice
                 Body = ByteString.CopyFrom(Encoding.UTF8.GetBytes(JsonUtil.toJson(list)))
             };
             requestmessage.Headers.Add("content-type:application/json");
-            Websocket.SendRequest(requestmessage);
+            var t = Websocket.SendRequest(requestmessage);
+            t.Wait();
+            if(t.IsCompleted)
+            {
+                var response = t.Result;
+                if(response.Item1 < 200 || response.Item1 >= 300)
+                {
+                    throw new IOException("non-successfull response: " + response.Item1 + " " + response.Item2);
+                }
+            }
+            else
+            {
+                throw new IOException("timeout reached while waiting for confirmation");
+            }
         }
 
         /// <summary>

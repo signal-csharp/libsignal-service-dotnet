@@ -30,6 +30,7 @@ using System.Net.WebSockets;
 using System.Runtime.CompilerServices;
 using System.Collections.Concurrent;
 using Coe.WebSocketWrapper;
+using static libsignalservice.SignalServiceMessageSender;
 
 namespace libsignalservice.websocket
 {
@@ -40,6 +41,7 @@ namespace libsignalservice.websocket
         private static readonly Object obj = new Object();
 
         private readonly BlockingCollection<WebSocketRequestMessage> IncomingRequests = new BlockingCollection<WebSocketRequestMessage>(new ConcurrentQueue<WebSocketRequestMessage>());
+        private readonly ConcurrentDictionary<ulong, Tuple<CountdownEvent, uint, string>> OutgoingRequests = new ConcurrentDictionary<ulong, Tuple<CountdownEvent, uint, string>>();
 
         private readonly string wsUri;
         private readonly TrustStore trustStore;
@@ -79,9 +81,12 @@ namespace libsignalservice.websocket
             if(msg.Type == WebSocketMessage.Types.Type.Request)
             {
                 IncomingRequests.Add(msg.Request);
-            } else if(msg.Type == WebSocketMessage.Types.Type.Response)
+            }
+            else if(msg.Type == WebSocketMessage.Types.Type.Response)
             {
-                Debug.WriteLine("SignalWebSocketConnection received response id={0}, message={1}, status={2} body={3}", msg.Response.Id, msg.Response.Message, msg.Response.Id, msg.Response.Body);
+                Debug.WriteLine("SignalWebSocketConnection received response id={0}, message={1}, status={2} body={3}", msg.Response.Id, msg.Response.Message, msg.Response.Id, Encoding.UTF8.GetString(msg.Response.Body.ToByteArray()));
+                var t = new Tuple<CountdownEvent, uint, string>(null, msg.Response.Status, Encoding.UTF8.GetString(msg.Response.Body.ToByteArray()));
+                OutgoingRequests.AddOrUpdate(msg.Response.Id, t, (k,v) => t);
             }
         }
 
@@ -108,14 +113,25 @@ namespace libsignalservice.websocket
             return requests;
         }
 
-        public void SendRequest(WebSocketRequestMessage request)
+        public async Task<Tuple<uint, string>> SendRequest(WebSocketRequestMessage request)
         {
+            Tuple<CountdownEvent, uint, string> t = new Tuple<CountdownEvent, uint, string>(new CountdownEvent(1), 0, null);
             WebSocketMessage message = new WebSocketMessage
             {
                 Type = WebSocketMessage.Types.Type.Request,
                 Request = request
             };
+            OutgoingRequests.AddOrUpdate(request.Id, t, (k, v) => t);
             WebSocket.SendMessage(message.ToByteArray());
+            return await Task.Run(() =>
+            {
+                if(t.Item1.Wait(10*1000, Token))
+                {
+                    var handledTuple = OutgoingRequests[request.Id];
+                    return new Tuple<uint, string>(handledTuple.Item2, handledTuple.Item3);
+                }
+                throw new IOException("wait for confirmation timeout");
+            });
         }
 
         public void SendResponse(WebSocketResponseMessage response)

@@ -573,6 +573,5 @@ namespace libsignalservice
         {
             void onSecurityEvent(SignalServiceAddress address);
         }
-
     }
 }

@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>libsignal-service-dotnet</id>
-    <version>1.4.66</version>
+    <version>1.4.68</version>
     <authors>Benni</authors>
     <owners>Benni</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
