@@ -84,9 +84,12 @@ namespace libsignalservice.websocket
             }
             else if(msg.Type == WebSocketMessage.Types.Type.Response)
             {
-                Debug.WriteLine("SignalWebSocketConnection received response id={0}, message={1}, status={2} body={3}", msg.Response.Id, msg.Response.Message, msg.Response.Id, Encoding.UTF8.GetString(msg.Response.Body.ToByteArray()));
+                Debug.WriteLine("SignalWebSocketConnection received response id={0}, message={1}, status={2} body={3}", msg.Response.Id, msg.Response.Message, msg.Response.Status, Encoding.UTF8.GetString(msg.Response.Body.ToByteArray()));
                 var t = new Tuple<CountdownEvent, uint, string>(null, msg.Response.Status, Encoding.UTF8.GetString(msg.Response.Body.ToByteArray()));
+                Tuple<CountdownEvent, uint, string> savedRequest;
+                OutgoingRequests.TryGetValue(msg.Response.Id, out savedRequest);
                 OutgoingRequests.AddOrUpdate(msg.Response.Id, t, (k,v) => t);
+                savedRequest.Item1.Signal();
             }
         }
 
