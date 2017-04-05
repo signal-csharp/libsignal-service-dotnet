@@ -126,7 +126,7 @@ namespace libsignalservice.crypto
             }
             else
             {
-                throw new InvalidMessageException("Unknown type: " + envelope.getType());
+                throw new InvalidMessageException("Unknown type: " + envelope.getType() + " from "+ envelope.getSource());
             }
 
             PushTransportDetails transportDetails = new PushTransportDetails(sessionCipher.getSessionVersion());
