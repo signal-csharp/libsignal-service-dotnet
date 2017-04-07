@@ -125,7 +125,7 @@ namespace libsignalservice.websocket
                 Request = request
             };
             OutgoingRequests.AddOrUpdate(request.Id, t, (k, v) => t);
-            WebSocket.SendMessage(message.ToByteArray());
+            WebSocket.OutgoingQueue.Add(message.ToByteArray());
             return await Task.Run(() =>
             {
                 if(t.Item1.Wait(10*1000, Token))
@@ -144,7 +144,7 @@ namespace libsignalservice.websocket
                 Type = WebSocketMessage.Types.Type.Response,
                 Response = response
             };
-            WebSocket.SendMessage(message.ToByteArray());
+            WebSocket.OutgoingQueue.Add(message.ToByteArray());
         }
 
         private void sendKeepAlive(CancellationToken token, object state)
@@ -160,8 +160,7 @@ namespace libsignalservice.websocket
                     Verb = "GET"
                 },
             };
-            WebSocket.SendMessage( message.ToByteArray());
-
+            WebSocket.OutgoingQueue.Add( message.ToByteArray());
         }
     }
 }
