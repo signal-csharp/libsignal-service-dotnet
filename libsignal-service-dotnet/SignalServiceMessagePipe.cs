@@ -63,8 +63,8 @@ namespace libsignalservice
                 if (isSignalServiceEnvelope(msg))
                 {
                     envelopes[i] = new SignalServiceEnvelope(msg.Body.ToByteArray(), CredentialsProvider.GetSignalingKey());
-                    responses[i] = createWebSocketResponse(msg);
                 }
+                responses[i] = createWebSocketResponse(msg);
             }
             try
             {
