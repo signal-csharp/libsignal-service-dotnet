@@ -1,141 +1,29 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{4932E9D9-D764-4B73-8A1A-F193FD8ECF3E}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>libsignal_service_dotnet</RootNamespace>
-    <AssemblyName>libsignal-service-dotnet</AssemblyName>
-    <DefaultLanguage>de-DE</DefaultLanguage>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
-    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
+    <TargetFramework>netstandard1.4</TargetFramework>
+    <PackageId>libsignal-service-dotnet</PackageId>
+    <PackageVersion>1.4.77</PackageVersion>
+    <Authors>Trolldemorted, golf1052, langboost, smndtrl</Authors>
+    <Description>An unofficial .NET Standard library for communicating with the Signal messaging service</Description>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageTags>libsignal libsignal-service libsignal-service-dotnet signal messenger</PackageTags>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netstandard1.4\libsignal-service-dotnet.xml</DocumentationFile>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard1.4\libsignal-service-dotnet.xml</DocumentationFile>
   </PropertyGroup>
+
   <ItemGroup>
-    <None Include="project.json" />
-    <None Include="protobuf\Makefile.bat" />
-    <None Include="protobuf\Provisioning.proto" />
-    <None Include="protobuf\SignalService.proto" />
-    <None Include="protobuf\WebSocketResources.proto" />
-    <!-- A reference to the entire .NET Framework is automatically included -->
+    <PackageReference Include="Google.Protobuf" Version="3.2.0" />
+    <PackageReference Include="libphonenumbers-dotnet" Version="1.1.0" />
+    <PackageReference Include="libsignal-protocol-dotnet" Version="1.3.4" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.2" />
+    <PackageReference Include="System.Net.WebSockets.Client" Version="4.3.0" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="AsyncHelper.cs" />
-    <Compile Include="Base64.cs" />
-    <Compile Include="crypto\ProvisioningCipher.cs" />
-    <Compile Include="crypto\SignalServiceCipher.cs" />
-    <Compile Include="crypto\UntrustedIdentityException.cs" />
-    <Compile Include="messages\multidevice\BlockedListMessage.cs" />
-    <Compile Include="messages\multidevice\ChunkedInputStream.cs" />
-    <Compile Include="messages\multidevice\ChunkedOutputStream.cs" />
-    <Compile Include="messages\multidevice\DeviceContact.cs" />
-    <Compile Include="messages\multidevice\DeviceContactsInputStream.cs" />
-    <Compile Include="messages\multidevice\DeviceContactsOutputStream.cs" />
-    <Compile Include="messages\multidevice\DeviceGroup.cs" />
-    <Compile Include="messages\multidevice\DeviceGroupsInputStream.cs" />
-    <Compile Include="messages\multidevice\DeviceGroupsOutputStream.cs" />
-    <Compile Include="messages\multidevice\DeviceInfo.cs" />
-    <Compile Include="messages\multidevice\ReadMessage.cs" />
-    <Compile Include="messages\multidevice\RequestMessage.cs" />
-    <Compile Include="messages\multidevice\SentTranscriptMessage.cs" />
-    <Compile Include="messages\multidevice\SignalServiceSyncMessage.cs" />
-    <Compile Include="messages\SignalServiceAttachment.cs" />
-    <Compile Include="messages\SignalServiceAttachmentPointer.cs" />
-    <Compile Include="messages\SignalServiceAttachmentStream.cs" />
-    <Compile Include="messages\SignalServiceContent.cs" />
-    <Compile Include="messages\SignalServiceDataMessage.cs" />
-    <Compile Include="messages\SignalServiceEnvelope.cs" />
-    <Compile Include="messages\SignalServiceGroup.cs" />
-    <Compile Include="messages\SignalServiceSyncContext.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="push\AccountAttributes.cs" />
-    <Compile Include="push\AuthorizationToken.cs" />
-    <Compile Include="push\ContactTokenDetails.cs" />
-    <Compile Include="push\ContactTokenDetailsList.cs" />
-    <Compile Include="push\ContactTokenList.cs" />
-    <Compile Include="push\DeviceCode.cs" />
-    <Compile Include="push\DeviceInfoList.cs" />
-    <Compile Include="push\DeviceLimit.cs" />
-    <Compile Include="push\DeviceLimitExceededException.cs" />
-    <Compile Include="push\exceptions\AuthorizationFailedException.cs" />
-    <Compile Include="push\exceptions\EncapsulatedExceptions.cs" />
-    <Compile Include="push\exceptions\ExpectationFailedException.cs" />
-    <Compile Include="push\exceptions\MismatchedDevicesException.cs" />
-    <Compile Include="push\exceptions\NetworkFailureException.cs" />
-    <Compile Include="push\exceptions\NonSuccessfulResponseCodeException.cs" />
-    <Compile Include="push\exceptions\NotFoundException.cs" />
-    <Compile Include="push\exceptions\PushNetworkException.cs" />
-    <Compile Include="push\exceptions\RateLimitException.cs" />
-    <Compile Include="push\exceptions\StaleDevicesException.cs" />
-    <Compile Include="push\exceptions\UnregisteredUserException.cs" />
-    <Compile Include="push\MismatchedDevices.cs" />
-    <Compile Include="push\OutgoingPushMessage.cs" />
-    <Compile Include="push\OutgoingPushMessageList.cs" />
-    <Compile Include="push\PreKeyEntity.cs" />
-    <Compile Include="push\PreKeyResponse.cs" />
-    <Compile Include="push\PreKeyResponseItem.cs" />
-    <Compile Include="push\PreKeyState.cs" />
-    <Compile Include="push\PreKeyStatus.cs" />
-    <Compile Include="push\ProvisioningMessage.cs" />
-    <Compile Include="push\ProvisioningProtos.cs" />
-    <Compile Include="push\PushAttachmentData.cs" />
-    <Compile Include="push\PushServiceSocket.cs" />
-    <Compile Include="push\PushTransportDetails.cs" />
-    <Compile Include="push\SignalServiceAddress.cs" />
-    <Compile Include="push\SignalServiceEnvelopeEntity.cs" />
-    <Compile Include="push\SignalServiceEnvelopeEntityList.cs" />
-    <Compile Include="push\SignalServiceProtos.cs" />
-    <Compile Include="push\SignalServiceUrl.cs" />
-    <Compile Include="push\SignedPreKeyEntity.cs" />
-    <Compile Include="push\StaleDevices.cs" />
-    <Compile Include="push\TrustStore.cs" />
-    <Compile Include="push\UriFormatException.cs" />
-    <Compile Include="SignalServiceAccountManager.cs" />
-    <Compile Include="SignalServiceMessagePipe.cs" />
-    <Compile Include="SignalServiceMessageReceiver.cs" />
-    <Compile Include="SignalServiceMessageSender.cs" />
-    <Compile Include="util\Base64.cs" />
-    <Compile Include="util\CredentialsProvider.cs" />
-    <Compile Include="util\Hash.cs" />
-    <Compile Include="util\HttpClientCertificatePolicy.cs" />
-    <Compile Include="util\InvalidNumberException.cs" />
-    <Compile Include="util\JsonUtil.cs" />
-    <Compile Include="util\PhoneNumberFormatter.cs" />
-    <Compile Include="util\StaticCredentialsProvider.cs" />
-    <Compile Include="util\Util.cs" />
-    <Compile Include="websocket\SignalWebSocketConnection.cs" />
-    <Compile Include="websocket\WebSocketProtos.cs" />
-    <Compile Include="websocket\WebSocketWrapper.cs" />
-  </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>
