@@ -89,8 +89,10 @@ message AttachmentPointer {
   oneof id_oneof							{ fixed64 id          = 1; }
   oneof contentType_oneof					{ string  contentType = 2; }
   oneof key_oneof							{ bytes   key         = 3; }
-  oneof size_oneof							{ uint32  size		   = 4; }
+  oneof size_oneof							{ uint32  size		  = 4; }
   oneof thumbnail_oneof						{ bytes   thumbnail   = 5; }
+  oneof digest_oneof						{ bytes   digest      = 6; }
+  oneof fileName_oneof						{ string  fileName    = 7; }
 }
 
 message GroupContext {

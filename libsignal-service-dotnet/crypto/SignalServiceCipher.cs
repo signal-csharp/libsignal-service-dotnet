@@ -144,6 +144,7 @@ namespace libsignalservice.crypto
             {
                 attachments.Add(new SignalServiceAttachmentPointer(pointer.Id,
                                                                 pointer.ContentType,
+                                                                pointer.FileName,
                                                                 pointer.Key.ToByteArray(),
                                                                 envelope.getRelay(),
                                                                 pointer.SizeOneofCase == AttachmentPointer.SizeOneofOneofCase.Size ? pointer.Size : 0,
@@ -220,6 +221,7 @@ namespace libsignalservice.crypto
                 {
                     avatar = new SignalServiceAttachmentPointer(content.Group.Avatar.Id,
                                                              content.Group.Avatar.ContentType,
+                                                             null,
                                                              content.Group.Avatar.Key.ToByteArray(),
                                                              envelope.getRelay());
                 }

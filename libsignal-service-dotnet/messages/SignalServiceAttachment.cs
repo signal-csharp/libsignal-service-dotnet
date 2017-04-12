@@ -56,6 +56,7 @@ namespace libsignalservice.messages
         {
             private Stream inputStream;
             private string contentType;
+            private string FileName;
             private long length;
             private ProgressListener listener;
 
@@ -81,6 +82,12 @@ namespace libsignalservice.messages
                 return this;
             }
 
+            public Builder WithFileName(string fileName)
+            {
+                FileName = fileName;
+                return this;
+            }
+
             public Builder withListener(ProgressListener listener)
             {
                 this.listener = listener;
@@ -102,7 +109,7 @@ namespace libsignalservice.messages
                     throw new ArgumentException("No length specified!");
                 }
 
-                return new SignalServiceAttachmentStream(inputStream, contentType, (uint)length, listener);
+                return new SignalServiceAttachmentStream(inputStream, contentType, FileName, (uint)length, listener);
             }
         }
 

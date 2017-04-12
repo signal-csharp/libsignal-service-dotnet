@@ -32,8 +32,13 @@ namespace libsignalservice.messages
         private readonly string relay;
         private readonly uint size;
         private readonly byte[] preview;
+        public readonly string FileName;
 
-        public SignalServiceAttachmentPointer(ulong id, string contentType, byte[] key, string relay, uint size, byte[] preview)
+        public SignalServiceAttachmentPointer(ulong id, string contentType, string fileName, byte[] key, string relay)
+        : this(id, contentType, fileName, key, relay, 0, null)
+        { }
+
+        public SignalServiceAttachmentPointer(ulong id, string contentType, string fileName, byte[] key, string relay, uint size, byte[] preview)
             : base(contentType)
         {
             this.id = id;
@@ -41,11 +46,10 @@ namespace libsignalservice.messages
             this.relay = relay;
             this.size = size;
             this.preview = preview;
+            FileName = fileName;
         }
 
-        public SignalServiceAttachmentPointer(ulong id, String contentType, byte[] key, String relay)
-        : this(id, contentType, key, relay, 0, null)
-        { }
+        
 
 
         public ulong getId()
