@@ -1,6 +1,12 @@
-﻿/** 
+using Coe.WebSocketWrapper;
+using Google.Protobuf;
+using libsignal.util;
+using libsignalservice.push;
+using libsignalservice.util;
+
+/**
 * Copyright (C) 2015-2017 smndtrl, golf1052
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
 * the Free Software Foundation, either version 3 of the License, or
@@ -10,27 +16,19 @@
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Google.Protobuf;
-using libsignal.util;
-using libsignalservice.push;
-using libsignalservice.util;
-using System.Net.WebSockets;
-using System.Runtime.CompilerServices;
-using System.Collections.Concurrent;
-using Coe.WebSocketWrapper;
-using static libsignalservice.SignalServiceMessageSender;
 
 namespace libsignalservice.websocket
 {
@@ -78,17 +76,17 @@ namespace libsignalservice.websocket
         private void Connection_OnMessage(byte[] obj)
         {
             var msg = WebSocketMessage.Parser.ParseFrom(obj);
-            if(msg.Type == WebSocketMessage.Types.Type.Request)
+            if (msg.Type == WebSocketMessage.Types.Type.Request)
             {
                 IncomingRequests.Add(msg.Request);
             }
-            else if(msg.Type == WebSocketMessage.Types.Type.Response)
+            else if (msg.Type == WebSocketMessage.Types.Type.Response)
             {
                 Debug.WriteLine("SignalWebSocketConnection received response id={0}, message={1}, status={2} body={3}", msg.Response.Id, msg.Response.Message, msg.Response.Status, Encoding.UTF8.GetString(msg.Response.Body.ToByteArray()));
                 var t = new Tuple<CountdownEvent, uint, string>(null, msg.Response.Status, Encoding.UTF8.GetString(msg.Response.Body.ToByteArray()));
                 Tuple<CountdownEvent, uint, string> savedRequest;
                 OutgoingRequests.TryGetValue(msg.Response.Id, out savedRequest);
-                OutgoingRequests.AddOrUpdate(msg.Response.Id, t, (k,v) => t);
+                OutgoingRequests.AddOrUpdate(msg.Response.Id, t, (k, v) => t);
                 savedRequest.Item1.Signal();
             }
         }
@@ -108,7 +106,7 @@ namespace libsignalservice.websocket
             {
                 requests.AddLast(item);
             }
-            if(requests.Count > 0)
+            if (requests.Count > 0)
             {
                 return requests;
             }
@@ -128,7 +126,7 @@ namespace libsignalservice.websocket
             WebSocket.OutgoingQueue.Add(message.ToByteArray());
             return await Task.Run(() =>
             {
-                if(t.Item1.Wait(10*1000, Token))
+                if (t.Item1.Wait(10 * 1000, Token))
                 {
                     var handledTuple = OutgoingRequests[request.Id];
                     return new Tuple<uint, string>(handledTuple.Item2, handledTuple.Item3);
@@ -160,7 +158,7 @@ namespace libsignalservice.websocket
                     Verb = "GET"
                 },
             };
-            WebSocket.OutgoingQueue.Add( message.ToByteArray());
+            WebSocket.OutgoingQueue.Add(message.ToByteArray());
         }
     }
 }

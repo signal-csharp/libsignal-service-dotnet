@@ -1,6 +1,6 @@
-﻿/** 
+/**
  * Copyright (C) 2015 smndtrl
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -10,39 +10,32 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace libsignalservice.messages
 {
-/*    public class TextSecureSyncContext
-    {
-
-        private readonly String destination;
-        private readonly ulong timestamp;
-
-        public TextSecureSyncContext(String destination, ulong timestamp)
+    /*    public class TextSecureSyncContext
         {
-            this.destination = destination;
-            this.timestamp = timestamp;
-        }
+            private readonly String destination;
+            private readonly ulong timestamp;
 
-        public String getDestination()
-        {
-            return destination;
-        }
+            public TextSecureSyncContext(String destination, ulong timestamp)
+            {
+                this.destination = destination;
+                this.timestamp = timestamp;
+            }
 
-        public ulong getTimestamp()
-        {
-            return timestamp;
-        }
-    }*/
+            public String getDestination()
+            {
+                return destination;
+            }
+
+            public ulong getTimestamp()
+            {
+                return timestamp;
+            }
+        }*/
 }

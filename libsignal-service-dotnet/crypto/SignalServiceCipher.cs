@@ -1,6 +1,16 @@
-﻿/** 
+using Google.Protobuf;
+using libsignal;
+using libsignal.protocol;
+using libsignal.state;
+using libsignal_service_dotnet.messages.calls;
+using libsignalservice.messages;
+using libsignalservice.messages.multidevice;
+using libsignalservice.push;
+using libsignalservice.util;
+
+/**
  * Copyright (C) 2015-2017 smndtrl, golf1052
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -10,23 +20,13 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 using System;
 using System.Collections.Generic;
-using libsignal;
-using libsignal.protocol;
-using libsignal.state;
-using libsignalservice.messages;
-using libsignalservice.messages.multidevice;
-using libsignalservice.push;
-using libsignalservice.util;
-using Strilanc.Value;
-using Google.Protobuf;
-using libsignal_service_dotnet.messages.calls;
 
 namespace libsignalservice.crypto
 {
@@ -310,7 +310,5 @@ namespace libsignalservice.crypto
 
             return new SignalServiceGroup(content.Group.Id.ToByteArray());
         }
-
-
     }
 }

@@ -1,6 +1,11 @@
-﻿/** 
+using libsignal.ecc;
+using libsignalservice.util;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
+/**
  * Copyright (C) 2017 smndtrl, golf1052
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -10,16 +15,12 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 using System;
-using libsignal.ecc;
-using libsignalservice.util;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace libsignalservice.push
 {
@@ -27,10 +28,11 @@ namespace libsignalservice.push
     [JsonConverter(typeof(SignedPreKeySerializer))]
     public class SignedPreKeyEntity : PreKeyEntity
     {
-
         private byte[] signature;
 
-        public SignedPreKeyEntity() { }
+        public SignedPreKeyEntity()
+        {
+        }
 
         public SignedPreKeyEntity(uint keyId, ECPublicKey publicKey, byte[] signature)
             : base(keyId, publicKey)
@@ -43,7 +45,7 @@ namespace libsignalservice.push
             return signature;
         }
 
-        class SignedPreKeySerializer : JsonConverter
+        private class SignedPreKeySerializer : JsonConverter
         {
             public override bool CanConvert(Type objectType)
             {
@@ -65,7 +67,6 @@ namespace libsignalservice.push
                 {
                     throw new Exception(e.Message);
                 }
-
             }
 
             public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
@@ -83,6 +84,7 @@ namespace libsignalservice.push
                 writer.WriteEndObject();
             }
         }
+
         /*
         class ByteArraySerializer : JsonConverter
         {
@@ -104,7 +106,6 @@ namespace libsignalservice.push
                 {
                     throw new Exception(e.Message);
                 }
-
             }
 
             public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
@@ -115,4 +116,3 @@ namespace libsignalservice.push
         }*/
     }
 }
-

@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
 using libsignalservice.messages;
 using libsignalservice.push;
 using libsignalservice.util;
 using libsignalservice.websocket;
-using static libsignalservice.messages.SignalServiceAttachment;
-using System.Threading;
+using System.Collections.Generic;
+using System.IO;
 using System.Security.Cryptography;
+using System.Threading;
+using static libsignalservice.messages.SignalServiceAttachment;
 
 namespace libsignalservice
 {
@@ -50,7 +48,7 @@ namespace libsignalservice
         /// <param name="tmpCipherDestination">The temporary destination for this attachment before decryption</param>
         public void retrieveAttachment(SignalServiceAttachmentPointer pointer, FileStream plaintextDestination, FileStream tmpCipherDestination)
         {
-            retrieveAttachment(pointer, plaintextDestination, tmpCipherDestination, 80 * 1024*1024, null);
+            retrieveAttachment(pointer, plaintextDestination, tmpCipherDestination, 80 * 1024 * 1024, null);
         }
 
         /// <summary>
@@ -97,7 +95,7 @@ namespace libsignalservice
 
         /// <summary>
         /// Creates a pipe for receiving SignalService messages.
-        /// 
+        ///
         /// Callers must call <see cref="SignalServiceMessagePipe.Shutdown()"/> when finished with the pipe.
         /// </summary>
         /// <returns>A SignalServiceMessagePipe for receiving Signal Service messages.</returns>
@@ -126,7 +124,6 @@ namespace libsignalservice
             }
             return results;
         }
-
 
         public interface MessageReceivedCallback
         {

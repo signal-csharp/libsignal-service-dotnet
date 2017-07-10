@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+using Google.Protobuf;
 using libsignal;
 using libsignal.ecc;
 using libsignal.state;
+using libsignal_service_dotnet.messages.calls;
 using libsignalservice.crypto;
 using libsignalservice.messages.multidevice;
 using libsignalservice.push;
 using libsignalservice.util;
 using Strilanc.Value;
-using Google.Protobuf;
-using libsignal_service_dotnet.messages.calls;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace libsignalservice
 {
@@ -144,7 +143,7 @@ namespace libsignalservice
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns>The server's count of currently available (eg. unused) prekeys for this user.</returns>
         public int getPreKeysCount()// throws IOException
@@ -162,7 +161,7 @@ namespace libsignalservice
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns>The server's view of the client's current signed prekey.</returns>
         public SignedPreKeyEntity getSignedPreKey()// throws IOException
@@ -287,12 +286,10 @@ namespace libsignalservice
                 if (!tokenMap.ContainsKey(token)) // mimic java set behaviour
                 {
                     tokenMap.Add(token, number);
-
                 }
             }
 
             return tokenMap;
         }
-
     }
 }

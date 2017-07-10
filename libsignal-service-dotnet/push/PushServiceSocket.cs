@@ -1,6 +1,16 @@
-﻿/** 
+using libsignal;
+using libsignal.ecc;
+using libsignal.state;
+using libsignal_service_dotnet.messages.calls;
+using libsignalservice.messages.multidevice;
+using libsignalservice.push.exceptions;
+using libsignalservice.util;
+using Newtonsoft.Json;
+using Strilanc.Value;
+
+/**
  * Copyright (C) 2015-2017 smndtrl, golf1052
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -10,7 +20,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -18,23 +28,13 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using libsignal;
-using libsignal.ecc;
-using libsignal.state;
-using libsignalservice.messages.multidevice;
-using libsignalservice.push.exceptions;
-using libsignalservice.util;
-using Newtonsoft.Json;
-using Strilanc.Value;
-using System.Net.Http;
-using System.Net;
-using System.Security.Cryptography.X509Certificates;
-using System.Net.Security;
 using System.IO;
-using libsignal_service_dotnet.messages.calls;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
 
 namespace libsignalservice.push
 {
@@ -427,7 +427,7 @@ namespace libsignalservice.push
 
         public void setSoTimeoutMillis(long soTimeoutMillis)
         {
-           throw new NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void cancelInFlightRequests()
@@ -435,14 +435,14 @@ namespace libsignalservice.push
             throw new NotImplementedException();
         }
 
-    private void downloadExternalFile(string url, FileStream localDestination)
+        private void downloadExternalFile(string url, FileStream localDestination)
         {
             try
             {
                 HttpClient connection = new HttpClient();
                 var headers = connection.DefaultRequestHeaders;
                 Debug.WriteLine("downloading " + url);
-                HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Get,url);
+                HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Get, url);
                 req.Content = new StringContent("");
                 req.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
                 using (var resp = connection.SendAsync(req).Result)
@@ -529,7 +529,6 @@ namespace libsignalservice.push
                 responseCode = connection.StatusCode;
                 responseMessage = connection.ReasonPhrase;
                 responseBody = connection.Content.ReadAsStringAsync().Result;
-                
             }
             catch (Exception ioe)
             {
@@ -553,7 +552,7 @@ namespace libsignalservice.push
                     {
                         mismatchedDevices = JsonUtil.fromJson<MismatchedDevices>(responseBody);
                     }
-                    catch(Exception e)
+                    catch (Exception e)
                     {
                         Debug.WriteLine(e);
                         Debug.WriteLine(e.StackTrace);
@@ -579,7 +578,7 @@ namespace libsignalservice.push
                     {
                         deviceLimit = JsonUtil.fromJson<DeviceLimit>(responseBody);
                     }
-                    catch(Exception e)
+                    catch (Exception e)
                     {
                         Debug.WriteLine(e);
                         Debug.WriteLine(e.StackTrace);
@@ -588,7 +587,6 @@ namespace libsignalservice.push
                     throw new DeviceLimitExceededException(deviceLimit);
                 case HttpStatusCode.ExpectationFailed: // 417
                     throw new ExpectationFailedException();
-
             }
 
             if (responseCode != HttpStatusCode.OK && responseCode != HttpStatusCode.NoContent) // 200 & 204
@@ -649,12 +647,16 @@ namespace libsignalservice.push
                 {
                     case "POST":
                         return connection.PostAsync(uri, content).Result;
+
                     case "PUT":
                         return connection.PutAsync(uri, content).Result;
+
                     case "DELETE":
                         return connection.DeleteAsync(uri).Result;
+
                     case "GET":
                         return connection.GetAsync(uri).Result;
+
                     default:
                         throw new Exception("Unknown method: " + method);
                 }
@@ -667,7 +669,6 @@ namespace libsignalservice.push
                 throw new PushNetworkException(e);
             }
         }
-
 
         private string getAuthorizationHeader()
         {
@@ -687,17 +688,17 @@ namespace libsignalservice.push
         }
     }
 
-
-    class GcmRegistrationId
+    internal class GcmRegistrationId
     {
-
         [JsonProperty]
         private string wnsRegistrationId;
 
         [JsonProperty]
         private bool webSocketChannel;
 
-        public GcmRegistrationId() { }
+        public GcmRegistrationId()
+        {
+        }
 
         public GcmRegistrationId(string wnsRegistrationId, bool webSocketChannel)
         {
@@ -706,7 +707,7 @@ namespace libsignalservice.push
         }
     }
 
-    class AttachmentDescriptor
+    internal class AttachmentDescriptor
     {
         [JsonProperty]
         private ulong id;
@@ -725,7 +726,7 @@ namespace libsignalservice.push
         }
     }
 
-    class SignalConnectionInformation
+    internal class SignalConnectionInformation
     {
         private readonly string url;
         private readonly May<string> hostHeader;
@@ -759,4 +760,3 @@ namespace libsignalservice.push
         //}
     }
 }
-

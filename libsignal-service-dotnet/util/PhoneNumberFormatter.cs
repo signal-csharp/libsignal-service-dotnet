@@ -1,6 +1,6 @@
-﻿/** 
+/**
  * Copyright (C) 2015-2017 smndtrl, golf1052
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -10,30 +10,26 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 using PhoneNumbers;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
-
-namespace CustomExtensions {
+namespace CustomExtensions
+{
     public static class StringExtension
     {
         public static string ReplaceAll(this string str, string regex, string replacement)
         {
-
-            return Regex.Replace(str, regex, replacement) ;
+            return Regex.Replace(str, regex, replacement);
         }
     }
 }
+
 namespace libsignalservice.util
 {
     using CustomExtensions;
@@ -43,7 +39,6 @@ namespace libsignalservice.util
     /// </summary>
     public class PhoneNumberFormatter
     {
-
         public static bool isValidNumber(string number)
         {
             return (new Regex("^\\+[0-9]{10,}").Match(number)).Success ||
@@ -149,9 +144,11 @@ namespace libsignalservice.util
 
                 return util.Format(parsedNumber, PhoneNumberFormat.E164);
             }
-            catch (NumberParseException npe) {
+            catch (NumberParseException npe)
+            {
                 return string.Empty;
-            } catch (Exception npe)
+            }
+            catch (Exception npe)
             {
                 return string.Empty;
             }
@@ -159,9 +156,9 @@ namespace libsignalservice.util
             return "+" +
                 countryCode.ReplaceAll("[^0-9]", "").ReplaceAll("^0*", "") +
                 number.ReplaceAll("[^0-9]", "");
-            }
+        }
 
-  public static string getInternationalFormatFromE164(string e164number)
+        public static string getInternationalFormatFromE164(string e164number)
         {
             try
             {
@@ -175,6 +172,5 @@ namespace libsignalservice.util
                 return e164number;
             }
         }
-
     }
 }

@@ -1,6 +1,6 @@
-﻿/** 
+/**
  * Copyright (C) 2017 smndtrl, golf1052
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -10,26 +10,18 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using libsignalservice.push;
-using libsignalservice.util;
-using Strilanc.Value;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 
 namespace libsignalservice.messages.multidevice
 {
     public class DeviceContactsInputStream : ChunkedInputStream
     {
-
         public DeviceContactsInputStream(Stream input)
         : base(input)
         {
@@ -58,6 +50,5 @@ namespace libsignalservice.messages.multidevice
             return new DeviceContact(number, name, avatar);*/
             throw new NotImplementedException();
         }
-
     }
 }

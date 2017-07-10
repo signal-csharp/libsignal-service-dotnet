@@ -1,6 +1,6 @@
-﻿/** 
+/**
  * Copyright (C) 2015 smndtrl
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -10,22 +10,17 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace libsignalservice.push
 {
     [JsonObject(MemberSerialization.OptIn)]
-    class AccountAttributes
+    internal class AccountAttributes
     {
         [JsonProperty("signalingKey", Required = Required.Always)]
         private string SignalingKey { get; set; }
@@ -42,12 +37,15 @@ namespace libsignalservice.push
         [JsonProperty("fetchesMessages", Required = Required.Always)]
         private bool FetchesMessages { get; set; }
 
-        public AccountAttributes() { }
+        public AccountAttributes()
+        {
+        }
 
-        public AccountAttributes(string signalingKey, uint registrationId, bool voice) {
+        public AccountAttributes(string signalingKey, uint registrationId, bool voice)
+        {
             SignalingKey = signalingKey;
             RegistrationId = registrationId;
-            Voice = voice;          
+            Voice = voice;
         }
 
         public AccountAttributes(string signalingKey, uint registrationId, bool voice, bool video, bool fetchesMessages)

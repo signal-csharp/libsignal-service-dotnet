@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Threading.Tasks;
+using Google.Protobuf;
 using libsignal;
 using libsignal.state;
+using libsignal_service_dotnet.messages.calls;
 using libsignalservice.crypto;
 using libsignalservice.messages;
 using libsignalservice.messages.multidevice;
@@ -12,9 +9,10 @@ using libsignalservice.push;
 using libsignalservice.push.exceptions;
 using libsignalservice.util;
 using Strilanc.Value;
-using Google.Protobuf;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
-using libsignal_service_dotnet.messages.calls;
 
 namespace libsignalservice
 {
@@ -85,17 +83,17 @@ namespace libsignalservice
             bool silent = message.getGroupInfo().HasValue && message.getGroupInfo().ForceGetValue().getType() == SignalServiceGroup.Type.REQUEST_INFO;
             sendMessage(recipient, timestamp, content, true, silent);
 
-            if(false) //TODO determine if need sync
+            if (false) //TODO determine if need sync
             {
                 byte[] syncMessage = createMultiDeviceSentTranscriptContent(content, new May<SignalServiceAddress>(recipient), (ulong)timestamp);
                 sendMessage(localAddress, timestamp, syncMessage, false, false);
             }
 
-            if(message.isEndSession())
+            if (message.isEndSession())
             {
                 store.DeleteAllSessions(recipient.getNumber());
 
-                if(eventListener != null)
+                if (eventListener != null)
                 {
                     eventListener.onSecurityEvent(recipient);
                 }
@@ -272,7 +270,8 @@ namespace libsignalservice
         {
             Content content = new Content { };
             SyncMessage syncMessage = new SyncMessage { };
-            syncMessage.Groups = new SyncMessage.Types.Groups {
+            syncMessage.Groups = new SyncMessage.Types.Groups
+            {
                 Blob = createAttachmentPointer(groups)
             };
             content.SyncMessage = syncMessage;
@@ -410,7 +409,7 @@ namespace libsignalservice
                 try
                 {
                     OutgoingPushMessageList messages = getEncryptedMessages(socket, recipient, timestamp, content, legacy, silent);
-                    if(pipe != null)
+                    if (pipe != null)
                     {
                         try
                         {
@@ -486,7 +485,6 @@ namespace libsignalservice
                 Key = ByteString.CopyFrom(attachmentKey),
                 Size = (uint)attachment.getLength()
             };
-                                    
 
             if (attachment.getPreview().HasValue)
             {
@@ -495,7 +493,6 @@ namespace libsignalservice
 
             return attachmentPointer;
         }
-
 
         private OutgoingPushMessageList getEncryptedMessages(PushServiceSocket socket,
                                                    SignalServiceAddress recipient,
@@ -544,7 +541,7 @@ namespace libsignalservice
                         }
                     }
 
-                    if(eventListener != null)
+                    if (eventListener != null)
                     {
                         eventListener.onSecurityEvent(recipient);
                     }

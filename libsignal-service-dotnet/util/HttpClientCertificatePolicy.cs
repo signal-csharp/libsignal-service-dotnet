@@ -1,9 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace libsignalservice.util
 {
     public enum HttpClientCertificatePolicy
@@ -12,6 +6,7 @@ namespace libsignalservice.util
         /// Strict represents the default SSL behavior provided by HttpClient (i.e. make sure the certificate authority is trusted, certificate is not expired, etc)
         /// </summary>
         Strict,
+
         /// <summary>
         /// In Development mode, the certificate validation is relaxed. Self signed certificates may be used.
         /// </summary>

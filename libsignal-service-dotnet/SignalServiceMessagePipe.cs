@@ -1,6 +1,12 @@
-﻿/** 
+using Google.Protobuf;
+using libsignalservice.messages;
+using libsignalservice.push;
+using libsignalservice.util;
+using libsignalservice.websocket;
+
+/**
 * Copyright (C) 2015-2017 smndtrl, golf1052
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
 * the Free Software Foundation, either version 3 of the License, or
@@ -10,23 +16,16 @@
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 using System;
-using System.Diagnostics;
-using libsignalservice.messages;
-using libsignalservice.push;
-using libsignalservice.util;
-using libsignalservice.websocket;
-using System.Threading;
-using Google.Protobuf;
-using System.Text;
-using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
+using System.Threading;
 
 namespace libsignalservice
 {
@@ -40,7 +39,7 @@ namespace libsignalservice
         private const string TAG = "SignalServiceMessagePipe";
         private readonly SignalWebSocketConnection Websocket;
         private readonly CredentialsProvider CredentialsProvider;
-        CancellationToken Token;
+        private CancellationToken Token;
 
         public SignalServiceMessagePipe(CancellationToken token, SignalWebSocketConnection websocket, CredentialsProvider credentialsProvider)
         {
@@ -56,7 +55,7 @@ namespace libsignalservice
             int amount = requests.Count;
             SignalServiceEnvelope[] envelopes = new SignalServiceEnvelope[amount];
             WebSocketResponseMessage[] responses = new WebSocketResponseMessage[amount];
-            for(int i = 0;i<amount;i++)
+            for (int i = 0; i < amount; i++)
             {
                 WebSocketRequestMessage msg = requests.First.Value;
                 requests.RemoveFirst();
@@ -72,16 +71,17 @@ namespace libsignalservice
             }
             finally
             {
-                foreach(WebSocketResponseMessage response in responses)
+                foreach (WebSocketResponseMessage response in responses)
                 {
                     Websocket.SendResponse(response);
-                }              
+                }
             }
         }
 
         public void Send(OutgoingPushMessageList list)
         {
-            WebSocketRequestMessage requestmessage = new WebSocketRequestMessage() {
+            WebSocketRequestMessage requestmessage = new WebSocketRequestMessage()
+            {
                 Id = BitConverter.ToUInt64(Util.getSecretBytes(sizeof(long)), 0),
                 Verb = "PUT",
                 Path = $"/v1/messages/{list.getDestination()}",
@@ -90,10 +90,10 @@ namespace libsignalservice
             requestmessage.Headers.Add("content-type:application/json");
             var t = Websocket.SendRequest(requestmessage);
             t.Wait();
-            if(t.IsCompleted)
+            if (t.IsCompleted)
             {
                 var response = t.Result;
-                if(response.Item1 < 200 || response.Item1 >= 300)
+                if (response.Item1 < 200 || response.Item1 >= 300)
                 {
                     throw new IOException("non-successfull response: " + response.Item1 + " " + response.Item2);
                 }
@@ -138,11 +138,12 @@ namespace libsignalservice
                 };
             }
         }
-      
+
         /**
          * For receiving a callback when a new message has been
          * received.
          */
+
         public interface MessagePipeCallback
         {
             void onMessages(SignalServiceEnvelope[] envelopes);

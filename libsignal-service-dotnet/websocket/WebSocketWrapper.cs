@@ -1,10 +1,8 @@
-﻿using libsignalservice.websocket;
 using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.IO;
 using System.Net.WebSockets;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,6 +12,7 @@ namespace Coe.WebSocketWrapper
     {
         //https://gist.github.com/xamlmonkey/4737291
         public static readonly string TAG = "[WebSocketWrapper] ";
+
         public BlockingCollection<byte[]> OutgoingQueue = new BlockingCollection<byte[]>(new ConcurrentQueue<byte[]>());
         private Task HandleOutgoing;
         private Task HandleIncoming;
@@ -39,7 +38,7 @@ namespace Coe.WebSocketWrapper
         public void HandleOutgoingWS()
         {
             Debug.WriteLine(TAG + "HandleOutgoingWS started");
-            while(!Token.IsCancellationRequested)
+            while (!Token.IsCancellationRequested)
             {
                 try
                 {
@@ -85,11 +84,11 @@ namespace Coe.WebSocketWrapper
                     } while (!result.EndOfMessage);
                     CallOnMessage(message.ToArray());
                 }
-                catch(TaskCanceledException e)
+                catch (TaskCanceledException e)
                 {
                     Debug.WriteLine(TAG + "HandleIncomingWS shutting down");
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Debug.WriteLine(e.Message);
                     Debug.WriteLine(e.StackTrace);
@@ -168,7 +167,7 @@ namespace Coe.WebSocketWrapper
                 {
                     action();
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Debug.WriteLine("RunInTask failed. " + action);
                     Debug.WriteLine(e.Message);

@@ -1,6 +1,12 @@
-﻿/** 
+using Google.Protobuf;
+using libsignal.ecc;
+using libsignal.kdf;
+using libsignalservice.push;
+using libsignalservice.util;
+
+/**
  * Copyright (C) 2017 smndtrl, golf1052
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -10,23 +16,18 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 using System;
-using System.Text;
-using libsignal.ecc;
-using libsignal.kdf;
-using libsignalservice.util;
-using libsignalservice.push;
-using Google.Protobuf;
 using System.Security.Cryptography;
+using System.Text;
 
 namespace libsignalservice.crypto
 {
-    class ProvisioningCipher
+    internal class ProvisioningCipher
     {
         private static readonly String TAG = "ProvisioningCipher";
 
@@ -83,10 +84,10 @@ namespace libsignalservice.crypto
                 mac.Key = key;
                 return mac.ComputeHash(message);
             }
-            catch (/*NoSuchAlgorithmException | java.security.InvalidKeyException*/Exception e) {
+            catch (/*NoSuchAlgorithmException | java.security.InvalidKeyException*/Exception e)
+            {
                 throw new Exception(e.Message);
             }
-            }
-
         }
     }
+}

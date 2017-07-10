@@ -1,25 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace libsignalservice.utiltest
 {
-
     /**
      * <p>Encodes and decodes to and from Base64 notation.</p>
      * <p>Homepage: <a href="http://iharder.net/base64">http://iharder.net/base64</a>.</p>
-     * 
+     *
      * <p>Example:</p>
-     * 
+     *
      * <code>String encoded = Base64.encode( myByteArray );</code>
      * <br />
      * <code>byte[] myByteArray = Base64.decode( encoded );</code>
      *
-     * <p>The <tt>options</tt> parameter, which appears in a few places, is used to pass 
-     * several pieces of information to the encoder. In the "higher level" methods such as 
-     * encodeBytes( bytes, options ) the options parameter can be used to indicate such 
+     * <p>The <tt>options</tt> parameter, which appears in a few places, is used to pass
+     * several pieces of information to the encoder. In the "higher level" methods such as
+     * encodeBytes( bytes, options ) the options parameter can be used to indicate such
      * things as first gzipping the bytes before encoding them, not inserting linefeeds,
      * and encoding using the URL-safe and Ordered dialects.</p>
      *
@@ -28,7 +24,7 @@ namespace libsignalservice.utiltest
      * to do so. I've got Base64 set to this behavior now, although earlier versions
      * broke lines by default.</p>
      *
-     * <p>The constants defined in Base64 can be OR-ed together to combine options, so you 
+     * <p>The constants defined in Base64 can be OR-ed together to combine options, so you
      * might make a call like this:</p>
      *
      * <code>String encoded = Base64.encodeBytes( mybytes, Base64.GZIP | Base64.DO_BREAK_LINES );</code>
@@ -64,7 +60,7 @@ namespace libsignalservice.utiltest
      *  <li>v2.3 - <strong>This is not a drop-in replacement!</strong> This is two years of comments
      *   and bug fixes queued up and finally executed. Thanks to everyone who sent
      *   me stuff, and I'm sorry I wasn't able to distribute your fixes to everyone else.
-     *   Much bad coding was cleaned up including throwing exceptions where necessary 
+     *   Much bad coding was cleaned up including throwing exceptions where necessary
      *   instead of returning null values or something similar. Here are some changes
      *   that may affect you:
      *   <ul>
@@ -102,24 +98,24 @@ namespace libsignalservice.utiltest
      *   Special thanks to Jim Kellerman at <a href="http://www.powerset.com/">http://www.powerset.com/</a>
      *   for contributing the new Base64 dialects.
      *  </li>
-     * 
+     *
      *  <li>v2.1 - Cleaned up javadoc comments and unused variables and methods. Added
      *   some convenience methods for reading and writing to and from files.</li>
      *  <li>v2.0.2 - Now specifies UTF-8 encoding in places where the code fails on systems
      *   with other encodings (like EBCDIC).</li>
      *  <li>v2.0.1 - Fixed an error when decoding a single byte, that is, when the
      *   encoded data was a single byte.</li>
-     *  <li>v2.0 - I got rid of methods that used booleans to set options. 
+     *  <li>v2.0 - I got rid of methods that used booleans to set options.
      *   Now everything is more consolidated and cleaner. The code now detects
      *   when data that's being decoded is gzip-compressed and will decompress it
      *   automatically. Generally things are cleaner. You'll probably have to
      *   change some method calls that you were making to support the new
      *   options format (<tt>int</tt>s that you "OR" together).</li>
-     *  <li>v1.5.1 - Fixed bug when decompressing and decoding to a             
-     *   byte[] using <tt>decode( String s, boolean gzipCompressed )</tt>.      
-     *   Added the ability to "suspend" encoding in the Output Stream so        
-     *   you can turn on and off the encoding if you need to embed base64       
-     *   data in an otherwise "normal" stream (like an XML file).</li>  
+     *  <li>v1.5.1 - Fixed bug when decompressing and decoding to a
+     *   byte[] using <tt>decode( String s, boolean gzipCompressed )</tt>.
+     *   Added the ability to "suspend" encoding in the Output Stream so
+     *   you can turn on and off the encoding if you need to embed base64
+     *   data in an otherwise "normal" stream (like an XML file).</li>
      *  <li>v1.5 - Output stream pases on flush() command but doesn't do anything itself.
      *      This helps when using GZIP streams.
      *      Added the ability to GZip-compress objects before encoding them.</li>
@@ -143,11 +139,10 @@ namespace libsignalservice.utiltest
      * @author rob@iharder.net
      * @version 2.3.3
      */
-    class Base64
+
+    internal class Base64
     {
-
         /* ********  P U B L I C   F I E L D S  ******** */
-
 
         /** No options specified. Value is zero. */
         public readonly static int NO_OPTIONS = 0;
@@ -155,10 +150,8 @@ namespace libsignalservice.utiltest
         /** Specify encoding in first bit. Value is one. */
         public readonly static int ENCODE = 1;
 
-
         /** Specify decoding in first bit. Value is zero. */
         public readonly static int DECODE = 0;
-
 
         /** Specify that data should be gzip-compressed in second bit. Value is two. */
         public readonly static int GZIP = 2;
@@ -166,20 +159,18 @@ namespace libsignalservice.utiltest
         /** Specify that gzipped data should <em>not</em> be automatically gunzipped. */
         public readonly static int DONT_GUNZIP = 4;
 
-
         /** Do break lines when encoding. Value is 8. */
         public readonly static int DO_BREAK_LINES = 8;
 
-        /** 
+        /**
          * Encode using Base64-like encoding that is URL- and Filename-safe as described
-         * in Section 4 of RFC3548: 
+         * in Section 4 of RFC3548:
          * <a href="http://www.faqs.org/rfcs/rfc3548.html">http://www.faqs.org/rfcs/rfc3548.html</a>.
-         * It is important to note that data encoded this way is <em>not</em> officially valid Base64, 
+         * It is important to note that data encoded this way is <em>not</em> officially valid Base64,
          * or at the very least should not be called Base64 without also specifying that is
          * was encoded using the URL- and Filename-safe dialect.
          */
         public readonly static int URL_SAFE = 16;
-
 
         /**
          * Encode using the special "ordered" dialect of Base64 described here:
@@ -187,34 +178,28 @@ namespace libsignalservice.utiltest
          */
         public readonly static int ORDERED = 32;
 
-
         /* ********  P R I V A T E   F I E L D S  ******** */
-
 
         /** Maximum line length (76) of Base64 output. */
         private readonly static int MAX_LINE_LENGTH = 76;
 
-
         /** The equals sign (=) as a byte. */
         private readonly static sbyte EQUALS_SIGN = (sbyte)'=';
-
 
         /** The new line character (\n) as a byte. */
         private readonly static sbyte NEW_LINE = (sbyte)'\n';
 
-
         /** Preferred encoding. */
         private readonly static String PREFERRED_ENCODING = "US-ASCII";
 
-
         private readonly static sbyte WHITE_SPACE_ENC = -5; // Indicates white space in encoding
         private readonly static sbyte EQUALS_SIGN_ENC = -1; // Indicates equals sign in encoding
-
 
         /* ********  S T A N D A R D   B A S E 6 4   A L P H A B E T  ******** */
 
         /** The 64 valid Base64 values. */
         /* Host platform me be something funny like EBCDIC, so we hardcode these values. */
+
         private readonly static sbyte[] _STANDARD_ALPHABET = {
         (sbyte)'A', (sbyte)'B', (sbyte)'C', (sbyte)'D', (sbyte)'E', (sbyte)'F', (sbyte)'G',
         (sbyte)'H', (sbyte)'I', (sbyte)'J', (sbyte)'K', (sbyte)'L', (sbyte)'M', (sbyte)'N',
@@ -228,11 +213,11 @@ namespace libsignalservice.utiltest
         (sbyte)'6', (sbyte)'7', (sbyte)'8', (sbyte)'9', (sbyte)'+', (sbyte)'/'
     };
 
-
-        /** 
+        /**
          * Translates a Base64 value to either its 6-bit reconstruction value
          * or a negative number indicating some other meaning.
          **/
+
         private readonly static sbyte[] _STANDARD_DECODABET = {
         -9,-9,-9,-9,-9,-9,-9,-9,-9,                 // Decimal  0 -  8
         -5,-5,                                      // Whitespace: Tab and Linefeed
@@ -267,14 +252,14 @@ namespace libsignalservice.utiltest
                                                     -9,-9,-9,-9,-9,-9,-9,-9,-9,-9,-9,-9         // Decimal 244 - 255 */
     };
 
-
         /* ********  U R L   S A F E   B A S E 6 4   A L P H A B E T  ******** */
 
         /**
-         * Used in the URL- and Filename-safe dialect described in Section 4 of RFC3548: 
+         * Used in the URL- and Filename-safe dialect described in Section 4 of RFC3548:
          * <a href="http://www.faqs.org/rfcs/rfc3548.html">http://www.faqs.org/rfcs/rfc3548.html</a>.
          * Notice that the last two bytes become "hyphen" and "underscore" instead of "plus" and "slash."
          */
+
         private readonly static sbyte[] _URL_SAFE_ALPHABET = {
       (sbyte)'A', (sbyte)'B', (sbyte)'C', (sbyte)'D', (sbyte)'E', (sbyte)'F', (sbyte)'G',
       (sbyte)'H', (sbyte)'I', (sbyte)'J', (sbyte)'K', (sbyte)'L', (sbyte)'M', (sbyte)'N',
@@ -291,6 +276,7 @@ namespace libsignalservice.utiltest
         /**
          * Used in decoding URL- and Filename-safe dialects of Base64.
          */
+
         private readonly static sbyte[] _URL_SAFE_DECODABET = {
       -9,-9,-9,-9,-9,-9,-9,-9,-9,                 // Decimal  0 -  8
       -5,-5,                                      // Whitespace: Tab and Linefeed
@@ -329,8 +315,6 @@ namespace libsignalservice.utiltest
                                                   -9,-9,-9,-9,-9,-9,-9,-9,-9,-9,-9,-9         // Decimal 244 - 255 */
     };
 
-
-
         /* ********  O R D E R E D   B A S E 6 4   A L P H A B E T  ******** */
 
         /**
@@ -338,6 +322,7 @@ namespace libsignalservice.utiltest
          * and it is described here:
          * <a href="http://www.faqs.org/qa/rfcc-1940.html">http://www.faqs.org/qa/rfcc-1940.html</a>.
          */
+
         private readonly static sbyte[] _ORDERED_ALPHABET = {
       (sbyte)'-',
       (sbyte)'0', (sbyte)'1', (sbyte)'2', (sbyte)'3', (sbyte)'4',
@@ -356,6 +341,7 @@ namespace libsignalservice.utiltest
         /**
          * Used in decoding the "ordered" dialect of Base64.
          */
+
         private readonly static sbyte[] _ORDERED_DECODABET = {
       -9,-9,-9,-9,-9,-9,-9,-9,-9,                 // Decimal  0 -  8
       -5,-5,                                      // Whitespace: Tab and Linefeed
@@ -394,9 +380,7 @@ namespace libsignalservice.utiltest
                                                     -9,-9,-9,-9,-9,-9,-9,-9,-9,-9,-9,-9         // Decimal 244 - 255 */
     };
 
-
         /* ********  D E T E R M I N E   W H I C H   A L H A B E T  ******** */
-
 
         /**
          * Returns one of the _SOMETHING_ALPHABET byte arrays depending on
@@ -405,6 +389,7 @@ namespace libsignalservice.utiltest
          * in which case one of them will be picked, though there is
          * no guarantee as to which one will be picked.
          */
+
         private static sbyte[] getAlphabet(int options)
         {
             if ((options & URL_SAFE) == URL_SAFE)
@@ -421,7 +406,6 @@ namespace libsignalservice.utiltest
             }
         }   // end getAlphabet
 
-
         /**
          * Returns one of the _SOMETHING_DECODABET byte arrays depending on
          * the options specified.
@@ -429,6 +413,7 @@ namespace libsignalservice.utiltest
          * in which case one of them will be picked, though there is
          * no guarantee as to which one will be picked.
          */
+
         private static sbyte[] getDecodabet(int options)
         {
             if ((options & URL_SAFE) == URL_SAFE)
@@ -445,12 +430,11 @@ namespace libsignalservice.utiltest
             }
         }   // end getAlphabet
 
-
-
         /** Defeats instantiation. */
-        private Base64() { }
 
-
+        private Base64()
+        {
+        }
 
         public static int getEncodedLengthWithoutPadding(int unencodedLength)
         {
@@ -468,9 +452,7 @@ namespace libsignalservice.utiltest
             return ((int)(targetSize * 3)) / 4;
         }
 
-
         /* ********  E N C O D I N G   M E T H O D S  ******** */
-
 
         /**
          * Encodes up to the first three bytes of array <var>threeBytes</var>
@@ -487,18 +469,18 @@ namespace libsignalservice.utiltest
          * @return four byte array in Base64 notation.
          * @since 1.5.1
          */
+
         private static sbyte[] encode3to4(sbyte[] b4, sbyte[] threeBytes, int numSigBytes, int options)
         {
             encode3to4(threeBytes, 0, numSigBytes, b4, 0, options);
             return b4;
         }   // end encode3to4
 
-
         /**
          * <p>Encodes up to three bytes of the array <var>source</var>
          * and writes the resulting four Base64 bytes to <var>destination</var>.
          * The source and destination arrays can be manipulated
-         * anywhere along their length by specifying 
+         * anywhere along their length by specifying
          * <var>srcOffset</var> and <var>destOffset</var>.
          * This method does not check to make sure your arrays
          * are large enough to accomodate <var>srcOffset</var> + 3 for
@@ -517,14 +499,14 @@ namespace libsignalservice.utiltest
          * @return the <var>destination</var> array
          * @since 1.3
          */
+
         private static sbyte[] encode3to4(
         sbyte[] source, int srcOffset, int numSigBytes,
         sbyte[] destination, int destOffset, int options)
         {
-
             sbyte[] ALPHABET = getAlphabet(options);
 
-            //           1         2         3  
+            //           1         2         3
             // 01234567890123456789012345678901 Bit position
             // --------000000001111111122222222 Array position from threeBytes
             // --------|    ||    ||    ||    | Six bit groups to index ALPHABET
@@ -567,8 +549,6 @@ namespace libsignalservice.utiltest
             }   // end switch
         }   // end encode3to4
 
-
-
         /**
          * Performs Base64 encoding on the <code>raw</code> ByteBuffer,
          * writing it to the <code>encoded</code> ByteBuffer.
@@ -593,7 +573,6 @@ namespace libsignalservice.utiltest
                 encoded.put(enc4);
             }   // end input remaining
         }*/
-
 
         /**
          * Performs Base64 encoding on the <code>raw</code> ByteBuffer,
@@ -623,19 +602,16 @@ namespace libsignalservice.utiltest
             }   // end input remaining
         }*/
 
-
-
-
         /**
          * Serializes an object and returns the Base64-encoded
-         * version of that serialized object.  
-         *  
+         * version of that serialized object.
+         *
          * <p>As of v 2.3, if the object
          * cannot be serialized or there is another error,
          * the method will throw an java.io.IOException. <b>This is new to v2.3!</b>
          * In earlier versions, it just returned a null value, but
          * in retrospect that's a pretty poor way to handle it.</p>
-         * 
+         *
          * The object is not GZip-compressed before being encoded.
          *
          * @param serializableObject The object to encode
@@ -651,18 +627,16 @@ namespace libsignalservice.utiltest
             return encodeObject(serializableObject, NO_OPTIONS);
         }*/   // end encodeObject
 
-
-
         /**
          * Serializes an object and returns the Base64-encoded
          * version of that serialized object.
-         *  
+         *
          * <p>As of v 2.3, if the object
          * cannot be serialized or there is another error,
          * the method will throw an java.io.IOException. <b>This is new to v2.3!</b>
          * In earlier versions, it just returned a null value, but
          * in retrospect that's a pretty poor way to handle it.</p>
-         * 
+         *
          * The object is not GZip-compressed before being encoded.
          * <p>
          * Example options:<pre>
@@ -682,6 +656,7 @@ namespace libsignalservice.utiltest
          * @throws java.io.IOException if there is an error
          * @since 2.0
          */
+
         public static String encodeObject(/*java.io.Serializable*/Object serializableObject, int options)
         //throws java.io.IOException
         {
@@ -697,7 +672,6 @@ namespace libsignalservice.utiltest
             java.io.OutputStream b64os = null;
             java.util.zip.GZIPOutputStream gzos = null;
             java.io.ObjectOutputStream oos = null;
-
 
             try
             {
@@ -744,21 +718,19 @@ namespace libsignalservice.utiltest
             */
         }   // end encode
 
-
-
         /**
          * Encodes a byte array into Base64 notation.
          * Does not GZip-compress data.
-         *  
+         *
          * @param source The data to convert
          * @return The data in Base64-encoded form
          * @throws NullPointerException if source array is null
          * @since 1.4
          */
+
         public static String encodeBytes(byte[] source)
         {
             return System.Convert.ToBase64String(source);
-
 
             throw new NotImplementedException();
             // Since we're not going to have the GZIP encoding turned on,
@@ -777,27 +749,22 @@ namespace libsignalservice.utiltest
             return encoded;*/
         }   // end encodeBytes
 
-
         public static String encodeBytesWithoutPadding(byte[] source, int offset, int length)
         {
             // throw new NotImplementedException();
             String encoded = null;
 
-
             encoded = encodeBytes(source, offset, length, NO_OPTIONS);
-
 
             if (encoded[encoded.Length - 2] == '=') return encoded.Substring(0, encoded.Length - 2);
             else if (encoded[encoded.Length - 1] == '=') return encoded.Substring(0, encoded.Length - 1);
             else return encoded;
-
         }
 
         public static String encodeBytesWithoutPadding(byte[] source)
         {
             return encodeBytesWithoutPadding(source, 0, source.Length);
         }
-
 
         /**
          * Encodes a byte array into Base64 notation.
@@ -812,12 +779,12 @@ namespace libsignalservice.utiltest
          * <p>
          * Example: <code>encodeBytes( myData, Base64.GZIP | Base64.DO_BREAK_LINES )</code>
          *
-         *  
+         *
          * <p>As of v 2.3, if there is an error with the GZIP stream,
          * the method will throw an java.io.IOException. <b>This is new to v2.3!</b>
          * In earlier versions, it just returned a null value, but
          * in retrospect that's a pretty poor way to handle it.</p>
-         * 
+         *
          *
          * @param source The data to convert
          * @param options Specified options
@@ -828,21 +795,21 @@ namespace libsignalservice.utiltest
          * @throws NullPointerException if source array is null
          * @since 2.0
          */
+
         public static String encodeBytes(byte[] source, int options)// throws java.io.IOException
         {
             return encodeBytes(source, 0, source.Length, options);
         }   // end encodeBytes
 
-
         /**
          * Encodes a byte array into Base64 notation.
          * Does not GZip-compress data.
-         *  
+         *
          * <p>As of v 2.3, if there is an error,
          * the method will throw an java.io.IOException. <b>This is new to v2.3!</b>
          * In earlier versions, it just returned a null value, but
          * in retrospect that's a pretty poor way to handle it.</p>
-         * 
+         *
          *
          * @param source The data to convert
          * @param off Offset in array where conversion should begin
@@ -852,6 +819,7 @@ namespace libsignalservice.utiltest
          * @throws IllegalArgumentException if source array, offset, or length are invalid
          * @since 1.4
          */
+
         public static String encodeBytes(byte[] source, int off, int len)
         {
             //throw new NotImplementedException();
@@ -865,8 +833,6 @@ namespace libsignalservice.utiltest
             return encoded;
         }   // end encodeBytes
 
-
-
         /**
          * Encodes a byte array into Base64 notation.
          * <p>
@@ -880,12 +846,12 @@ namespace libsignalservice.utiltest
          * <p>
          * Example: <code>encodeBytes( myData, Base64.GZIP | Base64.DO_BREAK_LINES )</code>
          *
-         *  
+         *
          * <p>As of v 2.3, if there is an error with the GZIP stream,
          * the method will throw an java.io.IOException. <b>This is new to v2.3!</b>
          * In earlier versions, it just returned a null value, but
          * in retrospect that's a pretty poor way to handle it.</p>
-         * 
+         *
          *
          * @param source The data to convert
          * @param off Offset in array where conversion should begin
@@ -899,6 +865,7 @@ namespace libsignalservice.utiltest
          * @throws IllegalArgumentException if source array, offset, or length are invalid
          * @since 2.0
          */
+
         public static String encodeBytes(byte[] source, int off, int len, int options)// throws java.io.IOException
         {
             //throw new NotImplementedException();
@@ -913,11 +880,7 @@ namespace libsignalservice.utiltest
             {
                 return new String(encoded);
             } */  // end catch
-
         }   // end encodeBytes
-
-
-
 
         /**
          * Similar to {@link #encodeBytes(byte[])} but returns
@@ -930,6 +893,7 @@ namespace libsignalservice.utiltest
          * @throws NullPointerException if source array is null
          * @since 2.3.1
          */
+
         public static byte[] encodeBytesToBytes(byte[] source)
         {
             throw new NotImplementedException();
@@ -944,7 +908,6 @@ namespace libsignalservice.utiltest
             }
             return encoded;*/
         }
-
 
         /**
          * Similar to {@link #encodeBytes(byte[], int, int, int)} but returns
@@ -964,6 +927,7 @@ namespace libsignalservice.utiltest
          * @throws IllegalArgumentException if source array, offset, or length are invalid
          * @since 2.3.1
          */
+
         public static byte[] encodeBytesToBytes(byte[] source, int off, int len, int options)// throws java.io.IOException
         {
             throw new NotImplementedException();
@@ -987,8 +951,6 @@ namespace libsignalservice.utiltest
                 throw new IllegalArgumentException(
                 String.format("Cannot have offset of %d and length of %d with array of length %d", off, len, source.length));
             }   // end if: off < 0
-
-
 
             // Compress?
             if ((options & GZIP) != 0)
@@ -1042,7 +1004,6 @@ namespace libsignalservice.utiltest
                 }
                 sbyte[] outBuff = new sbyte[encLen];
 
-
                 int d = 0;
                 int e = 0;
                 int len2 = len - 2;
@@ -1066,7 +1027,6 @@ namespace libsignalservice.utiltest
                     e += 4;
                 }   // end if: some padding needed
 
-
                 // Only resize array if we didn't guess it right.
                 if (e < outBuff.Length - 1)
                 {
@@ -1080,34 +1040,28 @@ namespace libsignalservice.utiltest
                     //System.err.println("No need to resize array.");
                     return outBuff;
                 }
-
             }   // end else: don't compress
             */
         }   // end encodeBytesToBytes
 
-
-
-
-
         /* ********  D E C O D I N G   M E T H O D S  ******** */
-
 
         /**
          * Decodes four bytes from array <var>source</var>
          * and writes the resulting bytes (up to three of them)
          * to <var>destination</var>.
          * The source and destination arrays can be manipulated
-         * anywhere along their length by specifying 
+         * anywhere along their length by specifying
          * <var>srcOffset</var> and <var>destOffset</var>.
          * This method does not check to make sure your arrays
          * are large enough to accomodate <var>srcOffset</var> + 4 for
          * the <var>source</var> array or <var>destOffset</var> + 3 for
          * the <var>destination</var> array.
-         * This method returns the actual number of bytes that 
+         * This method returns the actual number of bytes that
          * were converted from the Base64 encoding.
          * <p>This is the lowest level of the decoding methods with
          * all possible parameters.</p>
-         * 
+         *
          *
          * @param source the array to convert
          * @param srcOffset the index where conversion begins
@@ -1120,11 +1074,11 @@ namespace libsignalservice.utiltest
          *         or there is not enough room in the array.
          * @since 1.3
          */
+
         private static int decode4to3(
         sbyte[] source, int srcOffset,
         sbyte[] destination, int destOffset, int options)
         {
-
             // Lots of error checking and exception throwing
             if (source == null)
             {
@@ -1144,7 +1098,6 @@ namespace libsignalservice.utiltest
                 throw new /*IllegalArgument*/Exception(String.Format(
                 "Destination array with length %d cannot have offset of %d and still store three bytes.", destination.Length, destOffset));
             }   // end if
-
 
             sbyte[] DECODABET = getDecodabet(options);
 
@@ -1190,7 +1143,6 @@ namespace libsignalservice.utiltest
                               | ((DECODABET[source[srcOffset + 2]] & 0xFF) << 6)
                               | ((DECODABET[source[srcOffset + 3]] & 0xFF));
 
-
                 destination[destOffset] = (sbyte)(outBuff >> 16);
                 destination[destOffset + 1] = (sbyte)(outBuff >> 8);
                 destination[destOffset + 2] = (sbyte)(outBuff);
@@ -1198,10 +1150,6 @@ namespace libsignalservice.utiltest
                 return 3;
             }
         }   // end decodeToBytes
-
-
-
-
 
         /**
          * Low-level access to decoding ASCII characters in
@@ -1216,6 +1164,7 @@ namespace libsignalservice.utiltest
          * @return decoded data
          * @since 2.3.1
          */
+
         public static byte[] decode(byte[] source)
         {
             byte[] decoded = null;
@@ -1229,7 +1178,6 @@ namespace libsignalservice.utiltest
             }
             return decoded;
         }
-
 
         /**
          * Low-level access to decoding ASCII characters in
@@ -1248,10 +1196,10 @@ namespace libsignalservice.utiltest
          * @throws java.io.IOException If bogus characters exist in source data
          * @since 1.3
          */
+
         public static byte[] decode(byte[] source, int off, int len, int options)
         //throws java.io.IOException
         {
-
             // Lots of error checking and exception throwing
             if (source == null)
             {
@@ -1287,7 +1235,6 @@ namespace libsignalservice.utiltest
 
             for (i = off; i < off + len; i++)
             {  // Loop through source
-
                 sbiCrop = (sbyte)(source[i] & 0x7f); // Only the low seven bits
                 sbiDecode = DECODABET[sbiCrop];   // Special value
 
@@ -1317,16 +1264,13 @@ namespace libsignalservice.utiltest
                     // There's a bad input character in the Base64 stream.
                     throw new /*java.io.IO*/Exception(String.Format(
                     "Bad Base64 input character '%c' in array position %d", source[i], i));
-                }   // end else: 
+                }   // end else:
             }   // each input character
 
             byte[] outb = new byte[outBuffPosn];
             System.Buffer.BlockCopy(outBuff, 0, outb, 0, outBuffPosn);
             return outb;
         }   // end decode
-
-
-
 
         /**
          * Decodes data from Base64 notation, automatically
@@ -1337,11 +1281,11 @@ namespace libsignalservice.utiltest
          * @throws java.io.IOException If there is a problem
          * @since 1.4
          */
+
         public static byte[] decode(String s)// throws java.io.IOException
         {
             return decode(s, NO_OPTIONS);
         }
-
 
         public static byte[] decodeWithoutPadding(String source)// throws java.io.IOException
         {
@@ -1356,8 +1300,6 @@ namespace libsignalservice.utiltest
             throw new NotImplementedException();
         }
 
-
-
         /**
          * Decodes data from Base64 notation, automatically
          * detecting gzip-compressed data and decompressing it.
@@ -1369,6 +1311,7 @@ namespace libsignalservice.utiltest
          * @throws NullPointerException if <tt>s</tt> is null
          * @since 1.4
          */
+
         public static byte[] decode(String s, int options)// throws java.io.IOException
         {
             throw new NotImplementedException();
@@ -1396,7 +1339,6 @@ namespace libsignalservice.utiltest
             boolean dontGunzip = (options & DONT_GUNZIP) != 0;
             if ((bytes != null) && (bytes.length >= 4) && (!dontGunzip))
             {
-
                 int head = ((int)bytes[0] & 0xff) | ((bytes[1] << 8) & 0xff00);
                 if (java.util.zip.GZIPInputStream.GZIP_MAGIC == head)
                 {
@@ -1419,7 +1361,6 @@ namespace libsignalservice.utiltest
 
                         // No error? Get new bytes.
                         bytes = baos.toByteArray();
-
                     }   // end try
                     catch (java.io.IOException e)
                     {
@@ -1432,14 +1373,11 @@ namespace libsignalservice.utiltest
                         try { gzis.close(); } catch (Exception e) { }
                         try { bais.close(); } catch (Exception e) { }
                     }   // end finally
-
                 }   // end if: gzipped
             }   // end if: bytes.length >= 2
-            
+
             return bytes;*/
         }   // end decode
-
-
 
         /**
          * Attempts to decode Base64 data and deserialize a Java
@@ -1454,11 +1392,10 @@ namespace libsignalservice.utiltest
          * @since 1.5
          */
         /* public static Object decodeToObject(String encodedObject)
-         //throws java.io.IOException, java.lang.ClassNotFoundException 
+         //throws java.io.IOException, java.lang.ClassNotFoundException
          {
              return decodeToObject(encodedObject, NO_OPTIONS, null);
          }*/
-
 
         /**
          * Attempts to decode Base64 data and deserialize a Java
@@ -1472,7 +1409,7 @@ namespace libsignalservice.utiltest
          * @return The decoded and deserialized object
          * @throws NullPointerException if encodedObject is null
          * @throws java.io.IOException if there is a general error
-         * @throws ClassNotFoundException if the decoded object is of a 
+         * @throws ClassNotFoundException if the decoded object is of a
          *         class that cannot be found by the JVM
          * @since 2.3.4
          */
@@ -1480,7 +1417,6 @@ namespace libsignalservice.utiltest
         String encodedObject, int options, final ClassLoader loader )
         //throws java.io.IOException, java.lang.ClassNotFoundException
         {
-
             // Decode and gunzip if necessary
             byte[] objBytes = decode(encodedObject, options);
 
@@ -1506,7 +1442,7 @@ namespace libsignalservice.utiltest
                     {
                         //@Override
                         /*public Class<?> resolveClass(java.io.ObjectStreamClass streamClass)
-            //throws java.io.IOException, ClassNotFoundException 
+            //throws java.io.IOException, ClassNotFoundException
             {
                 Class c = Class.forName(streamClass.getName(), false, loader);
                 if (c == null)
@@ -1536,7 +1472,7 @@ namespace libsignalservice.utiltest
                 try { bais.close(); } catch (Exception e) { }
                 try { ois.close(); } catch (Exception e) { }
             }   // end finally
-            
+
             return obj;
                 }   // end decodeObject
 
@@ -1549,7 +1485,7 @@ namespace libsignalservice.utiltest
          * the method will throw an java.io.IOException. <b>This is new to v2.3!</b>
          * In earlier versions, it just returned false, but
          * in retrospect that's a pretty poor way to handle it.</p>
-         * 
+         *
          * @param dataToEncode byte array of data to encode in base64 form
          * @param filename Filename for saving encoded data
          * @throws java.io.IOException if there is an error
@@ -1559,7 +1495,6 @@ namespace libsignalservice.utiltest
         /*public static void encodeToFile(byte[] dataToEncode, String filename)
         //throws java.io.IOException
         {
-
             if (dataToEncode == null)
             {
                 throw new NullPointerException("Data to encode was null.");
@@ -1580,9 +1515,7 @@ namespace libsignalservice.utiltest
             {
                 try { bos.close(); } catch (Exception e) { }
             }   // end finally
-
         }*/   // end encodeToFile
-
 
         /**
          * Convenience method for decoding data to a file.
@@ -1591,7 +1524,7 @@ namespace libsignalservice.utiltest
          * the method will throw an java.io.IOException. <b>This is new to v2.3!</b>
          * In earlier versions, it just returned false, but
          * in retrospect that's a pretty poor way to handle it.</p>
-         * 
+         *
          * @param dataToDecode Base64-encoded data as a string
          * @param filename Filename for saving decoded data
          * @throws java.io.IOException if there is an error
@@ -1600,7 +1533,6 @@ namespace libsignalservice.utiltest
         /*public static void decodeToFile(String dataToDecode, String filename)
         //throws java.io.IOException
         {
-
             Base64.OutputStream bos = null;
             try
             {
@@ -1616,11 +1548,7 @@ namespace libsignalservice.utiltest
             {
                 try { bos.close(); } catch (Exception e) { }
             }   // end finally
-
         }*/   // end decodeToFile
-
-
-
 
         /**
          * Convenience method for reading a base64-encoded
@@ -1630,7 +1558,7 @@ namespace libsignalservice.utiltest
          * the method will throw an java.io.IOException. <b>This is new to v2.3!</b>
          * In earlier versions, it just returned false, but
          * in retrospect that's a pretty poor way to handle it.</p>
-         * 
+         *
          * @param filename Filename for reading encoded data
          * @return decoded byte array
          * @throws java.io.IOException if there is an error
@@ -1639,7 +1567,6 @@ namespace libsignalservice.utiltest
         /*public static byte[] decodeFromFile(String filename)
         //throws java.io.IOException
         {
-
             byte[] decodedData = null;
             Base64.InputStream bis = null;
             try
@@ -1671,7 +1598,6 @@ namespace libsignalservice.utiltest
                 // Save in a variable to return
                 decodedData = new byte[length];
                 System.arraycopy(buffer, 0, decodedData, 0, length);
-
             }   // end try
             catch (java.io.IOException e)
             {
@@ -1685,8 +1611,6 @@ namespace libsignalservice.utiltest
             return decodedData;
         }*/   // end decodeFromFile
 
-
-
         /**
          * Convenience method for reading a binary file
          * and base64-encoding it.
@@ -1695,7 +1619,7 @@ namespace libsignalservice.utiltest
          * the method will throw an java.io.IOException. <b>This is new to v2.3!</b>
          * In earlier versions, it just returned false, but
          * in retrospect that's a pretty poor way to handle it.</p>
-         * 
+         *
          * @param filename Filename for reading binary data
          * @return base64-encoded string
          * @throws java.io.IOException if there is an error
@@ -1704,7 +1628,6 @@ namespace libsignalservice.utiltest
         /*public static String encodeFromFile(String filename)
         //throws java.io.IOException
         {
-
             String encodedData = null;
             Base64.InputStream bis = null;
             try
@@ -1728,7 +1651,6 @@ namespace libsignalservice.utiltest
 
                 // Save in a variable to return
                 encodedData = new String(buffer, 0, length, Base64.PREFERRED_ENCODING);
-
             }   // end try
             catch (java.io.IOException e)
             {
@@ -1753,7 +1675,6 @@ namespace libsignalservice.utiltest
         /*public static void encodeFileToFile(String infile, String outfile)
         //throws java.io.IOException
         {
-
             String encoded = Base64.encodeFromFile(infile);
             java.io.OutputStream out = null;
             try
@@ -1770,9 +1691,8 @@ namespace libsignalservice.utiltest
             {
                 try { out.close(); }
                 catch (Exception ex) { }
-            }   // end finally    
+            }   // end finally
         }*/   // end encodeFileToFile
-
 
         /**
          * Reads <tt>infile</tt> and decodes it to <tt>outfile</tt>.
@@ -1785,7 +1705,6 @@ namespace libsignalservice.utiltest
         /*public static void decodeFileToFile(String infile, String outfile)
         //throws java.io.IOException
         {
-
             byte[] decoded = Base64.decodeFromFile(infile);
             java.io.OutputStream out = null;
             try
@@ -1802,13 +1721,11 @@ namespace libsignalservice.utiltest
             {
                 try { out.close(); }
                 catch (Exception ex) { }
-            }   // end finally    
+            }   // end finally
         }   // end decodeFileToFile
         */
 
         /* ********  I N N E R   C L A S S   I N P U T S T R E A M  ******** */
-
-
 
         /**
          * A {@link Base64.InputStream} will read data from another
@@ -1820,7 +1737,6 @@ namespace libsignalservice.utiltest
          */
         /*public static class InputStream extends java.io.FilterInputStream
         {
-
             private boolean encode;         // Encoding or decoding
             private int position;       // Current position in the buffer
         private byte[] buffer;         // Small buffer holding converted data
@@ -1842,7 +1758,6 @@ namespace libsignalservice.utiltest
          {
              this( in, DECODE);
          }*/   // end constructor
-
 
         /**
          * Constructs a {@link Base64.InputStream} in
@@ -1866,7 +1781,6 @@ namespace libsignalservice.utiltest
          */
         /*public InputStream(java.io.InputStream in, int options)
         {
-
             super( in );
             this.options = options; // Record for later
             this.breakLines = (options & DO_BREAK_LINES) > 0;
@@ -1888,7 +1802,6 @@ namespace libsignalservice.utiltest
         //@Override
         /*   public int read() throws// java.io.IOException
            {
-
            // Do we need to get data?
            if (position< 0)
            {
@@ -1910,7 +1823,6 @@ namespace libsignalservice.utiltest
                            {
                                break; // out of for loop
                            }   // end else: end of stream
-
                        }   // end for: each needed input byte
 
                        if (numBinaryBytes > 0)
@@ -1958,8 +1870,7 @@ namespace libsignalservice.utiltest
                        {
                            // Must have broken out from above.
                            throw new java.io.IOException("Improperly padded Base64 input.");
-                       }   // end 
-
+                       }   // end
                    }   // end else: decode
                }   // end else: get data
 
@@ -2016,6 +1927,7 @@ namespace libsignalservice.utiltest
          * @return bytes read into array or -1 if end of stream is encountered.
          * @since 1.3
          */
+
         // @Override
         public int read(sbyte[] dest, int off, int len)
         //throws java.io.IOException
@@ -2041,17 +1953,9 @@ namespace libsignalservice.utiltest
             }   // end for: each byte read
             return i;
         }   // end read
-
     }   // end inner class InputStream
 
-
-
-
-
-
     /* ********  I N N E R   C L A S S   O U T P U T S T R E A M  ******** */
-
-
 
     /**
      * A {@link Base64.OutputStream} will write data to another
@@ -2063,7 +1967,6 @@ namespace libsignalservice.utiltest
      */
     /*public static class OutputStream// extends java.io.FilterOutputStream
     {
-
         private bool encode;
         private int position;
         private byte[] buffer;
@@ -2085,7 +1988,6 @@ namespace libsignalservice.utiltest
     {
         this(out, ENCODE);
     }   // end constructor
-
 
     /**
      * Constructs a {@link Base64.OutputStream} in
@@ -2121,7 +2023,6 @@ namespace libsignalservice.utiltest
         this.decodabet = getDecodabet(options);
     }   // end constructor
 
-
     /**
      * Writes the byte to the output stream after
      * converting to/from Base64 notation.
@@ -2151,7 +2052,6 @@ namespace libsignalservice.utiltest
             buffer[position++] = (byte)theByte;
             if (position >= bufferLength)
             { // Enough to encode.
-
                 this.out.write(encode3to4(b4, buffer, bufferLength, options));
 
                 lineLength += 4;
@@ -2174,7 +2074,6 @@ namespace libsignalservice.utiltest
                 buffer[position++] = (byte)theByte;
                 if (position >= bufferLength)
                 { // Enough to output.
-
                     int len = Base64.decode4to3(buffer, 0, b4, 0, options);
                     out.write(b4, 0, len);
                     position = 0;
@@ -2187,10 +2086,8 @@ namespace libsignalservice.utiltest
         }   // end else: decoding
     }   // end write
 
-
-
     /**
-     * Calls {@link #write(int)} repeatedly until <var>len</var> 
+     * Calls {@link #write(int)} repeatedly until <var>len</var>
      * bytes are written.
      *
      * @param theBytes array from which to read bytes
@@ -2213,10 +2110,7 @@ namespace libsignalservice.utiltest
         {
             write(theBytes[off + i]);
         }   // end for: each byte written
-
     }   // end write
-
-
 
     /**
      * Method added by PHIL. [Thanks, PHIL. -Rob]
@@ -2237,12 +2131,10 @@ namespace libsignalservice.utiltest
                 throw new java.io.IOException("Base64 input not properly padded.");
             }   // end else: decoding
         }   // end if: buffer partially full
-
     }   // end flush
 
-
-    /** 
-     * Flushes and closes (I think, in the superclass) the stream. 
+    /**
+     * Flushes and closes (I think, in the superclass) the stream.
      *
      * @since 1.3
      */
@@ -2260,8 +2152,6 @@ namespace libsignalservice.utiltest
         out    = null;
     }   // end close
 
-
-
     /**
      * Suspends encoding of the stream.
      * May be helpful if you need to embed a piece of
@@ -2276,7 +2166,6 @@ namespace libsignalservice.utiltest
         this.suspendEncoding = true;
     }   // end suspendEncoding
 
-
     /**
      * Resumes encoding of the stream.
      * May be helpful if you need to embed a piece of
@@ -2288,11 +2177,6 @@ namespace libsignalservice.utiltest
      {
          this.suspendEncoding = false;
      }   // end resumeEncoding
-
-
-
  }   // end inner class OutputStream
-
-
 }*/
 }
