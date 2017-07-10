@@ -23,8 +23,43 @@ message Envelope {
 }
 
 message Content {
-  oneof dataMessage_oneof				{ DataMessage dataMessage = 1; }
-  oneof syncMessage_oneof				{ SyncMessage syncMessage = 2; }
+  oneof dataMessage_oneof				{ DataMessage dataMessage     = 1; }
+  oneof syncMessage_oneof				{ SyncMessage syncMessage     = 2; }
+  oneof callMessage_oneof               { CallMessage callMessage     = 3; }
+}
+
+message CallMessage {
+  message Offer {
+    oneof id_oneof                      { uint64 id                   = 1; }
+    oneof description_oneof             { string description          = 2; }
+  }
+
+  message Answer {
+    oneof id_oneof                      { uint64 id                   = 1; }
+    oneof description_oneof             { string description          = 2; }
+  }
+
+  message IceUpdate {
+    oneof id_oneof                      { uint64 id                   = 1; }
+    oneof sdpMid_oneof                  { string sdpMid               = 2; }
+    oneof sdpMLineIndex_oneof           { uint32 sdpMLineIndex        = 3; }
+    oneof sdp_oneof                     { string sdp                  = 4; }
+  }
+
+  message Busy {
+    oneof id_oneof                      { uint64 id                   = 1; }
+  }
+
+  message Hangup {
+    oneof id_oneof                      { uint64 id                   = 1; }
+  }
+
+
+  oneof offer_oneof                     { Offer offer                 = 1; }
+  oneof answer_oneof                    { Answer answer               = 2; }
+  repeated IceUpdate                      iceUpdate                   = 3;
+  oneof hangup_oneof                    { Hangup hangup               = 4; }
+  oneof busy_oneof                      { Busy busy                   = 5; }
 }
 
 message DataMessage {
@@ -35,7 +70,7 @@ message DataMessage {
   }
 
   oneof body_oneof						{ string             body        = 1; }
-  repeated AttachmentPointer  attachments = 2;
+  repeated AttachmentPointer attachments = 2;
   oneof group_oneof						{ GroupContext       group       = 3; }
   oneof flags_oneof						{ uint32             flags       = 4; }
   oneof expireTimer_oneof				{ uint32             expireTimer = 5; }

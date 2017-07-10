@@ -1,21 +1,4 @@
-﻿/** 
- * Copyright (C) 2015-2017 smndtrl, golf1052
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,6 +11,7 @@ using libsignalservice.push;
 using libsignalservice.util;
 using Strilanc.Value;
 using Google.Protobuf;
+using libsignal_service_dotnet.messages.calls;
 
 namespace libsignalservice
 {
@@ -37,7 +21,6 @@ namespace libsignalservice
     /// </summary>
     public class SignalServiceAccountManager
     {
-
         private readonly PushServiceSocket pushServiceSocket;
         private readonly string user;
         private readonly string userAgent;
@@ -107,10 +90,10 @@ namespace libsignalservice
         /// <param name="voice">A boolean that indicates whether the client supports secure voice (RedPhone) calls. </param>
         /// <returns></returns>
         public void verifyAccountWithCode(string verificationCode, string signalingKey,
-                                   uint signalProtocolRegistrationId, bool voice)
+                                   uint signalProtocolRegistrationId, bool voice, bool video, bool fetchesMessages)
         {
             this.pushServiceSocket.verifyAccountCode(verificationCode, signalingKey,
-                                                 signalProtocolRegistrationId, voice);
+                                                 signalProtocolRegistrationId, voice, video, fetchesMessages);
         }
 
         /// <summary>
@@ -124,9 +107,9 @@ namespace libsignalservice
         /// for separate installs.</param>
         /// <param name="voice">A boolean that indicates whether the client supports secure voice (RedPhone) calls.</param>
         /// <returns></returns>
-        public void verifyAccountWithToken(string verificationToken, string signalingKey, uint signalProtocolRegistrationId, bool voice)
+        public void verifyAccountWithToken(string verificationToken, string signalingKey, uint signalProtocolRegistrationId, bool voice, bool video, bool fetchesMessages)
         {
-            this.pushServiceSocket.verifyAccountToken(verificationToken, signalingKey, signalProtocolRegistrationId, voice);
+            this.pushServiceSocket.verifyAccountToken(verificationToken, signalingKey, signalProtocolRegistrationId, voice, video, fetchesMessages);
         }
 
         /// <summary>
@@ -139,9 +122,9 @@ namespace libsignalservice
         /// separate installs.</param>
         /// <param name="voice">A boolean that indicates whether the client supports secure voice (RedPhone)</param>
         /// <returns></returns>
-        public void setAccountAttributes(string signalingKey, uint signalProtocolRegistrationId, bool voice)
+        public void setAccountAttributes(string signalingKey, uint signalProtocolRegistrationId, bool voice, bool video)
         {
-            this.pushServiceSocket.setAccountAttributes(signalingKey, signalProtocolRegistrationId, voice, true);
+            this.pushServiceSocket.setAccountAttributes(signalingKey, signalProtocolRegistrationId, voice, video, true);
         }
 
         /// <summary>
@@ -261,6 +244,21 @@ namespace libsignalservice
         public void removeDevice(long deviceId)
         {
             this.pushServiceSocket.removeDevice(deviceId);
+        }
+
+        public TurnServerInfo getTurnServerInfo()
+        {
+            return this.pushServiceSocket.getTurnServerInfo();
+        }
+
+        public void setSoTimeoutMillis(long soTimeoutMillis)
+        {
+            this.pushServiceSocket.setSoTimeoutMillis(soTimeoutMillis);
+        }
+
+        public void cancelInFlightRequests()
+        {
+            this.pushServiceSocket.cancelInFlightRequests();
         }
 
         private string createDirectoryServerToken(string e164number, bool urlSafe)

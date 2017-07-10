@@ -31,20 +31,22 @@ namespace libsignalservice.push
     public class ContactTokenDetails
     {
         [JsonProperty]
-        private String token;
+        private string token;
         [JsonProperty]
-        private String relay;
+        private string relay;
         [JsonProperty]
-        private String number;
+        private string number;
         [JsonProperty]
         private bool voice;
+        [JsonProperty]
+        private bool video;
 
         public ContactTokenDetails() { }
 
         /**
          * @return The "anonymized" token (truncated hash) that's transmitted to the server.
          */
-        public String getToken()
+        public string getToken()
         {
             return token;
         }
@@ -52,7 +54,7 @@ namespace libsignalservice.push
         /**
          * @return The federated server this contact is registered with, or null if on your server.
          */
-        public String getRelay()
+        public string getRelay()
         {
             return relay;
         }
@@ -65,6 +67,11 @@ namespace libsignalservice.push
             return voice;
         }
 
+        public bool isVideo()
+        {
+            return video;
+        }
+
         public void setNumber(String number)
         {
             this.number = number;
@@ -73,7 +80,7 @@ namespace libsignalservice.push
         /**
          * @return This contact's username (e164 formatted number).
          */
-        public String getNumber()
+        public string getNumber()
         {
             return number;
         }

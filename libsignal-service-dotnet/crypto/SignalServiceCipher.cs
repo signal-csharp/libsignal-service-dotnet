@@ -26,6 +26,7 @@ using libsignalservice.push;
 using libsignalservice.util;
 using Strilanc.Value;
 using Google.Protobuf;
+using libsignal_service_dotnet.messages.calls;
 
 namespace libsignalservice.crypto
 {
@@ -84,7 +85,10 @@ namespace libsignalservice.crypto
                 if (envelope.hasLegacyMessage())
                 {
                     DataMessage message = DataMessage.Parser.ParseFrom(decrypt(envelope, envelope.getLegacyMessage()));
-                    content = new SignalServiceContent(createSignalServiceMessage(envelope, message));
+                    content = new SignalServiceContent()
+                    {
+                        Message = createSignalServiceMessage(envelope, message)
+                    };
                 }
                 else if (envelope.hasContent())
                 {
@@ -92,11 +96,24 @@ namespace libsignalservice.crypto
 
                     if (message.DataMessageOneofCase == Content.DataMessageOneofOneofCase.DataMessage)
                     {
-                        content = new SignalServiceContent(createSignalServiceMessage(envelope, message.DataMessage));
+                        content = new SignalServiceContent()
+                        {
+                            Message = createSignalServiceMessage(envelope, message.DataMessage)
+                        };
                     }
                     else if (message.SyncMessageOneofCase == Content.SyncMessageOneofOneofCase.SyncMessage && localAddress.getNumber().Equals(envelope.getSource()))
                     {
-                        content = new SignalServiceContent(createSynchronizeMessage(envelope, message.SyncMessage));
+                        content = new SignalServiceContent()
+                        {
+                            SynchronizeMessage = createSynchronizeMessage(envelope, message.SyncMessage)
+                        };
+                    }
+                    else if (message.CallMessageOneofCase == Content.CallMessageOneofOneofCase.CallMessage)
+                    {
+                        content = new SignalServiceContent()
+                        {
+                            CallMessage = createCallMessage(message.CallMessage)
+                        };
                     }
                 }
 
@@ -126,7 +143,7 @@ namespace libsignalservice.crypto
             }
             else
             {
-                throw new InvalidMessageException("Unknown type: " + envelope.getType() + " from "+ envelope.getSource());
+                throw new InvalidMessageException("Unknown type: " + envelope.getType() + " from " + envelope.getSource());
             }
 
             PushTransportDetails transportDetails = new PushTransportDetails(sessionCipher.getSessionVersion());
@@ -184,6 +201,68 @@ namespace libsignalservice.crypto
             }
 
             return SignalServiceSyncMessage.empty();
+        }
+
+        private SignalServiceCallMessage createCallMessage(CallMessage content)
+        {
+            if (content.OfferOneofCase == CallMessage.OfferOneofOneofCase.Offer)
+            {
+                return new SignalServiceCallMessage()
+                {
+                    OfferMessage = new OfferMessage()
+                    {
+                        Id = content.Offer.Id,
+                        Description = content.Offer.Description
+                    }
+                };
+            }
+            else if (content.AnswerOneofCase == CallMessage.AnswerOneofOneofCase.Answer)
+            {
+                return new SignalServiceCallMessage()
+                {
+                    AnswerMessage = new AnswerMessage()
+                    {
+                        Id = content.Answer.Id,
+                        Description = content.Answer.Description
+                    }
+                };
+            }
+            else if (content.IceUpdate.Count > 0)
+            {
+                var m = new SignalServiceCallMessage();
+                foreach (var u in content.IceUpdate)
+                {
+                    m.IceUpdateMessages.Add(new IceUpdateMessage()
+                    {
+                        Id = u.Id,
+                        SdpMid = u.SdpMid,
+                        SdpMLineIndex = u.SdpMLineIndex,
+                        Sdp = u.Sdp
+                    });
+                }
+                return m;
+            }
+            else if (content.HangupOneofCase == CallMessage.HangupOneofOneofCase.Hangup)
+            {
+                return new SignalServiceCallMessage()
+                {
+                    HangupMessage = new HangupMessage()
+                    {
+                        Id = content.Hangup.Id,
+                    }
+                };
+            }
+            else if (content.BusyOneofCase == CallMessage.BusyOneofOneofCase.Busy)
+            {
+                return new SignalServiceCallMessage()
+                {
+                    BusyMessage = new BusyMessage()
+                    {
+                        Id = content.Busy.Id
+                    }
+                };
+            }
+            return new SignalServiceCallMessage();
         }
 
         private SignalServiceGroup createGroupInfo(SignalServiceEnvelope envelope, DataMessage content)

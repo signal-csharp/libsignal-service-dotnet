@@ -28,36 +28,35 @@ namespace libsignalservice.push
     class AccountAttributes
     {
         [JsonProperty("signalingKey", Required = Required.Always)]
-        private String SignalingKey { get; set; }
-
-        [JsonProperty("fetchesMessages", Required = Required.AllowNull)]
-        private bool? FetchesMessages { get; set; } = null;
+        private string SignalingKey { get; set; }
 
         [JsonProperty("registrationId", Required = Required.Always)]
         private uint RegistrationId { get; set; }
 
-        [JsonProperty("name", Required = Required.AllowNull)]
-        private string Name { get; set; }
+        [JsonProperty("voice", Required = Required.Always)]
+        private bool Voice { get; set; }
 
-        [JsonProperty("voice", Required = Required.AllowNull)]
-        private bool? Voice { get; set; }
+        [JsonProperty("video", Required = Required.Always)]
+        private bool Video { get; set; }
+
+        [JsonProperty("fetchesMessages", Required = Required.Always)]
+        private bool FetchesMessages { get; set; }
 
         public AccountAttributes() { }
 
-        public AccountAttributes(string signalingKey, uint registrationId, bool? voice) {
+        public AccountAttributes(string signalingKey, uint registrationId, bool voice) {
             SignalingKey = signalingKey;
             RegistrationId = registrationId;
             Voice = voice;          
         }
 
-        public AccountAttributes(string signalingKey, uint registrationId, bool? voice, string name, bool? fetchesMessages)
+        public AccountAttributes(string signalingKey, uint registrationId, bool voice, bool video, bool fetchesMessages)
         {
             SignalingKey = signalingKey;
             RegistrationId = registrationId;
             Voice = voice;
-            Name = name;
+            Video = video;
             FetchesMessages = fetchesMessages;
         }
-
     }
 }

@@ -34,6 +34,7 @@ using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using System.Net.Security;
 using System.IO;
+using libsignal_service_dotnet.messages.calls;
 
 namespace libsignalservice.push
 {
@@ -47,6 +48,7 @@ namespace libsignalservice.push
         private static readonly string VERIFY_ACCOUNT_TOKEN_PATH = "/v1/accounts/token/{0}";
         private static readonly string REGISTER_GCM_PATH = "/v1/accounts/gcm/";
         private static readonly string REQUEST_TOKEN_PATH = "/v1/accounts/token";
+        private static readonly string TURN_SERVER_INFO = "/v1/accounts/turn";
         private static readonly string SET_ACCOUNT_ATTRIBUTES = "/v1/accounts/attributes";
 
         private static readonly string PREKEY_METADATA_PATH = "/v2/keys/";
@@ -88,30 +90,24 @@ namespace libsignalservice.push
             return true;
         }
 
-        public bool verifyAccountCode(string verificationCode, string signalingKey,
-                                   uint registrationId, bool voice)
+        public bool verifyAccountCode(string verificationCode, string signalingKey, uint registrationId, bool voice, bool video, bool fetchesMessages)
         {
-            AccountAttributes signalingKeyEntity = new AccountAttributes(signalingKey, registrationId, voice, "DEBUG DEVICE", true);
-            makeRequest(string.Format(VERIFY_ACCOUNT_CODE_PATH, verificationCode),
-                "PUT", JsonUtil.toJson(signalingKeyEntity));
+            AccountAttributes signalingKeyEntity = new AccountAttributes(signalingKey, registrationId, voice, video, fetchesMessages);
+            makeRequest(string.Format(VERIFY_ACCOUNT_CODE_PATH, verificationCode), "PUT", JsonUtil.toJson(signalingKeyEntity));
             return true;
         }
 
-        public bool verifyAccountToken(string verificationToken, string signalingKey,
-                                   uint registrationId, bool voice)
+        public bool verifyAccountToken(string verificationToken, string signalingKey, uint registrationId, bool voice, bool video, bool fetchesMessages)
         {
-            AccountAttributes signalingKeyEntity = new AccountAttributes(signalingKey, registrationId, voice, "DEBUG DEVICE", true);
-            makeRequest(string.Format(VERIFY_ACCOUNT_TOKEN_PATH, verificationToken),
-                "PUT", JsonUtil.toJson(signalingKeyEntity));
+            AccountAttributes signalingKeyEntity = new AccountAttributes(signalingKey, registrationId, voice, video, fetchesMessages);
+            makeRequest(string.Format(VERIFY_ACCOUNT_TOKEN_PATH, verificationToken), "PUT", JsonUtil.toJson(signalingKeyEntity));
             return true;
         }
 
-        public bool setAccountAttributes(string signalingKey, uint registrationId,
-                                  bool voice, bool fetchesMessages)
+        public bool setAccountAttributes(string signalingKey, uint registrationId, bool voice, bool video, bool fetchesMessages)
         {
-            AccountAttributes accountAttributesEntity = new AccountAttributes(signalingKey, registrationId, voice, "DEBUG DEVICE", fetchesMessages);
-            makeRequest(SET_ACCOUNT_ATTRIBUTES,
-                "PUT", JsonUtil.toJson(accountAttributesEntity));
+            AccountAttributes accountAttributesEntity = new AccountAttributes(signalingKey, registrationId, voice, video, fetchesMessages);
+            makeRequest(SET_ACCOUNT_ATTRIBUTES, "PUT", JsonUtil.toJson(accountAttributesEntity));
             return true;
         }
 
@@ -424,7 +420,22 @@ namespace libsignalservice.push
             }
         }
 
-        private void downloadExternalFile(string url, FileStream localDestination)
+        public TurnServerInfo getTurnServerInfo()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void setSoTimeoutMillis(long soTimeoutMillis)
+        {
+           throw new NotImplementedException();
+        }
+
+        public void cancelInFlightRequests()
+        {
+            throw new NotImplementedException();
+        }
+
+    private void downloadExternalFile(string url, FileStream localDestination)
         {
             try
             {

@@ -1,21 +1,4 @@
-﻿/** 
- * Copyright (C) 2015-2017 smndtrl, golf1052
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -31,6 +14,7 @@ using libsignalservice.util;
 using Strilanc.Value;
 using Google.Protobuf;
 using System.Threading;
+using libsignal_service_dotnet.messages.calls;
 
 namespace libsignalservice
 {
@@ -81,6 +65,12 @@ namespace libsignalservice
         public void sendDeliveryReceipt(SignalServiceAddress recipient, ulong messageId)
         {
             this.socket.sendReceipt(recipient.getNumber(), messageId, recipient.getRelay());
+        }
+
+        public void sendCallMessage(SignalServiceAddress recipient, SignalServiceCallMessage message)
+        {
+            byte[] content = createCallContent(message);
+            sendMessage(recipient, Util.CurrentTimeMillis(), content, false, true);
         }
 
         /// <summary>
@@ -165,6 +155,16 @@ namespace libsignalservice
             sendMessage(localAddress, Util.CurrentTimeMillis(), content, false, false);
         }
 
+        public void setSoTimeoutMillis(long soTimeoutMillis)
+        {
+            socket.setSoTimeoutMillis(soTimeoutMillis);
+        }
+
+        public void cancelInFlightRequests()
+        {
+            socket.cancelInFlightRequests();
+        }
+
         private byte[] createMessageContent(SignalServiceDataMessage message)// throws IOException
         {
             DataMessage dataMessage = new DataMessage { };
@@ -202,6 +202,60 @@ namespace libsignalservice
 
             return dataMessage.ToByteArray();
         }
+
+        private byte[] createCallContent(SignalServiceCallMessage callMessage)
+        {
+            Content content = new Content();
+            CallMessage pushCallMessage = new CallMessage();
+
+            if (callMessage.OfferMessage != null)
+            {
+                pushCallMessage.Offer = new CallMessage.Types.Offer()
+                {
+                    Id = callMessage.OfferMessage.Id,
+                    Description = callMessage.OfferMessage.Description
+                };
+            }
+            else if (callMessage.AnswerMessage != null)
+            {
+                pushCallMessage.Answer = new CallMessage.Types.Answer()
+                {
+                    Id = callMessage.AnswerMessage.Id,
+                    Description = callMessage.AnswerMessage.Description
+                };
+            }
+            else if (callMessage.IceUpdateMessages != null)
+            {
+                foreach (IceUpdateMessage u in callMessage.IceUpdateMessages)
+                {
+                    pushCallMessage.IceUpdate.Add(new CallMessage.Types.IceUpdate()
+                    {
+                        Id = u.Id,
+                        Sdp = u.Sdp,
+                        SdpMid = u.SdpMid,
+                        SdpMLineIndex = u.SdpMLineIndex
+                    });
+                }
+            }
+            else if (callMessage.HangupMessage != null)
+            {
+                pushCallMessage.Hangup = new CallMessage.Types.Hangup()
+                {
+                    Id = callMessage.HangupMessage.Id
+                };
+            }
+            else if (callMessage.BusyMessage != null)
+            {
+                pushCallMessage.Busy = new CallMessage.Types.Busy()
+                {
+                    Id = callMessage.BusyMessage.Id
+                };
+            }
+
+            content.CallMessage = pushCallMessage;
+            return content.ToByteArray();
+        }
+
         private byte[] createMultiDeviceContactsContent(SignalServiceAttachmentStream contacts)
         {
             Content content = new Content { };
