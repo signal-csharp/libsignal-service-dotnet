@@ -109,8 +109,7 @@ namespace libsignalservice
         {
             byte[] content = createMessageContent(message);
             long timestamp = message.getTimestamp();
-            sendMessage(recipients, timestamp, content, true);
-
+            SendMessageResponseList response = sendMessage(recipients, timestamp, content, true);
             try
             {
                 if (false) //TODO
@@ -121,7 +120,12 @@ namespace libsignalservice
             }
             catch (UntrustedIdentityException e)
             {
-                throw new EncapsulatedExceptions(e);
+                response.UntrustedIdentities.Add(e);
+            }
+
+            if (response.HasExceptions())
+            {
+                throw new EncapsulatedExceptions(response.UntrustedIdentities, response.UnregisteredUsers, response.NetworkExceptions);
             }
         }
 
@@ -367,12 +371,9 @@ namespace libsignalservice
             return groupContext;
         }
 
-        private void sendMessage(List<SignalServiceAddress> recipients, long timestamp, byte[] content, bool legacy)
+        private SendMessageResponseList sendMessage(List<SignalServiceAddress> recipients, long timestamp, byte[] content, bool legacy)
         {
-            IList<UntrustedIdentityException> untrustedIdentities = new List<UntrustedIdentityException>(); // was linkedlist
-            IList<UnregisteredUserException> unregisteredUsers = new List<UnregisteredUserException>();
-            IList<NetworkFailureException> networkExceptions = new List<NetworkFailureException>();
-
+            SendMessageResponseList responseList = new SendMessageResponseList();
             foreach (SignalServiceAddress recipient in recipients)
             {
                 try
@@ -382,24 +383,20 @@ namespace libsignalservice
                 catch (UntrustedIdentityException e)
                 {
                     Debug.WriteLine("untrusted identity: " + recipient, TAG);
-                    untrustedIdentities.Add(e);
+                    responseList.UntrustedIdentities.Add(e);
                 }
                 catch (UnregisteredUserException e)
                 {
                     Debug.WriteLine("unregistered user: " + recipient, TAG);
-                    unregisteredUsers.Add(e);
+                    responseList.UnregisteredUsers.Add(e);
                 }
                 catch (PushNetworkException e)
                 {
                     Debug.WriteLine("PushNetWorkException for:" + recipient, TAG);
-                    networkExceptions.Add(new NetworkFailureException(recipient.getNumber(), e));
+                    responseList.NetworkExceptions.Add(new NetworkFailureException(recipient.getNumber(), e));
                 }
             }
-
-            if (!(untrustedIdentities.Count == 0) || !(unregisteredUsers.Count == 0) || !(networkExceptions.Count == 0))
-            {
-                throw new EncapsulatedExceptions(untrustedIdentities, unregisteredUsers, networkExceptions);
-            }
+            return responseList;
         }
 
         private void sendMessage(SignalServiceAddress recipient, long timestamp, byte[] content, bool legacy, bool silent)

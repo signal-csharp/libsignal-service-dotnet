@@ -19,7 +19,7 @@ using System;
 
 namespace libsignalservice.push.exceptions
 {
-    internal class NetworkFailureException : Exception
+    public class NetworkFailureException : Exception
     {
         private readonly String e164number;
 
