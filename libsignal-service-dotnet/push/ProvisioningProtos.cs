@@ -26,19 +26,21 @@ namespace libsignalservice.push
         {
             byte[] descriptorData = global::System.Convert.FromBase64String(
                 string.Concat(
-                  "ChJQcm92aXNpb25pbmcucHJvdG8SCnRleHRzZWN1cmUiWQoRUHJvdmlzaW9u",
-                  "RW52ZWxvcGUSEwoJcHVibGljS2V5GAEgASgMSAASDgoEYm9keRgCIAEoDEgB",
-                  "QhEKD3B1YmxpY0tleV9vbmVvZkIMCgpib2R5X29uZW9mItwBChBQcm92aXNp",
-                  "b25NZXNzYWdlEhsKEWlkZW50aXR5S2V5UHVibGljGAEgASgMSAASHAoSaWRl",
-                  "bnRpdHlLZXlQcml2YXRlGAIgASgMSAESEAoGbnVtYmVyGAMgASgJSAISGgoQ",
-                  "cHJvdmlzaW9uaW5nQ29kZRgEIAEoCUgDQhkKF2lkZW50aXR5S2V5UHVibGlj",
-                  "X29uZW9mQhoKGGlkZW50aXR5S2V5UHJpdmF0ZV9vbmVvZkIOCgxudW1iZXJf",
-                  "b25lb2ZCGAoWcHJvdmlzaW9uaW5nQ29kZV9vbmVvZkJZCitvcmcud2hpc3Bl",
-                  "cnN5c3RlbXMudGV4dHNlY3VyZS5pbnRlcm5hbC5wdXNoQhJQcm92aXNpb25p",
-                  "bmdQcm90b3OqAhVsaWJzaWduYWxzZXJ2aWNlLnB1c2hiBnByb3RvMw=="));
+                  "ChJQcm92aXNpb25pbmcucHJvdG8SCnRleHRzZWN1cmUiMAoQUHJvdmlzaW9u",
+                  "aW5nVXVpZBIOCgR1dWlkGAEgASgJSABCDAoKdXVpZF9vbmVvZiJZChFQcm92",
+                  "aXNpb25FbnZlbG9wZRITCglwdWJsaWNLZXkYASABKAxIABIOCgRib2R5GAIg",
+                  "ASgMSAFCEQoPcHVibGljS2V5X29uZW9mQgwKCmJvZHlfb25lb2Yi3AEKEFBy",
+                  "b3Zpc2lvbk1lc3NhZ2USGwoRaWRlbnRpdHlLZXlQdWJsaWMYASABKAxIABIc",
+                  "ChJpZGVudGl0eUtleVByaXZhdGUYAiABKAxIARIQCgZudW1iZXIYAyABKAlI",
+                  "AhIaChBwcm92aXNpb25pbmdDb2RlGAQgASgJSANCGQoXaWRlbnRpdHlLZXlQ",
+                  "dWJsaWNfb25lb2ZCGgoYaWRlbnRpdHlLZXlQcml2YXRlX29uZW9mQg4KDG51",
+                  "bWJlcl9vbmVvZkIYChZwcm92aXNpb25pbmdDb2RlX29uZW9mQlkKK29yZy53",
+                  "aGlzcGVyc3lzdGVtcy50ZXh0c2VjdXJlLmludGVybmFsLnB1c2hCElByb3Zp",
+                  "c2lvbmluZ1Byb3Rvc6oCFWxpYnNpZ25hbHNlcnZpY2UucHVzaGIGcHJvdG8z"));
             descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
                 new pbr::FileDescriptor[] { },
                 new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
+            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.ProvisioningUuid), global::libsignalservice.push.ProvisioningUuid.Parser, new[]{ "Uuid" }, new[]{ "UuidOneof" }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.ProvisionEnvelope), global::libsignalservice.push.ProvisionEnvelope.Parser, new[]{ "PublicKey", "Body" }, new[]{ "PublicKeyOneof", "BodyOneof" }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.ProvisionMessage), global::libsignalservice.push.ProvisionMessage.Parser, new[]{ "IdentityKeyPublic", "IdentityKeyPrivate", "Number", "ProvisioningCode" }, new[]{ "IdentityKeyPublicOneof", "IdentityKeyPrivateOneof", "NumberOneof", "ProvisioningCodeOneof" }, null, null)
                 }));
@@ -48,6 +50,183 @@ namespace libsignalservice.push
     }
 
     #region Messages
+
+    public sealed partial class ProvisioningUuid : pb::IMessage<ProvisioningUuid>
+    {
+        private static readonly pb::MessageParser<ProvisioningUuid> _parser = new pb::MessageParser<ProvisioningUuid>(() => new ProvisioningUuid());
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public static pb::MessageParser<ProvisioningUuid> Parser { get { return _parser; } }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public static pbr::MessageDescriptor Descriptor
+        {
+            get { return global::libsignalservice.push.ProvisioningReflection.Descriptor.MessageTypes[0]; }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        pbr::MessageDescriptor pb::IMessage.Descriptor
+        {
+            get { return Descriptor; }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public ProvisioningUuid()
+        {
+            OnConstruction();
+        }
+
+        partial void OnConstruction();
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public ProvisioningUuid(ProvisioningUuid other) : this()
+        {
+            switch (other.UuidOneofCase)
+            {
+                case UuidOneofOneofCase.Uuid:
+                    Uuid = other.Uuid;
+                    break;
+            }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public ProvisioningUuid Clone()
+        {
+            return new ProvisioningUuid(this);
+        }
+
+        /// <summary>Field number for the "uuid" field.</summary>
+        public const int UuidFieldNumber = 1;
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public string Uuid
+        {
+            get { return uuidOneofCase_ == UuidOneofOneofCase.Uuid ? (string)uuidOneof_ : ""; }
+            set
+            {
+                uuidOneof_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+                uuidOneofCase_ = UuidOneofOneofCase.Uuid;
+            }
+        }
+
+        private object uuidOneof_;
+
+        /// <summary>Enum of possible cases for the "uuid_oneof" oneof.</summary>
+        public enum UuidOneofOneofCase
+        {
+            None = 0,
+            Uuid = 1,
+        }
+
+        private UuidOneofOneofCase uuidOneofCase_ = UuidOneofOneofCase.None;
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public UuidOneofOneofCase UuidOneofCase
+        {
+            get { return uuidOneofCase_; }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void ClearUuidOneof()
+        {
+            uuidOneofCase_ = UuidOneofOneofCase.None;
+            uuidOneof_ = null;
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public override bool Equals(object other)
+        {
+            return Equals(other as ProvisioningUuid);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public bool Equals(ProvisioningUuid other)
+        {
+            if (ReferenceEquals(other, null))
+            {
+                return false;
+            }
+            if (ReferenceEquals(other, this))
+            {
+                return true;
+            }
+            if (Uuid != other.Uuid) return false;
+            if (UuidOneofCase != other.UuidOneofCase) return false;
+            return true;
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public override int GetHashCode()
+        {
+            int hash = 1;
+            if (uuidOneofCase_ == UuidOneofOneofCase.Uuid) hash ^= Uuid.GetHashCode();
+            hash ^= (int)uuidOneofCase_;
+            return hash;
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public override string ToString()
+        {
+            return pb::JsonFormatter.ToDiagnosticString(this);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void WriteTo(pb::CodedOutputStream output)
+        {
+            if (uuidOneofCase_ == UuidOneofOneofCase.Uuid)
+            {
+                output.WriteRawTag(10);
+                output.WriteString(Uuid);
+            }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public int CalculateSize()
+        {
+            int size = 0;
+            if (uuidOneofCase_ == UuidOneofOneofCase.Uuid)
+            {
+                size += 1 + pb::CodedOutputStream.ComputeStringSize(Uuid);
+            }
+            return size;
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void MergeFrom(ProvisioningUuid other)
+        {
+            if (other == null)
+            {
+                return;
+            }
+            switch (other.UuidOneofCase)
+            {
+                case UuidOneofOneofCase.Uuid:
+                    Uuid = other.Uuid;
+                    break;
+            }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void MergeFrom(pb::CodedInputStream input)
+        {
+            uint tag;
+            while ((tag = input.ReadTag()) != 0)
+            {
+                switch (tag)
+                {
+                    default:
+                        input.SkipLastField();
+                        break;
+
+                    case 10:
+                        {
+                            Uuid = input.ReadString();
+                            break;
+                        }
+                }
+            }
+        }
+    }
 
     public sealed partial class ProvisionEnvelope : pb::IMessage<ProvisionEnvelope>
     {
@@ -59,7 +238,7 @@ namespace libsignalservice.push
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public static pbr::MessageDescriptor Descriptor
         {
-            get { return global::libsignalservice.push.ProvisioningReflection.Descriptor.MessageTypes[0]; }
+            get { return global::libsignalservice.push.ProvisioningReflection.Descriptor.MessageTypes[1]; }
         }
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -306,7 +485,7 @@ namespace libsignalservice.push
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public static pbr::MessageDescriptor Descriptor
         {
-            get { return global::libsignalservice.push.ProvisioningReflection.Descriptor.MessageTypes[1]; }
+            get { return global::libsignalservice.push.ProvisioningReflection.Descriptor.MessageTypes[2]; }
         }
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]

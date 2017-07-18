@@ -15,16 +15,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System;
-
 namespace libsignalservice.util
 {
     public interface CredentialsProvider
     {
-        String GetUser();
+        string GetUser();
 
-        String GetPassword();
+        string GetPassword();
 
-        String GetSignalingKey();
+        string GetSignalingKey();
+
+        int GetDeviceId();
     }
 }

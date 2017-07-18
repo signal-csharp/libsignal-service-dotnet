@@ -4,6 +4,10 @@ option csharp_namespace = "libsignalservice.push";
 option java_package = "org.whispersystems.textsecure.internal.push";
 option java_outer_classname = "ProvisioningProtos";
 
+message ProvisioningUuid {
+  oneof uuid_oneof                  { string uuid     = 1; }
+}
+
 message ProvisionEnvelope {
   oneof publicKey_oneof				{ bytes publicKey = 1; }
   oneof body_oneof					{ bytes body      = 2; } // Encrypted ProvisionMessage

@@ -1,6 +1,7 @@
 using Google.Protobuf;
 using libsignal;
 using libsignal.ecc;
+using libsignal.push;
 using libsignal.state;
 using libsignal_service_dotnet.messages.calls;
 using libsignalservice.crypto;
@@ -11,6 +12,7 @@ using Strilanc.Value;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 
 namespace libsignalservice
 {
@@ -20,7 +22,9 @@ namespace libsignalservice
     /// </summary>
     public class SignalServiceAccountManager
     {
-        private readonly PushServiceSocket pushServiceSocket;
+        private PushServiceSocket pushServiceSocket;
+        private static ProvisioningSocket ProvisioningSocket;
+        private SignalServiceUrl[] Urls;
         private readonly string user;
         private readonly string userAgent;
 
@@ -32,11 +36,18 @@ namespace libsignalservice
         /// <param name="password">A Signal Service password.</param>
         /// <param name="userAgent">A string which identifies the client software.</param>
         public SignalServiceAccountManager(SignalServiceUrl[] urls,
-                                        string user, string password, string userAgent)
+                                        string user, string password, int deviceId, string userAgent)
         {
-            this.pushServiceSocket = new PushServiceSocket(urls, new StaticCredentialsProvider(user, password, null), userAgent);
+            this.pushServiceSocket = new PushServiceSocket(urls, new StaticCredentialsProvider(user, password, null, deviceId), userAgent);
             this.user = user;
             this.userAgent = userAgent;
+        }
+
+        public SignalServiceAccountManager(SignalServiceUrl[] urls, CancellationToken token, string userAgent)
+        {
+            Urls = urls;
+            ProvisioningSocket = new ProvisioningSocket(urls[0].getUrl(), token);
+            pushServiceSocket = new PushServiceSocket(urls, new StaticCredentialsProvider(null, null, null, (int)SignalServiceAddress.DEFAULT_DEVICE_ID), userAgent);
         }
 
         /// <summary>
@@ -212,9 +223,32 @@ namespace libsignalservice
             return this.pushServiceSocket.getAccountVerificationToken();
         }
 
+        public string GetNewDeviceUuid(CancellationToken token)
+        {
+            ProvisioningSocket = new ProvisioningSocket(Urls[0].getUrl(), token);
+            return ProvisioningSocket.GetProvisioningUuid().Uuid;
+        }
+
         public string getNewDeviceVerificationCode()// throws IOException
         {
             return this.pushServiceSocket.getNewDeviceVerificationCode();
+        }
+
+        public NewDeviceLinkResult FinishNewDeviceRegistration(IdentityKeyPair tempIdentity, string signalingKey, string password, bool sms, bool fetches, int regid, string name)
+        {
+            ProvisionMessage pm = ProvisioningSocket.GetProvisioningMessage(tempIdentity);
+            string provisioningCode = pm.ProvisioningCode;
+            ECPublicKey publicKey = Curve.decodePoint(pm.IdentityKeyPublic.ToByteArray(), 0);
+            ECPrivateKey privateKey = Curve.decodePrivatePoint(pm.IdentityKeyPrivate.ToByteArray());
+            IdentityKeyPair identity = new IdentityKeyPair(new IdentityKey(publicKey), privateKey);
+            pushServiceSocket = new PushServiceSocket(Urls, new StaticCredentialsProvider(pm.Number, password, null, -1), userAgent);
+            int deviceId = pushServiceSocket.finishNewDeviceRegistration(provisioningCode, signalingKey, sms, fetches, regid, name);
+            return new NewDeviceLinkResult()
+            {
+                DeviceId = deviceId,
+                Identity = identity,
+                Number = pm.Number
+            };
         }
 
         public void addDevice(string deviceIdentifier,
@@ -291,5 +325,12 @@ namespace libsignalservice
 
             return tokenMap;
         }
+    }
+
+    public class NewDeviceLinkResult
+    {
+        public IdentityKeyPair Identity { get; set; }
+        public int DeviceId { get; set; }
+        public string Number { get; set; }
     }
 }

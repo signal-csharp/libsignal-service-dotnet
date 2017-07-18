@@ -101,7 +101,7 @@ namespace libsignalservice
         /// <returns>A SignalServiceMessagePipe for receiving Signal Service messages.</returns>
         public SignalServiceMessagePipe createMessagePipe()
         {
-            SignalWebSocketConnection webSocket = new SignalWebSocketConnection(Token, urls[0].getUrl(), urls[0].getTrustStore(), credentialsProvider, userAgent);
+            SignalWebSocketConnection webSocket = new SignalWebSocketConnection(Token, urls[0].getUrl(), credentialsProvider, userAgent);
             return new SignalServiceMessagePipe(Token, webSocket, credentialsProvider);
         }
 

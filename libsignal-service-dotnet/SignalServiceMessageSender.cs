@@ -29,6 +29,7 @@ namespace libsignalservice
         private readonly SignalServiceMessagePipe pipe;
         private readonly EventListener eventListener;
         private readonly CancellationToken Token;
+        private readonly StaticCredentialsProvider CredentialsProvider;
 
         /// <summary>
         /// Construct a SignalServiceMessageSender
@@ -41,13 +42,14 @@ namespace libsignalservice
         /// setup or torn down for a recipient.</param>
         /// <param name="userAgent"></param>
         public SignalServiceMessageSender(CancellationToken token, SignalServiceUrl[] urls,
-                                       string user, string password,
+                                       string user, string password, int deviceId,
                                        SignalProtocolStore store,
                                        SignalServiceMessagePipe pipe,
                                        EventListener eventListener, string userAgent)
         {
-            this.Token = token;
-            this.socket = new PushServiceSocket(urls, new StaticCredentialsProvider(user, password, null), userAgent);
+            Token = token;
+            CredentialsProvider = new StaticCredentialsProvider(user, password, null, deviceId);
+            this.socket = new PushServiceSocket(urls, CredentialsProvider, userAgent);
             this.store = store;
             this.localAddress = new SignalServiceAddress(user);
             this.pipe = pipe;
@@ -500,14 +502,16 @@ namespace libsignalservice
         {
             List<OutgoingPushMessage> messages = new List<OutgoingPushMessage>();
 
-            if (!recipient.Equals(localAddress))
+            bool myself = recipient.Equals(localAddress);
+            if (!myself || CredentialsProvider.GetDeviceId() != SignalServiceAddress.DEFAULT_DEVICE_ID)
             {
                 messages.Add(getEncryptedMessage(socket, recipient, SignalServiceAddress.DEFAULT_DEVICE_ID, plaintext, legacy, silent));
             }
 
             foreach (uint deviceId in store.GetSubDeviceSessions(recipient.getNumber()))
             {
-                messages.Add(getEncryptedMessage(socket, recipient, deviceId, plaintext, legacy, silent));
+                if (!myself || deviceId != CredentialsProvider.GetDeviceId())
+                    messages.Add(getEncryptedMessage(socket, recipient, deviceId, plaintext, legacy, silent));
             }
 
             return new OutgoingPushMessageList(recipient.getNumber(), (ulong)timestamp, recipient.getRelay().HasValue ? recipient.getRelay().ForceGetValue() : null, messages);
@@ -526,6 +530,10 @@ namespace libsignalservice
 
                     foreach (PreKeyBundle preKey in preKeys)
                     {
+                        if (CredentialsProvider.GetUser().Equals(recipient.getNumber()) && CredentialsProvider.GetDeviceId() == preKey.getDeviceId())
+                        {
+                            continue;
+                        }
                         try
                         {
                             SignalProtocolAddress preKeyAddress = new SignalProtocolAddress(recipient.getNumber(), preKey.getDeviceId());

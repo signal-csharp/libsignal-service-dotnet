@@ -15,36 +15,41 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System;
-
 namespace libsignalservice.util
 {
     public class StaticCredentialsProvider : CredentialsProvider
     {
-        private readonly String user;
-        private readonly String password;
-        private readonly String signalingKey;
+        private string Username;
+        private string Password;
+        private string SignalingKey;
+        private int DeviceId;
 
-        public StaticCredentialsProvider(String user, String password, String signalingKey)
+        public StaticCredentialsProvider(string user, string password, string signalingKey, int deviceId)
         {
-            this.user = user;
-            this.password = password;
-            this.signalingKey = signalingKey;
+            Username = user;
+            Password = password;
+            SignalingKey = signalingKey;
+            DeviceId = deviceId;
         }
 
-        public String GetUser()
+        public string GetUser()
         {
-            return user;
+            return Username;
         }
 
-        public String GetPassword()
+        public string GetPassword()
         {
-            return password;
+            return Password;
         }
 
-        public String GetSignalingKey()
+        public string GetSignalingKey()
         {
-            return signalingKey;
+            return SignalingKey;
+        }
+
+        public int GetDeviceId()
+        {
+            return DeviceId;
         }
     }
 }

@@ -1,5 +1,6 @@
 using libsignal;
 using libsignal.ecc;
+using libsignal.push;
 using libsignal.state;
 using libsignal_service_dotnet.messages.calls;
 using libsignalservice.messages.multidevice;
@@ -115,6 +116,15 @@ namespace libsignalservice.push
         {
             string responseText = makeRequest(REQUEST_TOKEN_PATH, "GET", null);
             return JsonUtil.fromJson<AuthorizationToken>(responseText).Token;
+        }
+
+        public int finishNewDeviceRegistration(String code, String signalingKey, bool supportsSms, bool fetchesMessages, int registrationId, String deviceName)
+        {
+            ConfirmCodeMessage javaJson = new ConfirmCodeMessage(signalingKey, supportsSms, fetchesMessages, registrationId, deviceName);
+            string json = JsonUtil.toJson(javaJson);
+            string responseText = makeRequest(string.Format(DEVICE_PATH, code), "PUT", json);
+            DeviceId response = JsonUtil.fromJson<DeviceId>(responseText);
+            return response.deviceId;
         }
 
         public string getNewDeviceVerificationCode()// throws IOException
@@ -672,13 +682,13 @@ namespace libsignalservice.push
 
         private string getAuthorizationHeader()
         {
-            try
+            if (credentialsProvider.GetDeviceId() == SignalServiceAddress.DEFAULT_DEVICE_ID)
             {
                 return "Basic " + Base64.encodeBytes(Encoding.UTF8.GetBytes((credentialsProvider.GetUser() + ":" + credentialsProvider.GetPassword())));
             }
-            catch (/*UnsupportedEncoding*/Exception e)
+            else
             {
-                throw new Exception(e.Message);
+                return "Basic " + Base64.encodeBytes(Encoding.UTF8.GetBytes((credentialsProvider.GetUser() + "." + credentialsProvider.GetDeviceId() + ":" + credentialsProvider.GetPassword())));
             }
         }
 

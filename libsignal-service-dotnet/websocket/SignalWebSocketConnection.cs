@@ -41,23 +41,29 @@ namespace libsignalservice.websocket
         private readonly BlockingCollection<WebSocketRequestMessage> IncomingRequests = new BlockingCollection<WebSocketRequestMessage>(new ConcurrentQueue<WebSocketRequestMessage>());
         private readonly ConcurrentDictionary<ulong, Tuple<CountdownEvent, uint, string>> OutgoingRequests = new ConcurrentDictionary<ulong, Tuple<CountdownEvent, uint, string>>();
 
-        private readonly string wsUri;
-        private readonly TrustStore trustStore;
-        private readonly CredentialsProvider credentialsProvider;
-        private readonly string userAgent;
+        private readonly string WsUri;
+        private readonly CredentialsProvider CredentialsProvider;
+        private readonly string UserAgent;
         private WebSocketWrapper WebSocket;
         private CancellationToken Token;
 
-        public SignalWebSocketConnection(CancellationToken token, string httpUri, TrustStore trustStore, CredentialsProvider credentialsProvider, string userAgent)
+        public SignalWebSocketConnection(CancellationToken token, string httpUri, CredentialsProvider credentialsProvider, string userAgent)
         {
-            this.Token = token;
-            this.trustStore = trustStore;
-            this.credentialsProvider = credentialsProvider;
-            this.userAgent = userAgent;
-            this.wsUri = httpUri.Replace("https://", "wss://")
-                .Replace("http://", "ws://") + $"/v1/websocket/?login={credentialsProvider.GetUser()}&password={credentialsProvider.GetPassword()}";
-            this.userAgent = userAgent;
-            WebSocket = new WebSocketWrapper(wsUri, token);
+            Token = token;
+            CredentialsProvider = credentialsProvider;
+            UserAgent = userAgent;
+            if (credentialsProvider.GetDeviceId() == SignalServiceAddress.DEFAULT_DEVICE_ID)
+            {
+                WsUri = httpUri.Replace("https://", "wss://")
+                    .Replace("http://", "ws://") + $"/v1/websocket/?login={credentialsProvider.GetUser()}&password={credentialsProvider.GetPassword()}";
+            }
+            else
+            {
+                WsUri = httpUri.Replace("https://", "wss://")
+                    .Replace("http://", "ws://") + $"/v1/websocket/?login={credentialsProvider.GetUser()}.{credentialsProvider.GetDeviceId()}&password={credentialsProvider.GetPassword()}";
+            }
+            UserAgent = userAgent;
+            WebSocket = new WebSocketWrapper(WsUri, token);
             WebSocket.OnConnect(Connection_OnOpened);
             WebSocket.OnMessage(Connection_OnMessage);
         }
