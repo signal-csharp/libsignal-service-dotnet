@@ -3,6 +3,7 @@ using libsignal;
 using libsignal.ecc;
 using libsignal.push;
 using libsignal.state;
+using libsignal.util;
 using libsignal_service_dotnet.messages.calls;
 using libsignalservice.crypto;
 using libsignalservice.messages.multidevice;
@@ -238,8 +239,15 @@ namespace libsignalservice
         {
             ProvisionMessage pm = ProvisioningSocket.GetProvisioningMessage(tempIdentity);
             string provisioningCode = pm.ProvisioningCode;
-            ECPublicKey publicKey = Curve.decodePoint(pm.IdentityKeyPublic.ToByteArray(), 0);
-            ECPrivateKey privateKey = Curve.decodePrivatePoint(pm.IdentityKeyPrivate.ToByteArray());
+            byte[] publicKeyBytes = pm.IdentityKeyPublic.ToByteArray();
+            if (publicKeyBytes.Length == 32)
+            {
+                byte[] type = { Curve.DJB_TYPE };
+                publicKeyBytes = ByteUtil.combine(type, publicKeyBytes);
+            }
+            ECPublicKey publicKey = Curve.decodePoint(publicKeyBytes, 0);
+            byte[] privateKeyBytes = pm.IdentityKeyPrivate.ToByteArray();
+            ECPrivateKey privateKey = Curve.decodePrivatePoint(privateKeyBytes);
             IdentityKeyPair identity = new IdentityKeyPair(new IdentityKey(publicKey), privateKey);
             pushServiceSocket = new PushServiceSocket(Urls, new StaticCredentialsProvider(pm.Number, password, null, -1), userAgent);
             int deviceId = pushServiceSocket.finishNewDeviceRegistration(provisioningCode, signalingKey, sms, fetches, regid, name);
