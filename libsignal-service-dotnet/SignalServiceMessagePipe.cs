@@ -78,7 +78,7 @@ namespace libsignalservice
             }
         }
 
-        public void Send(OutgoingPushMessageList list)
+        public SendMessageResponse Send(OutgoingPushMessageList list)
         {
             WebSocketRequestMessage requestmessage = new WebSocketRequestMessage()
             {
@@ -97,6 +97,7 @@ namespace libsignalservice
                 {
                     throw new IOException("non-successfull response: " + response.Item1 + " " + response.Item2);
                 }
+                return JsonUtil.fromJson<SendMessageResponse>(response.Item2);
             }
             else
             {

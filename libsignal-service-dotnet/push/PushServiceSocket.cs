@@ -176,11 +176,12 @@ namespace libsignalservice.push
             makeRequest(REGISTER_GCM_PATH, "DELETE", null);
         }
 
-        public void sendMessage(OutgoingPushMessageList bundle)
+        public SendMessageResponse sendMessage(OutgoingPushMessageList bundle)
         {
             try
             {
                 string responseText = makeRequest(string.Format(MESSAGE_PATH, bundle.getDestination()), "PUT", JsonUtil.toJson(bundle));
+                return JsonUtil.fromJson<SendMessageResponse>(responseText);
             }
             catch (NotFoundException nfe)
             {

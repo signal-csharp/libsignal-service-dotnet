@@ -83,9 +83,9 @@ namespace libsignalservice
             byte[] content = createMessageContent(message);
             long timestamp = message.getTimestamp();
             bool silent = message.getGroupInfo().HasValue && message.getGroupInfo().ForceGetValue().getType() == SignalServiceGroup.Type.REQUEST_INFO;
-            sendMessage(recipient, timestamp, content, true, silent);
+            var resp = sendMessage(recipient, timestamp, content, true, silent);
 
-            if (false) //TODO determine if need sync
+            if (resp.needsSync)
             {
                 byte[] syncMessage = createMultiDeviceSentTranscriptContent(content, new May<SignalServiceAddress>(recipient), (ulong)timestamp);
                 sendMessage(localAddress, timestamp, syncMessage, false, false);
@@ -114,7 +114,7 @@ namespace libsignalservice
             SendMessageResponseList response = sendMessage(recipients, timestamp, content, true);
             try
             {
-                if (false) //TODO
+                if (response != null && response.NeedsSync)
                 {
                     byte[] syncMessage = createMultiDeviceSentTranscriptContent(content, May<SignalServiceAddress>.NoValue, (ulong)timestamp);
                     sendMessage(localAddress, timestamp, syncMessage, false, false);
@@ -380,7 +380,8 @@ namespace libsignalservice
             {
                 try
                 {
-                    sendMessage(recipient, timestamp, content, legacy, false);
+                    var response = sendMessage(recipient, timestamp, content, legacy, false);
+                    responseList.AddResponse(response);
                 }
                 catch (UntrustedIdentityException e)
                 {
@@ -401,7 +402,7 @@ namespace libsignalservice
             return responseList;
         }
 
-        private void sendMessage(SignalServiceAddress recipient, long timestamp, byte[] content, bool legacy, bool silent)
+        private SendMessageResponse sendMessage(SignalServiceAddress recipient, long timestamp, byte[] content, bool legacy, bool silent)
         {
             for (int i = 0; i < 3; i++)
             {
@@ -413,8 +414,7 @@ namespace libsignalservice
                         try
                         {
                             Debug.WriteLine("Transmitting over pipe...");
-                            pipe.Send(messages);
-                            return;
+                            return pipe.Send(messages);
                         }
                         catch (Exception e)
                         {
@@ -423,8 +423,7 @@ namespace libsignalservice
                     }
 
                     Debug.WriteLine("Not transmitting over pipe...");
-                    socket.sendMessage(messages);
-                    return;
+                    return socket.sendMessage(messages);
                 }
                 catch (MismatchedDevicesException mde)
                 {
