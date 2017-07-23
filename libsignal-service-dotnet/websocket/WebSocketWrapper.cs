@@ -149,31 +149,12 @@ namespace Coe.WebSocketWrapper
 
         private void CallOnMessage(byte[] result)
         {
-            if (_onMessage != null)
-                RunInTask(() => _onMessage(result));
+            _onMessage?.Invoke(result);
         }
 
         private void CallOnConnected()
         {
-            if (_onConnected != null)
-                RunInTask(() => _onConnected());
-        }
-
-        private static void RunInTask(Action action)
-        {
-            Task.Factory.StartNew(() =>
-            {
-                try
-                {
-                    action();
-                }
-                catch (Exception e)
-                {
-                    Debug.WriteLine("RunInTask failed. " + action);
-                    Debug.WriteLine(e.Message);
-                    Debug.WriteLine(e.StackTrace);
-                }
-            });
+            _onConnected?.Invoke();
         }
     }
 }
