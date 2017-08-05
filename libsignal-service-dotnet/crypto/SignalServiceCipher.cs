@@ -168,8 +168,16 @@ namespace libsignalservice.crypto
                                                                 pointer.ThumbnailOneofCase == AttachmentPointer.ThumbnailOneofOneofCase.Thumbnail ? pointer.Thumbnail.ToByteArray() : null));
             }
 
-            return new SignalServiceDataMessage(envelope.getTimestamp(), groupInfo, attachments,
-                                             content.Body, endSession, (int)content.ExpireTimer, expirationUpdate);
+            return new SignalServiceDataMessage()
+            {
+                Timestamp = envelope.getTimestamp(),
+                Group = groupInfo,
+                Attachments = attachments,
+                Body = content.Body,
+                EndSession = endSession,
+                ExpiresInSeconds = (int)content.ExpireTimer,
+                ExpirationUpdate = expirationUpdate
+            };
         }
 
         private SignalServiceSyncMessage createSynchronizeMessage(SignalServiceEnvelope envelope, SyncMessage content)
@@ -269,15 +277,15 @@ namespace libsignalservice.crypto
         {
             if (content.GroupOneofCase == DataMessage.GroupOneofOneofCase.None) return null;
 
-            SignalServiceGroup.Type type;
+            SignalServiceGroup.GroupType type;
 
             switch (content.Group.Type)
             {
-                case GroupContext.Types.Type.Deliver: type = SignalServiceGroup.Type.DELIVER; break;
-                case GroupContext.Types.Type.Update: type = SignalServiceGroup.Type.UPDATE; break;
-                case GroupContext.Types.Type.Quit: type = SignalServiceGroup.Type.QUIT; break;
-                case GroupContext.Types.Type.RequestInfo: type = SignalServiceGroup.Type.REQUEST_INFO; break;
-                default: type = SignalServiceGroup.Type.UNKNOWN; break;
+                case GroupContext.Types.Type.Deliver: type = SignalServiceGroup.GroupType.DELIVER; break;
+                case GroupContext.Types.Type.Update: type = SignalServiceGroup.GroupType.UPDATE; break;
+                case GroupContext.Types.Type.Quit: type = SignalServiceGroup.GroupType.QUIT; break;
+                case GroupContext.Types.Type.RequestInfo: type = SignalServiceGroup.GroupType.REQUEST_INFO; break;
+                default: type = SignalServiceGroup.GroupType.UNKNOWN; break;
             }
 
             if (content.Group.Type != GroupContext.Types.Type.Deliver)
@@ -305,10 +313,21 @@ namespace libsignalservice.crypto
                                                              envelope.getRelay());
                 }
 
-                return new SignalServiceGroup(type, content.Group.Id.ToByteArray(), name, members, avatar);
+                return new SignalServiceGroup()
+                {
+                    Type = type,
+                    GroupId = content.Group.Id.ToByteArray(),
+                    Name = name,
+                    Members = members,
+                    Avatar = avatar
+                };
             }
 
-            return new SignalServiceGroup(content.Group.Id.ToByteArray());
+            return new SignalServiceGroup()
+            {
+                GroupId = content.Group.Id.ToByteArray(),
+                Type = type
+            };
         }
     }
 }

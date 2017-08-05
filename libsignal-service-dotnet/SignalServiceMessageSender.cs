@@ -81,8 +81,8 @@ namespace libsignalservice
         public void sendMessage(SignalServiceAddress recipient, SignalServiceDataMessage message)
         {
             byte[] content = createMessageContent(message);
-            long timestamp = message.getTimestamp();
-            bool silent = message.getGroupInfo().HasValue && message.getGroupInfo().ForceGetValue().getType() == SignalServiceGroup.Type.REQUEST_INFO;
+            long timestamp = message.Timestamp;
+            bool silent = message.Group != null && message.Group.Type == SignalServiceGroup.GroupType.REQUEST_INFO;
             var resp = sendMessage(recipient, timestamp, content, true, silent);
 
             if (resp.needsSync)
@@ -91,7 +91,7 @@ namespace libsignalservice
                 sendMessage(localAddress, timestamp, syncMessage, false, false);
             }
 
-            if (message.isEndSession())
+            if (message.EndSession)
             {
                 store.DeleteAllSessions(recipient.getNumber());
 
@@ -110,7 +110,7 @@ namespace libsignalservice
         public void sendMessage(List<SignalServiceAddress> recipients, SignalServiceDataMessage message)
         {
             byte[] content = createMessageContent(message);
-            long timestamp = message.getTimestamp();
+            long timestamp = message.Timestamp;
             SendMessageResponseList response = sendMessage(recipients, timestamp, content, true);
             try
             {
@@ -172,36 +172,36 @@ namespace libsignalservice
         private byte[] createMessageContent(SignalServiceDataMessage message)// throws IOException
         {
             DataMessage dataMessage = new DataMessage { };
-            IList<AttachmentPointer> pointers = createAttachmentPointers(message.getAttachments());
+            IList<AttachmentPointer> pointers = createAttachmentPointers(message.Attachments);
 
             if (pointers.Count != 0)
             {
                 dataMessage.Attachments.AddRange(pointers);
             }
 
-            if (message.getBody().HasValue)
+            if (message.Body != null)
             {
-                dataMessage.Body = message.getBody().ForceGetValue();
+                dataMessage.Body = message.Body;
             }
 
-            if (message.getGroupInfo().HasValue)
+            if (message.Group != null)
             {
-                dataMessage.Group = createGroupContent(message.getGroupInfo().ForceGetValue());
+                dataMessage.Group = createGroupContent(message.Group);
             }
 
-            if (message.isEndSession())
+            if (message.EndSession)
             {
                 dataMessage.Flags = (uint)DataMessage.Types.Flags.EndSession;
             }
 
-            if (message.isExpirationUpdate())
+            if (message.ExpirationUpdate)
             {
                 dataMessage.Flags = (uint)DataMessage.Types.Flags.ExpirationTimerUpdate;
             }
 
-            if (message.getExpiresInSeconds() > 0)
+            if (message.ExpiresInSeconds > 0)
             {
-                dataMessage.ExpireTimer = (uint)message.getExpiresInSeconds();
+                dataMessage.ExpireTimer = (uint)message.ExpiresInSeconds;
             }
 
             return dataMessage.ToByteArray();
@@ -347,21 +347,21 @@ namespace libsignalservice
         private GroupContext createGroupContent(SignalServiceGroup group)
         {
             GroupContext groupContext = new GroupContext { };
-            groupContext.Id = ByteString.CopyFrom(group.getGroupId());
+            groupContext.Id = ByteString.CopyFrom(group.GroupId);
 
-            if (group.getType() != SignalServiceGroup.Type.DELIVER)
+            if (group.Type != SignalServiceGroup.GroupType.DELIVER)
             {
-                if (group.getType() == SignalServiceGroup.Type.UPDATE) groupContext.Type = GroupContext.Types.Type.Update;
-                else if (group.getType() == SignalServiceGroup.Type.QUIT) groupContext.Type = GroupContext.Types.Type.Quit;
-                else if (group.getType() == SignalServiceGroup.Type.REQUEST_INFO) groupContext.Type = GroupContext.Types.Type.RequestInfo;
-                else throw new Exception("Unknown type: " + group.getType());
+                if (group.Type == SignalServiceGroup.GroupType.UPDATE) groupContext.Type = GroupContext.Types.Type.Update;
+                else if (group.Type == SignalServiceGroup.GroupType.QUIT) groupContext.Type = GroupContext.Types.Type.Quit;
+                else if (group.Type == SignalServiceGroup.GroupType.REQUEST_INFO) groupContext.Type = GroupContext.Types.Type.RequestInfo;
+                else throw new Exception("Unknown type: " + group.Type);
 
-                if (group.getName().HasValue) groupContext.Name = group.getName().ForceGetValue();
-                if (group.getMembers().HasValue) groupContext.Members.AddRange(group.getMembers().ForceGetValue());
+                if (group.Name != null) groupContext.Name = group.Name;
+                if (group.Members != null ) groupContext.Members.AddRange(group.Members);
 
-                if (group.getAvatar().HasValue && group.getAvatar().ForceGetValue().isStream())
+                if (group.Avatar != null && group.Avatar.isStream())
                 {
-                    AttachmentPointer pointer = createAttachmentPointer(group.getAvatar().ForceGetValue().asStream());
+                    AttachmentPointer pointer = createAttachmentPointer(group.Avatar.asStream());
                     groupContext.Avatar = pointer;
                 }
             }
@@ -444,17 +444,17 @@ namespace libsignalservice
             throw new Exception("Failed to resolve conflicts after 3 attempts!");
         }
 
-        private IList<AttachmentPointer> createAttachmentPointers(May<List<SignalServiceAttachment>> attachments)
+        private IList<AttachmentPointer> createAttachmentPointers(List<SignalServiceAttachment> attachments)
         {
             IList<AttachmentPointer> pointers = new List<AttachmentPointer>();
 
-            if (!attachments.HasValue || attachments.ForceGetValue().Count == 0)
+            if (attachments == null || attachments.Count == 0)
             {
                 Debug.WriteLine("No attachments present...", TAG);
                 return pointers;
             }
 
-            foreach (SignalServiceAttachment attachment in attachments.ForceGetValue())
+            foreach (SignalServiceAttachment attachment in attachments)
             {
                 if (attachment.isStream())
                 {
