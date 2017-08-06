@@ -1,3 +1,4 @@
+using libsignalservice.push.exceptions;
 using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
@@ -154,16 +155,6 @@ namespace Coe.WebSocketWrapper
         }
 
         /// <summary>
-        /// Connects to the WebSocket server.
-        /// </summary>
-        /// <returns></returns>
-        public WebSocketWrapper Connect()
-        {
-            ConnectAsync();
-            return this;
-        }
-
-        /// <summary>
         /// Set the Action to call when the connection has been established.
         /// </summary>
         /// <param name="onConnect">The Action to call.</param>
@@ -184,15 +175,19 @@ namespace Coe.WebSocketWrapper
             _onMessage = onMessage;
         }
 
-        private async void ConnectAsync()
+        public void Connect()
         {
             try
             {
-                await WebSocket.ConnectAsync(_uri, Token);
+                WebSocket.ConnectAsync(_uri, Token).Wait();
                 CallOnConnected();
             }
             catch (Exception e)
             {
+                if(e.InnerException?.InnerException?.Message == "Forbidden")
+                {
+                    throw new AuthorizationFailedException("OWS server rejected authorization.");
+                }
                 Debug.WriteLine("ConnectAsync crashed.");
                 Debug.WriteLine(e.Message);
                 Debug.WriteLine(e.StackTrace);
