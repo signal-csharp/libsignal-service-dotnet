@@ -19,7 +19,7 @@ using System;
 
 namespace libsignalservice.push.exceptions
 {
-    internal class StaleDevicesException : Exception
+    public class StaleDevicesException : Exception
     {
         private readonly StaleDevices staleDevices;
 

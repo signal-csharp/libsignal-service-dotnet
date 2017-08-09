@@ -17,7 +17,7 @@
 
 namespace libsignalservice.push.exceptions
 {
-    internal class ExpectationFailedException : NonSuccessfulResponseCodeException
+    public class ExpectationFailedException : NonSuccessfulResponseCodeException
     {
     }
 }

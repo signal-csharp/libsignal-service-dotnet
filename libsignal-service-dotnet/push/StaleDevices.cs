@@ -20,7 +20,7 @@ using System.Collections.Generic;
 
 namespace libsignalservice.push
 {
-    internal class StaleDevices
+    public class StaleDevices
     {
         [JsonProperty]
         private List<int> staleDevices;

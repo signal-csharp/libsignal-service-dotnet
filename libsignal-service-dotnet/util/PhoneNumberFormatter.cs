@@ -39,7 +39,7 @@ namespace libsignalservice.util
     /// </summary>
     public class PhoneNumberFormatter
     {
-        public static bool isValidNumber(string number)
+        public static bool IsValidNumber(string number)
         {
             return (new Regex("^\\+[0-9]{10,}").Match(number)).Success ||
                 (new Regex("^\\+685[0-9]{5}").Match(number)).Success ||
@@ -52,7 +52,7 @@ namespace libsignalservice.util
                 (new Regex("^\\+689[0-9]{6}").Match(number)).Success;
         }
 
-        private static string impreciseFormatNumber(string number, string localNumber)
+        private static string ImpreciseFormatNumber(string number, string localNumber)
         //throws InvalidNumberException
         {
             number = number.ReplaceAll("[^0-9+]", "");
@@ -71,7 +71,7 @@ namespace libsignalservice.util
             return "+" + localNumber.Substring(0, difference) + number;
         }
 
-        public static string formatNumberInternational(string number)
+        public static string FormatNumberInternational(string number)
         {
             try
             {
@@ -86,7 +86,7 @@ namespace libsignalservice.util
             }
         }
 
-        public static string formatNumber(string number, string localNumber) //throws InvalidNumberException
+        public static string FormatNumber(string number, string localNumber) //throws InvalidNumberException
         {
             if (number == null)
             {
@@ -122,17 +122,17 @@ namespace libsignalservice.util
             catch (NumberParseException e)
             {
                 //Log.w(TAG, e);
-                return impreciseFormatNumber(number, localNumber);
+                return ImpreciseFormatNumber(number, localNumber);
             }
         }
 
-        public static string getRegionDisplayName(string regionCode)
+        public static string GetRegionDisplayName(string regionCode)
         {
-            return (regionCode == null || regionCode.Equals("ZZ") || regionCode.Equals(PhoneNumberUtil.REGION_CODE_FOR_NON_GEO_ENTITY))
-                ? "Unknown country" : "TODO COUNTRY NAM";
+            return (regionCode == null || regionCode.Equals("ZZ") || regionCode.Equals(PhoneNumberUtil.RegionCodeForNonGeoEntity))
+                ? "Unknown country" : new Locale("", regionCode).GetDisplayCountry("en");
         }
 
-        public static string formatE164(string countryCode, string number)
+        public static string FormatE164(string countryCode, string number)
         {
             if (countryCode == string.Empty || number == string.Empty) return string.Empty;
             try
@@ -158,7 +158,7 @@ namespace libsignalservice.util
                 number.ReplaceAll("[^0-9]", "");
         }
 
-        public static string getInternationalFormatFromE164(string e164number)
+        public static string GetInternationalFormatFromE164(string e164number)
         {
             try
             {

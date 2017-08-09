@@ -21,7 +21,7 @@ using System.Collections.Generic;
 
 namespace libsignalservice.push.exceptions
 {
-    internal class EncapsulatedExceptions : Exception
+    public class EncapsulatedExceptions : Exception
     {
         private readonly IList<UntrustedIdentityException> untrustedIdentityExceptions;
         private readonly IList<UnregisteredUserException> unregisteredUserExceptions;

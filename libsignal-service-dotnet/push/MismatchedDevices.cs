@@ -21,7 +21,7 @@ using System.Collections.Generic;
 namespace libsignalservice.push
 {
     [JsonObject(MemberSerialization.OptIn)]
-    internal class MismatchedDevices
+    public class MismatchedDevices
     {
         [JsonProperty]
         private List<int> missingDevices;
