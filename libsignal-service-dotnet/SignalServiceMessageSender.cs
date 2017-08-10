@@ -485,6 +485,11 @@ namespace libsignalservice
                 Size = (uint)attachment.getLength()
             };
 
+            if (attachment.FileName != null)
+            {
+                attachmentPointer.FileName = attachment.FileName;
+            }
+
             if (attachment.getPreview().HasValue)
             {
                 attachmentPointer.Thumbnail = ByteString.CopyFrom(attachment.getPreview().ForceGetValue());

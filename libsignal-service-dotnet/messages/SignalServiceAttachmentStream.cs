@@ -33,19 +33,19 @@ namespace libsignalservice.messages
         private readonly May<byte[]> preview;
         public readonly string FileName;
 
-        public SignalServiceAttachmentStream(Stream inputStream, String contentType, string fileName, long length, ProgressListener listener)
-           : this(inputStream, contentType, fileName, length, May<byte[]>.NoValue, listener)
+        public SignalServiceAttachmentStream(Stream inputStream, string contentType, long length, string fileName, ProgressListener listener)
+           : this(inputStream, contentType, length, fileName, May<byte[]>.NoValue, listener)
         {
         }
 
-        public SignalServiceAttachmentStream(Stream inputStream, String contentType, string fileName, long length, May<byte[]> preview, ProgressListener listener)
+        public SignalServiceAttachmentStream(Stream inputStream, String contentType, long length, string fileName, May<byte[]> preview, ProgressListener listener)
             : base(contentType)
         {
             this.inputStream = inputStream;
             this.length = length;
+            FileName = fileName;
             this.listener = listener;
             this.preview = preview;
-            FileName = fileName;
         }
 
         public override bool isStream()

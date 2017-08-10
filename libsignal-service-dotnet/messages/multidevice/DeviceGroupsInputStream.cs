@@ -56,7 +56,7 @@ namespace libsignalservice.messages.multidevice
                 Stream avatarStream = new ChunkedInputStream.LimitedInputStream(avatarLength);
                 string avatarContentType = details.Avatar.ContentType;
 
-                avatar = new May<SignalServiceAttachmentStream>(new SignalServiceAttachmentStream(avatarStream, avatarContentType, null, avatarLength, null));
+                avatar = new May<SignalServiceAttachmentStream>(new SignalServiceAttachmentStream(avatarStream, avatarContentType, avatarLength, null, null));
             }
 
             return new DeviceGroup(id, name, members, avatar, active);

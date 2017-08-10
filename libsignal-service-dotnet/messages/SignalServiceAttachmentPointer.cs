@@ -32,11 +32,11 @@ namespace libsignalservice.messages
         public byte[] Digest { get; }
         public string FileName { get; }
 
-        public SignalServiceAttachmentPointer(ulong id, string contentType, string fileName, byte[] key, string relay, byte[] digest)
-        : this(id, contentType, fileName, key, relay, null, null, digest)
+        public SignalServiceAttachmentPointer(ulong id, string contentType, byte[] key, string relay, byte[] digest, string fileName)
+        : this(id, contentType, key, relay, null, null, digest, fileName)
         { }
 
-        public SignalServiceAttachmentPointer(ulong id, string contentType, string fileName, byte[] key, string relay, uint? size, byte[] preview, byte[] digest)
+        public SignalServiceAttachmentPointer(ulong id, string contentType, byte[] key, string relay, uint? size, byte[] preview, byte[] digest, string fileName)
             : base(contentType)
         {
             Id = id;

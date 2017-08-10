@@ -110,7 +110,7 @@ namespace libsignalservice.messages
                     throw new ArgumentException("No length specified!");
                 }
 
-                return new SignalServiceAttachmentStream(inputStream, contentType, FileName, (uint)length, listener);
+                return new SignalServiceAttachmentStream(inputStream, contentType, (uint)length, FileName, listener);
             }
         }
 

@@ -161,12 +161,12 @@ namespace libsignalservice.crypto
             {
                 attachments.Add(new SignalServiceAttachmentPointer(pointer.Id,
                                                                 pointer.ContentType,
-                                                                pointer.FileName,
                                                                 pointer.Key.ToByteArray(),
                                                                 envelope.getRelay(),
                                                                 pointer.SizeOneofCase == AttachmentPointer.SizeOneofOneofCase.Size ? pointer.Size : 0,
                                                                 pointer.ThumbnailOneofCase == AttachmentPointer.ThumbnailOneofOneofCase.Thumbnail ? pointer.Thumbnail.ToByteArray() : null,
-                                                                pointer.DigestOneofCase == AttachmentPointer.DigestOneofOneofCase.Digest ? pointer.Digest.ToByteArray() : null));
+                                                                pointer.DigestOneofCase == AttachmentPointer.DigestOneofOneofCase.Digest ? pointer.Digest.ToByteArray() : null,
+                                                                pointer.FileNameOneofCase == AttachmentPointer.FileNameOneofOneofCase.FileName ? pointer.FileName : null));
             }
 
             return new SignalServiceDataMessage()
@@ -311,10 +311,10 @@ namespace libsignalservice.crypto
 
                     avatar = new SignalServiceAttachmentPointer(pointer.Id,
                         pointer.ContentType,
-                        null,
                         pointer.Key.ToByteArray(),
                         envelope.getRelay(),
-                        pointer.Digest.ToByteArray());
+                        pointer.Digest.ToByteArray(),
+                        null);
                 }
 
                 return new SignalServiceGroup()
