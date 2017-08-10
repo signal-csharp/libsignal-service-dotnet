@@ -1,3 +1,4 @@
+using libsignal.messages.multidevice;
 using Strilanc.Value;
 
 /**
@@ -24,14 +25,14 @@ namespace libsignalservice.messages.multidevice
     public class SignalServiceSyncMessage
     {
         private readonly May<SentTranscriptMessage> sent;
-        private readonly May<SignalServiceAttachment> contacts;
+        private readonly May<ContactsMessage> contacts;
         private readonly May<SignalServiceAttachment> groups;
         private readonly May<BlockedListMessage> blockedList;
         private readonly May<RequestMessage> request;
         private readonly May<List<ReadMessage>> reads;
 
         private SignalServiceSyncMessage(May<SentTranscriptMessage> sent,
-            May<SignalServiceAttachment> contacts,
+            May<ContactsMessage> contacts,
             May<SignalServiceAttachment> groups,
             May<BlockedListMessage> blockedList,
             May<RequestMessage> request,
@@ -55,10 +56,10 @@ namespace libsignalservice.messages.multidevice
                 May.NoValue);
         }
 
-        public static SignalServiceSyncMessage forContacts(SignalServiceAttachment contacts)
+        public static SignalServiceSyncMessage forContacts(ContactsMessage contacts)
         {
             return new SignalServiceSyncMessage(May.NoValue,
-                new May<SignalServiceAttachment>(contacts),
+                new May<ContactsMessage>(contacts),
                 May.NoValue,
                 May.NoValue,
                 May.NoValue,
@@ -138,7 +139,7 @@ namespace libsignalservice.messages.multidevice
             return groups;
         }
 
-        public May<SignalServiceAttachment> getContacts()
+        public May<ContactsMessage> getContacts()
         {
             return contacts;
         }

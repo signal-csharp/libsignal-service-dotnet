@@ -31,35 +31,6 @@ namespace libsignalservice.messages.multidevice
         {
         }
 
-        public DeviceGroup read()// throws IOException
-        {
-            long detailsLength = readRawVarint32();
-            byte[] detailsSerialized = new byte[(int)detailsLength];
-            Util.readFully(input, detailsSerialized);
-
-            GroupDetails details = GroupDetails.Parser.ParseFrom(detailsSerialized);
-
-            if (details.IdOneofCase == GroupDetails.IdOneofOneofCase.None)
-            {
-                throw new IOException("ID missing on group record!");
-            }
-
-            byte[] id = details.Id.ToByteArray();
-            May<string> name = new May<string>(details.Name);
-            IList<string> members = details.Members;
-            May<SignalServiceAttachmentStream> avatar = May<SignalServiceAttachmentStream>.NoValue;
-            bool active = details.Active;
-
-            if (details.AvatarOneofCase == GroupDetails.AvatarOneofOneofCase.Avatar)
-            {
-                long avatarLength = details.Avatar.Length;
-                Stream avatarStream = new ChunkedInputStream.LimitedInputStream(avatarLength);
-                string avatarContentType = details.Avatar.ContentType;
-
-                avatar = new May<SignalServiceAttachmentStream>(new SignalServiceAttachmentStream(avatarStream, avatarContentType, avatarLength, null, null));
-            }
-
-            return new DeviceGroup(id, name, members, avatar, active);
-        }
+        
     }
 }

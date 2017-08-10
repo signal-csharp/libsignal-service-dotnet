@@ -86,6 +86,7 @@ message SyncMessage {
 
   message Contacts {
     oneof blob_oneof						{ AttachmentPointer blob = 1; }
+	oneof complete_oneof					{ bool complete = 2; }
   }
 
   message Groups {
@@ -121,6 +122,11 @@ message SyncMessage {
 }
 
 message AttachmentPointer {
+  enum Flags {
+    ZERO_PLACEHOLDER = 0;
+    VOICE_MESSAGE = 1;
+  }
+
   oneof id_oneof							{ fixed64 id          = 1; }
   oneof contentType_oneof					{ string  contentType = 2; }
   oneof key_oneof							{ bytes   key         = 3; }
@@ -128,6 +134,7 @@ message AttachmentPointer {
   oneof thumbnail_oneof						{ bytes   thumbnail   = 5; }
   oneof digest_oneof						{ bytes   digest      = 6; }
   oneof fileName_oneof						{ string  fileName    = 7; }
+  oneof flags_oneof							{ uint32 flags        = 8; }
 }
 
 message GroupContext {

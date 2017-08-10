@@ -60,6 +60,7 @@ namespace libsignalservice.messages
             private string FileName;
             private long length;
             private ProgressListener listener;
+            private bool voiceNote;
 
             internal Builder()
             {
@@ -95,6 +96,12 @@ namespace libsignalservice.messages
                 return this;
             }
 
+            public Builder withVoiceNote(bool voiceNote)
+            {
+                this.voiceNote = voiceNote;
+                return this;
+            }
+
             public SignalServiceAttachmentStream build()
             {
                 if (inputStream == null)
@@ -110,7 +117,7 @@ namespace libsignalservice.messages
                     throw new ArgumentException("No length specified!");
                 }
 
-                return new SignalServiceAttachmentStream(inputStream, contentType, (uint)length, FileName, listener);
+                return new SignalServiceAttachmentStream(inputStream, contentType, (uint)length, FileName, voiceNote, listener);
             }
         }
 

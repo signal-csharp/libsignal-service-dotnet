@@ -137,7 +137,8 @@ namespace libsignalservice
 
             if (message.getContacts().HasValue)
             {
-                content = createMultiDeviceContactsContent(message.getContacts().ForceGetValue().asStream());
+                content = createMultiDeviceContactsContent(message.getContacts().ForceGetValue().Contacts.asStream(),
+                    message.getContacts().ForceGetValue().Complete);
             }
             else if (message.getGroups().HasValue)
             {
@@ -260,13 +261,14 @@ namespace libsignalservice
             return content.ToByteArray();
         }
 
-        private byte[] createMultiDeviceContactsContent(SignalServiceAttachmentStream contacts)
+        private byte[] createMultiDeviceContactsContent(SignalServiceAttachmentStream contacts, bool complete)
         {
             Content content = new Content { };
             SyncMessage syncMessage = new SyncMessage { };
             syncMessage.Contacts = new SyncMessage.Types.Contacts
             {
-                Blob = createAttachmentPointer(contacts)
+                Blob = createAttachmentPointer(contacts),
+                Complete = complete
             };
             content.SyncMessage = syncMessage;
             return content.ToByteArray();
@@ -493,6 +495,11 @@ namespace libsignalservice
             if (attachment.getPreview().HasValue)
             {
                 attachmentPointer.Thumbnail = ByteString.CopyFrom(attachment.getPreview().ForceGetValue());
+            }
+
+            if (attachment.VoiceNote)
+            {
+                attachmentPointer.Flags = (uint) AttachmentPointer.Types.Flags.VoiceMessage;
             }
 
             return attachmentPointer;

@@ -63,7 +63,7 @@ namespace libsignalservice.push
                   "GAQgASgNSAISFQoLZXhwaXJlVGltZXIYBSABKA1IAyJLCgVGbGFncxIUChBa",
                   "RVJPX1BMQUNFSE9MREVSEAASDwoLRU5EX1NFU1NJT04QARIbChdFWFBJUkFU",
                   "SU9OX1RJTUVSX1VQREFURRACQgwKCmJvZHlfb25lb2ZCDQoLZ3JvdXBfb25l",
-                  "b2ZCDQoLZmxhZ3Nfb25lb2ZCEwoRZXhwaXJlVGltZXJfb25lb2Yi8wcKC1N5",
+                  "b2ZCDQoLZmxhZ3Nfb25lb2ZCEwoRZXhwaXJlVGltZXJfb25lb2YimQgKC1N5",
                   "bmNNZXNzYWdlEiwKBHNlbnQYASABKAsyHC50ZXh0c2VjdXJlLlN5bmNNZXNz",
                   "YWdlLlNlbnRIABI0Cghjb250YWN0cxgCIAEoCzIgLnRleHRzZWN1cmUuU3lu",
                   "Y01lc3NhZ2UuQ29udGFjdHNIARIwCgZncm91cHMYAyABKAsyHi50ZXh0c2Vj",
@@ -75,45 +75,47 @@ namespace libsignalservice.push
                   "EioKB21lc3NhZ2UYAyABKAsyFy50ZXh0c2VjdXJlLkRhdGFNZXNzYWdlSAIS",
                   "IgoYZXhwaXJhdGlvblN0YXJ0VGltZXN0YW1wGAQgASgESANCEwoRZGVzdGlu",
                   "YXRpb25fb25lb2ZCEQoPdGltZXN0YW1wX29uZW9mQg8KDW1lc3NhZ2Vfb25l",
-                  "b2ZCIAoeZXhwaXJhdGlvblN0YXJ0VGltZXN0YW1wX29uZW9mGkcKCENvbnRh",
+                  "b2ZCIAoeZXhwaXJhdGlvblN0YXJ0VGltZXN0YW1wX29uZW9mGm0KCENvbnRh",
                   "Y3RzEi0KBGJsb2IYASABKAsyHS50ZXh0c2VjdXJlLkF0dGFjaG1lbnRQb2lu",
-                  "dGVySABCDAoKYmxvYl9vbmVvZhpFCgZHcm91cHMSLQoEYmxvYhgBIAEoCzId",
-                  "LnRleHRzZWN1cmUuQXR0YWNobWVudFBvaW50ZXJIAEIMCgpibG9iX29uZW9m",
-                  "GhoKB0Jsb2NrZWQSDwoHbnVtYmVycxgBIAMoCRqJAQoHUmVxdWVzdBI0CgR0",
-                  "eXBlGAEgASgOMiQudGV4dHNlY3VyZS5TeW5jTWVzc2FnZS5SZXF1ZXN0LlR5",
-                  "cGVIACI6CgRUeXBlEgsKB1VOS05PV04QABIMCghDT05UQUNUUxABEgoKBkdS",
-                  "T1VQUxACEgsKB0JMT0NLRUQQA0IMCgp0eXBlX29uZW9mGlAKBFJlYWQSEAoG",
-                  "c2VuZGVyGAEgASgJSAASEwoJdGltZXN0YW1wGAIgASgESAFCDgoMc2VuZGVy",
-                  "X29uZW9mQhEKD3RpbWVzdGFtcF9vbmVvZkIMCgpzZW50X29uZW9mQhAKDmNv",
-                  "bnRhY3RzX29uZW9mQg4KDGdyb3Vwc19vbmVvZkIPCg1yZXF1ZXN0X29uZW9m",
-                  "Qg8KDWJsb2NrZWRfb25lb2YigwIKEUF0dGFjaG1lbnRQb2ludGVyEgwKAmlk",
-                  "GAEgASgGSAASFQoLY29udGVudFR5cGUYAiABKAlIARINCgNrZXkYAyABKAxI",
-                  "AhIOCgRzaXplGAQgASgNSAMSEwoJdGh1bWJuYWlsGAUgASgMSAQSEAoGZGln",
-                  "ZXN0GAYgASgMSAUSEgoIZmlsZU5hbWUYByABKAlIBkIKCghpZF9vbmVvZkIT",
-                  "ChFjb250ZW50VHlwZV9vbmVvZkILCglrZXlfb25lb2ZCDAoKc2l6ZV9vbmVv",
-                  "ZkIRCg90aHVtYm5haWxfb25lb2ZCDgoMZGlnZXN0X29uZW9mQhAKDmZpbGVO",
-                  "YW1lX29uZW9mIp8CCgxHcm91cENvbnRleHQSDAoCaWQYASABKAxIABItCgR0",
-                  "eXBlGAIgASgOMh0udGV4dHNlY3VyZS5Hcm91cENvbnRleHQuVHlwZUgBEg4K",
-                  "BG5hbWUYAyABKAlIAhIPCgdtZW1iZXJzGAQgAygJEi8KBmF2YXRhchgFIAEo",
-                  "CzIdLnRleHRzZWN1cmUuQXR0YWNobWVudFBvaW50ZXJIAyJICgRUeXBlEgsK",
-                  "B1VOS05PV04QABIKCgZVUERBVEUQARILCgdERUxJVkVSEAISCAoEUVVJVBAD",
-                  "EhAKDFJFUVVFU1RfSU5GTxAEQgoKCGlkX29uZW9mQgwKCnR5cGVfb25lb2ZC",
-                  "DAoKbmFtZV9vbmVvZkIOCgxhdmF0YXJfb25lb2YijQIKDkNvbnRhY3REZXRh",
-                  "aWxzEhAKBm51bWJlchgBIAEoCUgAEg4KBG5hbWUYAiABKAlIARIzCgZhdmF0",
-                  "YXIYAyABKAsyIS50ZXh0c2VjdXJlLkNvbnRhY3REZXRhaWxzLkF2YXRhckgC",
-                  "Eg8KBWNvbG9yGAQgASgJSAMaVgoGQXZhdGFyEhUKC2NvbnRlbnRUeXBlGAEg",
-                  "ASgJSAASEAoGbGVuZ3RoGAIgASgNSAFCEwoRY29udGVudFR5cGVfb25lb2ZC",
-                  "DgoMbGVuZ3RoX29uZW9mQg4KDG51bWJlcl9vbmVvZkIMCgpuYW1lX29uZW9m",
-                  "Qg4KDGF2YXRhcl9vbmVvZkINCgtjb2xvcl9vbmVvZiKUAgoMR3JvdXBEZXRh",
-                  "aWxzEgwKAmlkGAEgASgMSAASDgoEbmFtZRgCIAEoCUgBEg8KB21lbWJlcnMY",
-                  "AyADKAkSMQoGYXZhdGFyGAQgASgLMh8udGV4dHNlY3VyZS5Hcm91cERldGFp",
-                  "bHMuQXZhdGFySAISEAoGYWN0aXZlGAUgASgISAMaVgoGQXZhdGFyEhUKC2Nv",
-                  "bnRlbnRUeXBlGAEgASgJSAASEAoGbGVuZ3RoGAIgASgNSAFCEwoRY29udGVu",
-                  "dFR5cGVfb25lb2ZCDgoMbGVuZ3RoX29uZW9mQgoKCGlkX29uZW9mQgwKCm5h",
-                  "bWVfb25lb2ZCDgoMYXZhdGFyX29uZW9mQg4KDGFjdGl2ZV9vbmVvZkJaCitv",
-                  "cmcud2hpc3BlcnN5c3RlbXMudGV4dHNlY3VyZS5pbnRlcm5hbC5wdXNoQhNT",
-                  "aWduYWxTZXJ2aWNlUHJvdG9zqgIVbGlic2lnbmFsc2VydmljZS5wdXNoYgZw",
-                  "cm90bzM="));
+                  "dGVySAASEgoIY29tcGxldGUYAiABKAhIAUIMCgpibG9iX29uZW9mQhAKDmNv",
+                  "bXBsZXRlX29uZW9mGkUKBkdyb3VwcxItCgRibG9iGAEgASgLMh0udGV4dHNl",
+                  "Y3VyZS5BdHRhY2htZW50UG9pbnRlckgAQgwKCmJsb2Jfb25lb2YaGgoHQmxv",
+                  "Y2tlZBIPCgdudW1iZXJzGAEgAygJGokBCgdSZXF1ZXN0EjQKBHR5cGUYASAB",
+                  "KA4yJC50ZXh0c2VjdXJlLlN5bmNNZXNzYWdlLlJlcXVlc3QuVHlwZUgAIjoK",
+                  "BFR5cGUSCwoHVU5LTk9XThAAEgwKCENPTlRBQ1RTEAESCgoGR1JPVVBTEAIS",
+                  "CwoHQkxPQ0tFRBADQgwKCnR5cGVfb25lb2YaUAoEUmVhZBIQCgZzZW5kZXIY",
+                  "ASABKAlIABITCgl0aW1lc3RhbXAYAiABKARIAUIOCgxzZW5kZXJfb25lb2ZC",
+                  "EQoPdGltZXN0YW1wX29uZW9mQgwKCnNlbnRfb25lb2ZCEAoOY29udGFjdHNf",
+                  "b25lb2ZCDgoMZ3JvdXBzX29uZW9mQg8KDXJlcXVlc3Rfb25lb2ZCDwoNYmxv",
+                  "Y2tlZF9vbmVvZiLVAgoRQXR0YWNobWVudFBvaW50ZXISDAoCaWQYASABKAZI",
+                  "ABIVCgtjb250ZW50VHlwZRgCIAEoCUgBEg0KA2tleRgDIAEoDEgCEg4KBHNp",
+                  "emUYBCABKA1IAxITCgl0aHVtYm5haWwYBSABKAxIBBIQCgZkaWdlc3QYBiAB",
+                  "KAxIBRISCghmaWxlTmFtZRgHIAEoCUgGEg8KBWZsYWdzGAggASgNSAciMAoF",
+                  "RmxhZ3MSFAoQWkVST19QTEFDRUhPTERFUhAAEhEKDVZPSUNFX01FU1NBR0UQ",
+                  "AUIKCghpZF9vbmVvZkITChFjb250ZW50VHlwZV9vbmVvZkILCglrZXlfb25l",
+                  "b2ZCDAoKc2l6ZV9vbmVvZkIRCg90aHVtYm5haWxfb25lb2ZCDgoMZGlnZXN0",
+                  "X29uZW9mQhAKDmZpbGVOYW1lX29uZW9mQg0KC2ZsYWdzX29uZW9mIp8CCgxH",
+                  "cm91cENvbnRleHQSDAoCaWQYASABKAxIABItCgR0eXBlGAIgASgOMh0udGV4",
+                  "dHNlY3VyZS5Hcm91cENvbnRleHQuVHlwZUgBEg4KBG5hbWUYAyABKAlIAhIP",
+                  "CgdtZW1iZXJzGAQgAygJEi8KBmF2YXRhchgFIAEoCzIdLnRleHRzZWN1cmUu",
+                  "QXR0YWNobWVudFBvaW50ZXJIAyJICgRUeXBlEgsKB1VOS05PV04QABIKCgZV",
+                  "UERBVEUQARILCgdERUxJVkVSEAISCAoEUVVJVBADEhAKDFJFUVVFU1RfSU5G",
+                  "TxAEQgoKCGlkX29uZW9mQgwKCnR5cGVfb25lb2ZCDAoKbmFtZV9vbmVvZkIO",
+                  "CgxhdmF0YXJfb25lb2YijQIKDkNvbnRhY3REZXRhaWxzEhAKBm51bWJlchgB",
+                  "IAEoCUgAEg4KBG5hbWUYAiABKAlIARIzCgZhdmF0YXIYAyABKAsyIS50ZXh0",
+                  "c2VjdXJlLkNvbnRhY3REZXRhaWxzLkF2YXRhckgCEg8KBWNvbG9yGAQgASgJ",
+                  "SAMaVgoGQXZhdGFyEhUKC2NvbnRlbnRUeXBlGAEgASgJSAASEAoGbGVuZ3Ro",
+                  "GAIgASgNSAFCEwoRY29udGVudFR5cGVfb25lb2ZCDgoMbGVuZ3RoX29uZW9m",
+                  "Qg4KDG51bWJlcl9vbmVvZkIMCgpuYW1lX29uZW9mQg4KDGF2YXRhcl9vbmVv",
+                  "ZkINCgtjb2xvcl9vbmVvZiKUAgoMR3JvdXBEZXRhaWxzEgwKAmlkGAEgASgM",
+                  "SAASDgoEbmFtZRgCIAEoCUgBEg8KB21lbWJlcnMYAyADKAkSMQoGYXZhdGFy",
+                  "GAQgASgLMh8udGV4dHNlY3VyZS5Hcm91cERldGFpbHMuQXZhdGFySAISEAoG",
+                  "YWN0aXZlGAUgASgISAMaVgoGQXZhdGFyEhUKC2NvbnRlbnRUeXBlGAEgASgJ",
+                  "SAASEAoGbGVuZ3RoGAIgASgNSAFCEwoRY29udGVudFR5cGVfb25lb2ZCDgoM",
+                  "bGVuZ3RoX29uZW9mQgoKCGlkX29uZW9mQgwKCm5hbWVfb25lb2ZCDgoMYXZh",
+                  "dGFyX29uZW9mQg4KDGFjdGl2ZV9vbmVvZkJaCitvcmcud2hpc3BlcnN5c3Rl",
+                  "bXMudGV4dHNlY3VyZS5pbnRlcm5hbC5wdXNoQhNTaWduYWxTZXJ2aWNlUHJv",
+                  "dG9zqgIVbGlic2lnbmFsc2VydmljZS5wdXNoYgZwcm90bzM="));
             descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
                 new pbr::FileDescriptor[] { },
                 new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -126,12 +128,12 @@ namespace libsignalservice.push
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.CallMessage.Types.Hangup), global::libsignalservice.push.CallMessage.Types.Hangup.Parser, new[]{ "Id" }, new[]{ "IdOneof" }, null, null)}),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.DataMessage), global::libsignalservice.push.DataMessage.Parser, new[]{ "Body", "Attachments", "Group", "Flags", "ExpireTimer" }, new[]{ "BodyOneof", "GroupOneof", "FlagsOneof", "ExpireTimerOneof" }, new[]{ typeof(global::libsignalservice.push.DataMessage.Types.Flags) }, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage), global::libsignalservice.push.SyncMessage.Parser, new[]{ "Sent", "Contacts", "Groups", "Request", "Read", "Blocked" }, new[]{ "SentOneof", "ContactsOneof", "GroupsOneof", "RequestOneof", "BlockedOneof" }, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Sent), global::libsignalservice.push.SyncMessage.Types.Sent.Parser, new[]{ "Destination", "Timestamp", "Message", "ExpirationStartTimestamp" }, new[]{ "DestinationOneof", "TimestampOneof", "MessageOneof", "ExpirationStartTimestampOneof" }, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Contacts), global::libsignalservice.push.SyncMessage.Types.Contacts.Parser, new[]{ "Blob" }, new[]{ "BlobOneof" }, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Contacts), global::libsignalservice.push.SyncMessage.Types.Contacts.Parser, new[]{ "Blob", "Complete" }, new[]{ "BlobOneof", "CompleteOneof" }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Groups), global::libsignalservice.push.SyncMessage.Types.Groups.Parser, new[]{ "Blob" }, new[]{ "BlobOneof" }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Blocked), global::libsignalservice.push.SyncMessage.Types.Blocked.Parser, new[]{ "Numbers" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Request), global::libsignalservice.push.SyncMessage.Types.Request.Parser, new[]{ "Type" }, new[]{ "TypeOneof" }, new[]{ typeof(global::libsignalservice.push.SyncMessage.Types.Request.Types.Type) }, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Read), global::libsignalservice.push.SyncMessage.Types.Read.Parser, new[]{ "Sender", "Timestamp" }, new[]{ "SenderOneof", "TimestampOneof" }, null, null)}),
-            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.AttachmentPointer), global::libsignalservice.push.AttachmentPointer.Parser, new[]{ "Id", "ContentType", "Key", "Size", "Thumbnail", "Digest", "FileName" }, new[]{ "IdOneof", "ContentTypeOneof", "KeyOneof", "SizeOneof", "ThumbnailOneof", "DigestOneof", "FileNameOneof" }, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.AttachmentPointer), global::libsignalservice.push.AttachmentPointer.Parser, new[]{ "Id", "ContentType", "Key", "Size", "Thumbnail", "Digest", "FileName", "Flags" }, new[]{ "IdOneof", "ContentTypeOneof", "KeyOneof", "SizeOneof", "ThumbnailOneof", "DigestOneof", "FileNameOneof", "FlagsOneof" }, new[]{ typeof(global::libsignalservice.push.AttachmentPointer.Types.Flags) }, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.GroupContext), global::libsignalservice.push.GroupContext.Parser, new[]{ "Id", "Type", "Name", "Members", "Avatar" }, new[]{ "IdOneof", "TypeOneof", "NameOneof", "AvatarOneof" }, new[]{ typeof(global::libsignalservice.push.GroupContext.Types.Type) }, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.ContactDetails), global::libsignalservice.push.ContactDetails.Parser, new[]{ "Number", "Name", "Avatar", "Color" }, new[]{ "NumberOneof", "NameOneof", "AvatarOneof", "ColorOneof" }, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.ContactDetails.Types.Avatar), global::libsignalservice.push.ContactDetails.Types.Avatar.Parser, new[]{ "ContentType", "Length" }, new[]{ "ContentTypeOneof", "LengthOneof" }, null, null)}),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.GroupDetails), global::libsignalservice.push.GroupDetails.Parser, new[]{ "Id", "Name", "Members", "Avatar", "Active" }, new[]{ "IdOneof", "NameOneof", "AvatarOneof", "ActiveOneof" }, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.GroupDetails.Types.Avatar), global::libsignalservice.push.GroupDetails.Types.Avatar.Parser, new[]{ "ContentType", "Length" }, new[]{ "ContentTypeOneof", "LengthOneof" }, null, null)})
@@ -4154,6 +4156,13 @@ namespace libsignalservice.push
                             Blob = other.Blob.Clone();
                             break;
                     }
+
+                    switch (other.CompleteOneofCase)
+                    {
+                        case CompleteOneofOneofCase.Complete:
+                            Complete = other.Complete;
+                            break;
+                    }
                 }
 
                 [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4173,6 +4182,20 @@ namespace libsignalservice.push
                     {
                         blobOneof_ = value;
                         blobOneofCase_ = value == null ? BlobOneofOneofCase.None : BlobOneofOneofCase.Blob;
+                    }
+                }
+
+                /// <summary>Field number for the "complete" field.</summary>
+                public const int CompleteFieldNumber = 2;
+
+                [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+                public bool Complete
+                {
+                    get { return completeOneofCase_ == CompleteOneofOneofCase.Complete ? (bool)completeOneof_ : false; }
+                    set
+                    {
+                        completeOneof_ = value;
+                        completeOneofCase_ = CompleteOneofOneofCase.Complete;
                     }
                 }
 
@@ -4200,6 +4223,30 @@ namespace libsignalservice.push
                     blobOneof_ = null;
                 }
 
+                private object completeOneof_;
+
+                /// <summary>Enum of possible cases for the "complete_oneof" oneof.</summary>
+                public enum CompleteOneofOneofCase
+                {
+                    None = 0,
+                    Complete = 2,
+                }
+
+                private CompleteOneofOneofCase completeOneofCase_ = CompleteOneofOneofCase.None;
+
+                [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+                public CompleteOneofOneofCase CompleteOneofCase
+                {
+                    get { return completeOneofCase_; }
+                }
+
+                [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+                public void ClearCompleteOneof()
+                {
+                    completeOneofCase_ = CompleteOneofOneofCase.None;
+                    completeOneof_ = null;
+                }
+
                 [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
                 public override bool Equals(object other)
                 {
@@ -4218,7 +4265,9 @@ namespace libsignalservice.push
                         return true;
                     }
                     if (!object.Equals(Blob, other.Blob)) return false;
+                    if (Complete != other.Complete) return false;
                     if (BlobOneofCase != other.BlobOneofCase) return false;
+                    if (CompleteOneofCase != other.CompleteOneofCase) return false;
                     return true;
                 }
 
@@ -4227,7 +4276,9 @@ namespace libsignalservice.push
                 {
                     int hash = 1;
                     if (blobOneofCase_ == BlobOneofOneofCase.Blob) hash ^= Blob.GetHashCode();
+                    if (completeOneofCase_ == CompleteOneofOneofCase.Complete) hash ^= Complete.GetHashCode();
                     hash ^= (int)blobOneofCase_;
+                    hash ^= (int)completeOneofCase_;
                     return hash;
                 }
 
@@ -4245,6 +4296,11 @@ namespace libsignalservice.push
                         output.WriteRawTag(10);
                         output.WriteMessage(Blob);
                     }
+                    if (completeOneofCase_ == CompleteOneofOneofCase.Complete)
+                    {
+                        output.WriteRawTag(16);
+                        output.WriteBool(Complete);
+                    }
                 }
 
                 [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4254,6 +4310,10 @@ namespace libsignalservice.push
                     if (blobOneofCase_ == BlobOneofOneofCase.Blob)
                     {
                         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Blob);
+                    }
+                    if (completeOneofCase_ == CompleteOneofOneofCase.Complete)
+                    {
+                        size += 1 + 1;
                     }
                     return size;
                 }
@@ -4269,6 +4329,13 @@ namespace libsignalservice.push
                     {
                         case BlobOneofOneofCase.Blob:
                             Blob = other.Blob;
+                            break;
+                    }
+
+                    switch (other.CompleteOneofCase)
+                    {
+                        case CompleteOneofOneofCase.Complete:
+                            Complete = other.Complete;
                             break;
                     }
                 }
@@ -4294,6 +4361,11 @@ namespace libsignalservice.push
                                     }
                                     input.ReadMessage(subBuilder);
                                     Blob = subBuilder;
+                                    break;
+                                }
+                            case 16:
+                                {
+                                    Complete = input.ReadBool();
                                     break;
                                 }
                         }
@@ -5142,6 +5214,13 @@ namespace libsignalservice.push
                     FileName = other.FileName;
                     break;
             }
+
+            switch (other.FlagsOneofCase)
+            {
+                case FlagsOneofOneofCase.Flags:
+                    Flags = other.Flags;
+                    break;
+            }
         }
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -5245,6 +5324,20 @@ namespace libsignalservice.push
             {
                 fileNameOneof_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
                 fileNameOneofCase_ = FileNameOneofOneofCase.FileName;
+            }
+        }
+
+        /// <summary>Field number for the "flags" field.</summary>
+        public const int FlagsFieldNumber = 8;
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public uint Flags
+        {
+            get { return flagsOneofCase_ == FlagsOneofOneofCase.Flags ? (uint)flagsOneof_ : 0; }
+            set
+            {
+                flagsOneof_ = value;
+                flagsOneofCase_ = FlagsOneofOneofCase.Flags;
             }
         }
 
@@ -5416,6 +5509,30 @@ namespace libsignalservice.push
             fileNameOneof_ = null;
         }
 
+        private object flagsOneof_;
+
+        /// <summary>Enum of possible cases for the "flags_oneof" oneof.</summary>
+        public enum FlagsOneofOneofCase
+        {
+            None = 0,
+            Flags = 8,
+        }
+
+        private FlagsOneofOneofCase flagsOneofCase_ = FlagsOneofOneofCase.None;
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public FlagsOneofOneofCase FlagsOneofCase
+        {
+            get { return flagsOneofCase_; }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void ClearFlagsOneof()
+        {
+            flagsOneofCase_ = FlagsOneofOneofCase.None;
+            flagsOneof_ = null;
+        }
+
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public override bool Equals(object other)
         {
@@ -5440,6 +5557,7 @@ namespace libsignalservice.push
             if (Thumbnail != other.Thumbnail) return false;
             if (Digest != other.Digest) return false;
             if (FileName != other.FileName) return false;
+            if (Flags != other.Flags) return false;
             if (IdOneofCase != other.IdOneofCase) return false;
             if (ContentTypeOneofCase != other.ContentTypeOneofCase) return false;
             if (KeyOneofCase != other.KeyOneofCase) return false;
@@ -5447,6 +5565,7 @@ namespace libsignalservice.push
             if (ThumbnailOneofCase != other.ThumbnailOneofCase) return false;
             if (DigestOneofCase != other.DigestOneofCase) return false;
             if (FileNameOneofCase != other.FileNameOneofCase) return false;
+            if (FlagsOneofCase != other.FlagsOneofCase) return false;
             return true;
         }
 
@@ -5461,6 +5580,7 @@ namespace libsignalservice.push
             if (thumbnailOneofCase_ == ThumbnailOneofOneofCase.Thumbnail) hash ^= Thumbnail.GetHashCode();
             if (digestOneofCase_ == DigestOneofOneofCase.Digest) hash ^= Digest.GetHashCode();
             if (fileNameOneofCase_ == FileNameOneofOneofCase.FileName) hash ^= FileName.GetHashCode();
+            if (flagsOneofCase_ == FlagsOneofOneofCase.Flags) hash ^= Flags.GetHashCode();
             hash ^= (int)idOneofCase_;
             hash ^= (int)contentTypeOneofCase_;
             hash ^= (int)keyOneofCase_;
@@ -5468,6 +5588,7 @@ namespace libsignalservice.push
             hash ^= (int)thumbnailOneofCase_;
             hash ^= (int)digestOneofCase_;
             hash ^= (int)fileNameOneofCase_;
+            hash ^= (int)flagsOneofCase_;
             return hash;
         }
 
@@ -5515,6 +5636,11 @@ namespace libsignalservice.push
                 output.WriteRawTag(58);
                 output.WriteString(FileName);
             }
+            if (flagsOneofCase_ == FlagsOneofOneofCase.Flags)
+            {
+                output.WriteRawTag(64);
+                output.WriteUInt32(Flags);
+            }
         }
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -5548,6 +5674,10 @@ namespace libsignalservice.push
             if (fileNameOneofCase_ == FileNameOneofOneofCase.FileName)
             {
                 size += 1 + pb::CodedOutputStream.ComputeStringSize(FileName);
+            }
+            if (flagsOneofCase_ == FlagsOneofOneofCase.Flags)
+            {
+                size += 1 + pb::CodedOutputStream.ComputeUInt32Size(Flags);
             }
             return size;
         }
@@ -5607,6 +5737,13 @@ namespace libsignalservice.push
                     FileName = other.FileName;
                     break;
             }
+
+            switch (other.FlagsOneofCase)
+            {
+                case FlagsOneofOneofCase.Flags:
+                    Flags = other.Flags;
+                    break;
+            }
         }
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -5656,9 +5793,29 @@ namespace libsignalservice.push
                             FileName = input.ReadString();
                             break;
                         }
+                    case 64:
+                        {
+                            Flags = input.ReadUInt32();
+                            break;
+                        }
                 }
             }
         }
+
+        #region Nested types
+
+        /// <summary>Container for nested types declared in the AttachmentPointer message type.</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public static partial class Types
+        {
+            public enum Flags
+            {
+                [pbr::OriginalName("ZERO_PLACEHOLDER")] ZeroPlaceholder = 0,
+                [pbr::OriginalName("VOICE_MESSAGE")] VoiceMessage = 1,
+            }
+        }
+
+        #endregion Nested types
     }
 
     public sealed partial class GroupContext : pb::IMessage<GroupContext>

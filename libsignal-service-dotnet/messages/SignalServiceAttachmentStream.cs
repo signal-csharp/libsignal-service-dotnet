@@ -29,22 +29,25 @@ namespace libsignalservice.messages
     {
         private readonly Stream inputStream;
         private readonly long length;
+        public readonly string FileName;
         private readonly ProgressListener listener;
         private readonly May<byte[]> preview;
-        public readonly string FileName;
+        public bool VoiceNote { get; }
+        
 
-        public SignalServiceAttachmentStream(Stream inputStream, string contentType, long length, string fileName, ProgressListener listener)
-           : this(inputStream, contentType, length, fileName, May<byte[]>.NoValue, listener)
+        public SignalServiceAttachmentStream(Stream inputStream, string contentType, long length, string fileName, bool voiceNote, ProgressListener listener)
+           : this(inputStream, contentType, length, fileName, voiceNote, May<byte[]>.NoValue, listener)
         {
         }
 
-        public SignalServiceAttachmentStream(Stream inputStream, String contentType, long length, string fileName, May<byte[]> preview, ProgressListener listener)
+        public SignalServiceAttachmentStream(Stream inputStream, String contentType, long length, string fileName, bool voiceNote, May<byte[]> preview, ProgressListener listener)
             : base(contentType)
         {
             this.inputStream = inputStream;
             this.length = length;
             FileName = fileName;
             this.listener = listener;
+            VoiceNote = voiceNote;
             this.preview = preview;
         }
 

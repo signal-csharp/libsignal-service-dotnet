@@ -166,7 +166,8 @@ namespace libsignalservice.crypto
                                                                 pointer.SizeOneofCase == AttachmentPointer.SizeOneofOneofCase.Size ? pointer.Size : 0,
                                                                 pointer.ThumbnailOneofCase == AttachmentPointer.ThumbnailOneofOneofCase.Thumbnail ? pointer.Thumbnail.ToByteArray() : null,
                                                                 pointer.DigestOneofCase == AttachmentPointer.DigestOneofOneofCase.Digest ? pointer.Digest.ToByteArray() : null,
-                                                                pointer.FileNameOneofCase == AttachmentPointer.FileNameOneofOneofCase.FileName ? pointer.FileName : null));
+                                                                pointer.FileNameOneofCase == AttachmentPointer.FileNameOneofOneofCase.FileName ? pointer.FileName : null,
+                                                                pointer.FlagsOneofCase == AttachmentPointer.FlagsOneofOneofCase.Flags && (pointer.Flags & (uint) AttachmentPointer.Types.Flags.VoiceMessage) != 0));
             }
 
             return new SignalServiceDataMessage()
@@ -314,7 +315,8 @@ namespace libsignalservice.crypto
                         pointer.Key.ToByteArray(),
                         envelope.getRelay(),
                         pointer.Digest.ToByteArray(),
-                        null);
+                        null,
+                        false);
                 }
 
                 return new SignalServiceGroup()

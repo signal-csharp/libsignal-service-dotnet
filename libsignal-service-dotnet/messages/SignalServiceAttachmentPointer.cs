@@ -31,12 +31,13 @@ namespace libsignalservice.messages
         public byte[] Preview { get; }
         public byte[] Digest { get; }
         public string FileName { get; }
+        public bool VoiceNote { get; }
 
-        public SignalServiceAttachmentPointer(ulong id, string contentType, byte[] key, string relay, byte[] digest, string fileName)
-        : this(id, contentType, key, relay, null, null, digest, fileName)
+        public SignalServiceAttachmentPointer(ulong id, string contentType, byte[] key, string relay, byte[] digest, string fileName, bool voiceNote)
+        : this(id, contentType, key, relay, null, null, digest, fileName, voiceNote)
         { }
 
-        public SignalServiceAttachmentPointer(ulong id, string contentType, byte[] key, string relay, uint? size, byte[] preview, byte[] digest, string fileName)
+        public SignalServiceAttachmentPointer(ulong id, string contentType, byte[] key, string relay, uint? size, byte[] preview, byte[] digest, string fileName, bool voiceNote)
             : base(contentType)
         {
             Id = id;
@@ -46,6 +47,7 @@ namespace libsignalservice.messages
             Preview = preview;
             Digest = digest;
             FileName = fileName;
+            VoiceNote = voiceNote;
         }
 
         public override bool isStream()
