@@ -1,4 +1,5 @@
 using Google.Protobuf;
+using libsignal.push;
 using libsignalservice.messages;
 using libsignalservice.push;
 using libsignalservice.util;
@@ -102,6 +103,32 @@ namespace libsignalservice
             else
             {
                 throw new IOException("timeout reached while waiting for confirmation");
+            }
+        }
+
+        public SignalServiceProfile GetProfile(SignalServiceAddress address)
+        {
+            WebSocketRequestMessage requestMessage = new WebSocketRequestMessage()
+            {
+                Id = BitConverter.ToUInt64(Util.getSecretBytes(sizeof(long)), 0),
+                Verb = "GET",
+                Path = $"/v1/profile/{address.getNumber()}"
+            };
+
+            var t = Websocket.SendRequest(requestMessage);
+            t.Wait();
+            if (t.IsCompleted)
+            {
+                var response = t.Result;
+                if (response.Item1 < 200 || response.Item1 >= 300)
+                {
+                    throw new IOException("non-successfull response: " + response.Item1 + " " + response.Item2);
+                }
+                return JsonUtil.fromJson<SignalServiceProfile>(response.Item2);
+            }
+            else
+            {
+                throw new IOException("timeout reached while waiting for profile");
             }
         }
 

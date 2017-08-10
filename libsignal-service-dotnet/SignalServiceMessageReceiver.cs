@@ -1,3 +1,4 @@
+using libsignal.push;
 using libsignalservice.messages;
 using libsignalservice.push;
 using libsignalservice.util;
@@ -37,6 +38,11 @@ namespace libsignalservice
             this.credentialsProvider = credentials;
             this.socket = new PushServiceSocket(urls, credentials, userAgent);
             this.userAgent = userAgent;
+        }
+
+        public SignalServiceProfile RetrieveProfile(SignalServiceAddress address)
+        {
+            return socket.RetrieveProfile(address);
         }
 
         /// <summary>

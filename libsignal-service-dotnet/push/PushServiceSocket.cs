@@ -68,6 +68,8 @@ namespace libsignalservice.push
         private static readonly string RECEIPT_PATH = "/v1/receipt/{0}/{1}";
         private static readonly string ATTACHMENT_PATH = "/v1/attachments/{0}";
 
+        private static readonly string PROFILE_PATH = "/v1/profile/%s";
+
         private readonly SignalConnectionInformation[] signalConnectionInformation;
         private readonly CredentialsProvider credentialsProvider;
         private readonly string userAgent;
@@ -404,6 +406,19 @@ namespace libsignalservice.push
             Debug.WriteLine("PushServiceSocket: Attachment: " + attachmentId + " is at: " + descriptor.getLocation());
 
             downloadExternalFile(descriptor.getLocation(), tmpDestination);
+        }
+
+        public SignalServiceProfile RetrieveProfile(SignalServiceAddress target)
+        {
+            try
+            {
+                string response = makeRequest(string.Format(PROFILE_PATH, target.getNumber()), "GET", null);
+                return JsonUtil.fromJson<SignalServiceProfile>(response);
+            }
+            catch (Exception e)
+            {
+                throw new NonSuccessfulResponseCodeException("Unable to parse entity: "+e.Message);
+            }
         }
 
         public List<ContactTokenDetails> retrieveDirectory(ICollection<string> contactTokens) // TODO: whacky
