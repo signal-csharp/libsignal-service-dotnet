@@ -165,7 +165,8 @@ namespace libsignalservice.crypto
                                                                 pointer.Key.ToByteArray(),
                                                                 envelope.getRelay(),
                                                                 pointer.SizeOneofCase == AttachmentPointer.SizeOneofOneofCase.Size ? pointer.Size : 0,
-                                                                pointer.ThumbnailOneofCase == AttachmentPointer.ThumbnailOneofOneofCase.Thumbnail ? pointer.Thumbnail.ToByteArray() : null));
+                                                                pointer.ThumbnailOneofCase == AttachmentPointer.ThumbnailOneofOneofCase.Thumbnail ? pointer.Thumbnail.ToByteArray() : null,
+                                                                pointer.DigestOneofCase == AttachmentPointer.DigestOneofOneofCase.Digest ? pointer.Digest.ToByteArray() : null));
             }
 
             return new SignalServiceDataMessage()
@@ -306,11 +307,14 @@ namespace libsignalservice.crypto
 
                 if (content.Group.AvatarOneofCase == GroupContext.AvatarOneofOneofCase.Avatar)
                 {
-                    avatar = new SignalServiceAttachmentPointer(content.Group.Avatar.Id,
-                                                             content.Group.Avatar.ContentType,
-                                                             null,
-                                                             content.Group.Avatar.Key.ToByteArray(),
-                                                             envelope.getRelay());
+                    AttachmentPointer pointer = content.Group.Avatar;
+
+                    avatar = new SignalServiceAttachmentPointer(pointer.Id,
+                        pointer.ContentType,
+                        null,
+                        pointer.Key.ToByteArray(),
+                        envelope.getRelay(),
+                        pointer.Digest.ToByteArray());
                 }
 
                 return new SignalServiceGroup()

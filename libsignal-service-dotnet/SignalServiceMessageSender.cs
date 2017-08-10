@@ -474,13 +474,14 @@ namespace libsignalservice
                                                                        (ulong)attachment.getLength(),
                                                                        attachmentKey);
 
-            ulong attachmentId = socket.sendAttachment(attachmentData);
+            Tuple<ulong, byte[]> attachmentIdAndDigest = socket.SendAttachment(attachmentData);
 
             var attachmentPointer = new AttachmentPointer
             {
                 ContentType = attachment.getContentType(),
-                Id = attachmentId,
+                Id = attachmentIdAndDigest.Item1,
                 Key = ByteString.CopyFrom(attachmentKey),
+                Digest = ByteString.CopyFrom(attachmentIdAndDigest.Item2),
                 Size = (uint)attachment.getLength()
             };
 

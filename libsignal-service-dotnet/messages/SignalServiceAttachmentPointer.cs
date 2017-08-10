@@ -24,36 +24,28 @@ namespace libsignalservice.messages
     /// </summary>
     public class SignalServiceAttachmentPointer : SignalServiceAttachment
     {
-        private readonly ulong id;
-        private readonly byte[] key;
-        private readonly string relay;
-        private readonly uint size;
-        private readonly byte[] preview;
-        public readonly string FileName;
+        public ulong Id { get; }
+        public byte[] Key { get; }
+        public string Relay { get; }
+        public uint? Size { get; }
+        public byte[] Preview { get; }
+        public byte[] Digest { get; }
+        public string FileName { get; }
 
-        public SignalServiceAttachmentPointer(ulong id, string contentType, string fileName, byte[] key, string relay)
-        : this(id, contentType, fileName, key, relay, 0, null)
+        public SignalServiceAttachmentPointer(ulong id, string contentType, string fileName, byte[] key, string relay, byte[] digest)
+        : this(id, contentType, fileName, key, relay, null, null, digest)
         { }
 
-        public SignalServiceAttachmentPointer(ulong id, string contentType, string fileName, byte[] key, string relay, uint size, byte[] preview)
+        public SignalServiceAttachmentPointer(ulong id, string contentType, string fileName, byte[] key, string relay, uint? size, byte[] preview, byte[] digest)
             : base(contentType)
         {
-            this.id = id;
-            this.key = key;
-            this.relay = relay;
-            this.size = size;
-            this.preview = preview;
+            Id = id;
+            Key = key;
+            Relay = relay;
+            Size = size;
+            Preview = preview;
+            Digest = digest;
             FileName = fileName;
-        }
-
-        public ulong getId()
-        {
-            return id;
-        }
-
-        public byte[] getKey()
-        {
-            return key;
         }
 
         public override bool isStream()
@@ -64,11 +56,6 @@ namespace libsignalservice.messages
         public override bool isPointer()
         {
             return true;
-        }
-
-        public string getRelay()
-        {
-            return relay;
         }
     }
 }

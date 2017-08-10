@@ -370,7 +370,7 @@ namespace libsignalservice.push
             return true;
         }
 
-        public ulong sendAttachment(PushAttachmentData attachment)// throws IOException
+        public Tuple<ulong, byte[]> SendAttachment(PushAttachmentData attachment)// throws IOException
         {
             string response = makeRequest(string.Format(ATTACHMENT_PATH, ""), "GET", null);
             AttachmentDescriptor attachmentKey = JsonUtil.fromJson<AttachmentDescriptor>(response);
@@ -382,11 +382,10 @@ namespace libsignalservice.push
 
             Debug.WriteLine("Got attachment content location: " + attachmentKey.getLocation(), TAG);
 
-            /*uploadAttachment("PUT", attachmentKey.getLocation(), attachment.getData(),
-                             attachment.getDataSize(), attachment.getKey());
-*/
-            throw new NotImplementedException("PushServiceSocket sendAttachment");
-            return attachmentKey.getId();
+            byte[] digest = UploadAttachment("PUT", attachmentKey.getLocation(), attachment.getData(),
+                attachment.getDataSize(), attachment.getKey());
+
+            return new Tuple<ulong, byte[]>(attachmentKey.getId(), digest);
         }
 
         public void retrieveAttachment(string relay, ulong attachmentId, FileStream tmpDestination, int maxSizeBytes)
@@ -486,46 +485,27 @@ namespace libsignalservice.push
             }
         }
 
-        /*
-        private void uploadAttachment(string method, string url, InputStream data, long dataSize, byte[] key)
-        //throws IOException
+
+        private byte[] UploadAttachment(string method, string url, Stream data, ulong dataSize, byte[] key) //throws IOException
         {
-            URL uploadUrl = new URL(url);
-            HttpsURLConnection connection = (HttpsURLConnection)uploadUrl.openConnection();
-            connection.setDoOutput(true);
+            StreamContent streamContent = new StreamContent(data);
+            var request = new HttpRequestMessage(HttpMethod.Put, url);
+            request.Content = streamContent;
+            request.Properties.Add("Content-Type", "application/octet-stream");
+            request.Properties.Add("Connection", "close");
 
-            if (dataSize > 0)
+            //TODO encrypt
+            throw new NotImplementedException();
+
+            var client = new HttpClient();
+            HttpResponseMessage response = client.SendAsync(request).Result;
+
+            if (response.StatusCode != HttpStatusCode.OK)
             {
-                connection.setFixedLengthStreamingMode((int)AttachmentCipherOutputStream.getCiphertextLength(dataSize));
+                throw new IOException("bad response: " + response.StatusCode);
             }
-            else
-            {
-                connection.setChunkedStreamingMode(0);
-            }
-
-            connection.setRequestMethod(method);
-            connection.setRequestProperty("Content-Type", "application/octet-stream");
-            connection.setRequestProperty("Connection", "close");
-            connection.connect();
-
-            try
-            {
-                OutputStream stream = connection.getOutputStream();
-                AttachmentCipherOutputStream out    = new AttachmentCipherOutputStream(key, stream);
-
-                Util.copy(data, out);
-      out.flush();
-
-                if (connection.getResponseCode() != 200)
-                {
-                    throw new IOException("Bad response: " + connection.getResponseCode() + " " + connection.getResponseMessage());
-                }
-            }
-            finally
-            {
-                connection.disconnect();
-            }
-        }*/
+            return response.Content.ReadAsByteArrayAsync().Result;
+        }
 
         private string makeRequest(string urlFragment, string method, string body)
         //throws NonSuccessfulResponseCodeException, PushNetworkException

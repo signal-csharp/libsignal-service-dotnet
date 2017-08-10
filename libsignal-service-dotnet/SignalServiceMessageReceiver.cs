@@ -62,10 +62,10 @@ namespace libsignalservice
         /// <param name="listener">An optional listener (may be null) to receive callbacks on download progress.</param>
         public void retrieveAttachment(SignalServiceAttachmentPointer pointer, FileStream plaintextDestination, FileStream tmpCipherDestination, int maxSizeBytes, ProgressListener listener)
         {
-            socket.retrieveAttachment(pointer.getRelay(), pointer.getId(), tmpCipherDestination, maxSizeBytes);
+            socket.retrieveAttachment(pointer.Relay, pointer.Id, tmpCipherDestination, maxSizeBytes);
             tmpCipherDestination.Seek(0, SeekOrigin.Begin);
 
-            byte[] combinedKeyMaterial = pointer.getKey();
+            byte[] combinedKeyMaterial = pointer.Key;
             byte[][] parts = Util.split(combinedKeyMaterial, CIPHER_KEY_SIZE, MAC_KEY_SIZE);
             //byte[] digest = pointer.getDigest(); //TODO
             //verifyMac()
