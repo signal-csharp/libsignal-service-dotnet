@@ -46,9 +46,9 @@ namespace libsignalservice
         /// received in a <see cref="SignalServiceDataMessage"/></param>
         /// <param name="plaintextDestination">The download destination for this attachment.</param>
         /// <param name="tmpCipherDestination">The temporary destination for this attachment before decryption</param>
-        public void retrieveAttachment(SignalServiceAttachmentPointer pointer, FileStream plaintextDestination, FileStream tmpCipherDestination)
+        public void retrieveAttachment(SignalServiceAttachmentPointer pointer, FileStream plaintextDestination, FileStream tmpCipherDestination, int maxSizeBytes)
         {
-            retrieveAttachment(pointer, plaintextDestination, tmpCipherDestination, 80 * 1024 * 1024, null);
+            retrieveAttachment(pointer, plaintextDestination, tmpCipherDestination, maxSizeBytes, null);
         }
 
         /// <summary>
