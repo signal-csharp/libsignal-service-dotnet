@@ -23,7 +23,7 @@ namespace libsignalservice.util
     {
         public static byte[] sha1(byte[] input)
         {
-            using (SHA512 sha = SHA512.Create())
+            using (SHA1 sha = SHA1.Create())
             {
                 return sha.ComputeHash(input);
             }
