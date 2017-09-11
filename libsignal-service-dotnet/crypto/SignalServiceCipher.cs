@@ -240,9 +240,10 @@ namespace libsignalservice.crypto
             else if (content.IceUpdate.Count > 0)
             {
                 var m = new SignalServiceCallMessage();
+                var l = new List<IceUpdateMessage>();
                 foreach (var u in content.IceUpdate)
                 {
-                    m.IceUpdateMessages.Add(new IceUpdateMessage()
+                   l.Add(new IceUpdateMessage()
                     {
                         Id = u.Id,
                         SdpMid = u.SdpMid,
@@ -250,6 +251,7 @@ namespace libsignalservice.crypto
                         Sdp = u.Sdp
                     });
                 }
+                m.IceUpdateMessages = l;
                 return m;
             }
             else if (content.HangupOneofCase == CallMessage.HangupOneofOneofCase.Hangup)
