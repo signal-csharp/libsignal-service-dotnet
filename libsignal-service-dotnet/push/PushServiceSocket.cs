@@ -618,7 +618,19 @@ namespace libsignalservice.push
                 May<string> hostHeader = connectionInformation.getHostHeader();
                 Uri uri = new Uri(string.Format("{0}{1}", url, urlFragment));
                 Debug.WriteLine("{0}: Uri {1}", TAG, uri);
-                HttpClient connection = new HttpClient();
+                HttpClientHandler handler = new HttpClientHandler();
+                HttpClient connection;
+                try
+                {
+                    handler.ServerCertificateCustomValidationCallback = Func;
+                    connection = new HttpClient(handler);
+                    Debug.WriteLine("Successfully set ServerCertificateCustomValidationCallback");
+                }
+                catch(Exception e)
+                {
+                    Debug.WriteLine("Cannot set ServerCertificateCustomValidationCallback: {0}", e);
+                    connection = new HttpClient();
+                }
 
                 var headers = connection.DefaultRequestHeaders;
 
