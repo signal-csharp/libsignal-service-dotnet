@@ -24,6 +24,7 @@ using Strilanc.Value;
 
 using System;
 using System.Linq;
+using static libsignalservice.SignalServiceMessagePipe;
 
 namespace libsignalservice.messages
 {
@@ -33,7 +34,7 @@ namespace libsignalservice.messages
     /// The envelope contains the wrapping information, such as the sender, the
     /// message timestamp, the encrypted message type, etc.
     /// </summary>
-    public class SignalServiceEnvelope
+    public class SignalServiceEnvelope: SignalServiceMessagePipeMessage
     {
         private static readonly string TAG = "SignalServiceEnvelope";
 

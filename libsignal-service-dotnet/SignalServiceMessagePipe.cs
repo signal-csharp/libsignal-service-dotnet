@@ -24,6 +24,7 @@ using libsignalservice.websocket;
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Threading;
@@ -42,7 +43,7 @@ namespace libsignalservice
         private readonly CredentialsProvider CredentialsProvider;
         private CancellationToken Token;
 
-        public SignalServiceMessagePipe(CancellationToken token, SignalWebSocketConnection websocket, CredentialsProvider credentialsProvider)
+        internal SignalServiceMessagePipe(CancellationToken token, SignalWebSocketConnection websocket, CredentialsProvider credentialsProvider)
         {
             this.Token = token;
             this.Websocket = websocket;
@@ -50,32 +51,29 @@ namespace libsignalservice
             this.Websocket.Connect();
         }
 
-        public void ReadBlocking(MessagePipeCallback callback)
+        public void ReadBlocking(IMessagePipeCallback callback)
         {
-            LinkedList<WebSocketRequestMessage> requests = Websocket.readRequests();
-            int amount = requests.Count;
-            SignalServiceEnvelope[] envelopes = new SignalServiceEnvelope[amount];
-            WebSocketResponseMessage[] responses = new WebSocketResponseMessage[amount];
-            for (int i = 0; i < amount; i++)
+            WebSocketRequestMessage request = Websocket.ReadRequestBlocking();
+
+            if (IsSignalServiceEnvelope(request))
             {
-                WebSocketRequestMessage msg = requests.First.Value;
-                requests.RemoveFirst();
-                if (isSignalServiceEnvelope(msg))
+                SignalServiceMessagePipeMessage message = new SignalServiceEnvelope(request.Body.ToByteArray(), CredentialsProvider.GetSignalingKey());
+                WebSocketResponseMessage response = CreateWebSocketResponse(request);
+                try
                 {
-                    envelopes[i] = new SignalServiceEnvelope(msg.Body.ToByteArray(), CredentialsProvider.GetSignalingKey());
+                    callback.OnMessage(message);
                 }
-                responses[i] = createWebSocketResponse(msg);
-            }
-            try
-            {
-                callback.onMessages(envelopes);
-            }
-            finally
-            {
-                foreach (WebSocketResponseMessage response in responses)
+                finally
                 {
-                    Websocket.SendResponse(response);
+                    if (!Token.IsCancellationRequested)
+                    {
+                        Websocket.SendResponse(response);
+                    }
                 }
+            }
+            else
+            {
+                Debug.WriteLine("unknown request: {0} {1}", request.Verb, request.Path);
             }
         }
 
@@ -140,14 +138,14 @@ namespace libsignalservice
             Websocket.Disconnect();
         }
 
-        private bool isSignalServiceEnvelope(WebSocketRequestMessage message)
+        private bool IsSignalServiceEnvelope(WebSocketRequestMessage message)
         {
-            return "PUT".Equals(message.Verb) && "/api/v1/message".Equals(message.Path);
+            return message.Verb == "PUT" && message.Path == "/api/v1/message";
         }
 
-        private WebSocketResponseMessage createWebSocketResponse(WebSocketRequestMessage request)
+        private WebSocketResponseMessage CreateWebSocketResponse(WebSocketRequestMessage request)
         {
-            if (isSignalServiceEnvelope(request))
+            if (IsSignalServiceEnvelope(request))
             {
                 return new WebSocketResponseMessage
                 {
@@ -167,14 +165,24 @@ namespace libsignalservice
             }
         }
 
-        /**
-         * For receiving a callback when a new message has been
-         * received.
-         */
-
-        public interface MessagePipeCallback
+        /// <summary>
+        ///    Abstract superclass for messages received via the SignalServiceMessagePipe.
+        /// </summary>
+        public abstract class SignalServiceMessagePipeMessage
         {
-            void onMessages(SignalServiceEnvelope[] envelopes);
+
+        }
+
+        /// <summary>
+        /// A callback interface for the message pipe.
+        /// </summary>
+        public interface IMessagePipeCallback
+        {
+            /// <summary>
+            /// This message is called for every message received via the pipe.
+            /// </summary>
+            /// <param name="message">The received message</param>
+            void OnMessage(SignalServiceMessagePipeMessage message);
         }
     }
 }

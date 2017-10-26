@@ -32,7 +32,7 @@ using System.Threading.Tasks;
 
 namespace libsignalservice.websocket
 {
-    public class SignalWebSocketConnection
+    internal class SignalWebSocketConnection
     {
         private static readonly string TAG = "WebSocketConnection";
         private static readonly int KEEPALIVE_TIMEOUT_SECONDS = 55;
@@ -103,24 +103,27 @@ namespace libsignalservice.websocket
             throw new NotImplementedException();
         }
 
-        public LinkedList<WebSocketRequestMessage> readRequests()
-        {
-            LinkedList<WebSocketRequestMessage> requests = new LinkedList<WebSocketRequestMessage>();
 
-            WebSocketRequestMessage item;
-            while (IncomingRequests.TryTake(out item))
-            {
-                requests.AddLast(item);
-            }
-            if (requests.Count > 0)
-            {
-                return requests;
-            }
-            requests.AddLast(IncomingRequests.Take(Token));
-            return requests;
+
+        /// <summary>
+        /// Gets the next WebSocketRequestMessage from the websocket.
+        /// If there are no received messages in the buffer, this method will block until there are, or this connection's token is cancelled.
+        /// </summary>
+        /// <remarks>
+        /// keks
+        /// </remarks>
+        /// <returns>A WebSocketRequestMessage read from the websocket's pipe</returns>
+        public WebSocketRequestMessage ReadRequestBlocking()
+        {
+            return IncomingRequests.Take(Token);
         }
 
-        public async Task<Tuple<uint, string>> SendRequest(WebSocketRequestMessage request)
+        /// <summary>
+        /// Sends a WebSocketRequestMessage to the Signal server. The returned task will block for a maximum of 10 seconds.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns>Returns a task that returns a server response or throws an exception.</returns>
+        internal async Task<Tuple<uint, string>> SendRequest(WebSocketRequestMessage request)
         {
             Tuple<CountdownEvent, uint, string> t = new Tuple<CountdownEvent, uint, string>(new CountdownEvent(1), 0, null);
             WebSocketMessage message = new WebSocketMessage
@@ -141,6 +144,10 @@ namespace libsignalservice.websocket
             });
         }
 
+        /// <summary>
+        /// Sends a WebSocketResponseMessage to the Signal server. This method does not block until the message is actually sent.
+        /// </summary>
+        /// <param name="response"></param>
         public void SendResponse(WebSocketResponseMessage response)
         {
             WebSocketMessage message = new WebSocketMessage
@@ -151,9 +158,8 @@ namespace libsignalservice.websocket
             WebSocket.OutgoingQueue.Add(message.ToByteArray());
         }
 
-        private void sendKeepAlive(CancellationToken token, object state)
+        private void SendKeepAlive(CancellationToken token, object state)
         {
-            Debug.WriteLine("keepAlive");
             WebSocketMessage message = new WebSocketMessage
             {
                 Type = WebSocketMessage.Types.Type.Request,
