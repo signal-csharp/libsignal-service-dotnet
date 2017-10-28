@@ -57,9 +57,12 @@ namespace Coe.WebSocketWrapper
                 }
                 catch (Exception e)
                 {
-                    Logger.LogWarning("HandleOutgoingWS: Send failed ({0})", e.Message);
-                    Logger.LogInformation("HandleOutgoingWS reconnecting");
-                    Reconnect();
+                    if (!Token.IsCancellationRequested)
+                    {
+                        Logger.LogWarning("HandleOutgoingWS send failed ({0})", e.Message);
+                        Logger.LogInformation("HandleOutgoingWS reconnecting");
+                        Reconnect();
+                    }
                 }
             }
             //TODO dispose
@@ -112,7 +115,7 @@ namespace Coe.WebSocketWrapper
 
         public void HandleIncomingWS()
         {
-            Logger.LogTrace("HandleIncomingWS");
+            Logger.LogTrace("HandleIncomingWS()");
             var buffer = new byte[ReceiveChunkSize];
             while (!Token.IsCancellationRequested)
             {
@@ -141,8 +144,12 @@ namespace Coe.WebSocketWrapper
                 }
                 catch (Exception e)
                 {
-                    Logger.LogWarning("HandleIncomingWS recv failed ({0})", e.Message);
-                    Reconnect();
+                    if (!Token.IsCancellationRequested)
+                    {
+                        Logger.LogWarning("HandleIncomingWS recv failed ({0})", e.Message);
+                        Logger.LogInformation("HandleIncomingWS reconnecting");
+                        Reconnect();
+                    }
                 }
             }
             //TODO dispose
