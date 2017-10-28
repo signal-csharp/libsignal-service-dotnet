@@ -1,7 +1,8 @@
+using libsignalservice;
 using libsignalservice.push.exceptions;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Concurrent;
-using System.Diagnostics;
 using System.IO;
 using System.Net.WebSockets;
 using System.Threading;
@@ -9,27 +10,22 @@ using System.Threading.Tasks;
 
 namespace Coe.WebSocketWrapper
 {
-    public class WebSocketWrapper
+    internal class WebSocketWrapper
     {
         //https://gist.github.com/xamlmonkey/4737291
-        public static readonly string TAG = "[WebSocketWrapper] ";
-
+        private readonly ILogger Logger = LibsignalLogging.CreateLogger<WebSocketWrapper>();
         public BlockingCollection<byte[]> OutgoingQueue = new BlockingCollection<byte[]>(new ConcurrentQueue<byte[]>());
         private Task HandleOutgoing;
         private Task HandleIncoming;
-
         private const int ReceiveChunkSize = 1024;
-        private const int SendChunkSize = 1024;
-
         private volatile ClientWebSocket WebSocket;
         private readonly Uri _uri;
         private readonly CancellationToken Token;
         private object ReconnectLock = new object();
-
         private Action _onConnected;
         private Action<byte[]> _onMessage;
 
-        public WebSocketWrapper(string uri, CancellationToken token)
+        internal WebSocketWrapper(string uri, CancellationToken token)
         {
             CreateSocket();
             _uri = new Uri(uri);
@@ -39,12 +35,12 @@ namespace Coe.WebSocketWrapper
         private void CreateSocket()
         {
             WebSocket = new ClientWebSocket();
-            WebSocket.Options.KeepAliveInterval = TimeSpan.FromSeconds(20);
+            WebSocket.Options.KeepAliveInterval = TimeSpan.FromSeconds(30);
         }
 
         public void HandleOutgoingWS()
         {
-            Debug.WriteLine(TAG + "HandleOutgoingWS: Running");
+            Logger.LogTrace("HandleOutgoingWS()");
             byte[] buf = null;
             while (!Token.IsCancellationRequested)
             {
@@ -55,19 +51,19 @@ namespace Coe.WebSocketWrapper
                     WebSocket.SendAsync(new ArraySegment<byte>(buf, 0, buf.Length), WebSocketMessageType.Binary, true, Token).Wait();
                     buf = null; //set to null so we do not retry the same block
                 }
-                catch (TaskCanceledException e)
+                catch (TaskCanceledException)
                 {
-                    Debug.WriteLine(TAG + "HandleOutgoingWS: Shutting down");
+                    Logger.LogDebug("HandleOutgoingWS task shutting down");
                 }
                 catch (Exception e)
                 {
-                    Debug.WriteLine(TAG + "HandleOutgoingWS: Send failed (" + e.Message + ")");
-                    Debug.WriteLine(TAG + "HandleOutgoingWS: Reconnecting");
+                    Logger.LogWarning("HandleOutgoingWS: Send failed ({0})", e.Message);
+                    Logger.LogInformation("HandleOutgoingWS reconnecting");
                     Reconnect();
                 }
             }
             //TODO dispose
-            Debug.WriteLine(TAG + "HandleOutgoingWS: Finished");
+            Logger.LogTrace("HandleOutgoingWS task finished");
         }
 
         public void Reconnect()
@@ -82,9 +78,9 @@ namespace Coe.WebSocketWrapper
                 {
                     WebSocket.CloseOutputAsync(WebSocketCloseStatus.NormalClosure, "goodbye", Token).Wait();
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
-                    Debug.WriteLine("Reconnect: Could not close websocket gracefully (" + e.Message + ")");
+                    Logger.LogTrace("could not close old websocket gracefully");
                 }
                 while (true)
                 {
@@ -99,7 +95,6 @@ namespace Coe.WebSocketWrapper
                     }
                     catch (Exception e)
                     {
-                        Debug.WriteLine("Reconnect: Failed to open websocket connection (" + e.Message + ")");
                         var delay_length = 15;
                         if (tries > 20)
                             delay_length = 60 * 5;
@@ -107,16 +102,17 @@ namespace Coe.WebSocketWrapper
                             delay_length = 60;
                         else if (tries > 5)
                             delay_length = 30;
+                        Logger.LogWarning("Failed to reconnect ({0}). Retrying in {1} seconds", e.Message, delay_length);
                         Task.Delay(1000 * delay_length, Token).Wait();
                     }
                 }
             }
-            Debug.WriteLine("Reconnect: Successfully reconnected to the server");
+            Logger.LogInformation("Successfully reconnected to the server");
         }
 
         public void HandleIncomingWS()
         {
-            Debug.WriteLine(TAG + "HandleIncomingWS: Running");
+            Logger.LogTrace("HandleIncomingWS");
             var buffer = new byte[ReceiveChunkSize];
             while (!Token.IsCancellationRequested)
             {
@@ -139,19 +135,18 @@ namespace Coe.WebSocketWrapper
                     } while (!result.EndOfMessage);
                     CallOnMessage(message.ToArray());
                 }
-                catch (TaskCanceledException e)
+                catch (TaskCanceledException)
                 {
-                    Debug.WriteLine(TAG + "HandleIncomingWS: Shutting down");
+                    Logger.LogDebug("HandleIncomingWS shutting down");
                 }
                 catch (Exception e)
                 {
-                    Debug.WriteLine(TAG + "HandleIncomingWS: Recv failed (" + e.Message + ")");
-                    Debug.WriteLine(TAG + "HandleIncomingWS: Reconnecting");
+                    Logger.LogWarning("HandleIncomingWS recv failed ({0})", e.Message);
                     Reconnect();
                 }
             }
             //TODO dispose
-            Debug.WriteLine(TAG + "HandleIncomingWS: Finished");
+            Logger.LogInformation("HandleIncomingWS finished");
         }
 
         /// <summary>
@@ -177,20 +172,23 @@ namespace Coe.WebSocketWrapper
 
         public void Connect()
         {
+            Logger.LogTrace("Connect()");
             try
             {
-                WebSocket.ConnectAsync(_uri, Token).Wait();
-                CallOnConnected();
+                lock (ReconnectLock)
+                {
+                    WebSocket.ConnectAsync(_uri, Token).Wait();
+                    CallOnConnected();
+                }
             }
             catch (Exception e)
             {
                 if(e.InnerException?.InnerException?.Message == "Forbidden")
                 {
+                    Logger.LogCritical("Server rejected authentication attempt");
                     throw new AuthorizationFailedException("OWS server rejected authorization.");
                 }
-                Debug.WriteLine("ConnectAsync crashed.");
-                Debug.WriteLine(e.Message);
-                Debug.WriteLine(e.StackTrace);
+                Logger.LogWarning("Connect could not connect to the server");
             }
             HandleOutgoing = Task.Factory.StartNew(HandleOutgoingWS, TaskCreationOptions.LongRunning);
             HandleIncoming = Task.Factory.StartNew(HandleIncomingWS, TaskCreationOptions.LongRunning);

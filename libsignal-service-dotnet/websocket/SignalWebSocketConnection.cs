@@ -3,28 +3,9 @@ using Google.Protobuf;
 using libsignal.util;
 using libsignalservice.push;
 using libsignalservice.util;
-
-/**
-* Copyright (C) 2015-2017 smndtrl, golf1052
-*
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Threading;
@@ -34,8 +15,7 @@ namespace libsignalservice.websocket
 {
     internal class SignalWebSocketConnection
     {
-        private static readonly string TAG = "WebSocketConnection";
-        private static readonly int KEEPALIVE_TIMEOUT_SECONDS = 55;
+        private readonly ILogger Logger = LibsignalLogging.CreateLogger<SignalWebSocketConnection>();
         private static readonly Object obj = new Object();
 
         private readonly BlockingCollection<WebSocketRequestMessage> IncomingRequests = new BlockingCollection<WebSocketRequestMessage>(new ConcurrentQueue<WebSocketRequestMessage>());
@@ -47,7 +27,7 @@ namespace libsignalservice.websocket
         private WebSocketWrapper WebSocket;
         private CancellationToken Token;
 
-        public SignalWebSocketConnection(CancellationToken token, string httpUri, CredentialsProvider credentialsProvider, string userAgent)
+        internal SignalWebSocketConnection(CancellationToken token, string httpUri, CredentialsProvider credentialsProvider, string userAgent)
         {
             Token = token;
             CredentialsProvider = credentialsProvider;
@@ -70,13 +50,11 @@ namespace libsignalservice.websocket
 
         public void Connect()
         {
-            Debug.WriteLine("WebSocketConnection: connect()...");
             WebSocket.Connect();
         }
 
         private void Connection_OnOpened()
         {
-            Debug.WriteLine("WebSocketConnection: opened!");
         }
 
         private void Connection_OnMessage(byte[] obj)
@@ -84,11 +62,12 @@ namespace libsignalservice.websocket
             var msg = WebSocketMessage.Parser.ParseFrom(obj);
             if (msg.Type == WebSocketMessage.Types.Type.Request)
             {
+                Logger.LogTrace("Adding request to IncomingRequests");
                 IncomingRequests.Add(msg.Request);
             }
             else if (msg.Type == WebSocketMessage.Types.Type.Response)
             {
-                Debug.WriteLine("SignalWebSocketConnection received response id={0}, message={1}, status={2} body={3}", msg.Response.Id, msg.Response.Message, msg.Response.Status, Encoding.UTF8.GetString(msg.Response.Body.ToByteArray()));
+                Logger.LogTrace("Adding response {0} ({1} {2})", msg.Response.Id, msg.Response.Status, Encoding.UTF8.GetString(msg.Response.Body.ToByteArray()));
                 var t = new Tuple<CountdownEvent, uint, string>(null, msg.Response.Status, Encoding.UTF8.GetString(msg.Response.Body.ToByteArray()));
                 Tuple<CountdownEvent, uint, string> savedRequest;
                 OutgoingRequests.TryGetValue(msg.Response.Id, out savedRequest);
@@ -99,7 +78,7 @@ namespace libsignalservice.websocket
 
         public void Disconnect()
         {
-            Debug.WriteLine("WebSocketConnection disconnect()...");
+            Logger.LogWarning("Disconnect is not supported yet");
             throw new NotImplementedException();
         }
 
