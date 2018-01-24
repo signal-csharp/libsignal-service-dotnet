@@ -113,12 +113,26 @@ message SyncMessage {
 	oneof timestamp_oneof					{ uint64 timestamp = 2; }
   }
 
+  message Verified {
+    enum State {
+      DEFAULT = 0;
+      VERIFIED = 1;
+      UNVERIFIED = 2;
+    }
+
+    oneof destination_oneof { string destination = 1; }
+    oneof identityKey_oneof { bytes identityKey = 2; }
+    oneof state_oneof { State state = 3; }
+  }
+
   oneof sent_oneof							{ Sent     sent     = 1; }
   oneof contacts_oneof						{ Contacts contacts = 2; }
   oneof groups_oneof						{ Groups   groups   = 3; }
   oneof request_oneof						{ Request  request  = 4; }
   repeated Read read = 5;
   oneof blocked_oneof						{ Blocked  blocked  = 6; }
+  repeated Verified verified = 7;
+  oneof padding_oneof           { bytes padding = 8; }
 }
 
 message AttachmentPointer {

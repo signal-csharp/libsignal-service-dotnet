@@ -210,6 +210,45 @@ namespace libsignalservice.crypto
                 return SignalServiceSyncMessage.forRead(readMessages);
             }
 
+            if (content.Verified.Count > 0)
+            {
+                try
+                {
+                    List<VerifiedMessage> verifiedMessages = new List<VerifiedMessage>();
+
+                    foreach (SyncMessage.Types.Verified verified in content.Verified)
+                    {
+                        string destination = verified.Destination;
+                        IdentityKey identityKey = new IdentityKey(verified.IdentityKey.ToByteArray(), 0);
+
+                        VerifiedMessage.VerifiedState verifiedState;
+
+                        if (verified.State == SyncMessage.Types.Verified.Types.State.Default)
+                        {
+                            verifiedState = VerifiedMessage.VerifiedState.Default;
+                        }
+                        else if (verified.State == SyncMessage.Types.Verified.Types.State.Verified)
+                        {
+                            verifiedState = VerifiedMessage.VerifiedState.Verified;
+                        }
+                        else if (verified.State == SyncMessage.Types.Verified.Types.State.Unverified)
+                        {
+                            verifiedState = VerifiedMessage.VerifiedState.Unverified;
+                        }
+                        else
+                        {
+                            throw new InvalidMessageException("Unknown state: " + verified.State);
+                        }
+
+                        verifiedMessages.Add(new VerifiedMessage(destination, identityKey, verifiedState));
+                    }
+                }
+                catch (InvalidKeyException e)
+                {
+                    throw new InvalidMessageException(e);
+                }
+            }
+
             return SignalServiceSyncMessage.empty();
         }
 

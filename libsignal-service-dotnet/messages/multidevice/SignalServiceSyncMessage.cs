@@ -30,13 +30,15 @@ namespace libsignalservice.messages.multidevice
         private readonly May<BlockedListMessage> blockedList;
         private readonly May<RequestMessage> request;
         private readonly May<List<ReadMessage>> reads;
+        private readonly May<List<VerifiedMessage>> verified;
 
         private SignalServiceSyncMessage(May<SentTranscriptMessage> sent,
             May<ContactsMessage> contacts,
             May<SignalServiceAttachment> groups,
             May<BlockedListMessage> blockedList,
             May<RequestMessage> request,
-            May<List<ReadMessage>> reads)
+            May<List<ReadMessage>> reads,
+            May<List<VerifiedMessage>> verified)
         {
             this.sent = sent;
             this.contacts = contacts;
@@ -44,11 +46,13 @@ namespace libsignalservice.messages.multidevice
             this.blockedList = blockedList;
             this.request = request;
             this.reads = reads;
+            this.verified = verified;
         }
 
         public static SignalServiceSyncMessage forSentTranscript(SentTranscriptMessage sent)
         {
             return new SignalServiceSyncMessage(new May<SentTranscriptMessage>(sent),
+                May.NoValue,
                 May.NoValue,
                 May.NoValue,
                 May.NoValue,
@@ -63,6 +67,7 @@ namespace libsignalservice.messages.multidevice
                 May.NoValue,
                 May.NoValue,
                 May.NoValue,
+                May.NoValue,
                 May.NoValue);
         }
 
@@ -71,6 +76,7 @@ namespace libsignalservice.messages.multidevice
             return new SignalServiceSyncMessage(May.NoValue,
                 May.NoValue,
                 new May<SignalServiceAttachment>(groups),
+                May.NoValue,
                 May.NoValue,
                 May.NoValue,
                 May.NoValue);
@@ -83,6 +89,7 @@ namespace libsignalservice.messages.multidevice
                 May.NoValue,
                 May.NoValue,
                 new May<RequestMessage>(request),
+                May.NoValue,
                 May.NoValue);
         }
 
@@ -93,7 +100,8 @@ namespace libsignalservice.messages.multidevice
                 May.NoValue,
                 May.NoValue,
                 May.NoValue,
-                new May<List<ReadMessage>>(reads));
+                new May<List<ReadMessage>>(reads),
+                May.NoValue);
         }
 
         public static SignalServiceSyncMessage forRead(ReadMessage read)
@@ -106,7 +114,33 @@ namespace libsignalservice.messages.multidevice
                 May.NoValue,
                 May.NoValue,
                 May.NoValue,
-                new May<List<ReadMessage>>(reads));
+                new May<List<ReadMessage>>(reads),
+                May.NoValue);
+        }
+
+        public static SignalServiceSyncMessage forVerified(List<VerifiedMessage> verified)
+        {
+            return new SignalServiceSyncMessage(May.NoValue,
+                May.NoValue,
+                May.NoValue,
+                May.NoValue,
+                May.NoValue,
+                May.NoValue,
+                new May<List<VerifiedMessage>>(verified));
+        }
+
+        public static SignalServiceSyncMessage forVerified(VerifiedMessage verifiedMessage)
+        {
+            List<VerifiedMessage> verifiedMessages = new List<VerifiedMessage>();
+            verifiedMessages.Add(verifiedMessage);
+
+            return new SignalServiceSyncMessage(May.NoValue,
+                May.NoValue,
+                May.NoValue,
+                May.NoValue,
+                May.NoValue,
+                May.NoValue,
+                new May<List<VerifiedMessage>>(verifiedMessages));
         }
 
         public static SignalServiceSyncMessage forBlocked(BlockedListMessage blocked)
@@ -116,12 +150,14 @@ namespace libsignalservice.messages.multidevice
                 May.NoValue,
                 new May<BlockedListMessage>(blocked),
                 May.NoValue,
+                May.NoValue,
                 May.NoValue);
         }
 
         public static SignalServiceSyncMessage empty()
         {
             return new SignalServiceSyncMessage(May.NoValue,
+                May.NoValue,
                 May.NoValue,
                 May.NoValue,
                 May.NoValue,
@@ -157,6 +193,11 @@ namespace libsignalservice.messages.multidevice
         public May<BlockedListMessage> getBlockedList()
         {
             return blockedList;
+        }
+
+        public May<List<VerifiedMessage>> getVerified()
+        {
+            return verified;
         }
     }
 }

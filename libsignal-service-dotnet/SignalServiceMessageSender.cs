@@ -152,6 +152,10 @@ namespace libsignalservice
             {
                 content = createMultiDeviceBlockedContent(message.getBlockedList().ForceGetValue());
             }
+            else if (message.getVerified().HasValue)
+            {
+                content = createMultiDeviceVerifiedContent(message.getVerified().ForceGetValue());
+            }
             else
             {
                 throw new Exception("Unsupported sync message!");
@@ -264,7 +268,7 @@ namespace libsignalservice
         private byte[] createMultiDeviceContactsContent(SignalServiceAttachmentStream contacts, bool complete)
         {
             Content content = new Content { };
-            SyncMessage syncMessage = new SyncMessage { };
+            SyncMessage syncMessage = createSyncMessage();
             syncMessage.Contacts = new SyncMessage.Types.Contacts
             {
                 Blob = createAttachmentPointer(contacts),
@@ -277,7 +281,7 @@ namespace libsignalservice
         private byte[] createMultiDeviceGroupsContent(SignalServiceAttachmentStream groups)
         {
             Content content = new Content { };
-            SyncMessage syncMessage = new SyncMessage { };
+            SyncMessage syncMessage = createSyncMessage();
             syncMessage.Groups = new SyncMessage.Types.Groups
             {
                 Blob = createAttachmentPointer(groups)
@@ -291,7 +295,7 @@ namespace libsignalservice
             try
             {
                 Content content = new Content { };
-                SyncMessage syncMessage = new SyncMessage { };
+                SyncMessage syncMessage = createSyncMessage();
                 SyncMessage.Types.Sent sentMessage = new SyncMessage.Types.Sent { };
                 DataMessage dataMessage = DataMessage.Parser.ParseFrom(rawContent);
 
@@ -320,7 +324,7 @@ namespace libsignalservice
         private byte[] createMultiDeviceReadContent(List<ReadMessage> readMessages)
         {
             Content content = new Content { };
-            SyncMessage syncMessage = new SyncMessage { };
+            SyncMessage syncMessage = createSyncMessage();
 
             foreach (ReadMessage readMessage in readMessages)
             {
@@ -344,6 +348,46 @@ namespace libsignalservice
             syncMessage.Blocked = blockedMessage;
             content.SyncMessage = syncMessage;
             return content.ToByteArray();
+        }
+
+        private byte[] createMultiDeviceVerifiedContent(List<VerifiedMessage> verifiedMessages)
+        {
+            Content content = new Content { };
+            SyncMessage syncMessage = createSyncMessage();
+
+            foreach (VerifiedMessage verifiedMessage in verifiedMessages)
+            {
+                SyncMessage.Types.Verified verifiedMessageBuilder = new SyncMessage.Types.Verified { };
+                verifiedMessageBuilder.Destination = verifiedMessage.Destination;
+                verifiedMessageBuilder.IdentityKey = ByteString.CopyFrom(verifiedMessage.IdentityKey.serialize());
+
+                switch (verifiedMessage.Verified)
+                {
+                    case VerifiedMessage.VerifiedState.Default:
+                        verifiedMessageBuilder.State = SyncMessage.Types.Verified.Types.State.Default;
+                        break;
+                    case VerifiedMessage.VerifiedState.Verified:
+                        verifiedMessageBuilder.State = SyncMessage.Types.Verified.Types.State.Verified;
+                        break;
+                    case VerifiedMessage.VerifiedState.Unverified:
+                        verifiedMessageBuilder.State = SyncMessage.Types.Verified.Types.State.Unverified;
+                        break;
+                    default:
+                        throw new Exception("Unknown: " + verifiedMessage.Verified);
+                }
+
+                syncMessage.Verified.Add(verifiedMessageBuilder);
+            }
+
+            content.SyncMessage = syncMessage;
+            return content.ToByteArray();
+        }
+
+        private SyncMessage createSyncMessage()
+        {
+            SyncMessage syncMessage = new SyncMessage { };
+            syncMessage.Padding = ByteString.CopyFrom(Util.getSecretBytes(512));
+            return syncMessage;
         }
 
         private GroupContext createGroupContent(SignalServiceGroup group)
