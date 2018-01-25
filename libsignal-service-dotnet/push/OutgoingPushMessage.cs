@@ -42,14 +42,12 @@ namespace libsignalservice.push
         public OutgoingPushMessage(uint type,
                                    uint destinationDeviceId,
                                    uint destinationRegistrationId,
-                                   string legacyMessage,
                                    string content,
                                    bool silent)
         {
             this.type = type;
             this.destinationDeviceId = destinationDeviceId;
             this.destinationRegistrationId = destinationRegistrationId;
-            this.body = legacyMessage;
             this.content = content;
             this.silent = silent;
         }
