@@ -25,16 +25,19 @@ namespace libsignalservice.messages.multidevice
         private readonly May<string> name;
         private readonly May<SignalServiceAttachmentStream> avatar;
         private readonly May<string> color;
+        private readonly May<VerifiedMessage> verified;
 
         public DeviceContact(string number,
             May<string> name,
             May<SignalServiceAttachmentStream> avatar,
-            May<string> color)
+            May<string> color,
+            May<VerifiedMessage> verified)
         {
             this.number = number;
             this.name = name;
             this.avatar = avatar;
             this.color = color;
+            this.verified = verified;
         }
 
         public May<SignalServiceAttachmentStream> getAvatar()
@@ -55,6 +58,11 @@ namespace libsignalservice.messages.multidevice
         public May<string> getColor()
         {
             return color;
+        }
+
+        public May<VerifiedMessage> getVerified()
+        {
+            return verified;
         }
     }
 }

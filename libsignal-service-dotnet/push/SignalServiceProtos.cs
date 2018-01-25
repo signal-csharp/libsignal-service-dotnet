@@ -33,114 +33,120 @@ namespace libsignalservice.push {
             "Cg1QUkVLRVlfQlVORExFEAMSCwoHUkVDRUlQVBAFQgwKCnR5cGVfb25lb2ZC",
             "DgoMc291cmNlX29uZW9mQhQKEnNvdXJjZURldmljZV9vbmVvZkINCgtyZWxh",
             "eV9vbmVvZkIRCg90aW1lc3RhbXBfb25lb2ZCFQoTbGVnYWN5TWVzc2FnZV9v",
-            "bmVvZkIPCg1jb250ZW50X29uZW9mItgBCgdDb250ZW50Ei4KC2RhdGFNZXNz",
+            "bmVvZkIPCg1jb250ZW50X29uZW9mIp0CCgdDb250ZW50Ei4KC2RhdGFNZXNz",
             "YWdlGAEgASgLMhcudGV4dHNlY3VyZS5EYXRhTWVzc2FnZUgAEi4KC3N5bmNN",
             "ZXNzYWdlGAIgASgLMhcudGV4dHNlY3VyZS5TeW5jTWVzc2FnZUgBEi4KC2Nh",
-            "bGxNZXNzYWdlGAMgASgLMhcudGV4dHNlY3VyZS5DYWxsTWVzc2FnZUgCQhMK",
-            "EWRhdGFNZXNzYWdlX29uZW9mQhMKEXN5bmNNZXNzYWdlX29uZW9mQhMKEWNh",
-            "bGxNZXNzYWdlX29uZW9mIr0FCgtDYWxsTWVzc2FnZRIuCgVvZmZlchgBIAEo",
-            "CzIdLnRleHRzZWN1cmUuQ2FsbE1lc3NhZ2UuT2ZmZXJIABIwCgZhbnN3ZXIY",
-            "AiABKAsyHi50ZXh0c2VjdXJlLkNhbGxNZXNzYWdlLkFuc3dlckgBEjQKCWlj",
-            "ZVVwZGF0ZRgDIAMoCzIhLnRleHRzZWN1cmUuQ2FsbE1lc3NhZ2UuSWNlVXBk",
-            "YXRlEjAKBmhhbmd1cBgEIAEoCzIeLnRleHRzZWN1cmUuQ2FsbE1lc3NhZ2Uu",
-            "SGFuZ3VwSAISLAoEYnVzeRgFIAEoCzIcLnRleHRzZWN1cmUuQ2FsbE1lc3Nh",
-            "Z2UuQnVzeUgDGk0KBU9mZmVyEgwKAmlkGAEgASgESAASFQoLZGVzY3JpcHRp",
-            "b24YAiABKAlIAUIKCghpZF9vbmVvZkITChFkZXNjcmlwdGlvbl9vbmVvZhpO",
-            "CgZBbnN3ZXISDAoCaWQYASABKARIABIVCgtkZXNjcmlwdGlvbhgCIAEoCUgB",
-            "QgoKCGlkX29uZW9mQhMKEWRlc2NyaXB0aW9uX29uZW9mGpMBCglJY2VVcGRh",
-            "dGUSDAoCaWQYASABKARIABIQCgZzZHBNaWQYAiABKAlIARIXCg1zZHBNTGlu",
-            "ZUluZGV4GAMgASgNSAISDQoDc2RwGAQgASgJSANCCgoIaWRfb25lb2ZCDgoM",
-            "c2RwTWlkX29uZW9mQhUKE3NkcE1MaW5lSW5kZXhfb25lb2ZCCwoJc2RwX29u",
-            "ZW9mGiAKBEJ1c3kSDAoCaWQYASABKARIAEIKCghpZF9vbmVvZhoiCgZIYW5n",
-            "dXASDAoCaWQYASABKARIAEIKCghpZF9vbmVvZkINCgtvZmZlcl9vbmVvZkIO",
-            "CgxhbnN3ZXJfb25lb2ZCDgoMaGFuZ3VwX29uZW9mQgwKCmJ1c3lfb25lb2Yi",
-            "sgIKC0RhdGFNZXNzYWdlEg4KBGJvZHkYASABKAlIABIyCgthdHRhY2htZW50",
-            "cxgCIAMoCzIdLnRleHRzZWN1cmUuQXR0YWNobWVudFBvaW50ZXISKQoFZ3Jv",
-            "dXAYAyABKAsyGC50ZXh0c2VjdXJlLkdyb3VwQ29udGV4dEgBEg8KBWZsYWdz",
-            "GAQgASgNSAISFQoLZXhwaXJlVGltZXIYBSABKA1IAyJLCgVGbGFncxIUChBa",
-            "RVJPX1BMQUNFSE9MREVSEAASDwoLRU5EX1NFU1NJT04QARIbChdFWFBJUkFU",
-            "SU9OX1RJTUVSX1VQREFURRACQgwKCmJvZHlfb25lb2ZCDQoLZ3JvdXBfb25l",
-            "b2ZCDQoLZmxhZ3Nfb25lb2ZCEwoRZXhwaXJlVGltZXJfb25lb2Yi0goKC1N5",
-            "bmNNZXNzYWdlEiwKBHNlbnQYASABKAsyHC50ZXh0c2VjdXJlLlN5bmNNZXNz",
-            "YWdlLlNlbnRIABI0Cghjb250YWN0cxgCIAEoCzIgLnRleHRzZWN1cmUuU3lu",
-            "Y01lc3NhZ2UuQ29udGFjdHNIARIwCgZncm91cHMYAyABKAsyHi50ZXh0c2Vj",
-            "dXJlLlN5bmNNZXNzYWdlLkdyb3Vwc0gCEjIKB3JlcXVlc3QYBCABKAsyHy50",
-            "ZXh0c2VjdXJlLlN5bmNNZXNzYWdlLlJlcXVlc3RIAxIqCgRyZWFkGAUgAygL",
-            "MhwudGV4dHNlY3VyZS5TeW5jTWVzc2FnZS5SZWFkEjIKB2Jsb2NrZWQYBiAB",
-            "KAsyHy50ZXh0c2VjdXJlLlN5bmNNZXNzYWdlLkJsb2NrZWRIBBIyCgh2ZXJp",
-            "ZmllZBgHIAMoCzIgLnRleHRzZWN1cmUuU3luY01lc3NhZ2UuVmVyaWZpZWQS",
-            "EQoHcGFkZGluZxgIIAEoDEgFGt0BCgRTZW50EhUKC2Rlc3RpbmF0aW9uGAEg",
-            "ASgJSAASEwoJdGltZXN0YW1wGAIgASgESAESKgoHbWVzc2FnZRgDIAEoCzIX",
-            "LnRleHRzZWN1cmUuRGF0YU1lc3NhZ2VIAhIiChhleHBpcmF0aW9uU3RhcnRU",
-            "aW1lc3RhbXAYBCABKARIA0ITChFkZXN0aW5hdGlvbl9vbmVvZkIRCg90aW1l",
-            "c3RhbXBfb25lb2ZCDwoNbWVzc2FnZV9vbmVvZkIgCh5leHBpcmF0aW9uU3Rh",
-            "cnRUaW1lc3RhbXBfb25lb2YabQoIQ29udGFjdHMSLQoEYmxvYhgBIAEoCzId",
-            "LnRleHRzZWN1cmUuQXR0YWNobWVudFBvaW50ZXJIABISCghjb21wbGV0ZRgC",
-            "IAEoCEgBQgwKCmJsb2Jfb25lb2ZCEAoOY29tcGxldGVfb25lb2YaRQoGR3Jv",
-            "dXBzEi0KBGJsb2IYASABKAsyHS50ZXh0c2VjdXJlLkF0dGFjaG1lbnRQb2lu",
-            "dGVySABCDAoKYmxvYl9vbmVvZhoaCgdCbG9ja2VkEg8KB251bWJlcnMYASAD",
-            "KAkaiQEKB1JlcXVlc3QSNAoEdHlwZRgBIAEoDjIkLnRleHRzZWN1cmUuU3lu",
-            "Y01lc3NhZ2UuUmVxdWVzdC5UeXBlSAAiOgoEVHlwZRILCgdVTktOT1dOEAAS",
-            "DAoIQ09OVEFDVFMQARIKCgZHUk9VUFMQAhILCgdCTE9DS0VEEANCDAoKdHlw",
-            "ZV9vbmVvZhpQCgRSZWFkEhAKBnNlbmRlchgBIAEoCUgAEhMKCXRpbWVzdGFt",
-            "cBgCIAEoBEgBQg4KDHNlbmRlcl9vbmVvZkIRCg90aW1lc3RhbXBfb25lb2Ya",
-            "3gEKCFZlcmlmaWVkEhUKC2Rlc3RpbmF0aW9uGAEgASgJSAASFQoLaWRlbnRp",
-            "dHlLZXkYAiABKAxIARI3CgVzdGF0ZRgDIAEoDjImLnRleHRzZWN1cmUuU3lu",
-            "Y01lc3NhZ2UuVmVyaWZpZWQuU3RhdGVIAiIyCgVTdGF0ZRILCgdERUZBVUxU",
-            "EAASDAoIVkVSSUZJRUQQARIOCgpVTlZFUklGSUVEEAJCEwoRZGVzdGluYXRp",
-            "b25fb25lb2ZCEwoRaWRlbnRpdHlLZXlfb25lb2ZCDQoLc3RhdGVfb25lb2ZC",
-            "DAoKc2VudF9vbmVvZkIQCg5jb250YWN0c19vbmVvZkIOCgxncm91cHNfb25l",
-            "b2ZCDwoNcmVxdWVzdF9vbmVvZkIPCg1ibG9ja2VkX29uZW9mQg8KDXBhZGRp",
-            "bmdfb25lb2Yi1QIKEUF0dGFjaG1lbnRQb2ludGVyEgwKAmlkGAEgASgGSAAS",
-            "FQoLY29udGVudFR5cGUYAiABKAlIARINCgNrZXkYAyABKAxIAhIOCgRzaXpl",
-            "GAQgASgNSAMSEwoJdGh1bWJuYWlsGAUgASgMSAQSEAoGZGlnZXN0GAYgASgM",
-            "SAUSEgoIZmlsZU5hbWUYByABKAlIBhIPCgVmbGFncxgIIAEoDUgHIjAKBUZs",
-            "YWdzEhQKEFpFUk9fUExBQ0VIT0xERVIQABIRCg1WT0lDRV9NRVNTQUdFEAFC",
-            "CgoIaWRfb25lb2ZCEwoRY29udGVudFR5cGVfb25lb2ZCCwoJa2V5X29uZW9m",
-            "QgwKCnNpemVfb25lb2ZCEQoPdGh1bWJuYWlsX29uZW9mQg4KDGRpZ2VzdF9v",
-            "bmVvZkIQCg5maWxlTmFtZV9vbmVvZkINCgtmbGFnc19vbmVvZiKfAgoMR3Jv",
-            "dXBDb250ZXh0EgwKAmlkGAEgASgMSAASLQoEdHlwZRgCIAEoDjIdLnRleHRz",
-            "ZWN1cmUuR3JvdXBDb250ZXh0LlR5cGVIARIOCgRuYW1lGAMgASgJSAISDwoH",
-            "bWVtYmVycxgEIAMoCRIvCgZhdmF0YXIYBSABKAsyHS50ZXh0c2VjdXJlLkF0",
-            "dGFjaG1lbnRQb2ludGVySAMiSAoEVHlwZRILCgdVTktOT1dOEAASCgoGVVBE",
-            "QVRFEAESCwoHREVMSVZFUhACEggKBFFVSVQQAxIQCgxSRVFVRVNUX0lORk8Q",
-            "BEIKCghpZF9vbmVvZkIMCgp0eXBlX29uZW9mQgwKCm5hbWVfb25lb2ZCDgoM",
-            "YXZhdGFyX29uZW9mIo0CCg5Db250YWN0RGV0YWlscxIQCgZudW1iZXIYASAB",
-            "KAlIABIOCgRuYW1lGAIgASgJSAESMwoGYXZhdGFyGAMgASgLMiEudGV4dHNl",
-            "Y3VyZS5Db250YWN0RGV0YWlscy5BdmF0YXJIAhIPCgVjb2xvchgEIAEoCUgD",
-            "GlYKBkF2YXRhchIVCgtjb250ZW50VHlwZRgBIAEoCUgAEhAKBmxlbmd0aBgC",
-            "IAEoDUgBQhMKEWNvbnRlbnRUeXBlX29uZW9mQg4KDGxlbmd0aF9vbmVvZkIO",
-            "CgxudW1iZXJfb25lb2ZCDAoKbmFtZV9vbmVvZkIOCgxhdmF0YXJfb25lb2ZC",
-            "DQoLY29sb3Jfb25lb2YilAIKDEdyb3VwRGV0YWlscxIMCgJpZBgBIAEoDEgA",
-            "Eg4KBG5hbWUYAiABKAlIARIPCgdtZW1iZXJzGAMgAygJEjEKBmF2YXRhchgE",
-            "IAEoCzIfLnRleHRzZWN1cmUuR3JvdXBEZXRhaWxzLkF2YXRhckgCEhAKBmFj",
-            "dGl2ZRgFIAEoCEgDGlYKBkF2YXRhchIVCgtjb250ZW50VHlwZRgBIAEoCUgA",
-            "EhAKBmxlbmd0aBgCIAEoDUgBQhMKEWNvbnRlbnRUeXBlX29uZW9mQg4KDGxl",
-            "bmd0aF9vbmVvZkIKCghpZF9vbmVvZkIMCgpuYW1lX29uZW9mQg4KDGF2YXRh",
-            "cl9vbmVvZkIOCgxhY3RpdmVfb25lb2ZCWgorb3JnLndoaXNwZXJzeXN0ZW1z",
-            "LnRleHRzZWN1cmUuaW50ZXJuYWwucHVzaEITU2lnbmFsU2VydmljZVByb3Rv",
-            "c6oCFWxpYnNpZ25hbHNlcnZpY2UucHVzaGIGcHJvdG8z"));
+            "bGxNZXNzYWdlGAMgASgLMhcudGV4dHNlY3VyZS5DYWxsTWVzc2FnZUgCEi4K",
+            "C251bGxNZXNzYWdlGAQgASgLMhcudGV4dHNlY3VyZS5OdWxsTWVzc2FnZUgD",
+            "QhMKEWRhdGFNZXNzYWdlX29uZW9mQhMKEXN5bmNNZXNzYWdlX29uZW9mQhMK",
+            "EWNhbGxNZXNzYWdlX29uZW9mQhMKEW51bGxNZXNzYWdlX29uZW9mIr0FCgtD",
+            "YWxsTWVzc2FnZRIuCgVvZmZlchgBIAEoCzIdLnRleHRzZWN1cmUuQ2FsbE1l",
+            "c3NhZ2UuT2ZmZXJIABIwCgZhbnN3ZXIYAiABKAsyHi50ZXh0c2VjdXJlLkNh",
+            "bGxNZXNzYWdlLkFuc3dlckgBEjQKCWljZVVwZGF0ZRgDIAMoCzIhLnRleHRz",
+            "ZWN1cmUuQ2FsbE1lc3NhZ2UuSWNlVXBkYXRlEjAKBmhhbmd1cBgEIAEoCzIe",
+            "LnRleHRzZWN1cmUuQ2FsbE1lc3NhZ2UuSGFuZ3VwSAISLAoEYnVzeRgFIAEo",
+            "CzIcLnRleHRzZWN1cmUuQ2FsbE1lc3NhZ2UuQnVzeUgDGk0KBU9mZmVyEgwK",
+            "AmlkGAEgASgESAASFQoLZGVzY3JpcHRpb24YAiABKAlIAUIKCghpZF9vbmVv",
+            "ZkITChFkZXNjcmlwdGlvbl9vbmVvZhpOCgZBbnN3ZXISDAoCaWQYASABKARI",
+            "ABIVCgtkZXNjcmlwdGlvbhgCIAEoCUgBQgoKCGlkX29uZW9mQhMKEWRlc2Ny",
+            "aXB0aW9uX29uZW9mGpMBCglJY2VVcGRhdGUSDAoCaWQYASABKARIABIQCgZz",
+            "ZHBNaWQYAiABKAlIARIXCg1zZHBNTGluZUluZGV4GAMgASgNSAISDQoDc2Rw",
+            "GAQgASgJSANCCgoIaWRfb25lb2ZCDgoMc2RwTWlkX29uZW9mQhUKE3NkcE1M",
+            "aW5lSW5kZXhfb25lb2ZCCwoJc2RwX29uZW9mGiAKBEJ1c3kSDAoCaWQYASAB",
+            "KARIAEIKCghpZF9vbmVvZhoiCgZIYW5ndXASDAoCaWQYASABKARIAEIKCghp",
+            "ZF9vbmVvZkINCgtvZmZlcl9vbmVvZkIOCgxhbnN3ZXJfb25lb2ZCDgoMaGFu",
+            "Z3VwX29uZW9mQgwKCmJ1c3lfb25lb2YisgIKC0RhdGFNZXNzYWdlEg4KBGJv",
+            "ZHkYASABKAlIABIyCgthdHRhY2htZW50cxgCIAMoCzIdLnRleHRzZWN1cmUu",
+            "QXR0YWNobWVudFBvaW50ZXISKQoFZ3JvdXAYAyABKAsyGC50ZXh0c2VjdXJl",
+            "Lkdyb3VwQ29udGV4dEgBEg8KBWZsYWdzGAQgASgNSAISFQoLZXhwaXJlVGlt",
+            "ZXIYBSABKA1IAyJLCgVGbGFncxIUChBaRVJPX1BMQUNFSE9MREVSEAASDwoL",
+            "RU5EX1NFU1NJT04QARIbChdFWFBJUkFUSU9OX1RJTUVSX1VQREFURRACQgwK",
+            "CmJvZHlfb25lb2ZCDQoLZ3JvdXBfb25lb2ZCDQoLZmxhZ3Nfb25lb2ZCEwoR",
+            "ZXhwaXJlVGltZXJfb25lb2YiMQoLTnVsbE1lc3NhZ2USEQoHcGFkZGluZxgB",
+            "IAEoDEgAQg8KDXBhZGRpbmdfb25lb2Yi/gEKCFZlcmlmaWVkEhUKC2Rlc3Rp",
+            "bmF0aW9uGAEgASgJSAASFQoLaWRlbnRpdHlLZXkYAiABKAxIARIrCgVzdGF0",
+            "ZRgDIAEoDjIaLnRleHRzZWN1cmUuVmVyaWZpZWQuU3RhdGVIAhIVCgtudWxs",
+            "TWVzc2FnZRgEIAEoDEgDIjIKBVN0YXRlEgsKB0RFRkFVTFQQABIMCghWRVJJ",
+            "RklFRBABEg4KClVOVkVSSUZJRUQQAkITChFkZXN0aW5hdGlvbl9vbmVvZkIT",
+            "ChFpZGVudGl0eUtleV9vbmVvZkINCgtzdGF0ZV9vbmVvZkITChFudWxsTWVz",
+            "c2FnZV9vbmVvZiL5CAoLU3luY01lc3NhZ2USLAoEc2VudBgBIAEoCzIcLnRl",
+            "eHRzZWN1cmUuU3luY01lc3NhZ2UuU2VudEgAEjQKCGNvbnRhY3RzGAIgASgL",
+            "MiAudGV4dHNlY3VyZS5TeW5jTWVzc2FnZS5Db250YWN0c0gBEjAKBmdyb3Vw",
+            "cxgDIAEoCzIeLnRleHRzZWN1cmUuU3luY01lc3NhZ2UuR3JvdXBzSAISMgoH",
+            "cmVxdWVzdBgEIAEoCzIfLnRleHRzZWN1cmUuU3luY01lc3NhZ2UuUmVxdWVz",
+            "dEgDEioKBHJlYWQYBSADKAsyHC50ZXh0c2VjdXJlLlN5bmNNZXNzYWdlLlJl",
+            "YWQSMgoHYmxvY2tlZBgGIAEoCzIfLnRleHRzZWN1cmUuU3luY01lc3NhZ2Uu",
+            "QmxvY2tlZEgEEigKCHZlcmlmaWVkGAcgASgLMhQudGV4dHNlY3VyZS5WZXJp",
+            "ZmllZEgFEhEKB3BhZGRpbmcYCCABKAxIBhrdAQoEU2VudBIVCgtkZXN0aW5h",
+            "dGlvbhgBIAEoCUgAEhMKCXRpbWVzdGFtcBgCIAEoBEgBEioKB21lc3NhZ2UY",
+            "AyABKAsyFy50ZXh0c2VjdXJlLkRhdGFNZXNzYWdlSAISIgoYZXhwaXJhdGlv",
+            "blN0YXJ0VGltZXN0YW1wGAQgASgESANCEwoRZGVzdGluYXRpb25fb25lb2ZC",
+            "EQoPdGltZXN0YW1wX29uZW9mQg8KDW1lc3NhZ2Vfb25lb2ZCIAoeZXhwaXJh",
+            "dGlvblN0YXJ0VGltZXN0YW1wX29uZW9mGm0KCENvbnRhY3RzEi0KBGJsb2IY",
+            "ASABKAsyHS50ZXh0c2VjdXJlLkF0dGFjaG1lbnRQb2ludGVySAASEgoIY29t",
+            "cGxldGUYAiABKAhIAUIMCgpibG9iX29uZW9mQhAKDmNvbXBsZXRlX29uZW9m",
+            "GkUKBkdyb3VwcxItCgRibG9iGAEgASgLMh0udGV4dHNlY3VyZS5BdHRhY2ht",
+            "ZW50UG9pbnRlckgAQgwKCmJsb2Jfb25lb2YaGgoHQmxvY2tlZBIPCgdudW1i",
+            "ZXJzGAEgAygJGokBCgdSZXF1ZXN0EjQKBHR5cGUYASABKA4yJC50ZXh0c2Vj",
+            "dXJlLlN5bmNNZXNzYWdlLlJlcXVlc3QuVHlwZUgAIjoKBFR5cGUSCwoHVU5L",
+            "Tk9XThAAEgwKCENPTlRBQ1RTEAESCgoGR1JPVVBTEAISCwoHQkxPQ0tFRBAD",
+            "QgwKCnR5cGVfb25lb2YaUAoEUmVhZBIQCgZzZW5kZXIYASABKAlIABITCgl0",
+            "aW1lc3RhbXAYAiABKARIAUIOCgxzZW5kZXJfb25lb2ZCEQoPdGltZXN0YW1w",
+            "X29uZW9mQgwKCnNlbnRfb25lb2ZCEAoOY29udGFjdHNfb25lb2ZCDgoMZ3Jv",
+            "dXBzX29uZW9mQg8KDXJlcXVlc3Rfb25lb2ZCDwoNYmxvY2tlZF9vbmVvZkIQ",
+            "Cg52ZXJpZmllZF9vbmVvZkIPCg1wYWRkaW5nX29uZW9mItUCChFBdHRhY2ht",
+            "ZW50UG9pbnRlchIMCgJpZBgBIAEoBkgAEhUKC2NvbnRlbnRUeXBlGAIgASgJ",
+            "SAESDQoDa2V5GAMgASgMSAISDgoEc2l6ZRgEIAEoDUgDEhMKCXRodW1ibmFp",
+            "bBgFIAEoDEgEEhAKBmRpZ2VzdBgGIAEoDEgFEhIKCGZpbGVOYW1lGAcgASgJ",
+            "SAYSDwoFZmxhZ3MYCCABKA1IByIwCgVGbGFncxIUChBaRVJPX1BMQUNFSE9M",
+            "REVSEAASEQoNVk9JQ0VfTUVTU0FHRRABQgoKCGlkX29uZW9mQhMKEWNvbnRl",
+            "bnRUeXBlX29uZW9mQgsKCWtleV9vbmVvZkIMCgpzaXplX29uZW9mQhEKD3Ro",
+            "dW1ibmFpbF9vbmVvZkIOCgxkaWdlc3Rfb25lb2ZCEAoOZmlsZU5hbWVfb25l",
+            "b2ZCDQoLZmxhZ3Nfb25lb2YinwIKDEdyb3VwQ29udGV4dBIMCgJpZBgBIAEo",
+            "DEgAEi0KBHR5cGUYAiABKA4yHS50ZXh0c2VjdXJlLkdyb3VwQ29udGV4dC5U",
+            "eXBlSAESDgoEbmFtZRgDIAEoCUgCEg8KB21lbWJlcnMYBCADKAkSLwoGYXZh",
+            "dGFyGAUgASgLMh0udGV4dHNlY3VyZS5BdHRhY2htZW50UG9pbnRlckgDIkgK",
+            "BFR5cGUSCwoHVU5LTk9XThAAEgoKBlVQREFURRABEgsKB0RFTElWRVIQAhII",
+            "CgRRVUlUEAMSEAoMUkVRVUVTVF9JTkZPEARCCgoIaWRfb25lb2ZCDAoKdHlw",
+            "ZV9vbmVvZkIMCgpuYW1lX29uZW9mQg4KDGF2YXRhcl9vbmVvZiLJAgoOQ29u",
+            "dGFjdERldGFpbHMSEAoGbnVtYmVyGAEgASgJSAASDgoEbmFtZRgCIAEoCUgB",
+            "EjMKBmF2YXRhchgDIAEoCzIhLnRleHRzZWN1cmUuQ29udGFjdERldGFpbHMu",
+            "QXZhdGFySAISDwoFY29sb3IYBCABKAlIAxIoCgh2ZXJpZmllZBgFIAEoCzIU",
+            "LnRleHRzZWN1cmUuVmVyaWZpZWRIBBpWCgZBdmF0YXISFQoLY29udGVudFR5",
+            "cGUYASABKAlIABIQCgZsZW5ndGgYAiABKA1IAUITChFjb250ZW50VHlwZV9v",
+            "bmVvZkIOCgxsZW5ndGhfb25lb2ZCDgoMbnVtYmVyX29uZW9mQgwKCm5hbWVf",
+            "b25lb2ZCDgoMYXZhdGFyX29uZW9mQg0KC2NvbG9yX29uZW9mQhAKDnZlcmlm",
+            "aWVkX29uZW9mIpQCCgxHcm91cERldGFpbHMSDAoCaWQYASABKAxIABIOCgRu",
+            "YW1lGAIgASgJSAESDwoHbWVtYmVycxgDIAMoCRIxCgZhdmF0YXIYBCABKAsy",
+            "Hy50ZXh0c2VjdXJlLkdyb3VwRGV0YWlscy5BdmF0YXJIAhIQCgZhY3RpdmUY",
+            "BSABKAhIAxpWCgZBdmF0YXISFQoLY29udGVudFR5cGUYASABKAlIABIQCgZs",
+            "ZW5ndGgYAiABKA1IAUITChFjb250ZW50VHlwZV9vbmVvZkIOCgxsZW5ndGhf",
+            "b25lb2ZCCgoIaWRfb25lb2ZCDAoKbmFtZV9vbmVvZkIOCgxhdmF0YXJfb25l",
+            "b2ZCDgoMYWN0aXZlX29uZW9mQloKK29yZy53aGlzcGVyc3lzdGVtcy50ZXh0",
+            "c2VjdXJlLmludGVybmFsLnB1c2hCE1NpZ25hbFNlcnZpY2VQcm90b3OqAhVs",
+            "aWJzaWduYWxzZXJ2aWNlLnB1c2hiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.Envelope), global::libsignalservice.push.Envelope.Parser, new[]{ "Type", "Source", "SourceDevice", "Relay", "Timestamp", "LegacyMessage", "Content" }, new[]{ "TypeOneof", "SourceOneof", "SourceDeviceOneof", "RelayOneof", "TimestampOneof", "LegacyMessageOneof", "ContentOneof" }, new[]{ typeof(global::libsignalservice.push.Envelope.Types.Type) }, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.Content), global::libsignalservice.push.Content.Parser, new[]{ "DataMessage", "SyncMessage", "CallMessage" }, new[]{ "DataMessageOneof", "SyncMessageOneof", "CallMessageOneof" }, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.Content), global::libsignalservice.push.Content.Parser, new[]{ "DataMessage", "SyncMessage", "CallMessage", "NullMessage" }, new[]{ "DataMessageOneof", "SyncMessageOneof", "CallMessageOneof", "NullMessageOneof" }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.CallMessage), global::libsignalservice.push.CallMessage.Parser, new[]{ "Offer", "Answer", "IceUpdate", "Hangup", "Busy" }, new[]{ "OfferOneof", "AnswerOneof", "HangupOneof", "BusyOneof" }, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.CallMessage.Types.Offer), global::libsignalservice.push.CallMessage.Types.Offer.Parser, new[]{ "Id", "Description" }, new[]{ "IdOneof", "DescriptionOneof" }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.CallMessage.Types.Answer), global::libsignalservice.push.CallMessage.Types.Answer.Parser, new[]{ "Id", "Description" }, new[]{ "IdOneof", "DescriptionOneof" }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.CallMessage.Types.IceUpdate), global::libsignalservice.push.CallMessage.Types.IceUpdate.Parser, new[]{ "Id", "SdpMid", "SdpMLineIndex", "Sdp" }, new[]{ "IdOneof", "SdpMidOneof", "SdpMLineIndexOneof", "SdpOneof" }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.CallMessage.Types.Busy), global::libsignalservice.push.CallMessage.Types.Busy.Parser, new[]{ "Id" }, new[]{ "IdOneof" }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.CallMessage.Types.Hangup), global::libsignalservice.push.CallMessage.Types.Hangup.Parser, new[]{ "Id" }, new[]{ "IdOneof" }, null, null)}),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.DataMessage), global::libsignalservice.push.DataMessage.Parser, new[]{ "Body", "Attachments", "Group", "Flags", "ExpireTimer" }, new[]{ "BodyOneof", "GroupOneof", "FlagsOneof", "ExpireTimerOneof" }, new[]{ typeof(global::libsignalservice.push.DataMessage.Types.Flags) }, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage), global::libsignalservice.push.SyncMessage.Parser, new[]{ "Sent", "Contacts", "Groups", "Request", "Read", "Blocked", "Verified", "Padding" }, new[]{ "SentOneof", "ContactsOneof", "GroupsOneof", "RequestOneof", "BlockedOneof", "PaddingOneof" }, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Sent), global::libsignalservice.push.SyncMessage.Types.Sent.Parser, new[]{ "Destination", "Timestamp", "Message", "ExpirationStartTimestamp" }, new[]{ "DestinationOneof", "TimestampOneof", "MessageOneof", "ExpirationStartTimestampOneof" }, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.NullMessage), global::libsignalservice.push.NullMessage.Parser, new[]{ "Padding" }, new[]{ "PaddingOneof" }, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.Verified), global::libsignalservice.push.Verified.Parser, new[]{ "Destination", "IdentityKey", "State", "NullMessage" }, new[]{ "DestinationOneof", "IdentityKeyOneof", "StateOneof", "NullMessageOneof" }, new[]{ typeof(global::libsignalservice.push.Verified.Types.State) }, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage), global::libsignalservice.push.SyncMessage.Parser, new[]{ "Sent", "Contacts", "Groups", "Request", "Read", "Blocked", "Verified", "Padding" }, new[]{ "SentOneof", "ContactsOneof", "GroupsOneof", "RequestOneof", "BlockedOneof", "VerifiedOneof", "PaddingOneof" }, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Sent), global::libsignalservice.push.SyncMessage.Types.Sent.Parser, new[]{ "Destination", "Timestamp", "Message", "ExpirationStartTimestamp" }, new[]{ "DestinationOneof", "TimestampOneof", "MessageOneof", "ExpirationStartTimestampOneof" }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Contacts), global::libsignalservice.push.SyncMessage.Types.Contacts.Parser, new[]{ "Blob", "Complete" }, new[]{ "BlobOneof", "CompleteOneof" }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Groups), global::libsignalservice.push.SyncMessage.Types.Groups.Parser, new[]{ "Blob" }, new[]{ "BlobOneof" }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Blocked), global::libsignalservice.push.SyncMessage.Types.Blocked.Parser, new[]{ "Numbers" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Request), global::libsignalservice.push.SyncMessage.Types.Request.Parser, new[]{ "Type" }, new[]{ "TypeOneof" }, new[]{ typeof(global::libsignalservice.push.SyncMessage.Types.Request.Types.Type) }, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Read), global::libsignalservice.push.SyncMessage.Types.Read.Parser, new[]{ "Sender", "Timestamp" }, new[]{ "SenderOneof", "TimestampOneof" }, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Verified), global::libsignalservice.push.SyncMessage.Types.Verified.Parser, new[]{ "Destination", "IdentityKey", "State" }, new[]{ "DestinationOneof", "IdentityKeyOneof", "StateOneof" }, new[]{ typeof(global::libsignalservice.push.SyncMessage.Types.Verified.Types.State) }, null)}),
+            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Read), global::libsignalservice.push.SyncMessage.Types.Read.Parser, new[]{ "Sender", "Timestamp" }, new[]{ "SenderOneof", "TimestampOneof" }, null, null)}),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.AttachmentPointer), global::libsignalservice.push.AttachmentPointer.Parser, new[]{ "Id", "ContentType", "Key", "Size", "Thumbnail", "Digest", "FileName", "Flags" }, new[]{ "IdOneof", "ContentTypeOneof", "KeyOneof", "SizeOneof", "ThumbnailOneof", "DigestOneof", "FileNameOneof", "FlagsOneof" }, new[]{ typeof(global::libsignalservice.push.AttachmentPointer.Types.Flags) }, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.GroupContext), global::libsignalservice.push.GroupContext.Parser, new[]{ "Id", "Type", "Name", "Members", "Avatar" }, new[]{ "IdOneof", "TypeOneof", "NameOneof", "AvatarOneof" }, new[]{ typeof(global::libsignalservice.push.GroupContext.Types.Type) }, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.ContactDetails), global::libsignalservice.push.ContactDetails.Parser, new[]{ "Number", "Name", "Avatar", "Color" }, new[]{ "NumberOneof", "NameOneof", "AvatarOneof", "ColorOneof" }, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.ContactDetails.Types.Avatar), global::libsignalservice.push.ContactDetails.Types.Avatar.Parser, new[]{ "ContentType", "Length" }, new[]{ "ContentTypeOneof", "LengthOneof" }, null, null)}),
+            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.ContactDetails), global::libsignalservice.push.ContactDetails.Parser, new[]{ "Number", "Name", "Avatar", "Color", "Verified" }, new[]{ "NumberOneof", "NameOneof", "AvatarOneof", "ColorOneof", "VerifiedOneof" }, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.ContactDetails.Types.Avatar), global::libsignalservice.push.ContactDetails.Types.Avatar.Parser, new[]{ "ContentType", "Length" }, new[]{ "ContentTypeOneof", "LengthOneof" }, null, null)}),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.GroupDetails), global::libsignalservice.push.GroupDetails.Parser, new[]{ "Id", "Name", "Members", "Avatar", "Active" }, new[]{ "IdOneof", "NameOneof", "AvatarOneof", "ActiveOneof" }, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.GroupDetails.Types.Avatar), global::libsignalservice.push.GroupDetails.Types.Avatar.Parser, new[]{ "ContentType", "Length" }, new[]{ "ContentTypeOneof", "LengthOneof" }, null, null)})
           }));
     }
@@ -700,6 +706,12 @@ namespace libsignalservice.push {
           break;
       }
 
+      switch (other.NullMessageOneofCase) {
+        case NullMessageOneofOneofCase.NullMessage:
+          NullMessage = other.NullMessage.Clone();
+          break;
+      }
+
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -738,6 +750,17 @@ namespace libsignalservice.push {
       set {
         callMessageOneof_ = value;
         callMessageOneofCase_ = value == null ? CallMessageOneofOneofCase.None : CallMessageOneofOneofCase.CallMessage;
+      }
+    }
+
+    /// <summary>Field number for the "nullMessage" field.</summary>
+    public const int NullMessageFieldNumber = 4;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::libsignalservice.push.NullMessage NullMessage {
+      get { return nullMessageOneofCase_ == NullMessageOneofOneofCase.NullMessage ? (global::libsignalservice.push.NullMessage) nullMessageOneof_ : null; }
+      set {
+        nullMessageOneof_ = value;
+        nullMessageOneofCase_ = value == null ? NullMessageOneofOneofCase.None : NullMessageOneofOneofCase.NullMessage;
       }
     }
 
@@ -795,6 +818,24 @@ namespace libsignalservice.push {
       callMessageOneof_ = null;
     }
 
+    private object nullMessageOneof_;
+    /// <summary>Enum of possible cases for the "nullMessage_oneof" oneof.</summary>
+    public enum NullMessageOneofOneofCase {
+      None = 0,
+      NullMessage = 4,
+    }
+    private NullMessageOneofOneofCase nullMessageOneofCase_ = NullMessageOneofOneofCase.None;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public NullMessageOneofOneofCase NullMessageOneofCase {
+      get { return nullMessageOneofCase_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearNullMessageOneof() {
+      nullMessageOneofCase_ = NullMessageOneofOneofCase.None;
+      nullMessageOneof_ = null;
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as Content);
@@ -811,9 +852,11 @@ namespace libsignalservice.push {
       if (!object.Equals(DataMessage, other.DataMessage)) return false;
       if (!object.Equals(SyncMessage, other.SyncMessage)) return false;
       if (!object.Equals(CallMessage, other.CallMessage)) return false;
+      if (!object.Equals(NullMessage, other.NullMessage)) return false;
       if (DataMessageOneofCase != other.DataMessageOneofCase) return false;
       if (SyncMessageOneofCase != other.SyncMessageOneofCase) return false;
       if (CallMessageOneofCase != other.CallMessageOneofCase) return false;
+      if (NullMessageOneofCase != other.NullMessageOneofCase) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -823,9 +866,11 @@ namespace libsignalservice.push {
       if (dataMessageOneofCase_ == DataMessageOneofOneofCase.DataMessage) hash ^= DataMessage.GetHashCode();
       if (syncMessageOneofCase_ == SyncMessageOneofOneofCase.SyncMessage) hash ^= SyncMessage.GetHashCode();
       if (callMessageOneofCase_ == CallMessageOneofOneofCase.CallMessage) hash ^= CallMessage.GetHashCode();
+      if (nullMessageOneofCase_ == NullMessageOneofOneofCase.NullMessage) hash ^= NullMessage.GetHashCode();
       hash ^= (int) dataMessageOneofCase_;
       hash ^= (int) syncMessageOneofCase_;
       hash ^= (int) callMessageOneofCase_;
+      hash ^= (int) nullMessageOneofCase_;
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -851,6 +896,10 @@ namespace libsignalservice.push {
         output.WriteRawTag(26);
         output.WriteMessage(CallMessage);
       }
+      if (nullMessageOneofCase_ == NullMessageOneofOneofCase.NullMessage) {
+        output.WriteRawTag(34);
+        output.WriteMessage(NullMessage);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -867,6 +916,9 @@ namespace libsignalservice.push {
       }
       if (callMessageOneofCase_ == CallMessageOneofOneofCase.CallMessage) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(CallMessage);
+      }
+      if (nullMessageOneofCase_ == NullMessageOneofOneofCase.NullMessage) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(NullMessage);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -906,6 +958,15 @@ namespace libsignalservice.push {
           break;
       }
 
+      switch (other.NullMessageOneofCase) {
+        case NullMessageOneofOneofCase.NullMessage:
+          if (NullMessage == null) {
+            NullMessage = new global::libsignalservice.push.NullMessage();
+          }
+          NullMessage.MergeFrom(other.NullMessage);
+          break;
+      }
+
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -942,6 +1003,15 @@ namespace libsignalservice.push {
             }
             input.ReadMessage(subBuilder);
             CallMessage = subBuilder;
+            break;
+          }
+          case 34: {
+            global::libsignalservice.push.NullMessage subBuilder = new global::libsignalservice.push.NullMessage();
+            if (nullMessageOneofCase_ == NullMessageOneofOneofCase.NullMessage) {
+              subBuilder.MergeFrom(NullMessage);
+            }
+            input.ReadMessage(subBuilder);
+            NullMessage = subBuilder;
             break;
           }
         }
@@ -2765,6 +2835,502 @@ namespace libsignalservice.push {
 
   }
 
+  public sealed partial class NullMessage : pb::IMessage<NullMessage> {
+    private static readonly pb::MessageParser<NullMessage> _parser = new pb::MessageParser<NullMessage>(() => new NullMessage());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<NullMessage> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::libsignalservice.push.SignalServiceReflection.Descriptor.MessageTypes[4]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public NullMessage() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public NullMessage(NullMessage other) : this() {
+      switch (other.PaddingOneofCase) {
+        case PaddingOneofOneofCase.Padding:
+          Padding = other.Padding;
+          break;
+      }
+
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public NullMessage Clone() {
+      return new NullMessage(this);
+    }
+
+    /// <summary>Field number for the "padding" field.</summary>
+    public const int PaddingFieldNumber = 1;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pb::ByteString Padding {
+      get { return paddingOneofCase_ == PaddingOneofOneofCase.Padding ? (pb::ByteString) paddingOneof_ : pb::ByteString.Empty; }
+      set {
+        paddingOneof_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        paddingOneofCase_ = PaddingOneofOneofCase.Padding;
+      }
+    }
+
+    private object paddingOneof_;
+    /// <summary>Enum of possible cases for the "padding_oneof" oneof.</summary>
+    public enum PaddingOneofOneofCase {
+      None = 0,
+      Padding = 1,
+    }
+    private PaddingOneofOneofCase paddingOneofCase_ = PaddingOneofOneofCase.None;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public PaddingOneofOneofCase PaddingOneofCase {
+      get { return paddingOneofCase_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearPaddingOneof() {
+      paddingOneofCase_ = PaddingOneofOneofCase.None;
+      paddingOneof_ = null;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as NullMessage);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(NullMessage other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Padding != other.Padding) return false;
+      if (PaddingOneofCase != other.PaddingOneofCase) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (paddingOneofCase_ == PaddingOneofOneofCase.Padding) hash ^= Padding.GetHashCode();
+      hash ^= (int) paddingOneofCase_;
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (paddingOneofCase_ == PaddingOneofOneofCase.Padding) {
+        output.WriteRawTag(10);
+        output.WriteBytes(Padding);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (paddingOneofCase_ == PaddingOneofOneofCase.Padding) {
+        size += 1 + pb::CodedOutputStream.ComputeBytesSize(Padding);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(NullMessage other) {
+      if (other == null) {
+        return;
+      }
+      switch (other.PaddingOneofCase) {
+        case PaddingOneofOneofCase.Padding:
+          Padding = other.Padding;
+          break;
+      }
+
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            Padding = input.ReadBytes();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  public sealed partial class Verified : pb::IMessage<Verified> {
+    private static readonly pb::MessageParser<Verified> _parser = new pb::MessageParser<Verified>(() => new Verified());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<Verified> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::libsignalservice.push.SignalServiceReflection.Descriptor.MessageTypes[5]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public Verified() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public Verified(Verified other) : this() {
+      switch (other.DestinationOneofCase) {
+        case DestinationOneofOneofCase.Destination:
+          Destination = other.Destination;
+          break;
+      }
+
+      switch (other.IdentityKeyOneofCase) {
+        case IdentityKeyOneofOneofCase.IdentityKey:
+          IdentityKey = other.IdentityKey;
+          break;
+      }
+
+      switch (other.StateOneofCase) {
+        case StateOneofOneofCase.State:
+          State = other.State;
+          break;
+      }
+
+      switch (other.NullMessageOneofCase) {
+        case NullMessageOneofOneofCase.NullMessage:
+          NullMessage = other.NullMessage;
+          break;
+      }
+
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public Verified Clone() {
+      return new Verified(this);
+    }
+
+    /// <summary>Field number for the "destination" field.</summary>
+    public const int DestinationFieldNumber = 1;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Destination {
+      get { return destinationOneofCase_ == DestinationOneofOneofCase.Destination ? (string) destinationOneof_ : ""; }
+      set {
+        destinationOneof_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        destinationOneofCase_ = DestinationOneofOneofCase.Destination;
+      }
+    }
+
+    /// <summary>Field number for the "identityKey" field.</summary>
+    public const int IdentityKeyFieldNumber = 2;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pb::ByteString IdentityKey {
+      get { return identityKeyOneofCase_ == IdentityKeyOneofOneofCase.IdentityKey ? (pb::ByteString) identityKeyOneof_ : pb::ByteString.Empty; }
+      set {
+        identityKeyOneof_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        identityKeyOneofCase_ = IdentityKeyOneofOneofCase.IdentityKey;
+      }
+    }
+
+    /// <summary>Field number for the "state" field.</summary>
+    public const int StateFieldNumber = 3;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::libsignalservice.push.Verified.Types.State State {
+      get { return stateOneofCase_ == StateOneofOneofCase.State ? (global::libsignalservice.push.Verified.Types.State) stateOneof_ : 0; }
+      set {
+        stateOneof_ = value;
+        stateOneofCase_ = StateOneofOneofCase.State;
+      }
+    }
+
+    /// <summary>Field number for the "nullMessage" field.</summary>
+    public const int NullMessageFieldNumber = 4;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pb::ByteString NullMessage {
+      get { return nullMessageOneofCase_ == NullMessageOneofOneofCase.NullMessage ? (pb::ByteString) nullMessageOneof_ : pb::ByteString.Empty; }
+      set {
+        nullMessageOneof_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        nullMessageOneofCase_ = NullMessageOneofOneofCase.NullMessage;
+      }
+    }
+
+    private object destinationOneof_;
+    /// <summary>Enum of possible cases for the "destination_oneof" oneof.</summary>
+    public enum DestinationOneofOneofCase {
+      None = 0,
+      Destination = 1,
+    }
+    private DestinationOneofOneofCase destinationOneofCase_ = DestinationOneofOneofCase.None;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public DestinationOneofOneofCase DestinationOneofCase {
+      get { return destinationOneofCase_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearDestinationOneof() {
+      destinationOneofCase_ = DestinationOneofOneofCase.None;
+      destinationOneof_ = null;
+    }
+
+    private object identityKeyOneof_;
+    /// <summary>Enum of possible cases for the "identityKey_oneof" oneof.</summary>
+    public enum IdentityKeyOneofOneofCase {
+      None = 0,
+      IdentityKey = 2,
+    }
+    private IdentityKeyOneofOneofCase identityKeyOneofCase_ = IdentityKeyOneofOneofCase.None;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public IdentityKeyOneofOneofCase IdentityKeyOneofCase {
+      get { return identityKeyOneofCase_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearIdentityKeyOneof() {
+      identityKeyOneofCase_ = IdentityKeyOneofOneofCase.None;
+      identityKeyOneof_ = null;
+    }
+
+    private object stateOneof_;
+    /// <summary>Enum of possible cases for the "state_oneof" oneof.</summary>
+    public enum StateOneofOneofCase {
+      None = 0,
+      State = 3,
+    }
+    private StateOneofOneofCase stateOneofCase_ = StateOneofOneofCase.None;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public StateOneofOneofCase StateOneofCase {
+      get { return stateOneofCase_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearStateOneof() {
+      stateOneofCase_ = StateOneofOneofCase.None;
+      stateOneof_ = null;
+    }
+
+    private object nullMessageOneof_;
+    /// <summary>Enum of possible cases for the "nullMessage_oneof" oneof.</summary>
+    public enum NullMessageOneofOneofCase {
+      None = 0,
+      NullMessage = 4,
+    }
+    private NullMessageOneofOneofCase nullMessageOneofCase_ = NullMessageOneofOneofCase.None;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public NullMessageOneofOneofCase NullMessageOneofCase {
+      get { return nullMessageOneofCase_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearNullMessageOneof() {
+      nullMessageOneofCase_ = NullMessageOneofOneofCase.None;
+      nullMessageOneof_ = null;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as Verified);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(Verified other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Destination != other.Destination) return false;
+      if (IdentityKey != other.IdentityKey) return false;
+      if (State != other.State) return false;
+      if (NullMessage != other.NullMessage) return false;
+      if (DestinationOneofCase != other.DestinationOneofCase) return false;
+      if (IdentityKeyOneofCase != other.IdentityKeyOneofCase) return false;
+      if (StateOneofCase != other.StateOneofCase) return false;
+      if (NullMessageOneofCase != other.NullMessageOneofCase) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (destinationOneofCase_ == DestinationOneofOneofCase.Destination) hash ^= Destination.GetHashCode();
+      if (identityKeyOneofCase_ == IdentityKeyOneofOneofCase.IdentityKey) hash ^= IdentityKey.GetHashCode();
+      if (stateOneofCase_ == StateOneofOneofCase.State) hash ^= State.GetHashCode();
+      if (nullMessageOneofCase_ == NullMessageOneofOneofCase.NullMessage) hash ^= NullMessage.GetHashCode();
+      hash ^= (int) destinationOneofCase_;
+      hash ^= (int) identityKeyOneofCase_;
+      hash ^= (int) stateOneofCase_;
+      hash ^= (int) nullMessageOneofCase_;
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (destinationOneofCase_ == DestinationOneofOneofCase.Destination) {
+        output.WriteRawTag(10);
+        output.WriteString(Destination);
+      }
+      if (identityKeyOneofCase_ == IdentityKeyOneofOneofCase.IdentityKey) {
+        output.WriteRawTag(18);
+        output.WriteBytes(IdentityKey);
+      }
+      if (stateOneofCase_ == StateOneofOneofCase.State) {
+        output.WriteRawTag(24);
+        output.WriteEnum((int) State);
+      }
+      if (nullMessageOneofCase_ == NullMessageOneofOneofCase.NullMessage) {
+        output.WriteRawTag(34);
+        output.WriteBytes(NullMessage);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (destinationOneofCase_ == DestinationOneofOneofCase.Destination) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Destination);
+      }
+      if (identityKeyOneofCase_ == IdentityKeyOneofOneofCase.IdentityKey) {
+        size += 1 + pb::CodedOutputStream.ComputeBytesSize(IdentityKey);
+      }
+      if (stateOneofCase_ == StateOneofOneofCase.State) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) State);
+      }
+      if (nullMessageOneofCase_ == NullMessageOneofOneofCase.NullMessage) {
+        size += 1 + pb::CodedOutputStream.ComputeBytesSize(NullMessage);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(Verified other) {
+      if (other == null) {
+        return;
+      }
+      switch (other.DestinationOneofCase) {
+        case DestinationOneofOneofCase.Destination:
+          Destination = other.Destination;
+          break;
+      }
+
+      switch (other.IdentityKeyOneofCase) {
+        case IdentityKeyOneofOneofCase.IdentityKey:
+          IdentityKey = other.IdentityKey;
+          break;
+      }
+
+      switch (other.StateOneofCase) {
+        case StateOneofOneofCase.State:
+          State = other.State;
+          break;
+      }
+
+      switch (other.NullMessageOneofCase) {
+        case NullMessageOneofOneofCase.NullMessage:
+          NullMessage = other.NullMessage;
+          break;
+      }
+
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            Destination = input.ReadString();
+            break;
+          }
+          case 18: {
+            IdentityKey = input.ReadBytes();
+            break;
+          }
+          case 24: {
+            stateOneof_ = input.ReadEnum();
+            stateOneofCase_ = StateOneofOneofCase.State;
+            break;
+          }
+          case 34: {
+            NullMessage = input.ReadBytes();
+            break;
+          }
+        }
+      }
+    }
+
+    #region Nested types
+    /// <summary>Container for nested types declared in the Verified message type.</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static partial class Types {
+      public enum State {
+        [pbr::OriginalName("DEFAULT")] Default = 0,
+        [pbr::OriginalName("VERIFIED")] Verified = 1,
+        [pbr::OriginalName("UNVERIFIED")] Unverified = 2,
+      }
+
+    }
+    #endregion
+
+  }
+
   public sealed partial class SyncMessage : pb::IMessage<SyncMessage> {
     private static readonly pb::MessageParser<SyncMessage> _parser = new pb::MessageParser<SyncMessage>(() => new SyncMessage());
     private pb::UnknownFieldSet _unknownFields;
@@ -2773,7 +3339,7 @@ namespace libsignalservice.push {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::libsignalservice.push.SignalServiceReflection.Descriptor.MessageTypes[4]; }
+      get { return global::libsignalservice.push.SignalServiceReflection.Descriptor.MessageTypes[6]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2791,7 +3357,6 @@ namespace libsignalservice.push {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public SyncMessage(SyncMessage other) : this() {
       read_ = other.read_.Clone();
-      verified_ = other.verified_.Clone();
       switch (other.SentOneofCase) {
         case SentOneofOneofCase.Sent:
           Sent = other.Sent.Clone();
@@ -2819,6 +3384,12 @@ namespace libsignalservice.push {
       switch (other.BlockedOneofCase) {
         case BlockedOneofOneofCase.Blocked:
           Blocked = other.Blocked.Clone();
+          break;
+      }
+
+      switch (other.VerifiedOneofCase) {
+        case VerifiedOneofOneofCase.Verified:
+          Verified = other.Verified.Clone();
           break;
       }
 
@@ -2903,12 +3474,13 @@ namespace libsignalservice.push {
 
     /// <summary>Field number for the "verified" field.</summary>
     public const int VerifiedFieldNumber = 7;
-    private static readonly pb::FieldCodec<global::libsignalservice.push.SyncMessage.Types.Verified> _repeated_verified_codec
-        = pb::FieldCodec.ForMessage(58, global::libsignalservice.push.SyncMessage.Types.Verified.Parser);
-    private readonly pbc::RepeatedField<global::libsignalservice.push.SyncMessage.Types.Verified> verified_ = new pbc::RepeatedField<global::libsignalservice.push.SyncMessage.Types.Verified>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pbc::RepeatedField<global::libsignalservice.push.SyncMessage.Types.Verified> Verified {
-      get { return verified_; }
+    public global::libsignalservice.push.Verified Verified {
+      get { return verifiedOneofCase_ == VerifiedOneofOneofCase.Verified ? (global::libsignalservice.push.Verified) verifiedOneof_ : null; }
+      set {
+        verifiedOneof_ = value;
+        verifiedOneofCase_ = value == null ? VerifiedOneofOneofCase.None : VerifiedOneofOneofCase.Verified;
+      }
     }
 
     /// <summary>Field number for the "padding" field.</summary>
@@ -3012,6 +3584,24 @@ namespace libsignalservice.push {
       blockedOneof_ = null;
     }
 
+    private object verifiedOneof_;
+    /// <summary>Enum of possible cases for the "verified_oneof" oneof.</summary>
+    public enum VerifiedOneofOneofCase {
+      None = 0,
+      Verified = 7,
+    }
+    private VerifiedOneofOneofCase verifiedOneofCase_ = VerifiedOneofOneofCase.None;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public VerifiedOneofOneofCase VerifiedOneofCase {
+      get { return verifiedOneofCase_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearVerifiedOneof() {
+      verifiedOneofCase_ = VerifiedOneofOneofCase.None;
+      verifiedOneof_ = null;
+    }
+
     private object paddingOneof_;
     /// <summary>Enum of possible cases for the "padding_oneof" oneof.</summary>
     public enum PaddingOneofOneofCase {
@@ -3049,13 +3639,14 @@ namespace libsignalservice.push {
       if (!object.Equals(Request, other.Request)) return false;
       if(!read_.Equals(other.read_)) return false;
       if (!object.Equals(Blocked, other.Blocked)) return false;
-      if(!verified_.Equals(other.verified_)) return false;
+      if (!object.Equals(Verified, other.Verified)) return false;
       if (Padding != other.Padding) return false;
       if (SentOneofCase != other.SentOneofCase) return false;
       if (ContactsOneofCase != other.ContactsOneofCase) return false;
       if (GroupsOneofCase != other.GroupsOneofCase) return false;
       if (RequestOneofCase != other.RequestOneofCase) return false;
       if (BlockedOneofCase != other.BlockedOneofCase) return false;
+      if (VerifiedOneofCase != other.VerifiedOneofCase) return false;
       if (PaddingOneofCase != other.PaddingOneofCase) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -3069,13 +3660,14 @@ namespace libsignalservice.push {
       if (requestOneofCase_ == RequestOneofOneofCase.Request) hash ^= Request.GetHashCode();
       hash ^= read_.GetHashCode();
       if (blockedOneofCase_ == BlockedOneofOneofCase.Blocked) hash ^= Blocked.GetHashCode();
-      hash ^= verified_.GetHashCode();
+      if (verifiedOneofCase_ == VerifiedOneofOneofCase.Verified) hash ^= Verified.GetHashCode();
       if (paddingOneofCase_ == PaddingOneofOneofCase.Padding) hash ^= Padding.GetHashCode();
       hash ^= (int) sentOneofCase_;
       hash ^= (int) contactsOneofCase_;
       hash ^= (int) groupsOneofCase_;
       hash ^= (int) requestOneofCase_;
       hash ^= (int) blockedOneofCase_;
+      hash ^= (int) verifiedOneofCase_;
       hash ^= (int) paddingOneofCase_;
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -3111,7 +3703,10 @@ namespace libsignalservice.push {
         output.WriteRawTag(50);
         output.WriteMessage(Blocked);
       }
-      verified_.WriteTo(output, _repeated_verified_codec);
+      if (verifiedOneofCase_ == VerifiedOneofOneofCase.Verified) {
+        output.WriteRawTag(58);
+        output.WriteMessage(Verified);
+      }
       if (paddingOneofCase_ == PaddingOneofOneofCase.Padding) {
         output.WriteRawTag(66);
         output.WriteBytes(Padding);
@@ -3140,7 +3735,9 @@ namespace libsignalservice.push {
       if (blockedOneofCase_ == BlockedOneofOneofCase.Blocked) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Blocked);
       }
-      size += verified_.CalculateSize(_repeated_verified_codec);
+      if (verifiedOneofCase_ == VerifiedOneofOneofCase.Verified) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Verified);
+      }
       if (paddingOneofCase_ == PaddingOneofOneofCase.Padding) {
         size += 1 + pb::CodedOutputStream.ComputeBytesSize(Padding);
       }
@@ -3156,7 +3753,6 @@ namespace libsignalservice.push {
         return;
       }
       read_.Add(other.read_);
-      verified_.Add(other.verified_);
       switch (other.SentOneofCase) {
         case SentOneofOneofCase.Sent:
           if (Sent == null) {
@@ -3199,6 +3795,15 @@ namespace libsignalservice.push {
             Blocked = new global::libsignalservice.push.SyncMessage.Types.Blocked();
           }
           Blocked.MergeFrom(other.Blocked);
+          break;
+      }
+
+      switch (other.VerifiedOneofCase) {
+        case VerifiedOneofOneofCase.Verified:
+          if (Verified == null) {
+            Verified = new global::libsignalservice.push.Verified();
+          }
+          Verified.MergeFrom(other.Verified);
           break;
       }
 
@@ -3269,7 +3874,12 @@ namespace libsignalservice.push {
             break;
           }
           case 58: {
-            verified_.AddEntriesFrom(input, _repeated_verified_codec);
+            global::libsignalservice.push.Verified subBuilder = new global::libsignalservice.push.Verified();
+            if (verifiedOneofCase_ == VerifiedOneofOneofCase.Verified) {
+              subBuilder.MergeFrom(Verified);
+            }
+            input.ReadMessage(subBuilder);
+            Verified = subBuilder;
             break;
           }
           case 66: {
@@ -4509,289 +5119,6 @@ namespace libsignalservice.push {
 
       }
 
-      public sealed partial class Verified : pb::IMessage<Verified> {
-        private static readonly pb::MessageParser<Verified> _parser = new pb::MessageParser<Verified>(() => new Verified());
-        private pb::UnknownFieldSet _unknownFields;
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public static pb::MessageParser<Verified> Parser { get { return _parser; } }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public static pbr::MessageDescriptor Descriptor {
-          get { return global::libsignalservice.push.SyncMessage.Descriptor.NestedTypes[6]; }
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        pbr::MessageDescriptor pb::IMessage.Descriptor {
-          get { return Descriptor; }
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public Verified() {
-          OnConstruction();
-        }
-
-        partial void OnConstruction();
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public Verified(Verified other) : this() {
-          switch (other.DestinationOneofCase) {
-            case DestinationOneofOneofCase.Destination:
-              Destination = other.Destination;
-              break;
-          }
-
-          switch (other.IdentityKeyOneofCase) {
-            case IdentityKeyOneofOneofCase.IdentityKey:
-              IdentityKey = other.IdentityKey;
-              break;
-          }
-
-          switch (other.StateOneofCase) {
-            case StateOneofOneofCase.State:
-              State = other.State;
-              break;
-          }
-
-          _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public Verified Clone() {
-          return new Verified(this);
-        }
-
-        /// <summary>Field number for the "destination" field.</summary>
-        public const int DestinationFieldNumber = 1;
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public string Destination {
-          get { return destinationOneofCase_ == DestinationOneofOneofCase.Destination ? (string) destinationOneof_ : ""; }
-          set {
-            destinationOneof_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-            destinationOneofCase_ = DestinationOneofOneofCase.Destination;
-          }
-        }
-
-        /// <summary>Field number for the "identityKey" field.</summary>
-        public const int IdentityKeyFieldNumber = 2;
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public pb::ByteString IdentityKey {
-          get { return identityKeyOneofCase_ == IdentityKeyOneofOneofCase.IdentityKey ? (pb::ByteString) identityKeyOneof_ : pb::ByteString.Empty; }
-          set {
-            identityKeyOneof_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-            identityKeyOneofCase_ = IdentityKeyOneofOneofCase.IdentityKey;
-          }
-        }
-
-        /// <summary>Field number for the "state" field.</summary>
-        public const int StateFieldNumber = 3;
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public global::libsignalservice.push.SyncMessage.Types.Verified.Types.State State {
-          get { return stateOneofCase_ == StateOneofOneofCase.State ? (global::libsignalservice.push.SyncMessage.Types.Verified.Types.State) stateOneof_ : 0; }
-          set {
-            stateOneof_ = value;
-            stateOneofCase_ = StateOneofOneofCase.State;
-          }
-        }
-
-        private object destinationOneof_;
-        /// <summary>Enum of possible cases for the "destination_oneof" oneof.</summary>
-        public enum DestinationOneofOneofCase {
-          None = 0,
-          Destination = 1,
-        }
-        private DestinationOneofOneofCase destinationOneofCase_ = DestinationOneofOneofCase.None;
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public DestinationOneofOneofCase DestinationOneofCase {
-          get { return destinationOneofCase_; }
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public void ClearDestinationOneof() {
-          destinationOneofCase_ = DestinationOneofOneofCase.None;
-          destinationOneof_ = null;
-        }
-
-        private object identityKeyOneof_;
-        /// <summary>Enum of possible cases for the "identityKey_oneof" oneof.</summary>
-        public enum IdentityKeyOneofOneofCase {
-          None = 0,
-          IdentityKey = 2,
-        }
-        private IdentityKeyOneofOneofCase identityKeyOneofCase_ = IdentityKeyOneofOneofCase.None;
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public IdentityKeyOneofOneofCase IdentityKeyOneofCase {
-          get { return identityKeyOneofCase_; }
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public void ClearIdentityKeyOneof() {
-          identityKeyOneofCase_ = IdentityKeyOneofOneofCase.None;
-          identityKeyOneof_ = null;
-        }
-
-        private object stateOneof_;
-        /// <summary>Enum of possible cases for the "state_oneof" oneof.</summary>
-        public enum StateOneofOneofCase {
-          None = 0,
-          State = 3,
-        }
-        private StateOneofOneofCase stateOneofCase_ = StateOneofOneofCase.None;
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public StateOneofOneofCase StateOneofCase {
-          get { return stateOneofCase_; }
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public void ClearStateOneof() {
-          stateOneofCase_ = StateOneofOneofCase.None;
-          stateOneof_ = null;
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public override bool Equals(object other) {
-          return Equals(other as Verified);
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public bool Equals(Verified other) {
-          if (ReferenceEquals(other, null)) {
-            return false;
-          }
-          if (ReferenceEquals(other, this)) {
-            return true;
-          }
-          if (Destination != other.Destination) return false;
-          if (IdentityKey != other.IdentityKey) return false;
-          if (State != other.State) return false;
-          if (DestinationOneofCase != other.DestinationOneofCase) return false;
-          if (IdentityKeyOneofCase != other.IdentityKeyOneofCase) return false;
-          if (StateOneofCase != other.StateOneofCase) return false;
-          return Equals(_unknownFields, other._unknownFields);
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public override int GetHashCode() {
-          int hash = 1;
-          if (destinationOneofCase_ == DestinationOneofOneofCase.Destination) hash ^= Destination.GetHashCode();
-          if (identityKeyOneofCase_ == IdentityKeyOneofOneofCase.IdentityKey) hash ^= IdentityKey.GetHashCode();
-          if (stateOneofCase_ == StateOneofOneofCase.State) hash ^= State.GetHashCode();
-          hash ^= (int) destinationOneofCase_;
-          hash ^= (int) identityKeyOneofCase_;
-          hash ^= (int) stateOneofCase_;
-          if (_unknownFields != null) {
-            hash ^= _unknownFields.GetHashCode();
-          }
-          return hash;
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public override string ToString() {
-          return pb::JsonFormatter.ToDiagnosticString(this);
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public void WriteTo(pb::CodedOutputStream output) {
-          if (destinationOneofCase_ == DestinationOneofOneofCase.Destination) {
-            output.WriteRawTag(10);
-            output.WriteString(Destination);
-          }
-          if (identityKeyOneofCase_ == IdentityKeyOneofOneofCase.IdentityKey) {
-            output.WriteRawTag(18);
-            output.WriteBytes(IdentityKey);
-          }
-          if (stateOneofCase_ == StateOneofOneofCase.State) {
-            output.WriteRawTag(24);
-            output.WriteEnum((int) State);
-          }
-          if (_unknownFields != null) {
-            _unknownFields.WriteTo(output);
-          }
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public int CalculateSize() {
-          int size = 0;
-          if (destinationOneofCase_ == DestinationOneofOneofCase.Destination) {
-            size += 1 + pb::CodedOutputStream.ComputeStringSize(Destination);
-          }
-          if (identityKeyOneofCase_ == IdentityKeyOneofOneofCase.IdentityKey) {
-            size += 1 + pb::CodedOutputStream.ComputeBytesSize(IdentityKey);
-          }
-          if (stateOneofCase_ == StateOneofOneofCase.State) {
-            size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) State);
-          }
-          if (_unknownFields != null) {
-            size += _unknownFields.CalculateSize();
-          }
-          return size;
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public void MergeFrom(Verified other) {
-          if (other == null) {
-            return;
-          }
-          switch (other.DestinationOneofCase) {
-            case DestinationOneofOneofCase.Destination:
-              Destination = other.Destination;
-              break;
-          }
-
-          switch (other.IdentityKeyOneofCase) {
-            case IdentityKeyOneofOneofCase.IdentityKey:
-              IdentityKey = other.IdentityKey;
-              break;
-          }
-
-          switch (other.StateOneofCase) {
-            case StateOneofOneofCase.State:
-              State = other.State;
-              break;
-          }
-
-          _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public void MergeFrom(pb::CodedInputStream input) {
-          uint tag;
-          while ((tag = input.ReadTag()) != 0) {
-            switch(tag) {
-              default:
-                _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
-                break;
-              case 10: {
-                Destination = input.ReadString();
-                break;
-              }
-              case 18: {
-                IdentityKey = input.ReadBytes();
-                break;
-              }
-              case 24: {
-                stateOneof_ = input.ReadEnum();
-                stateOneofCase_ = StateOneofOneofCase.State;
-                break;
-              }
-            }
-          }
-        }
-
-        #region Nested types
-        /// <summary>Container for nested types declared in the Verified message type.</summary>
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public static partial class Types {
-          public enum State {
-            [pbr::OriginalName("DEFAULT")] Default = 0,
-            [pbr::OriginalName("VERIFIED")] Verified = 1,
-            [pbr::OriginalName("UNVERIFIED")] Unverified = 2,
-          }
-
-        }
-        #endregion
-
-      }
-
     }
     #endregion
 
@@ -4805,7 +5132,7 @@ namespace libsignalservice.push {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::libsignalservice.push.SignalServiceReflection.Descriptor.MessageTypes[5]; }
+      get { return global::libsignalservice.push.SignalServiceReflection.Descriptor.MessageTypes[7]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -5366,7 +5693,7 @@ namespace libsignalservice.push {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::libsignalservice.push.SignalServiceReflection.Descriptor.MessageTypes[6]; }
+      get { return global::libsignalservice.push.SignalServiceReflection.Descriptor.MessageTypes[8]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -5735,7 +6062,7 @@ namespace libsignalservice.push {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::libsignalservice.push.SignalServiceReflection.Descriptor.MessageTypes[7]; }
+      get { return global::libsignalservice.push.SignalServiceReflection.Descriptor.MessageTypes[9]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -5773,6 +6100,12 @@ namespace libsignalservice.push {
       switch (other.ColorOneofCase) {
         case ColorOneofOneofCase.Color:
           Color = other.Color;
+          break;
+      }
+
+      switch (other.VerifiedOneofCase) {
+        case VerifiedOneofOneofCase.Verified:
+          Verified = other.Verified.Clone();
           break;
       }
 
@@ -5825,6 +6158,17 @@ namespace libsignalservice.push {
       set {
         colorOneof_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
         colorOneofCase_ = ColorOneofOneofCase.Color;
+      }
+    }
+
+    /// <summary>Field number for the "verified" field.</summary>
+    public const int VerifiedFieldNumber = 5;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::libsignalservice.push.Verified Verified {
+      get { return verifiedOneofCase_ == VerifiedOneofOneofCase.Verified ? (global::libsignalservice.push.Verified) verifiedOneof_ : null; }
+      set {
+        verifiedOneof_ = value;
+        verifiedOneofCase_ = value == null ? VerifiedOneofOneofCase.None : VerifiedOneofOneofCase.Verified;
       }
     }
 
@@ -5900,6 +6244,24 @@ namespace libsignalservice.push {
       colorOneof_ = null;
     }
 
+    private object verifiedOneof_;
+    /// <summary>Enum of possible cases for the "verified_oneof" oneof.</summary>
+    public enum VerifiedOneofOneofCase {
+      None = 0,
+      Verified = 5,
+    }
+    private VerifiedOneofOneofCase verifiedOneofCase_ = VerifiedOneofOneofCase.None;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public VerifiedOneofOneofCase VerifiedOneofCase {
+      get { return verifiedOneofCase_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearVerifiedOneof() {
+      verifiedOneofCase_ = VerifiedOneofOneofCase.None;
+      verifiedOneof_ = null;
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as ContactDetails);
@@ -5917,10 +6279,12 @@ namespace libsignalservice.push {
       if (Name != other.Name) return false;
       if (!object.Equals(Avatar, other.Avatar)) return false;
       if (Color != other.Color) return false;
+      if (!object.Equals(Verified, other.Verified)) return false;
       if (NumberOneofCase != other.NumberOneofCase) return false;
       if (NameOneofCase != other.NameOneofCase) return false;
       if (AvatarOneofCase != other.AvatarOneofCase) return false;
       if (ColorOneofCase != other.ColorOneofCase) return false;
+      if (VerifiedOneofCase != other.VerifiedOneofCase) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -5931,10 +6295,12 @@ namespace libsignalservice.push {
       if (nameOneofCase_ == NameOneofOneofCase.Name) hash ^= Name.GetHashCode();
       if (avatarOneofCase_ == AvatarOneofOneofCase.Avatar) hash ^= Avatar.GetHashCode();
       if (colorOneofCase_ == ColorOneofOneofCase.Color) hash ^= Color.GetHashCode();
+      if (verifiedOneofCase_ == VerifiedOneofOneofCase.Verified) hash ^= Verified.GetHashCode();
       hash ^= (int) numberOneofCase_;
       hash ^= (int) nameOneofCase_;
       hash ^= (int) avatarOneofCase_;
       hash ^= (int) colorOneofCase_;
+      hash ^= (int) verifiedOneofCase_;
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -5964,6 +6330,10 @@ namespace libsignalservice.push {
         output.WriteRawTag(34);
         output.WriteString(Color);
       }
+      if (verifiedOneofCase_ == VerifiedOneofOneofCase.Verified) {
+        output.WriteRawTag(42);
+        output.WriteMessage(Verified);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -5983,6 +6353,9 @@ namespace libsignalservice.push {
       }
       if (colorOneofCase_ == ColorOneofOneofCase.Color) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Color);
+      }
+      if (verifiedOneofCase_ == VerifiedOneofOneofCase.Verified) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Verified);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -6022,6 +6395,15 @@ namespace libsignalservice.push {
           break;
       }
 
+      switch (other.VerifiedOneofCase) {
+        case VerifiedOneofOneofCase.Verified:
+          if (Verified == null) {
+            Verified = new global::libsignalservice.push.Verified();
+          }
+          Verified.MergeFrom(other.Verified);
+          break;
+      }
+
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -6052,6 +6434,15 @@ namespace libsignalservice.push {
           }
           case 34: {
             Color = input.ReadString();
+            break;
+          }
+          case 42: {
+            global::libsignalservice.push.Verified subBuilder = new global::libsignalservice.push.Verified();
+            if (verifiedOneofCase_ == VerifiedOneofOneofCase.Verified) {
+              subBuilder.MergeFrom(Verified);
+            }
+            input.ReadMessage(subBuilder);
+            Verified = subBuilder;
             break;
           }
         }
@@ -6288,7 +6679,7 @@ namespace libsignalservice.push {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::libsignalservice.push.SignalServiceReflection.Descriptor.MessageTypes[8]; }
+      get { return global::libsignalservice.push.SignalServiceReflection.Descriptor.MessageTypes[10]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]

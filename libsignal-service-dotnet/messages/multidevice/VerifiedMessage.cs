@@ -34,11 +34,14 @@ namespace libsignalservice.messages.multidevice
 
         public VerifiedState Verified { get; private set; }
 
-        public VerifiedMessage(string destination, IdentityKey identityKey, VerifiedState verified)
+        public long Timestamp { get; private set; }
+
+        public VerifiedMessage(string destination, IdentityKey identityKey, VerifiedState verified, long timestamp)
         {
             Destination = destination;
             IdentityKey = identityKey;
             Verified = verified;
+            Timestamp = timestamp;
         }
     }
 }

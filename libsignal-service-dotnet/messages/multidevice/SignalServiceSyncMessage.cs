@@ -30,7 +30,7 @@ namespace libsignalservice.messages.multidevice
         private readonly May<BlockedListMessage> blockedList;
         private readonly May<RequestMessage> request;
         private readonly May<List<ReadMessage>> reads;
-        private readonly May<List<VerifiedMessage>> verified;
+        private readonly May<VerifiedMessage> verified;
 
         private SignalServiceSyncMessage(May<SentTranscriptMessage> sent,
             May<ContactsMessage> contacts,
@@ -38,7 +38,7 @@ namespace libsignalservice.messages.multidevice
             May<BlockedListMessage> blockedList,
             May<RequestMessage> request,
             May<List<ReadMessage>> reads,
-            May<List<VerifiedMessage>> verified)
+            May<VerifiedMessage> verified)
         {
             this.sent = sent;
             this.contacts = contacts;
@@ -118,29 +118,15 @@ namespace libsignalservice.messages.multidevice
                 May.NoValue);
         }
 
-        public static SignalServiceSyncMessage forVerified(List<VerifiedMessage> verified)
-        {
-            return new SignalServiceSyncMessage(May.NoValue,
-                May.NoValue,
-                May.NoValue,
-                May.NoValue,
-                May.NoValue,
-                May.NoValue,
-                new May<List<VerifiedMessage>>(verified));
-        }
-
         public static SignalServiceSyncMessage forVerified(VerifiedMessage verifiedMessage)
         {
-            List<VerifiedMessage> verifiedMessages = new List<VerifiedMessage>();
-            verifiedMessages.Add(verifiedMessage);
-
             return new SignalServiceSyncMessage(May.NoValue,
                 May.NoValue,
                 May.NoValue,
                 May.NoValue,
                 May.NoValue,
                 May.NoValue,
-                new May<List<VerifiedMessage>>(verifiedMessages));
+                new May<VerifiedMessage>(verifiedMessage));
         }
 
         public static SignalServiceSyncMessage forBlocked(BlockedListMessage blocked)
@@ -195,7 +181,7 @@ namespace libsignalservice.messages.multidevice
             return blockedList;
         }
 
-        public May<List<VerifiedMessage>> getVerified()
+        public May<VerifiedMessage> getVerified()
         {
             return verified;
         }

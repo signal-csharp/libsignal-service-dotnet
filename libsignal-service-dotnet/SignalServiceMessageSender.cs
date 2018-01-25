@@ -67,6 +67,11 @@ namespace libsignalservice
             this.socket.sendReceipt(recipient.getNumber(), messageId, recipient.getRelay());
         }
 
+        /// <summary>
+        /// Send a call setup message to a single recipient.
+        /// </summary>
+        /// <param name="recipient">The message's destination.</param>
+        /// <param name="message">The call message.</param>
         public void sendCallMessage(SignalServiceAddress recipient, SignalServiceCallMessage message)
         {
             byte[] content = createCallContent(message);
@@ -154,7 +159,8 @@ namespace libsignalservice
             }
             else if (message.getVerified().HasValue)
             {
-                content = createMultiDeviceVerifiedContent(message.getVerified().ForceGetValue());
+                sendMessage(message.getVerified().ForceGetValue());
+                return;
             }
             else
             {
@@ -172,6 +178,32 @@ namespace libsignalservice
         public void cancelInFlightRequests()
         {
             socket.cancelInFlightRequests();
+        }
+
+        private void sendMessage(VerifiedMessage message)
+        {
+            byte[] nullMessageBody = new DataMessage()
+            {
+                Body = Base64.encodeBytes(Util.getRandomLengthBytes(140))
+            }.ToByteArray();
+
+            NullMessage nullMessage = new NullMessage()
+            {
+                Padding = ByteString.CopyFrom(nullMessageBody)
+            };
+
+            byte[] content = new Content()
+            {
+                NullMessage = nullMessage
+            }.ToByteArray();
+
+            SendMessageResponse response = sendMessage(new SignalServiceAddress(message.Destination), message.Timestamp, content, false);
+
+            if (response != null && response.needsSync)
+            {
+                byte[] syncMessage = createMultiDeviceVerifiedContent(message, nullMessage.ToByteArray());
+                sendMessage(localAddress, message.Timestamp, syncMessage, false);
+            }
         }
 
         private byte[] createMessageContent(SignalServiceDataMessage message)// throws IOException
@@ -352,35 +384,32 @@ namespace libsignalservice
             return content.ToByteArray();
         }
 
-        private byte[] createMultiDeviceVerifiedContent(List<VerifiedMessage> verifiedMessages)
+        private byte[] createMultiDeviceVerifiedContent(VerifiedMessage verifiedMessage, byte[] nullMessage)
         {
             Content content = new Content { };
             SyncMessage syncMessage = createSyncMessage();
+            Verified verifiedMessageBuilder = new Verified();
 
-            foreach (VerifiedMessage verifiedMessage in verifiedMessages)
+            verifiedMessageBuilder.NullMessage = ByteString.CopyFrom(nullMessage);
+            verifiedMessageBuilder.Destination = verifiedMessage.Destination;
+            verifiedMessageBuilder.IdentityKey = ByteString.CopyFrom(verifiedMessage.IdentityKey.serialize());
+
+            switch (verifiedMessage.Verified)
             {
-                SyncMessage.Types.Verified verifiedMessageBuilder = new SyncMessage.Types.Verified { };
-                verifiedMessageBuilder.Destination = verifiedMessage.Destination;
-                verifiedMessageBuilder.IdentityKey = ByteString.CopyFrom(verifiedMessage.IdentityKey.serialize());
-
-                switch (verifiedMessage.Verified)
-                {
-                    case VerifiedMessage.VerifiedState.Default:
-                        verifiedMessageBuilder.State = SyncMessage.Types.Verified.Types.State.Default;
-                        break;
-                    case VerifiedMessage.VerifiedState.Verified:
-                        verifiedMessageBuilder.State = SyncMessage.Types.Verified.Types.State.Verified;
-                        break;
-                    case VerifiedMessage.VerifiedState.Unverified:
-                        verifiedMessageBuilder.State = SyncMessage.Types.Verified.Types.State.Unverified;
-                        break;
-                    default:
-                        throw new Exception("Unknown: " + verifiedMessage.Verified);
-                }
-
-                syncMessage.Verified.Add(verifiedMessageBuilder);
+                case VerifiedMessage.VerifiedState.Default:
+                    verifiedMessageBuilder.State = Verified.Types.State.Default;
+                    break;
+                case VerifiedMessage.VerifiedState.Verified:
+                    verifiedMessageBuilder.State = Verified.Types.State.Verified;
+                    break;
+                case VerifiedMessage.VerifiedState.Unverified:
+                    verifiedMessageBuilder.State = Verified.Types.State.Unverified;
+                    break;
+                default:
+                    throw new Exception("Unknown: " + verifiedMessage.Verified);
             }
 
+            syncMessage.Verified = verifiedMessageBuilder;
             content.SyncMessage = syncMessage;
             return content.ToByteArray();
         }
@@ -388,7 +417,7 @@ namespace libsignalservice
         private SyncMessage createSyncMessage()
         {
             SyncMessage syncMessage = new SyncMessage { };
-            syncMessage.Padding = ByteString.CopyFrom(Util.getSecretBytes(512));
+            syncMessage.Padding = ByteString.CopyFrom(Util.getRandomLengthBytes(512));
             return syncMessage;
         }
 

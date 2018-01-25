@@ -84,6 +84,61 @@ namespace libsignalservice.util
             return BitConverter.ToUInt32(b, 0);
         }
 
+        /// <summary>
+        /// Generates a secure random int with the given number of bits
+        /// </summary>
+        /// <param name="numBits">Number of bits</param>
+        /// <returns>A secure random int</returns>
+        /// <remarks>From http://hg.openjdk.java.net/jdk8u/jdk8u/jdk/file/73d5bcd0585d/src/share/classes/java/security/SecureRandom.java#l486</remarks>
+        private static int next(int numBits)
+        {
+            int numBytes = (numBits + 7) / 8;
+            byte[] b = getSecretBytes((uint)numBytes);
+            int next = 0;
+
+            for (int i = 0; i < numBytes; i++)
+            {
+                next = (next << 8) + (b[i] & 255);
+            }
+
+            return (int)((uint)next >> (numBytes * 8 - numBits));
+        }
+
+        /// <summary>
+        /// Generates a secure random int between 0 and the specified value (exclusive).
+        /// </summary>
+        /// <param name="bound">The max value (exclusive)</param>
+        /// <returns>A secure random int</returns>
+        /// <remarks>From http://hg.openjdk.java.net/jdk8u/jdk8u/jdk/file/73d5bcd0585d/src/share/classes/java/util/Random.java#l342</remarks>
+        private static int nextInt(int bound)
+        {
+            if (bound <= 0)
+            {
+                throw new ArgumentException("bound must be positive");
+            }
+
+            if ((bound & bound) == bound)
+            {
+                return (int)((bound) * (long)next(31) >> 31);
+            }
+
+            int bits;
+            int val;
+            do
+            {
+                bits = next(31);
+                val = bits % bound;
+            }
+            while (bits - val + (bound - 1) < 0);
+
+            return val;
+        }
+
+        public static byte[] getRandomLengthBytes(int maxSize)
+        {
+            return getSecretBytes((uint)(nextInt(maxSize) + 1));
+        }
+
         public static void readFully(Stream input, byte[] buffer)
         {
             int offset = 0;

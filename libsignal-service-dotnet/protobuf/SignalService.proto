@@ -26,6 +26,7 @@ message Content {
   oneof dataMessage_oneof				{ DataMessage dataMessage     = 1; }
   oneof syncMessage_oneof				{ SyncMessage syncMessage     = 2; }
   oneof callMessage_oneof               { CallMessage callMessage     = 3; }
+  oneof nullMessage_oneof       { NullMessage nullMessage = 4; }
 }
 
 message CallMessage {
@@ -76,6 +77,23 @@ message DataMessage {
   oneof expireTimer_oneof				{ uint32             expireTimer = 5; }
 }
 
+message NullMessage {
+  oneof padding_oneof { bytes padding = 1; }
+}
+
+message Verified {
+  enum State {
+    DEFAULT = 0;
+    VERIFIED = 1;
+    UNVERIFIED = 2;
+  }
+
+  oneof destination_oneof { string destination = 1; }
+  oneof identityKey_oneof { bytes identityKey = 2; }
+  oneof state_oneof { State state = 3; }
+  oneof nullMessage_oneof { bytes nullMessage = 4; }
+}
+
 message SyncMessage {
   message Sent {
     oneof destination_oneof					{ string      destination              = 1; }
@@ -113,25 +131,13 @@ message SyncMessage {
 	oneof timestamp_oneof					{ uint64 timestamp = 2; }
   }
 
-  message Verified {
-    enum State {
-      DEFAULT = 0;
-      VERIFIED = 1;
-      UNVERIFIED = 2;
-    }
-
-    oneof destination_oneof { string destination = 1; }
-    oneof identityKey_oneof { bytes identityKey = 2; }
-    oneof state_oneof { State state = 3; }
-  }
-
   oneof sent_oneof							{ Sent     sent     = 1; }
   oneof contacts_oneof						{ Contacts contacts = 2; }
   oneof groups_oneof						{ Groups   groups   = 3; }
   oneof request_oneof						{ Request  request  = 4; }
   repeated Read read = 5;
   oneof blocked_oneof						{ Blocked  blocked  = 6; }
-  repeated Verified verified = 7;
+  oneof verified_oneof          { Verified verified = 7; }
   oneof padding_oneof           { bytes padding = 8; }
 }
 
@@ -176,6 +182,7 @@ message ContactDetails {
   oneof name_oneof					{ string name   = 2; }
   oneof avatar_oneof				{ Avatar avatar = 3; }
   oneof color_oneof					{ string color  = 4; }
+  oneof verified_oneof      { Verified verified = 5; }
 }
 
 message GroupDetails {

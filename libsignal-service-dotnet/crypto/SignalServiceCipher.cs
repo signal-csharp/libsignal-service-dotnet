@@ -205,38 +205,34 @@ namespace libsignalservice.crypto
                 return SignalServiceSyncMessage.forRead(readMessages);
             }
 
-            if (content.Verified.Count > 0)
+            if (content.VerifiedOneofCase == SyncMessage.VerifiedOneofOneofCase.Verified)
             {
                 try
                 {
-                    List<VerifiedMessage> verifiedMessages = new List<VerifiedMessage>();
+                    Verified verified = content.Verified;
+                    string destination = verified.Destination;
+                    IdentityKey identityKey = new IdentityKey(verified.IdentityKey.ToByteArray(), 0);
 
-                    foreach (SyncMessage.Types.Verified verified in content.Verified)
+                    VerifiedMessage.VerifiedState verifiedState;
+
+                    if (verified.State == Verified.Types.State.Default)
                     {
-                        string destination = verified.Destination;
-                        IdentityKey identityKey = new IdentityKey(verified.IdentityKey.ToByteArray(), 0);
-
-                        VerifiedMessage.VerifiedState verifiedState;
-
-                        if (verified.State == SyncMessage.Types.Verified.Types.State.Default)
-                        {
-                            verifiedState = VerifiedMessage.VerifiedState.Default;
-                        }
-                        else if (verified.State == SyncMessage.Types.Verified.Types.State.Verified)
-                        {
-                            verifiedState = VerifiedMessage.VerifiedState.Verified;
-                        }
-                        else if (verified.State == SyncMessage.Types.Verified.Types.State.Unverified)
-                        {
-                            verifiedState = VerifiedMessage.VerifiedState.Unverified;
-                        }
-                        else
-                        {
-                            throw new InvalidMessageException("Unknown state: " + verified.State);
-                        }
-
-                        verifiedMessages.Add(new VerifiedMessage(destination, identityKey, verifiedState));
+                        verifiedState = VerifiedMessage.VerifiedState.Default;
                     }
+                    else if (verified.State == Verified.Types.State.Verified)
+                    {
+                        verifiedState = VerifiedMessage.VerifiedState.Verified;
+                    }
+                    else if (verified.State == Verified.Types.State.Unverified)
+                    {
+                        verifiedState = VerifiedMessage.VerifiedState.Unverified;
+                    }
+                    else
+                    {
+                        throw new InvalidMessageException("Unknown state: " + verified.State);
+                    }
+
+                    return SignalServiceSyncMessage.forVerified(new VerifiedMessage(destination, identityKey, verifiedState, Util.CurrentTimeMillis()));
                 }
                 catch (InvalidKeyException e)
                 {
