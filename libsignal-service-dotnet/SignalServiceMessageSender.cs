@@ -567,7 +567,12 @@ namespace libsignalservice
             foreach (uint deviceId in store.GetSubDeviceSessions(recipient.getNumber()))
             {
                 if (!myself || deviceId != CredentialsProvider.GetDeviceId())
-                    messages.Add(getEncryptedMessage(socket, recipient, deviceId, plaintext, legacy, silent));
+                {
+                    if (store.ContainsSession(new SignalProtocolAddress(recipient.getNumber(), deviceId)))
+                    {
+                        messages.Add(getEncryptedMessage(socket, recipient, deviceId, plaintext, legacy, silent));
+                    }
+                }
             }
 
             return new OutgoingPushMessageList(recipient.getNumber(), (ulong)timestamp, recipient.getRelay().HasValue ? recipient.getRelay().ForceGetValue() : null, messages);
