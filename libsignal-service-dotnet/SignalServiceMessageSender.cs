@@ -331,7 +331,7 @@ namespace libsignalservice
                 Content content = new Content { };
                 SyncMessage syncMessage = createSyncMessage();
                 SyncMessage.Types.Sent sentMessage = new SyncMessage.Types.Sent { };
-                DataMessage dataMessage = DataMessage.Parser.ParseFrom(rawContent);
+                DataMessage dataMessage = Content.Parser.ParseFrom(rawContent).DataMessage;
 
                 sentMessage.Timestamp = timestamp;
                 sentMessage.Message = dataMessage;
