@@ -98,29 +98,12 @@ namespace libsignalservice
         /// This value should remain consistent across registrations for the
         /// same install, but probabilistically differ across registrations
         /// for separate installs.</param>
-        /// <param name="voice">A boolean that indicates whether the client supports secure voice (RedPhone) calls. </param>
         /// <returns></returns>
         public void verifyAccountWithCode(string verificationCode, string signalingKey,
-                                   uint signalProtocolRegistrationId, bool voice, bool video, bool fetchesMessages)
+                                   uint signalProtocolRegistrationId, bool fetchesMessages)
         {
             this.pushServiceSocket.verifyAccountCode(verificationCode, signalingKey,
-                                                 signalProtocolRegistrationId, voice, video, fetchesMessages);
-        }
-
-        /// <summary>
-        /// Verify a Signal Service account with a signed token from a trusted source.
-        /// </summary>
-        /// <param name="verificationToken">The signed token provided by a trusted server.</param>
-        /// <param name="signalingKey">52 random bytes.  A 32 byte AES key and a 20 byte Hmac256 key, concatenated.</param>
-        /// <param name="signalProtocolRegistrationId">A random 14-bit number that identifies this TextSecure install.
-        /// This value should remain consistent across registrations for the
-        /// same install, but probabilistically differ across registrations
-        /// for separate installs.</param>
-        /// <param name="voice">A boolean that indicates whether the client supports secure voice (RedPhone) calls.</param>
-        /// <returns></returns>
-        public void verifyAccountWithToken(string verificationToken, string signalingKey, uint signalProtocolRegistrationId, bool voice, bool video, bool fetchesMessages)
-        {
-            this.pushServiceSocket.verifyAccountToken(verificationToken, signalingKey, signalProtocolRegistrationId, voice, video, fetchesMessages);
+                                                 signalProtocolRegistrationId, fetchesMessages);
         }
 
         /// <summary>
@@ -133,24 +116,22 @@ namespace libsignalservice
         /// separate installs.</param>
         /// <param name="voice">A boolean that indicates whether the client supports secure voice (RedPhone)</param>
         /// <returns></returns>
-        public void setAccountAttributes(string signalingKey, uint signalProtocolRegistrationId, bool voice, bool video)
+        public void setAccountAttributes(string signalingKey, uint signalProtocolRegistrationId, bool fetchesMessages)
         {
-            this.pushServiceSocket.setAccountAttributes(signalingKey, signalProtocolRegistrationId, voice, video, true);
+            this.pushServiceSocket.setAccountAttributes(signalingKey, signalProtocolRegistrationId, fetchesMessages);
         }
 
         /// <summary>
-        /// Register an identity key, last resort key, signed prekey, and list of one time prekeys
+        /// Register an identity key, signed prekey, and list of one time prekeys
         /// with the server.
         /// </summary>
         /// <param name="identityKey">The client's long-term identity keypair.</param>
-        /// <param name="lastResortKey">The client's "last resort" prekey.</param>
         /// <param name="signedPreKey">The client's signed prekey.</param>
         /// <param name="oneTimePreKeys">The client's list of one-time prekeys.</param>
         /// <returns></returns>
-        public bool setPreKeys(IdentityKey identityKey, PreKeyRecord lastResortKey,
-            SignedPreKeyRecord signedPreKey, IList<PreKeyRecord> oneTimePreKeys)//throws IOException
+        public bool setPreKeys(IdentityKey identityKey, SignedPreKeyRecord signedPreKey, IList<PreKeyRecord> oneTimePreKeys)//throws IOException
         {
-            this.pushServiceSocket.registerPreKeys(identityKey, lastResortKey, signedPreKey, oneTimePreKeys);
+            this.pushServiceSocket.registerPreKeys(identityKey, signedPreKey, oneTimePreKeys);
             return true;
         }
 

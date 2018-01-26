@@ -33,16 +33,11 @@ namespace libsignalservice.push
         private List<PreKeyEntity> preKeys;
 
         [JsonProperty(Required = Required.Always, Order = 3)]
-        private PreKeyEntity lastResortKey;
-
-        [JsonProperty(Required = Required.Always, Order = 4)]
         private SignedPreKeyEntity signedPreKey;
 
-        public PreKeyState(List<PreKeyEntity> preKeys, PreKeyEntity lastResortKey,
-                           SignedPreKeyEntity signedPreKey, IdentityKey identityKey)
+        public PreKeyState(List<PreKeyEntity> preKeys, SignedPreKeyEntity signedPreKey, IdentityKey identityKey)
         {
             this.preKeys = preKeys;
-            this.lastResortKey = lastResortKey;
             this.signedPreKey = signedPreKey;
             this.identityKey = identityKey;
         }

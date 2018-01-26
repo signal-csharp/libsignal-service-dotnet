@@ -37,23 +37,12 @@ namespace libsignalservice.push
         [JsonProperty("fetchesMessages", Required = Required.Always)]
         private bool FetchesMessages { get; set; }
 
-        public AccountAttributes()
-        {
-        }
-
-        public AccountAttributes(string signalingKey, uint registrationId, bool voice)
+        public AccountAttributes(string signalingKey, uint registrationId, bool fetchesMessages)
         {
             SignalingKey = signalingKey;
             RegistrationId = registrationId;
-            Voice = voice;
-        }
-
-        public AccountAttributes(string signalingKey, uint registrationId, bool voice, bool video, bool fetchesMessages)
-        {
-            SignalingKey = signalingKey;
-            RegistrationId = registrationId;
-            Voice = voice;
-            Video = video;
+            Voice = true;
+            Video = true;
             FetchesMessages = fetchesMessages;
         }
     }

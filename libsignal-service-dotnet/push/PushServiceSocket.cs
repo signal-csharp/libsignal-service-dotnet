@@ -93,23 +93,16 @@ namespace libsignalservice.push
             return true;
         }
 
-        public bool verifyAccountCode(string verificationCode, string signalingKey, uint registrationId, bool voice, bool video, bool fetchesMessages)
+        public bool verifyAccountCode(string verificationCode, string signalingKey, uint registrationId, bool fetchesMessages)
         {
-            AccountAttributes signalingKeyEntity = new AccountAttributes(signalingKey, registrationId, voice, video, fetchesMessages);
+            AccountAttributes signalingKeyEntity = new AccountAttributes(signalingKey, registrationId, fetchesMessages);
             makeRequest(string.Format(VERIFY_ACCOUNT_CODE_PATH, verificationCode), "PUT", JsonUtil.toJson(signalingKeyEntity));
             return true;
         }
 
-        public bool verifyAccountToken(string verificationToken, string signalingKey, uint registrationId, bool voice, bool video, bool fetchesMessages)
+        public bool setAccountAttributes(string signalingKey, uint registrationId, bool fetchesMessages)
         {
-            AccountAttributes signalingKeyEntity = new AccountAttributes(signalingKey, registrationId, voice, video, fetchesMessages);
-            makeRequest(string.Format(VERIFY_ACCOUNT_TOKEN_PATH, verificationToken), "PUT", JsonUtil.toJson(signalingKeyEntity));
-            return true;
-        }
-
-        public bool setAccountAttributes(string signalingKey, uint registrationId, bool voice, bool video, bool fetchesMessages)
-        {
-            AccountAttributes accountAttributesEntity = new AccountAttributes(signalingKey, registrationId, voice, video, fetchesMessages);
+            AccountAttributes accountAttributesEntity = new AccountAttributes(signalingKey, registrationId, fetchesMessages);
             makeRequest(SET_ACCOUNT_ATTRIBUTES, "PUT", JsonUtil.toJson(accountAttributesEntity));
             return true;
         }
@@ -204,7 +197,6 @@ namespace libsignalservice.push
         }
 
         public bool registerPreKeys(IdentityKey identityKey,
-                                    PreKeyRecord lastResortKey,
                                     SignedPreKeyRecord signedPreKey,
                                     IList<PreKeyRecord> records)
         //throws IOException
@@ -219,16 +211,12 @@ namespace libsignalservice.push
                 entities.Add(entity);
             }
 
-            PreKeyEntity lastResortEntity = new PreKeyEntity(lastResortKey.getId(),
-                                                     lastResortKey.getKeyPair().getPublicKey());
-
             SignedPreKeyEntity signedPreKeyEntity = new SignedPreKeyEntity(signedPreKey.getId(),
                                                                    signedPreKey.getKeyPair().getPublicKey(),
                                                                    signedPreKey.getSignature());
 
             makeRequest(string.Format(PREKEY_PATH, ""), "PUT",
-                JsonUtil.toJson(new PreKeyState(entities, lastResortEntity,
-                                                signedPreKeyEntity, identityKey)));
+                JsonUtil.toJson(new PreKeyState(entities, signedPreKeyEntity, identityKey)));
             return true;
         }
 
