@@ -52,7 +52,7 @@ namespace libsignalservice
         /// received in a <see cref="SignalServiceDataMessage"/></param>
         /// <param name="plaintextDestination">The download destination for this attachment.</param>
         /// <param name="tmpCipherDestination">The temporary destination for this attachment before decryption</param>
-        public void retrieveAttachment(SignalServiceAttachmentPointer pointer, FileStream plaintextDestination, FileStream tmpCipherDestination, int maxSizeBytes)
+        public void retrieveAttachment(SignalServiceAttachmentPointer pointer, Stream plaintextDestination, Stream tmpCipherDestination, int maxSizeBytes)
         {
             retrieveAttachment(pointer, plaintextDestination, tmpCipherDestination, maxSizeBytes, null);
         }
@@ -66,7 +66,7 @@ namespace libsignalservice
         /// <param name="tmpCipherDestination">The temporary destination for this attachment before decryption</param>
         /// <param name="maxSizeBytes">The maximum size for this attachment (not yet implemented)</param>
         /// <param name="listener">An optional listener (may be null) to receive callbacks on download progress.</param>
-        public void retrieveAttachment(SignalServiceAttachmentPointer pointer, FileStream plaintextDestination, FileStream tmpCipherDestination, int maxSizeBytes, ProgressListener listener)
+        public void retrieveAttachment(SignalServiceAttachmentPointer pointer, Stream plaintextDestination, Stream tmpCipherDestination, int maxSizeBytes, ProgressListener listener)
         {
             socket.retrieveAttachment(pointer.Relay, pointer.Id, tmpCipherDestination, maxSizeBytes);
             tmpCipherDestination.Seek(0, SeekOrigin.Begin);

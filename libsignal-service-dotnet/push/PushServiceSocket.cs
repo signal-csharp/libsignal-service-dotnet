@@ -378,7 +378,7 @@ namespace libsignalservice.push
             return new Tuple<ulong, byte[]>(attachmentKey.getId(), digest);
         }
 
-        public void retrieveAttachment(string relay, ulong attachmentId, FileStream tmpDestination, int maxSizeBytes)
+        public void retrieveAttachment(string relay, ulong attachmentId, Stream tmpDestination, int maxSizeBytes)
         {
             string path = string.Format(ATTACHMENT_PATH, attachmentId.ToString());
 
@@ -448,7 +448,7 @@ namespace libsignalservice.push
             throw new NotImplementedException();
         }
 
-        private void downloadExternalFile(string url, FileStream localDestination)
+        private void downloadExternalFile(string url, Stream localDestination)
         {
             try
             {
