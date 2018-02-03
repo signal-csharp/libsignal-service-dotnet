@@ -380,6 +380,18 @@ namespace libsignalservice.push
 
         public void retrieveAttachment(string relay, ulong attachmentId, Stream tmpDestination, int maxSizeBytes)
         {
+            string attachmentUrlLocation = RetrieveAttachmentUrl(relay, attachmentId);
+            downloadExternalFile(attachmentUrlLocation, tmpDestination);
+        }
+
+        /// <summary>
+        /// Gets the URL location of an attachment
+        /// </summary>
+        /// <param name="relay"></param>
+        /// <param name="attachmentId"></param>
+        /// <returns></returns>
+        public string RetrieveAttachmentUrl(string relay, ulong attachmentId)
+        {
             string path = string.Format(ATTACHMENT_PATH, attachmentId.ToString());
 
             if (!Util.isEmpty(relay))
@@ -390,10 +402,8 @@ namespace libsignalservice.push
             string response = makeRequest(path, "GET", null);
             Debug.WriteLine("PushServiceSocket: Received resp " + response);
             AttachmentDescriptor descriptor = JsonUtil.fromJson<AttachmentDescriptor>(response);
-
             Debug.WriteLine("PushServiceSocket: Attachment: " + attachmentId + " is at: " + descriptor.getLocation());
-
-            downloadExternalFile(descriptor.getLocation(), tmpDestination);
+            return descriptor.getLocation();
         }
 
         public SignalServiceProfile RetrieveProfile(SignalServiceAddress target)
@@ -468,12 +478,7 @@ namespace libsignalservice.push
                         read = input.Read(buffer, 0, 4096);
                         if (read == 0)
                         {
-                            localDestination.Seek(-32, SeekOrigin.End);
-                            byte[] hash = new byte[32];
-                            localDestination.Read(hash, 0, 32);
-                            localDestination.SetLength(localDestination.Length - 32);
                             Debug.WriteLine("PushServiceSocket Downloaded: " + url + " to: " + localDestination);
-                            //TODO compare ciphertext hash!
                             return;
                         }
                         localDestination.Write(buffer, 0, read);
