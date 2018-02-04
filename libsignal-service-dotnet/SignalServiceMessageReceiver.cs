@@ -141,7 +141,7 @@ namespace libsignalservice
                 byte[] ourMac = new byte[0];
 
                 // Read the data into a memory stream because we can only get the hash on an entire set of data
-                MemoryStream memoryStream = new MemoryStream();
+                MemoryStream memoryStream = new MemoryStream(remainingData);
                 while (remainingData > 0)
                 {
                     int read = stream.Read(buffer, 0, Math.Min(buffer.Length, remainingData));

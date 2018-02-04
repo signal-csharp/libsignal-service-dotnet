@@ -34,8 +34,10 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Security;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace libsignalservice.push
 {
@@ -496,23 +498,74 @@ namespace libsignalservice.push
 
         private byte[] UploadAttachment(string method, string url, Stream data, ulong dataSize, byte[] key) //throws IOException
         {
-            StreamContent streamContent = new StreamContent(data);
+            // This stream will hold the encrypted data to be uploaded
+            MemoryStream memoryStream = new MemoryStream();
+            // Also need to hold the crypto stream open until we've uploaded the data
+            CryptoStream cryptoStream = null;
+
+            // This is the final digest
+            byte[] digest = new byte[0];
+
+            byte[][] keyParts = Util.split(key, 32, 32);
+            using (var mac = new HMACSHA256())
+            {
+                using (var cipher = Aes.Create())
+                {
+                    cipher.Key = keyParts[0];
+                    cipher.Mode = CipherMode.CBC;
+                    cipher.Padding = PaddingMode.PKCS7;
+                    mac.Key = keyParts[1];
+
+                    // First write the IV to the memory stream
+                    memoryStream.Write(cipher.IV, 0, cipher.IV.Length);
+                    using (var encrypt = cipher.CreateEncryptor())
+                    {
+                        cryptoStream = new CryptoStream(memoryStream, encrypt, CryptoStreamMode.Write);
+                        // Then read from the data stream and write it to the crypto stream
+                        byte[] buffer = new byte[4096];
+                        int read = data.Read(buffer, 0, buffer.Length);
+                        while (read > 0)
+                        {
+                            cryptoStream.Write(buffer, 0, read);
+                            read = data.Read(buffer, 0, buffer.Length);
+                        }
+                        cryptoStream.Flush();
+                        cryptoStream.FlushFinalBlock();
+                    }
+                }
+
+                // Then hash the stream and write the hash to the end
+                memoryStream.Seek(0, SeekOrigin.Begin);
+                byte[] auth = mac.ComputeHash(memoryStream);
+                memoryStream.Write(auth, 0, auth.Length);
+            }
+
+            // Then get the digest of the entire file
+            using (SHA256 sha = SHA256.Create())
+            {
+                memoryStream.Seek(0, SeekOrigin.Begin);
+                digest = sha.ComputeHash(memoryStream);
+            }
+
+            // Finally upload the encrypted file
+            StreamContent streamContent = new StreamContent(memoryStream);
             var request = new HttpRequestMessage(HttpMethod.Put, url);
             request.Content = streamContent;
-            request.Properties.Add("Content-Type", "application/octet-stream");
-            request.Properties.Add("Connection", "close");
+            request.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
+            request.Headers.ConnectionClose = true;
 
-            //TODO encrypt
-            throw new NotImplementedException();
-
-            var client = new HttpClient();
+            HttpClient client = new HttpClient();
             HttpResponseMessage response = client.SendAsync(request).Result;
-
             if (response.StatusCode != HttpStatusCode.OK)
             {
-                throw new IOException("bad response: " + response.StatusCode);
+                cryptoStream.Dispose();
+                memoryStream.Dispose();
+                throw new IOException($"Bad response: {response.StatusCode} {response.Content.ReadAsStringAsync().Result}");
             }
-            return response.Content.ReadAsByteArrayAsync().Result;
+
+            cryptoStream.Dispose();
+            memoryStream.Dispose();
+            return digest;
         }
 
         private string makeRequest(string urlFragment, string method, string body)
