@@ -548,7 +548,7 @@ namespace libsignalservice
             byte[] attachmentKey = Util.getSecretBytes(64);
             PushAttachmentData attachmentData = new PushAttachmentData(attachment.getContentType(),
                                                                        attachment.getInputStream(),
-                                                                       (ulong)attachment.getLength(),
+                                                                       (ulong)GetCiphertextLength(attachment.getLength()),
                                                                        attachmentKey);
 
             Tuple<ulong, byte[]> attachmentIdAndDigest = socket.SendAttachment(attachmentData);
@@ -578,6 +578,11 @@ namespace libsignalservice
             }
 
             return attachmentPointer;
+        }
+
+        private long GetCiphertextLength(long plaintextLength)
+        {
+            return 16 + (((plaintextLength / 16) + 1) * 16) + 32;
         }
 
         private OutgoingPushMessageList getEncryptedMessages(PushServiceSocket socket,

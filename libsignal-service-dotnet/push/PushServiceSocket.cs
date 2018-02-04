@@ -547,6 +547,9 @@ namespace libsignalservice.push
                 digest = sha.ComputeHash(memoryStream);
             }
 
+            // Need to seek to the beginning of the stream to actually upload it
+            memoryStream.Seek(0, SeekOrigin.Begin);
+
             // Finally upload the encrypted file
             StreamContent streamContent = new StreamContent(memoryStream);
             var request = new HttpRequestMessage(HttpMethod.Put, url);
