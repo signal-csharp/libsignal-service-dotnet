@@ -80,9 +80,9 @@ namespace libsignalservice
         /// </summary>
         /// <param name="pointer">The pointer to the attachment</param>
         /// <returns></returns>
-        public string RetrieveAttachmentUrl(SignalServiceAttachmentPointer pointer)
+        public string RetrieveAttachmentDownloadUrl(SignalServiceAttachmentPointer pointer)
         {
-            return socket.RetrieveAttachmentUrl(pointer.Relay, pointer.Id);
+            return socket.RetrieveAttachmentDownloadUrl(pointer.Relay, pointer.Id);
         }
 
         /// <summary>

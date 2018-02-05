@@ -12,6 +12,7 @@ using Strilanc.Value;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Threading;
 
 namespace libsignalservice
@@ -538,6 +539,10 @@ namespace libsignalservice
                     Debug.WriteLine("Found attachment, creating pointer...", TAG);
                     pointers.Add(createAttachmentPointer(attachment.asStream()));
                 }
+                else if (attachment.isPointer())
+                {
+                    pointers.Add(createAttachmentPointerFromPointer(attachment.asPointer()));
+                }
             }
 
             return pointers;
@@ -580,9 +585,53 @@ namespace libsignalservice
             return attachmentPointer;
         }
 
+        private AttachmentPointer createAttachmentPointerFromPointer(SignalServiceAttachmentPointer attachment)
+        {
+            var attachmentPointer = new AttachmentPointer()
+            {
+                ContentType = attachment.getContentType(),
+                Id = attachment.Id,
+                Key = ByteString.CopyFrom(attachment.Key),
+                Digest = ByteString.CopyFrom(attachment.Digest),
+                Size = (uint)attachment.Size
+            };
+
+            if (attachment.FileName != null)
+            {
+                attachmentPointer.FileName = attachment.FileName;
+            }
+
+            if (attachment.VoiceNote)
+            {
+                attachmentPointer.Flags = (uint)AttachmentPointer.Types.Flags.VoiceMessage;
+            }
+
+            return attachmentPointer;
+        }
+
+        /// <summary>
+        /// Gets a URL that can be used to upload an attachment
+        /// </summary>
+        /// <returns>The attachment ID and the URL</returns>
+        public (ulong id, string location) RetrieveAttachmentUploadUrl()
+        {
+            return socket.RetrieveAttachmentUploadUrl();
+        }
+
         private long GetCiphertextLength(long plaintextLength)
         {
             return 16 + (((plaintextLength / 16) + 1) * 16) + 32;
+        }
+
+        /// <summary>
+        /// Encrypts an attachment to be uploaded
+        /// </summary>
+        /// <param name="data">The data stream of the attachment</param>
+        /// <param name="key">64 random bytes</param>
+        /// <returns>The digest and the encrypted data</returns>
+        public (byte[] digest, Stream encryptedData) EncryptAttachment(Stream data, byte[] key)
+        {
+            return socket.EncryptAttachment(data, key);
         }
 
         private OutgoingPushMessageList getEncryptedMessages(PushServiceSocket socket,

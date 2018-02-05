@@ -364,6 +364,20 @@ namespace libsignalservice.push
 
         public Tuple<ulong, byte[]> SendAttachment(PushAttachmentData attachment)// throws IOException
         {
+            var attachmentInfo = RetrieveAttachmentUploadUrl();
+
+            byte[] digest = UploadAttachment("PUT", attachmentInfo.location, attachment.getData(),
+                attachment.getDataSize(), attachment.getKey());
+
+            return new Tuple<ulong, byte[]>(attachmentInfo.id, digest);
+        }
+
+        /// <summary>
+        /// Gets a URL that can be used to upload an attachment
+        /// </summary>
+        /// <returns>The attachment ID and the URL</returns>
+        public (ulong id, string location) RetrieveAttachmentUploadUrl()
+        {
             string response = makeRequest(string.Format(ATTACHMENT_PATH, ""), "GET", null);
             AttachmentDescriptor attachmentKey = JsonUtil.fromJson<AttachmentDescriptor>(response);
 
@@ -373,16 +387,12 @@ namespace libsignalservice.push
             }
 
             Debug.WriteLine("Got attachment content location: " + attachmentKey.getLocation(), TAG);
-
-            byte[] digest = UploadAttachment("PUT", attachmentKey.getLocation(), attachment.getData(),
-                attachment.getDataSize(), attachment.getKey());
-
-            return new Tuple<ulong, byte[]>(attachmentKey.getId(), digest);
+            return (attachmentKey.getId(), attachmentKey.getLocation());
         }
 
         public void retrieveAttachment(string relay, ulong attachmentId, Stream tmpDestination, int maxSizeBytes)
         {
-            string attachmentUrlLocation = RetrieveAttachmentUrl(relay, attachmentId);
+            string attachmentUrlLocation = RetrieveAttachmentDownloadUrl(relay, attachmentId);
             downloadExternalFile(attachmentUrlLocation, tmpDestination);
         }
 
@@ -392,7 +402,7 @@ namespace libsignalservice.push
         /// <param name="relay"></param>
         /// <param name="attachmentId"></param>
         /// <returns></returns>
-        public string RetrieveAttachmentUrl(string relay, ulong attachmentId)
+        public string RetrieveAttachmentDownloadUrl(string relay, ulong attachmentId)
         {
             string path = string.Format(ATTACHMENT_PATH, attachmentId.ToString());
 
@@ -495,13 +505,37 @@ namespace libsignalservice.push
             }
         }
 
-
         private byte[] UploadAttachment(string method, string url, Stream data, ulong dataSize, byte[] key) //throws IOException
         {
-            // This stream will hold the encrypted data to be uploaded
+            var result = EncryptAttachment(data, key);
+
+            // Finally upload the encrypted file
+            StreamContent streamContent = new StreamContent(result.encryptedData);
+            var request = new HttpRequestMessage(HttpMethod.Put, url);
+            request.Content = streamContent;
+            request.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
+            request.Headers.ConnectionClose = true;
+
+            HttpClient client = new HttpClient();
+            HttpResponseMessage response = client.SendAsync(request).Result;
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                throw new IOException($"Bad response: {response.StatusCode} {response.Content.ReadAsStringAsync().Result}");
+            }
+
+            return result.digest;
+        }
+
+        /// <summary>
+        /// Encrypts an attachment to be uploaded
+        /// </summary>
+        /// <param name="data">The data stream of the attachment</param>
+        /// <param name="key">64 random bytes</param>
+        /// <returns>The digest and the encrypted data</returns>
+        public (byte[] digest, Stream encryptedData) EncryptAttachment(Stream data, byte[] key)
+        {
+            // This stream will hold the encrypted data
             MemoryStream memoryStream = new MemoryStream();
-            // Also need to hold the crypto stream open until we've uploaded the data
-            CryptoStream cryptoStream = null;
 
             // This is the final digest
             byte[] digest = new byte[0];
@@ -519,8 +553,8 @@ namespace libsignalservice.push
                     // First write the IV to the memory stream
                     memoryStream.Write(cipher.IV, 0, cipher.IV.Length);
                     using (var encrypt = cipher.CreateEncryptor())
+                    using (var cryptoStream = new CryptoStream(memoryStream, encrypt, CryptoStreamMode.Write))
                     {
-                        cryptoStream = new CryptoStream(memoryStream, encrypt, CryptoStreamMode.Write);
                         // Then read from the data stream and write it to the crypto stream
                         byte[] buffer = new byte[4096];
                         int read = data.Read(buffer, 0, buffer.Length);
@@ -531,44 +565,25 @@ namespace libsignalservice.push
                         }
                         cryptoStream.Flush();
                         cryptoStream.FlushFinalBlock();
+
+                        // Then hash the stream and write the hash to the end
+                        memoryStream.Seek(0, SeekOrigin.Begin);
+                        byte[] auth = mac.ComputeHash(memoryStream);
+                        memoryStream.Write(auth, 0, auth.Length);
+
+                        // Then get the digest of the entire file
+                        using (SHA256 sha = SHA256.Create())
+                        {
+                            memoryStream.Seek(0, SeekOrigin.Begin);
+                            digest = sha.ComputeHash(memoryStream);
+                        }
                     }
                 }
-
-                // Then hash the stream and write the hash to the end
-                memoryStream.Seek(0, SeekOrigin.Begin);
-                byte[] auth = mac.ComputeHash(memoryStream);
-                memoryStream.Write(auth, 0, auth.Length);
             }
 
-            // Then get the digest of the entire file
-            using (SHA256 sha = SHA256.Create())
-            {
-                memoryStream.Seek(0, SeekOrigin.Begin);
-                digest = sha.ComputeHash(memoryStream);
-            }
-
-            // Need to seek to the beginning of the stream to actually upload it
-            memoryStream.Seek(0, SeekOrigin.Begin);
-
-            // Finally upload the encrypted file
-            StreamContent streamContent = new StreamContent(memoryStream);
-            var request = new HttpRequestMessage(HttpMethod.Put, url);
-            request.Content = streamContent;
-            request.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
-            request.Headers.ConnectionClose = true;
-
-            HttpClient client = new HttpClient();
-            HttpResponseMessage response = client.SendAsync(request).Result;
-            if (response.StatusCode != HttpStatusCode.OK)
-            {
-                cryptoStream.Dispose();
-                memoryStream.Dispose();
-                throw new IOException($"Bad response: {response.StatusCode} {response.Content.ReadAsStringAsync().Result}");
-            }
-
-            cryptoStream.Dispose();
-            memoryStream.Dispose();
-            return digest;
+            // The crypto stream closed the stream so we need to make a new one
+            MemoryStream encryptedData = new MemoryStream(memoryStream.ToArray());
+            return (digest, encryptedData);
         }
 
         private string makeRequest(string urlFragment, string method, string body)
