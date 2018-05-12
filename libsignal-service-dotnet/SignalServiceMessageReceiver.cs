@@ -96,9 +96,12 @@ namespace libsignalservice
             byte[] combinedKeyMaterial = pointer.Key;
             byte[][] parts = Util.split(combinedKeyMaterial, CIPHER_KEY_SIZE, MAC_KEY_SIZE);
 
-            using (HMAC mac = new HMACSHA256(parts[1]))
+            if (pointer.Digest != null)
             {
-                VerifyMac(cipherStream, mac, pointer.Digest);
+                using (HMAC mac = new HMACSHA256(parts[1]))
+                {
+                    VerifyMac(cipherStream, mac, pointer.Digest);
+                }
             }
 
             byte[] iv = new byte[BLOCK_SIZE];
