@@ -92,7 +92,7 @@ namespace libsignalservice.push
             return true;
         }
 
-        public string getAccountVerificationToken()// throws IOException
+        public string GetAccountVerificationToken()// throws IOException
         {
             string responseText = MakeServiceRequest(REQUEST_TOKEN_PATH, "GET", null);
             return JsonUtil.fromJson<AuthorizationToken>(responseText).Token;
