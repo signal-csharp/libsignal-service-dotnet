@@ -1,6 +1,7 @@
 using Google.Protobuf;
 using libsignal.push;
 using libsignalservice.messages;
+using libsignalservice.profiles;
 using libsignalservice.push;
 using libsignalservice.util;
 using libsignalservice.websocket;
@@ -120,7 +121,7 @@ namespace libsignalservice
             {
                 Id = BitConverter.ToUInt64(Util.getSecretBytes(sizeof(long)), 0),
                 Verb = "GET",
-                Path = $"/v1/profile/{address.getNumber()}"
+                Path = $"/v1/profile/{address.E164number}"
             };
 
             var t = Websocket.SendRequest(requestMessage);

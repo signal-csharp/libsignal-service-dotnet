@@ -42,7 +42,7 @@ namespace libsignalservice.util
             }
         }
 
-        public static byte[][] split(byte[] input, int firstLength, int secondLength)
+        public static byte[][] Split(byte[] input, int firstLength, int secondLength)
         {
             byte[][] parts = new byte[2][];
 
@@ -139,7 +139,7 @@ namespace libsignalservice.util
             return getSecretBytes((uint)(nextInt(maxSize) + 1));
         }
 
-        public static void readFully(Stream input, byte[] buffer)
+        public static void ReadFully(Stream input, byte[] buffer)
         {
             int offset = 0;
 
@@ -226,7 +226,7 @@ namespace libsignalservice.util
             }
         }*/
 
-        public static int toIntExact(long value)
+        public static int ToIntExact(long value)
         {
             if ((int)value != value)
             {

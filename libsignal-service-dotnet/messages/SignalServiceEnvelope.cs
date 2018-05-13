@@ -126,9 +126,7 @@ namespace libsignalservice.messages
         /// <returns>The envelope's sender as a SignalServiceAddress.</returns>
         public SignalServiceAddress getSourceAddress()
         {
-            return new SignalServiceAddress(envelope.Source,
-                                         envelope.RelayOneofCase == Envelope.RelayOneofOneofCase.Relay ? new May<string>(envelope.Relay) :
-                                                             May<string>.NoValue);
+            return new SignalServiceAddress(envelope.Source, envelope.RelayOneofCase == Envelope.RelayOneofOneofCase.Relay ? envelope.Relay : null);
         }
 
         /// <summary>

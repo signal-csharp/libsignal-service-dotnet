@@ -2,11 +2,13 @@ using Google.Protobuf;
 using libsignal;
 using libsignal.state;
 using libsignal_service_dotnet.messages.calls;
+using libsignalservice.configuration;
 using libsignalservice.crypto;
 using libsignalservice.messages;
 using libsignalservice.messages.multidevice;
 using libsignalservice.push;
 using libsignalservice.push.exceptions;
+using libsignalservice.push.http;
 using libsignalservice.util;
 using Strilanc.Value;
 using System;
@@ -42,7 +44,7 @@ namespace libsignalservice
         /// <param name="eventListener">An optional event listener, which fires whenever sessions are
         /// setup or torn down for a recipient.</param>
         /// <param name="userAgent"></param>
-        public SignalServiceMessageSender(CancellationToken token, SignalServiceUrl[] urls,
+        public SignalServiceMessageSender(CancellationToken token, SignalServiceConfiguration urls,
                                        string user, string password, int deviceId,
                                        SignalProtocolStore store,
                                        SignalServiceMessagePipe pipe,
@@ -65,7 +67,7 @@ namespace libsignalservice
         /// <param name="messageId">The message id of the received message you're acknowledging.</param>
         public void sendDeliveryReceipt(SignalServiceAddress recipient, ulong messageId)
         {
-            this.socket.sendReceipt(recipient.getNumber(), messageId, recipient.getRelay());
+            this.socket.sendReceipt(recipient.E164number, messageId, recipient.Relay);
         }
 
         /// <summary>
@@ -99,7 +101,7 @@ namespace libsignalservice
 
             if (message.EndSession)
             {
-                store.DeleteAllSessions(recipient.getNumber());
+                store.DeleteAllSessions(recipient.E164number);
 
                 if (eventListener != null)
                 {
@@ -211,7 +213,7 @@ namespace libsignalservice
         {
             Content content = new Content();
             DataMessage dataMessage = new DataMessage { };
-            IList<AttachmentPointer> pointers = createAttachmentPointers(message.Attachments);
+            IList<AttachmentPointer> pointers = CreateAttachmentPointers(message.Attachments);
 
             if (pointers.Count != 0)
             {
@@ -306,7 +308,7 @@ namespace libsignalservice
             SyncMessage syncMessage = createSyncMessage();
             syncMessage.Contacts = new SyncMessage.Types.Contacts
             {
-                Blob = createAttachmentPointer(contacts),
+                Blob = CreateAttachmentPointer(contacts),
                 Complete = complete
             };
             content.SyncMessage = syncMessage;
@@ -319,7 +321,7 @@ namespace libsignalservice
             SyncMessage syncMessage = createSyncMessage();
             syncMessage.Groups = new SyncMessage.Types.Groups
             {
-                Blob = createAttachmentPointer(groups)
+                Blob = CreateAttachmentPointer(groups)
             };
             content.SyncMessage = syncMessage;
             return content.ToByteArray();
@@ -339,7 +341,7 @@ namespace libsignalservice
 
                 if (recipient.HasValue)
                 {
-                    sentMessage.Destination = recipient.ForceGetValue().getNumber();
+                    sentMessage.Destination = recipient.ForceGetValue().E164number;
                 }
 
                 if (dataMessage.ExpireTimer > 0)
@@ -439,7 +441,7 @@ namespace libsignalservice
 
                 if (group.Avatar != null && group.Avatar.isStream())
                 {
-                    AttachmentPointer pointer = createAttachmentPointer(group.Avatar.asStream());
+                    AttachmentPointer pointer = CreateAttachmentPointer(group.Avatar.asStream());
                     groupContext.Avatar = pointer;
                 }
             }
@@ -474,7 +476,7 @@ namespace libsignalservice
                 catch (PushNetworkException e)
                 {
                     Debug.WriteLine("PushNetWorkException for:" + recipient, TAG);
-                    responseList.NetworkExceptions.Add(new NetworkFailureException(recipient.getNumber(), e));
+                    responseList.NetworkExceptions.Add(new NetworkFailureException(recipient.E164number, e));
                 }
             }
             return responseList;
@@ -522,7 +524,7 @@ namespace libsignalservice
             throw new Exception("Failed to resolve conflicts after 3 attempts!");
         }
 
-        private IList<AttachmentPointer> createAttachmentPointers(List<SignalServiceAttachment> attachments)
+        private IList<AttachmentPointer> CreateAttachmentPointers(List<SignalServiceAttachment> attachments)
         {
             IList<AttachmentPointer> pointers = new List<AttachmentPointer>();
 
@@ -537,7 +539,7 @@ namespace libsignalservice
                 if (attachment.isStream())
                 {
                     Debug.WriteLine("Found attachment, creating pointer...", TAG);
-                    pointers.Add(createAttachmentPointer(attachment.asStream()));
+                    pointers.Add(CreateAttachmentPointer(attachment.asStream()));
                 }
                 else if (attachment.isPointer())
                 {
@@ -548,22 +550,23 @@ namespace libsignalservice
             return pointers;
         }
 
-        private AttachmentPointer createAttachmentPointer(SignalServiceAttachmentStream attachment)
+        private AttachmentPointer CreateAttachmentPointer(SignalServiceAttachmentStream attachment)
         {
             byte[] attachmentKey = Util.getSecretBytes(64);
             PushAttachmentData attachmentData = new PushAttachmentData(attachment.getContentType(),
                                                                        attachment.getInputStream(),
                                                                        (ulong)GetCiphertextLength(attachment.getLength()),
-                                                                       attachmentKey);
+                                                                       new AttachmentCipherOutputStreamFactory(attachmentKey),
+                                                                       attachment.getListener());
 
-            Tuple<ulong, byte[]> attachmentIdAndDigest = socket.SendAttachment(attachmentData);
+            (ulong id, byte[] digest)  = socket.SendAttachment(attachmentData);
 
             var attachmentPointer = new AttachmentPointer
             {
                 ContentType = attachment.getContentType(),
-                Id = attachmentIdAndDigest.Item1,
+                Id = id,
                 Key = ByteString.CopyFrom(attachmentKey),
-                Digest = ByteString.CopyFrom(attachmentIdAndDigest.Item2),
+                Digest = ByteString.CopyFrom(digest),
                 Size = (uint)attachment.getLength()
             };
 
@@ -648,23 +651,23 @@ namespace libsignalservice
                 messages.Add(getEncryptedMessage(socket, recipient, SignalServiceAddress.DEFAULT_DEVICE_ID, plaintext, silent));
             }
 
-            foreach (uint deviceId in store.GetSubDeviceSessions(recipient.getNumber()))
+            foreach (uint deviceId in store.GetSubDeviceSessions(recipient.E164number))
             {
                 if (!myself || deviceId != CredentialsProvider.GetDeviceId())
                 {
-                    if (store.ContainsSession(new SignalProtocolAddress(recipient.getNumber(), deviceId)))
+                    if (store.ContainsSession(new SignalProtocolAddress(recipient.E164number, deviceId)))
                     {
                         messages.Add(getEncryptedMessage(socket, recipient, deviceId, plaintext, silent));
                     }
                 }
             }
 
-            return new OutgoingPushMessageList(recipient.getNumber(), (ulong)timestamp, recipient.getRelay().HasValue ? recipient.getRelay().ForceGetValue() : null, messages);
+            return new OutgoingPushMessageList(recipient.E164number, (ulong)timestamp, recipient.Relay, messages);
         }
 
         private OutgoingPushMessage getEncryptedMessage(PushServiceSocket socket, SignalServiceAddress recipient, uint deviceId, byte[] plaintext, bool silent)
         {
-            SignalProtocolAddress signalProtocolAddress = new SignalProtocolAddress(recipient.getNumber(), deviceId);
+            SignalProtocolAddress signalProtocolAddress = new SignalProtocolAddress(recipient.E164number, deviceId);
             SignalServiceCipher cipher = new SignalServiceCipher(localAddress, store);
 
             if (!store.ContainsSession(signalProtocolAddress))
@@ -675,19 +678,19 @@ namespace libsignalservice
 
                     foreach (PreKeyBundle preKey in preKeys)
                     {
-                        if (CredentialsProvider.GetUser().Equals(recipient.getNumber()) && CredentialsProvider.GetDeviceId() == preKey.getDeviceId())
+                        if (CredentialsProvider.GetUser().Equals(recipient.E164number) && CredentialsProvider.GetDeviceId() == preKey.getDeviceId())
                         {
                             continue;
                         }
                         try
                         {
-                            SignalProtocolAddress preKeyAddress = new SignalProtocolAddress(recipient.getNumber(), preKey.getDeviceId());
+                            SignalProtocolAddress preKeyAddress = new SignalProtocolAddress(recipient.E164number, preKey.getDeviceId());
                             SessionBuilder sessionBuilder = new SessionBuilder(store, preKeyAddress);
                             sessionBuilder.process(preKey);
                         }
                         catch (libsignal.exceptions.UntrustedIdentityException e)
                         {
-                            throw new UntrustedIdentityException("Untrusted identity key!", recipient.getNumber(), preKey.getIdentityKey());
+                            throw new UntrustedIdentityException("Untrusted identity key!", recipient.E164number, preKey.getIdentityKey());
                         }
                     }
 
@@ -711,7 +714,7 @@ namespace libsignalservice
             {
                 foreach (uint extraDeviceId in mismatchedDevices.getExtraDevices())
                 {
-                    store.DeleteSession(new SignalProtocolAddress(recipient.getNumber(), extraDeviceId));
+                    store.DeleteSession(new SignalProtocolAddress(recipient.E164number, extraDeviceId));
                 }
 
                 foreach (uint missingDeviceId in mismatchedDevices.getMissingDevices())
@@ -720,12 +723,12 @@ namespace libsignalservice
 
                     try
                     {
-                        SessionBuilder sessionBuilder = new SessionBuilder(store, new SignalProtocolAddress(recipient.getNumber(), missingDeviceId));
+                        SessionBuilder sessionBuilder = new SessionBuilder(store, new SignalProtocolAddress(recipient.E164number, missingDeviceId));
                         sessionBuilder.process(preKey);
                     }
                     catch (libsignal.exceptions.UntrustedIdentityException e)
                     {
-                        throw new UntrustedIdentityException("Untrusted identity key!", recipient.getNumber(), preKey.getIdentityKey());
+                        throw new UntrustedIdentityException("Untrusted identity key!", recipient.E164number, preKey.getIdentityKey());
                     }
                 }
             }
@@ -739,7 +742,7 @@ namespace libsignalservice
         {
             foreach (uint staleDeviceId in staleDevices.getStaleDevices())
             {
-                store.DeleteSession(new SignalProtocolAddress(recipient.getNumber(), staleDeviceId));
+                store.DeleteSession(new SignalProtocolAddress(recipient.E164number, staleDeviceId));
             }
         }
 
@@ -757,7 +760,7 @@ namespace libsignalservice
 
                     if (recipient.HasValue)
                     {
-                        sentMessage.Destination = recipient.ForceGetValue().getNumber();
+                        sentMessage.Destination = recipient.ForceGetValue().E164number;
                     }
                     syncMessage.Sent = sentMessage;
                     content.SyncMessage = syncMessage;

@@ -15,44 +15,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+using libsignaldotnet.push.http;
 using System;
 using System.IO;
+using static libsignalservice.messages.SignalServiceAttachment;
 
 namespace libsignalservice.push
 {
     public class PushAttachmentData
     {
-        private readonly String contentType;
-        private readonly Stream data;
-        private readonly ulong dataSize;
-        private readonly byte[] key;
+        public string ContentType { get; }
+        public Stream Data { get; }
+        public ulong DataSize { get; }
+        public OutputStreamFactory OutputFactory { get; }
+        public ProgressListener Listener { get; }
 
-        public PushAttachmentData(String contentType, Stream data, ulong dataSize, byte[] key)
+        public PushAttachmentData(String contentType, Stream data, ulong dataSize, OutputStreamFactory outputStreamFactory, ProgressListener listener)
         {
-            this.contentType = contentType;
-            this.data = data;
-            this.dataSize = dataSize;
-            this.key = key;
-        }
-
-        public String getContentType()
-        {
-            return contentType;
-        }
-
-        public Stream getData()
-        {
-            return data;
-        }
-
-        public ulong getDataSize()
-        {
-            return dataSize;
-        }
-
-        public byte[] getKey()
-        {
-            return key;
+            ContentType = contentType;
+            Data = data;
+            DataSize = dataSize;
+            OutputFactory = outputStreamFactory;
+            Listener = listener;
         }
     }
 }

@@ -47,7 +47,7 @@ namespace libsignalservice.crypto
             ECPublicKey publicKey = Curve.decodePoint(env.PublicKey.ToByteArray(), 0);
             byte[] sharedSecret = Curve.calculateAgreement(publicKey, tmpIdentity.getPrivateKey());
             byte[] derivedSecret = new HKDFv3().deriveSecrets(sharedSecret, Encoding.UTF8.GetBytes("TextSecure Provisioning Message"), 64);
-            byte[][] parts = Util.split(derivedSecret, 32, 32);
+            byte[][] parts = Util.Split(derivedSecret, 32, 32);
             byte[] joined = env.Body.ToByteArray();
             if (joined[0] != 0x01)
             {
@@ -99,7 +99,7 @@ namespace libsignalservice.crypto
             ECKeyPair ourKeyPair = Curve.generateKeyPair();
             byte[] sharedSecret = Curve.calculateAgreement(theirPublicKey, ourKeyPair.getPrivateKey());
             byte[] derivedSecret = new HKDFv3().deriveSecrets(sharedSecret, Encoding.UTF8.GetBytes("TextSecure Provisioning Message"), 64);
-            byte[][] parts = Util.split(derivedSecret, 32, 32);
+            byte[][] parts = Util.Split(derivedSecret, 32, 32);
 
             byte[] version = { 0x01 };
             byte[] ciphertext = getCiphertext(parts[0], message.ToByteArray());

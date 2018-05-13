@@ -96,7 +96,7 @@ namespace libsignalservice.crypto
                             Message = createSignalServiceMessage(envelope, message.DataMessage)
                         };
                     }
-                    else if (message.SyncMessageOneofCase == Content.SyncMessageOneofOneofCase.SyncMessage && localAddress.getNumber().Equals(envelope.getSource()))
+                    else if (message.SyncMessageOneofCase == Content.SyncMessageOneofOneofCase.SyncMessage && localAddress.E164number == envelope.getSource())
                     {
                         content = new SignalServiceContent()
                         {
