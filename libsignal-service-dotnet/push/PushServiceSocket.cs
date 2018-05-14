@@ -525,7 +525,7 @@ namespace libsignalservice.push
             }
         }
 
-        private byte[] UploadAttachment(string method, string url, Stream data, ulong dataSize,
+        private byte[] UploadAttachment(string method, string url, Stream data, long dataSize,
             OutputStreamFactory outputStreamFactory, ProgressListener listener)
         {
             MemoryStream tmpStream = new MemoryStream();

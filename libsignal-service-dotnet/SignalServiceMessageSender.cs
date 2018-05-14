@@ -617,9 +617,11 @@ namespace libsignalservice
         private AttachmentPointer CreateAttachmentPointer(SignalServiceAttachmentStream attachment)
         {
             byte[] attachmentKey = Util.getSecretBytes(64);
+            long paddedLength = PaddingInputStream.GetPaddedSize(attachment.getLength());
+            long ciphertextLength = AttachmentCipherInputStream.GetCiphertextLength(paddedLength);
             PushAttachmentData attachmentData = new PushAttachmentData(attachment.getContentType(),
-                                                                       attachment.getInputStream(),
-                                                                       (ulong)GetCiphertextLength(attachment.getLength()),
+                                                                       new PaddingInputStream(attachment.getInputStream(), attachment.getLength()),
+                                                                       ciphertextLength,
                                                                        new AttachmentCipherOutputStreamFactory(attachmentKey),
                                                                        attachment.getListener());
 
@@ -683,11 +685,6 @@ namespace libsignalservice
         public (ulong id, string location) RetrieveAttachmentUploadUrl()
         {
             return socket.RetrieveAttachmentUploadUrl();
-        }
-
-        private long GetCiphertextLength(long plaintextLength)
-        {
-            return 16 + (((plaintextLength / 16) + 1) * 16) + 32;
         }
 
         /// <summary>

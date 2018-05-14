@@ -20,10 +20,5 @@ namespace libsignalservice.push.http
         {
             return new AttachmentCipherOutputStream(Key, wrap);
         }
-
-        public long getCiphertextLength(long plaintextLength)
-        {
-            return AttachmentCipherOutputStream.GetCiphertextLength(plaintextLength);
-        }
     }
 }

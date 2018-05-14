@@ -22,15 +22,16 @@ using static libsignalservice.messages.SignalServiceAttachment;
 
 namespace libsignalservice.push
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public class PushAttachmentData
     {
         public string ContentType { get; }
         public Stream Data { get; }
-        public ulong DataSize { get; }
+        public long DataSize { get; }
         public OutputStreamFactory OutputFactory { get; }
         public ProgressListener Listener { get; }
 
-        public PushAttachmentData(String contentType, Stream data, ulong dataSize, OutputStreamFactory outputStreamFactory, ProgressListener listener)
+        public PushAttachmentData(String contentType, Stream data, long dataSize, OutputStreamFactory outputStreamFactory, ProgressListener listener)
         {
             ContentType = contentType;
             Data = data;
@@ -39,4 +40,5 @@ namespace libsignalservice.push
             Listener = listener;
         }
     }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

@@ -375,7 +375,9 @@ namespace libsignalservice.crypto
                         pointer.ContentType,
                         pointer.Key.ToByteArray(),
                         envelope.getRelay(),
-                        pointer.Digest.ToByteArray(),
+                        pointer.SizeOneofCase == AttachmentPointer.SizeOneofOneofCase.Size ? pointer.Size : 0,
+                        null,
+                        pointer.DigestOneofCase == AttachmentPointer.DigestOneofOneofCase.Digest ? pointer.Digest.ToByteArray() : null,
                         null,
                         false);
                 }

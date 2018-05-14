@@ -83,7 +83,7 @@ namespace libsignalservice
         public Stream RetrieveAttachment(SignalServiceAttachmentPointer pointer, Stream tmpCipherDestination, int maxSizeBytes, ProgressListener listener)
         {
             Socket.RetrieveAttachment(pointer.Relay, pointer.Id, tmpCipherDestination, maxSizeBytes);
-            return new AttachmentCipherInputStream(tmpCipherDestination, pointer.Key, pointer.Digest);
+            return AttachmentCipherInputStream.CreateFor(tmpCipherDestination, pointer.Size != null ? pointer.Size.Value : 0, pointer.Key, pointer.Digest);
         }
 
         /// <summary>

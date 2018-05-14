@@ -20,10 +20,5 @@ namespace libsignalservice.push.http
         {
             return new ProfileCipherOutputStream(wrap, Key);
         }
-
-        public long GetCiphertextLength(long plaintextLength)
-        {
-            return ProfileCipherOutputStream.GetCiphertextLength(plaintextLength);
-        }
     }
 }

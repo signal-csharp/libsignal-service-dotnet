@@ -30,33 +30,42 @@ namespace libsignalservice.crypto
         public override long Length => throw new NotImplementedException();
         public override long Position { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-        public AttachmentCipherInputStream(Stream inputStream, byte[] combinedKeyMaterial, byte[] digest)
+        public static Stream CreateFor(Stream inputStream, long plaintextLength, byte[] combinedKeyMaterial, byte[] digest)
         {
-            InputStream = inputStream;
             long fileSize = inputStream.Length;
             byte[][] keyParts = Util.Split(combinedKeyMaterial, 32, 32);
             IncrementalHash mac = IncrementalHash.CreateHMAC(HashAlgorithmName.SHA256, keyParts[1]);
+            VerifyMac(inputStream, mac, digest);
+            inputStream.Seek(0, SeekOrigin.Begin);
 
+            Stream stream = new AttachmentCipherInputStream(inputStream, keyParts[0], inputStream.Length);
 
+            if (plaintextLength > 0)
+            {
+                stream = new ContentLengthInputStream(stream, plaintextLength);
+            }
+
+            return stream;
+        }
+
+        private AttachmentCipherInputStream(Stream inputStream, byte[] key, long totalDataSize)
+        {
+            InputStream = inputStream;
             if (InputStream.Length <= BLOCK_SIZE + 32)
             {
                 throw new InvalidMessageException("Message shorter than crypto overhead!");
             }
 
-            VerifyMac(InputStream, mac, digest);
-            InputStream.Seek(0, SeekOrigin.Begin);
-
             byte[] iv = new byte[BLOCK_SIZE];
             ReadFully(iv);
             Aes = Aes.Create();
-            Aes.Key = keyParts[0];
+            Aes.Key = key;
             Aes.IV = iv;
             Aes.Mode = CipherMode.CBC;
             Aes.Padding = PaddingMode.PKCS7;
             Decryptor = Aes.CreateDecryptor();
             Cipher = new CryptoStream(InputStream, Decryptor, CryptoStreamMode.Read);
-            
-            TotalDataSize = fileSize - Aes.BlockSize - 32;
+            TotalDataSize = totalDataSize;
         }
 
         public override void Flush()
@@ -90,7 +99,7 @@ namespace libsignalservice.crypto
             throw new NotImplementedException();
         }
 
-        private void VerifyMac(Stream fin, IncrementalHash mac, byte[] theirDigest)
+        private static void VerifyMac(Stream fin, IncrementalHash mac, byte[] theirDigest)
         {
             IncrementalHash digest = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
             int remainingData = Util.ToIntExact(fin.Length) - 32;
@@ -135,6 +144,11 @@ namespace libsignalservice.crypto
                 else
                     return;
             }
+        }
+
+        public static long GetCiphertextLength(long plaintextLength)
+        {
+            return 16 + (((plaintextLength / 16) + 1) * 16) + 32;
         }
     }
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
