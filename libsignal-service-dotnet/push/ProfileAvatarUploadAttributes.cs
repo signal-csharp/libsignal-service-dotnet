@@ -4,15 +4,15 @@ using System.Text;
 
 namespace libsignalservice.push
 {
-    public class ProfileAvatarUploadAttributes
+    internal class ProfileAvatarUploadAttributes
     {
-        public string url { get; }
-        public string key { get; }
-        public string credential { get; }
-        public string acl { get; }
-        public string algorithm { get; }
-        public string date { get; }
-        public string policy { get; }
-        public string signature { get; }
+        public string Url { get; set; }
+        public string Key { get; set; }
+        public string Credential { get; set; }
+        public string Acl { get; set; }
+        public string Algorithm { get; set; }
+        public string Date { get; set; }
+        public string Policy { get; set; }
+        public string Signature { get; set; }
     }
 }

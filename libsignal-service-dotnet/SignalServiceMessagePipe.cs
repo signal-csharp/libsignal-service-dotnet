@@ -100,7 +100,7 @@ namespace libsignalservice
                     Logger.LogError("Sending message {0} failed: {1}", requestmessage.Id, response.Item2);
                     throw new IOException("non-successfull response: " + response.Item1 + " " + response.Item2);
                 }
-                return JsonUtil.fromJson<SendMessageResponse>(response.Item2);
+                return JsonUtil.FromJson<SendMessageResponse>(response.Item2);
             }
             else
             {
@@ -133,7 +133,7 @@ namespace libsignalservice
                 {
                     throw new IOException("non-successfull response: " + response.Item1 + " " + response.Item2);
                 }
-                return JsonUtil.fromJson<SignalServiceProfile>(response.Item2);
+                return JsonUtil.FromJson<SignalServiceProfile>(response.Item2);
             }
             else
             {

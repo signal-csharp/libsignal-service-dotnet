@@ -19,23 +19,15 @@ using libsignalservice.push.exceptions;
 
 namespace libsignalservice.push
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public class DeviceLimitExceededException : NonSuccessfulResponseCodeException
     {
-        private readonly DeviceLimit deviceLimit;
+        public DeviceLimit Limit { get; set; }
 
         public DeviceLimitExceededException(DeviceLimit deviceLimit)
         {
-            this.deviceLimit = deviceLimit;
-        }
-
-        public int getCurrent()
-        {
-            return deviceLimit.getCurrent();
-        }
-
-        public int getMax()
-        {
-            return deviceLimit.getMax();
+            this.Limit = deviceLimit;
         }
     }
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 }

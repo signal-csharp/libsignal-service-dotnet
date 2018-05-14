@@ -18,7 +18,7 @@ namespace libsignalservice.push
 
         public void AddResponse(SendMessageResponse response)
         {
-            if(!NeedsSync && response.needsSync)
+            if(!NeedsSync && response.NeedsSync)
             {
                 NeedsSync = true;
             }

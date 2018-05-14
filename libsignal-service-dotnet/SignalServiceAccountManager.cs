@@ -193,7 +193,7 @@ namespace libsignalservice
 
             if (contactTokenDetails != null)
             {
-                contactTokenDetails.setNumber(e164number);
+                contactTokenDetails.Number = e164number;
             }
 
             return new May<ContactTokenDetails>(contactTokenDetails);
@@ -211,8 +211,8 @@ namespace libsignalservice
 
             foreach (ContactTokenDetails activeToken in activeTokens)
             {
-                contactTokensMap.TryGetValue(activeToken.getToken(), out string number);
-                activeToken.setNumber(number);
+                contactTokensMap.TryGetValue(activeToken.Token, out string number);
+                activeToken.Number = number;
             }
 
             return activeTokens;

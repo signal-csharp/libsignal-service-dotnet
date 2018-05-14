@@ -100,7 +100,7 @@ namespace libsignalservice
             bool silent = message.Group != null && message.Group.Type == SignalServiceGroup.GroupType.REQUEST_INFO;
             var resp = SendMessage(recipient, timestamp, content, silent);
 
-            if (resp.needsSync)
+            if (resp.NeedsSync)
             {
                 byte[] syncMessage = CreateMultiDeviceSentTranscriptContent(content, new May<SignalServiceAddress>(recipient), (ulong)timestamp);
                 SendMessage(localAddress, timestamp, syncMessage, false);
@@ -228,7 +228,7 @@ namespace libsignalservice
 
             SendMessageResponse response = SendMessage(new SignalServiceAddress(message.Destination), message.Timestamp, content, false);
 
-            if (response != null && response.needsSync)
+            if (response != null && response.NeedsSync)
             {
                 byte[] syncMessage = CreateMultiDeviceVerifiedContent(message, nullMessage.ToByteArray());
                 SendMessage(localAddress, message.Timestamp, syncMessage, false);
@@ -606,7 +606,7 @@ namespace libsignalservice
                     Debug.WriteLine("MismatchedDevicesException");
                     Debug.WriteLine(mde.Message);
                     Debug.WriteLine(mde.StackTrace);
-                    HandleMismatchedDevices(socket, recipient, mde.getMismatchedDevices());
+                    HandleMismatchedDevices(socket, recipient, mde.MismatchedDevices);
                 }
                 catch (StaleDevicesException ste)
                 {
@@ -815,12 +815,12 @@ namespace libsignalservice
         {
             try
             {
-                foreach (uint extraDeviceId in mismatchedDevices.getExtraDevices())
+                foreach (uint extraDeviceId in mismatchedDevices.ExtraDevices)
                 {
                     store.DeleteSession(new SignalProtocolAddress(recipient.E164number, extraDeviceId));
                 }
 
-                foreach (uint missingDeviceId in mismatchedDevices.getMissingDevices())
+                foreach (uint missingDeviceId in mismatchedDevices.MissingDevices)
                 {
                     PreKeyBundle preKey = socket.GetPreKey(recipient, missingDeviceId);
 
@@ -843,7 +843,7 @@ namespace libsignalservice
 
         private void HandleStaleDevices(SignalServiceAddress recipient, StaleDevices staleDevices)
         {
-            foreach (uint staleDeviceId in staleDevices.getStaleDevices())
+            foreach (uint staleDeviceId in staleDevices.Devices)
             {
                 store.DeleteSession(new SignalProtocolAddress(recipient.E164number, staleDeviceId));
             }

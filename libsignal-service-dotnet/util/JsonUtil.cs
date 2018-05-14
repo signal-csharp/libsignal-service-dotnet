@@ -45,7 +45,7 @@ namespace libsignalservice.util
             }
         }
 
-        public static T fromJson<T>(String json)
+        public static T FromJson<T>(String json)
         {
             try
             {
