@@ -305,10 +305,15 @@ namespace libsignalservice
                     if (attachment.IsPointer())
                     {
                         var pointer = attachment.AsPointer();
-                        quote.Attachments.Add(new AttachmentPointer()
+                        var protoPointer = new AttachmentPointer()
                         {
                             ContentType = pointer.ContentType
-                        });
+                        };
+                        if (pointer.FileName != null)
+                        {
+                            protoPointer.FileName = pointer.FileName;
+                        }
+                        quote.Attachments.Add(protoPointer);
                     }
                     else
                     {
