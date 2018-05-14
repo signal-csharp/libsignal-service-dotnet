@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
+using static libsignalservice.push.SyncMessage.Types;
 
 namespace libsignalservice
 {
@@ -151,26 +152,30 @@ namespace libsignalservice
         {
             byte[] content;
 
-            if (message.getContacts().HasValue)
+            if (message.Contacts != null)
             {
-                content = CreateMultiDeviceContactsContent(message.getContacts().ForceGetValue().Contacts.asStream(),
-                    message.getContacts().ForceGetValue().Complete);
+                content = CreateMultiDeviceContactsContent(message.Contacts.Contacts.AsStream(),
+                    message.Contacts.Complete);
             }
-            else if (message.getGroups().HasValue)
+            else if (message.Groups != null)
             {
-                content = CreateMultiDeviceGroupsContent(message.getGroups().ForceGetValue().asStream());
+                content = CreateMultiDeviceGroupsContent(message.Groups.AsStream());
             }
-            else if (message.getRead().HasValue)
+            else if (message.Reads != null)
             {
-                content = CreateMultiDeviceReadContent(message.getRead().ForceGetValue());
+                content = CreateMultiDeviceReadContent(message.Reads);
             }
-            else if (message.getBlockedList().HasValue)
+            else if (message.BlockedList != null)
             {
-                content = CreateMultiDeviceBlockedContent(message.getBlockedList().ForceGetValue());
+                content = CreateMultiDeviceBlockedContent(message.BlockedList);
             }
-            else if (message.getVerified().HasValue)
+            else if (message.Configuration != null)
             {
-                SendMessage(message.getVerified().ForceGetValue());
+                content = CreateMultiDeviceConfigurationContent(message.Configuration);
+            }
+            else if (message.Verified != null)
+            {
+                SendMessage(message.Verified);
                 return;
             }
             else
@@ -421,10 +426,26 @@ namespace libsignalservice
         {
             Content content = new Content { };
             SyncMessage syncMessage = new SyncMessage { };
-            SyncMessage.Types.Blocked blockedMessage = new SyncMessage.Types.Blocked { };
+            Blocked blockedMessage = new Blocked { };
 
             blockedMessage.Numbers.AddRange(blocked.getNumbers());
             syncMessage.Blocked = blockedMessage;
+            content.SyncMessage = syncMessage;
+            return content.ToByteArray();
+        }
+
+        private byte[] CreateMultiDeviceConfigurationContent(ConfigurationMessage configurationMessage)
+        {
+            Content content = new Content { };
+            SyncMessage syncMessage = CreateSyncMessage();
+            Configuration configuration = new Configuration();
+
+            if (configurationMessage.ReadReceipts != null)
+            {
+                configuration.ReadReceipts = configurationMessage.ReadReceipts.Value;
+            }
+
+            syncMessage.Configuration = configuration;
             content.SyncMessage = syncMessage;
             return content.ToByteArray();
         }
@@ -484,7 +505,7 @@ namespace libsignalservice
 
                 if (group.Avatar != null && group.Avatar.isStream())
                 {
-                    AttachmentPointer pointer = CreateAttachmentPointer(group.Avatar.asStream());
+                    AttachmentPointer pointer = CreateAttachmentPointer(group.Avatar.AsStream());
                     groupContext.Avatar = pointer;
                 }
             }
@@ -582,7 +603,7 @@ namespace libsignalservice
                 if (attachment.isStream())
                 {
                     Debug.WriteLine("Found attachment, creating pointer...", TAG);
-                    pointers.Add(CreateAttachmentPointer(attachment.asStream()));
+                    pointers.Add(CreateAttachmentPointer(attachment.AsStream()));
                 }
                 else if (attachment.isPointer())
                 {

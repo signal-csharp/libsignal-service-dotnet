@@ -38,7 +38,7 @@ namespace libsignalservice.messages
 
         public abstract bool isPointer();
 
-        public SignalServiceAttachmentStream asStream()
+        public SignalServiceAttachmentStream AsStream()
         {
             return (SignalServiceAttachmentStream)this;
         }

@@ -175,7 +175,7 @@ namespace libsignalservice.crypto
             if (content.SentOneofCase == SyncMessage.SentOneofOneofCase.Sent)
             {
                 SyncMessage.Types.Sent sentContent = content.Sent;
-                return SignalServiceSyncMessage.forSentTranscript(new SentTranscriptMessage(sentContent.Destination,
+                return SignalServiceSyncMessage.ForSentTranscript(new SentTranscriptMessage(sentContent.Destination,
                                                                            (long)sentContent.Timestamp,
                                                                            CreateSignalServiceMessage(envelope, sentContent.Message),
                                                                            (long)sentContent.ExpirationStartTimestamp));
@@ -183,7 +183,7 @@ namespace libsignalservice.crypto
 
             if (content.RequestOneofCase == SyncMessage.RequestOneofOneofCase.Request)
             {
-                return SignalServiceSyncMessage.forRequest(new RequestMessage(content.Request));
+                return SignalServiceSyncMessage.ForRequest(new RequestMessage(content.Request));
             }
 
             if (content.Read.Count > 0)
@@ -195,7 +195,7 @@ namespace libsignalservice.crypto
                     readMessages.Add(new ReadMessage(read.Sender, (long)read.Timestamp));
                 }
 
-                return SignalServiceSyncMessage.forRead(readMessages);
+                return SignalServiceSyncMessage.ForRead(readMessages);
             }
 
             if (content.VerifiedOneofCase == SyncMessage.VerifiedOneofOneofCase.Verified)
@@ -225,7 +225,7 @@ namespace libsignalservice.crypto
                         throw new InvalidMessageException("Unknown state: " + verified.State);
                     }
 
-                    return SignalServiceSyncMessage.forVerified(new VerifiedMessage(destination, identityKey, verifiedState, Util.CurrentTimeMillis()));
+                    return SignalServiceSyncMessage.ForVerified(new VerifiedMessage(destination, identityKey, verifiedState, Util.CurrentTimeMillis()));
                 }
                 catch (InvalidKeyException e)
                 {
@@ -233,7 +233,7 @@ namespace libsignalservice.crypto
                 }
             }
 
-            return SignalServiceSyncMessage.empty();
+            return SignalServiceSyncMessage.Empty();
         }
 
         private SignalServiceCallMessage CreateCallMessage(CallMessage content)

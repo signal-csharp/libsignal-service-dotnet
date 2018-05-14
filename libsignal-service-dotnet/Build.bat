@@ -6,4 +6,5 @@ dotnet restore
 dotnet build
 dotnet pack --include-symbols --include-source
 rem nuget add bin\Debug\libsignal-service-dotnet.*.nupkg -Source %NUGET_REPOSITORY%
-rem nuget push bin\Debug\libsignal-service-dotnet.*.nupkg -Source https://www.myget.org/F/signal-csharp/api/v2/package
+rem nuget push bin\Debug\libsignal-service-dotnet.*.nupkg 
+rem nuget push bin\Debug\libsignal-service-dotnet.*.symbols.nupkg -Source https://www.myget.org/F/signal-csharp/api/v2/package

@@ -144,6 +144,10 @@ message SyncMessage {
 	oneof timestamp_oneof					{ uint64 timestamp = 2; }
   }
 
+  message Configuration {
+    oneof readReceipts_oneof { bool readReceipts = 1; }
+  }
+
   oneof sent_oneof							{ Sent     sent     = 1; }
   oneof contacts_oneof						{ Contacts contacts = 2; }
   oneof groups_oneof						{ Groups   groups   = 3; }
@@ -151,6 +155,7 @@ message SyncMessage {
   repeated Read read = 5;
   oneof blocked_oneof						{ Blocked  blocked  = 6; }
   oneof verified_oneof          { Verified verified = 7; }
+  oneof configuration_oneof { Configuration configuration = 9; }
   oneof padding_oneof           { bytes padding = 8; }
 }
 

@@ -1,189 +1,162 @@
 using libsignal.messages.multidevice;
 using Strilanc.Value;
 
-/**
- * Copyright (C) 2015-2017 smndtrl, golf1052
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 using System.Collections.Generic;
 
 namespace libsignalservice.messages.multidevice
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public class SignalServiceSyncMessage
     {
-        private readonly May<SentTranscriptMessage> sent;
-        private readonly May<ContactsMessage> contacts;
-        private readonly May<SignalServiceAttachment> groups;
-        private readonly May<BlockedListMessage> blockedList;
-        private readonly May<RequestMessage> request;
-        private readonly May<List<ReadMessage>> reads;
-        private readonly May<VerifiedMessage> verified;
+        public SentTranscriptMessage Sent { get; }
+        public ContactsMessage Contacts { get; }
+        public SignalServiceAttachment Groups { get; }
+        public BlockedListMessage BlockedList { get; }
+        public RequestMessage Request { get; }
+        public List<ReadMessage> Reads { get; }
+        public VerifiedMessage Verified { get; }
+        public ConfigurationMessage Configuration { get; }
 
-        private SignalServiceSyncMessage(May<SentTranscriptMessage> sent,
-            May<ContactsMessage> contacts,
-            May<SignalServiceAttachment> groups,
-            May<BlockedListMessage> blockedList,
-            May<RequestMessage> request,
-            May<List<ReadMessage>> reads,
-            May<VerifiedMessage> verified)
+        private SignalServiceSyncMessage(SentTranscriptMessage sent,
+            ContactsMessage contacts,
+            SignalServiceAttachment groups,
+            BlockedListMessage blockedList,
+            RequestMessage request,
+            List<ReadMessage> reads,
+            VerifiedMessage verified,
+            ConfigurationMessage configuration)
         {
-            this.sent = sent;
-            this.contacts = contacts;
-            this.groups = groups;
-            this.blockedList = blockedList;
-            this.request = request;
-            this.reads = reads;
-            this.verified = verified;
+            Sent = sent;
+            Contacts = contacts;
+            Groups = groups;
+            BlockedList = blockedList;
+            Request = request;
+            Reads = reads;
+            Verified = verified;
+            Configuration = configuration;
         }
 
-        public static SignalServiceSyncMessage forSentTranscript(SentTranscriptMessage sent)
+        public static SignalServiceSyncMessage ForSentTranscript(SentTranscriptMessage sent)
         {
-            return new SignalServiceSyncMessage(new May<SentTranscriptMessage>(sent),
-                May.NoValue,
-                May.NoValue,
-                May.NoValue,
-                May.NoValue,
-                May.NoValue,
-                May.NoValue);
+            return new SignalServiceSyncMessage(sent,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null);
         }
 
-        public static SignalServiceSyncMessage forContacts(ContactsMessage contacts)
+        public static SignalServiceSyncMessage ForContacts(ContactsMessage contacts)
         {
-            return new SignalServiceSyncMessage(May.NoValue,
-                new May<ContactsMessage>(contacts),
-                May.NoValue,
-                May.NoValue,
-                May.NoValue,
-                May.NoValue,
-                May.NoValue);
+            return new SignalServiceSyncMessage(null,
+                contacts,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null);
         }
 
-        public static SignalServiceSyncMessage forGroups(SignalServiceAttachment groups)
+        public static SignalServiceSyncMessage ForGroups(SignalServiceAttachment groups)
         {
-            return new SignalServiceSyncMessage(May.NoValue,
-                May.NoValue,
-                new May<SignalServiceAttachment>(groups),
-                May.NoValue,
-                May.NoValue,
-                May.NoValue,
-                May.NoValue);
+            return new SignalServiceSyncMessage(null,
+                null,
+                groups,
+                null,
+                null,
+                null,
+                null,
+                null);
         }
 
-        public static SignalServiceSyncMessage forRequest(RequestMessage request)
+        public static SignalServiceSyncMessage ForRequest(RequestMessage request)
         {
-            return new SignalServiceSyncMessage(May.NoValue,
-                May.NoValue,
-                May.NoValue,
-                May.NoValue,
-                new May<RequestMessage>(request),
-                May.NoValue,
-                May.NoValue);
+            return new SignalServiceSyncMessage(null,
+                null,
+                null,
+                null,
+                request,
+                null,
+                null,
+                null);
         }
 
-        public static SignalServiceSyncMessage forRead(List<ReadMessage> reads)
+        public static SignalServiceSyncMessage ForRead(List<ReadMessage> reads)
         {
-            return new SignalServiceSyncMessage(May.NoValue,
-                May.NoValue,
-                May.NoValue,
-                May.NoValue,
-                May.NoValue,
-                new May<List<ReadMessage>>(reads),
-                May.NoValue);
+            return new SignalServiceSyncMessage(null,
+                null,
+                null,
+                null,
+                null,
+                reads,
+                null,
+                null);
         }
 
-        public static SignalServiceSyncMessage forRead(ReadMessage read)
+        public static SignalServiceSyncMessage ForRead(ReadMessage read)
         {
-            List<ReadMessage> reads = new List<ReadMessage>();
-            reads.Add(read);
+            List<ReadMessage> reads = new List<ReadMessage> { read };
 
-            return new SignalServiceSyncMessage(May.NoValue,
-                May.NoValue,
-                May.NoValue,
-                May.NoValue,
-                May.NoValue,
-                new May<List<ReadMessage>>(reads),
-                May.NoValue);
+            return new SignalServiceSyncMessage(null,
+                null,
+                null,
+                null,
+                null,
+                reads,
+                null,
+                null);
         }
 
-        public static SignalServiceSyncMessage forVerified(VerifiedMessage verifiedMessage)
+        public static SignalServiceSyncMessage ForVerified(VerifiedMessage verifiedMessage)
         {
-            return new SignalServiceSyncMessage(May.NoValue,
-                May.NoValue,
-                May.NoValue,
-                May.NoValue,
-                May.NoValue,
-                May.NoValue,
-                new May<VerifiedMessage>(verifiedMessage));
+            return new SignalServiceSyncMessage(null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                verifiedMessage,
+                null);
         }
 
-        public static SignalServiceSyncMessage forBlocked(BlockedListMessage blocked)
+        public static SignalServiceSyncMessage ForBlocked(BlockedListMessage blocked)
         {
-            return new SignalServiceSyncMessage(May.NoValue,
-                May.NoValue,
-                May.NoValue,
-                new May<BlockedListMessage>(blocked),
-                May.NoValue,
-                May.NoValue,
-                May.NoValue);
+            return new SignalServiceSyncMessage(null,
+                null,
+                null,
+                blocked,
+                null,
+                null,
+                null,
+                null);
         }
 
-        public static SignalServiceSyncMessage empty()
+        public static SignalServiceSyncMessage ForConfiguration(ConfigurationMessage configuration)
         {
-            return new SignalServiceSyncMessage(May.NoValue,
-                May.NoValue,
-                May.NoValue,
-                May.NoValue,
-                May.NoValue,
-                May.NoValue,
-                May.NoValue);
+            return new SignalServiceSyncMessage(null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                configuration);
         }
 
-        public May<SentTranscriptMessage> getSent()
+        public static SignalServiceSyncMessage Empty()
         {
-            return sent;
-        }
-
-        public May<SignalServiceAttachment> getGroups()
-        {
-            return groups;
-        }
-
-        public May<ContactsMessage> getContacts()
-        {
-            return contacts;
-        }
-
-        public May<RequestMessage> getRequest()
-        {
-            return request;
-        }
-
-        public May<List<ReadMessage>> getRead()
-        {
-            return reads;
-        }
-
-        public May<BlockedListMessage> getBlockedList()
-        {
-            return blockedList;
-        }
-
-        public May<VerifiedMessage> getVerified()
-        {
-            return verified;
+            return new SignalServiceSyncMessage(null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null);
         }
     }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

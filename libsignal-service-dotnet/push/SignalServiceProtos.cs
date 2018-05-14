@@ -75,7 +75,7 @@ namespace libsignalservice.push {
             "FQoLbnVsbE1lc3NhZ2UYBCABKAxIAyIyCgVTdGF0ZRILCgdERUZBVUxUEAAS",
             "DAoIVkVSSUZJRUQQARIOCgpVTlZFUklGSUVEEAJCEwoRZGVzdGluYXRpb25f",
             "b25lb2ZCEwoRaWRlbnRpdHlLZXlfb25lb2ZCDQoLc3RhdGVfb25lb2ZCEwoR",
-            "bnVsbE1lc3NhZ2Vfb25lb2Yi+QgKC1N5bmNNZXNzYWdlEiwKBHNlbnQYASAB",
+            "bnVsbE1lc3NhZ2Vfb25lb2YijwoKC1N5bmNNZXNzYWdlEiwKBHNlbnQYASAB",
             "KAsyHC50ZXh0c2VjdXJlLlN5bmNNZXNzYWdlLlNlbnRIABI0Cghjb250YWN0",
             "cxgCIAEoCzIgLnRleHRzZWN1cmUuU3luY01lc3NhZ2UuQ29udGFjdHNIARIw",
             "CgZncm91cHMYAyABKAsyHi50ZXh0c2VjdXJlLlN5bmNNZXNzYWdlLkdyb3Vw",
@@ -83,55 +83,59 @@ namespace libsignalservice.push {
             "LlJlcXVlc3RIAxIqCgRyZWFkGAUgAygLMhwudGV4dHNlY3VyZS5TeW5jTWVz",
             "c2FnZS5SZWFkEjIKB2Jsb2NrZWQYBiABKAsyHy50ZXh0c2VjdXJlLlN5bmNN",
             "ZXNzYWdlLkJsb2NrZWRIBBIoCgh2ZXJpZmllZBgHIAEoCzIULnRleHRzZWN1",
-            "cmUuVmVyaWZpZWRIBRIRCgdwYWRkaW5nGAggASgMSAYa3QEKBFNlbnQSFQoL",
-            "ZGVzdGluYXRpb24YASABKAlIABITCgl0aW1lc3RhbXAYAiABKARIARIqCgdt",
-            "ZXNzYWdlGAMgASgLMhcudGV4dHNlY3VyZS5EYXRhTWVzc2FnZUgCEiIKGGV4",
-            "cGlyYXRpb25TdGFydFRpbWVzdGFtcBgEIAEoBEgDQhMKEWRlc3RpbmF0aW9u",
-            "X29uZW9mQhEKD3RpbWVzdGFtcF9vbmVvZkIPCg1tZXNzYWdlX29uZW9mQiAK",
-            "HmV4cGlyYXRpb25TdGFydFRpbWVzdGFtcF9vbmVvZhptCghDb250YWN0cxIt",
-            "CgRibG9iGAEgASgLMh0udGV4dHNlY3VyZS5BdHRhY2htZW50UG9pbnRlckgA",
-            "EhIKCGNvbXBsZXRlGAIgASgISAFCDAoKYmxvYl9vbmVvZkIQCg5jb21wbGV0",
-            "ZV9vbmVvZhpFCgZHcm91cHMSLQoEYmxvYhgBIAEoCzIdLnRleHRzZWN1cmUu",
-            "QXR0YWNobWVudFBvaW50ZXJIAEIMCgpibG9iX29uZW9mGhoKB0Jsb2NrZWQS",
-            "DwoHbnVtYmVycxgBIAMoCRqJAQoHUmVxdWVzdBI0CgR0eXBlGAEgASgOMiQu",
-            "dGV4dHNlY3VyZS5TeW5jTWVzc2FnZS5SZXF1ZXN0LlR5cGVIACI6CgRUeXBl",
-            "EgsKB1VOS05PV04QABIMCghDT05UQUNUUxABEgoKBkdST1VQUxACEgsKB0JM",
-            "T0NLRUQQA0IMCgp0eXBlX29uZW9mGlAKBFJlYWQSEAoGc2VuZGVyGAEgASgJ",
-            "SAASEwoJdGltZXN0YW1wGAIgASgESAFCDgoMc2VuZGVyX29uZW9mQhEKD3Rp",
-            "bWVzdGFtcF9vbmVvZkIMCgpzZW50X29uZW9mQhAKDmNvbnRhY3RzX29uZW9m",
-            "Qg4KDGdyb3Vwc19vbmVvZkIPCg1yZXF1ZXN0X29uZW9mQg8KDWJsb2NrZWRf",
-            "b25lb2ZCEAoOdmVyaWZpZWRfb25lb2ZCDwoNcGFkZGluZ19vbmVvZiLVAgoR",
-            "QXR0YWNobWVudFBvaW50ZXISDAoCaWQYASABKAZIABIVCgtjb250ZW50VHlw",
-            "ZRgCIAEoCUgBEg0KA2tleRgDIAEoDEgCEg4KBHNpemUYBCABKA1IAxITCgl0",
-            "aHVtYm5haWwYBSABKAxIBBIQCgZkaWdlc3QYBiABKAxIBRISCghmaWxlTmFt",
-            "ZRgHIAEoCUgGEg8KBWZsYWdzGAggASgNSAciMAoFRmxhZ3MSFAoQWkVST19Q",
-            "TEFDRUhPTERFUhAAEhEKDVZPSUNFX01FU1NBR0UQAUIKCghpZF9vbmVvZkIT",
-            "ChFjb250ZW50VHlwZV9vbmVvZkILCglrZXlfb25lb2ZCDAoKc2l6ZV9vbmVv",
-            "ZkIRCg90aHVtYm5haWxfb25lb2ZCDgoMZGlnZXN0X29uZW9mQhAKDmZpbGVO",
-            "YW1lX29uZW9mQg0KC2ZsYWdzX29uZW9mIp8CCgxHcm91cENvbnRleHQSDAoC",
-            "aWQYASABKAxIABItCgR0eXBlGAIgASgOMh0udGV4dHNlY3VyZS5Hcm91cENv",
-            "bnRleHQuVHlwZUgBEg4KBG5hbWUYAyABKAlIAhIPCgdtZW1iZXJzGAQgAygJ",
-            "Ei8KBmF2YXRhchgFIAEoCzIdLnRleHRzZWN1cmUuQXR0YWNobWVudFBvaW50",
-            "ZXJIAyJICgRUeXBlEgsKB1VOS05PV04QABIKCgZVUERBVEUQARILCgdERUxJ",
-            "VkVSEAISCAoEUVVJVBADEhAKDFJFUVVFU1RfSU5GTxAEQgoKCGlkX29uZW9m",
-            "QgwKCnR5cGVfb25lb2ZCDAoKbmFtZV9vbmVvZkIOCgxhdmF0YXJfb25lb2Yi",
-            "8wIKDkNvbnRhY3REZXRhaWxzEhAKBm51bWJlchgBIAEoCUgAEg4KBG5hbWUY",
-            "AiABKAlIARIzCgZhdmF0YXIYAyABKAsyIS50ZXh0c2VjdXJlLkNvbnRhY3RE",
-            "ZXRhaWxzLkF2YXRhckgCEg8KBWNvbG9yGAQgASgJSAMSKAoIdmVyaWZpZWQY",
-            "BSABKAsyFC50ZXh0c2VjdXJlLlZlcmlmaWVkSAQSFAoKcHJvZmlsZUtleRgG",
-            "IAEoDEgFGlYKBkF2YXRhchIVCgtjb250ZW50VHlwZRgBIAEoCUgAEhAKBmxl",
-            "bmd0aBgCIAEoDUgBQhMKEWNvbnRlbnRUeXBlX29uZW9mQg4KDGxlbmd0aF9v",
-            "bmVvZkIOCgxudW1iZXJfb25lb2ZCDAoKbmFtZV9vbmVvZkIOCgxhdmF0YXJf",
-            "b25lb2ZCDQoLY29sb3Jfb25lb2ZCEAoOdmVyaWZpZWRfb25lb2ZCEgoQcHJv",
-            "ZmlsZUtleV9vbmVvZiKUAgoMR3JvdXBEZXRhaWxzEgwKAmlkGAEgASgMSAAS",
-            "DgoEbmFtZRgCIAEoCUgBEg8KB21lbWJlcnMYAyADKAkSMQoGYXZhdGFyGAQg",
-            "ASgLMh8udGV4dHNlY3VyZS5Hcm91cERldGFpbHMuQXZhdGFySAISEAoGYWN0",
-            "aXZlGAUgASgISAMaVgoGQXZhdGFyEhUKC2NvbnRlbnRUeXBlGAEgASgJSAAS",
-            "EAoGbGVuZ3RoGAIgASgNSAFCEwoRY29udGVudFR5cGVfb25lb2ZCDgoMbGVu",
-            "Z3RoX29uZW9mQgoKCGlkX29uZW9mQgwKCm5hbWVfb25lb2ZCDgoMYXZhdGFy",
-            "X29uZW9mQg4KDGFjdGl2ZV9vbmVvZkJaCitvcmcud2hpc3BlcnN5c3RlbXMu",
-            "dGV4dHNlY3VyZS5pbnRlcm5hbC5wdXNoQhNTaWduYWxTZXJ2aWNlUHJvdG9z",
-            "qgIVbGlic2lnbmFsc2VydmljZS5wdXNoYgZwcm90bzM="));
+            "cmUuVmVyaWZpZWRIBRI+Cg1jb25maWd1cmF0aW9uGAkgASgLMiUudGV4dHNl",
+            "Y3VyZS5TeW5jTWVzc2FnZS5Db25maWd1cmF0aW9uSAYSEQoHcGFkZGluZxgI",
+            "IAEoDEgHGt0BCgRTZW50EhUKC2Rlc3RpbmF0aW9uGAEgASgJSAASEwoJdGlt",
+            "ZXN0YW1wGAIgASgESAESKgoHbWVzc2FnZRgDIAEoCzIXLnRleHRzZWN1cmUu",
+            "RGF0YU1lc3NhZ2VIAhIiChhleHBpcmF0aW9uU3RhcnRUaW1lc3RhbXAYBCAB",
+            "KARIA0ITChFkZXN0aW5hdGlvbl9vbmVvZkIRCg90aW1lc3RhbXBfb25lb2ZC",
+            "DwoNbWVzc2FnZV9vbmVvZkIgCh5leHBpcmF0aW9uU3RhcnRUaW1lc3RhbXBf",
+            "b25lb2YabQoIQ29udGFjdHMSLQoEYmxvYhgBIAEoCzIdLnRleHRzZWN1cmUu",
+            "QXR0YWNobWVudFBvaW50ZXJIABISCghjb21wbGV0ZRgCIAEoCEgBQgwKCmJs",
+            "b2Jfb25lb2ZCEAoOY29tcGxldGVfb25lb2YaRQoGR3JvdXBzEi0KBGJsb2IY",
+            "ASABKAsyHS50ZXh0c2VjdXJlLkF0dGFjaG1lbnRQb2ludGVySABCDAoKYmxv",
+            "Yl9vbmVvZhoaCgdCbG9ja2VkEg8KB251bWJlcnMYASADKAkaiQEKB1JlcXVl",
+            "c3QSNAoEdHlwZRgBIAEoDjIkLnRleHRzZWN1cmUuU3luY01lc3NhZ2UuUmVx",
+            "dWVzdC5UeXBlSAAiOgoEVHlwZRILCgdVTktOT1dOEAASDAoIQ09OVEFDVFMQ",
+            "ARIKCgZHUk9VUFMQAhILCgdCTE9DS0VEEANCDAoKdHlwZV9vbmVvZhpQCgRS",
+            "ZWFkEhAKBnNlbmRlchgBIAEoCUgAEhMKCXRpbWVzdGFtcBgCIAEoBEgBQg4K",
+            "DHNlbmRlcl9vbmVvZkIRCg90aW1lc3RhbXBfb25lb2YaPQoNQ29uZmlndXJh",
+            "dGlvbhIWCgxyZWFkUmVjZWlwdHMYASABKAhIAEIUChJyZWFkUmVjZWlwdHNf",
+            "b25lb2ZCDAoKc2VudF9vbmVvZkIQCg5jb250YWN0c19vbmVvZkIOCgxncm91",
+            "cHNfb25lb2ZCDwoNcmVxdWVzdF9vbmVvZkIPCg1ibG9ja2VkX29uZW9mQhAK",
+            "DnZlcmlmaWVkX29uZW9mQhUKE2NvbmZpZ3VyYXRpb25fb25lb2ZCDwoNcGFk",
+            "ZGluZ19vbmVvZiLVAgoRQXR0YWNobWVudFBvaW50ZXISDAoCaWQYASABKAZI",
+            "ABIVCgtjb250ZW50VHlwZRgCIAEoCUgBEg0KA2tleRgDIAEoDEgCEg4KBHNp",
+            "emUYBCABKA1IAxITCgl0aHVtYm5haWwYBSABKAxIBBIQCgZkaWdlc3QYBiAB",
+            "KAxIBRISCghmaWxlTmFtZRgHIAEoCUgGEg8KBWZsYWdzGAggASgNSAciMAoF",
+            "RmxhZ3MSFAoQWkVST19QTEFDRUhPTERFUhAAEhEKDVZPSUNFX01FU1NBR0UQ",
+            "AUIKCghpZF9vbmVvZkITChFjb250ZW50VHlwZV9vbmVvZkILCglrZXlfb25l",
+            "b2ZCDAoKc2l6ZV9vbmVvZkIRCg90aHVtYm5haWxfb25lb2ZCDgoMZGlnZXN0",
+            "X29uZW9mQhAKDmZpbGVOYW1lX29uZW9mQg0KC2ZsYWdzX29uZW9mIp8CCgxH",
+            "cm91cENvbnRleHQSDAoCaWQYASABKAxIABItCgR0eXBlGAIgASgOMh0udGV4",
+            "dHNlY3VyZS5Hcm91cENvbnRleHQuVHlwZUgBEg4KBG5hbWUYAyABKAlIAhIP",
+            "CgdtZW1iZXJzGAQgAygJEi8KBmF2YXRhchgFIAEoCzIdLnRleHRzZWN1cmUu",
+            "QXR0YWNobWVudFBvaW50ZXJIAyJICgRUeXBlEgsKB1VOS05PV04QABIKCgZV",
+            "UERBVEUQARILCgdERUxJVkVSEAISCAoEUVVJVBADEhAKDFJFUVVFU1RfSU5G",
+            "TxAEQgoKCGlkX29uZW9mQgwKCnR5cGVfb25lb2ZCDAoKbmFtZV9vbmVvZkIO",
+            "CgxhdmF0YXJfb25lb2Yi8wIKDkNvbnRhY3REZXRhaWxzEhAKBm51bWJlchgB",
+            "IAEoCUgAEg4KBG5hbWUYAiABKAlIARIzCgZhdmF0YXIYAyABKAsyIS50ZXh0",
+            "c2VjdXJlLkNvbnRhY3REZXRhaWxzLkF2YXRhckgCEg8KBWNvbG9yGAQgASgJ",
+            "SAMSKAoIdmVyaWZpZWQYBSABKAsyFC50ZXh0c2VjdXJlLlZlcmlmaWVkSAQS",
+            "FAoKcHJvZmlsZUtleRgGIAEoDEgFGlYKBkF2YXRhchIVCgtjb250ZW50VHlw",
+            "ZRgBIAEoCUgAEhAKBmxlbmd0aBgCIAEoDUgBQhMKEWNvbnRlbnRUeXBlX29u",
+            "ZW9mQg4KDGxlbmd0aF9vbmVvZkIOCgxudW1iZXJfb25lb2ZCDAoKbmFtZV9v",
+            "bmVvZkIOCgxhdmF0YXJfb25lb2ZCDQoLY29sb3Jfb25lb2ZCEAoOdmVyaWZp",
+            "ZWRfb25lb2ZCEgoQcHJvZmlsZUtleV9vbmVvZiKUAgoMR3JvdXBEZXRhaWxz",
+            "EgwKAmlkGAEgASgMSAASDgoEbmFtZRgCIAEoCUgBEg8KB21lbWJlcnMYAyAD",
+            "KAkSMQoGYXZhdGFyGAQgASgLMh8udGV4dHNlY3VyZS5Hcm91cERldGFpbHMu",
+            "QXZhdGFySAISEAoGYWN0aXZlGAUgASgISAMaVgoGQXZhdGFyEhUKC2NvbnRl",
+            "bnRUeXBlGAEgASgJSAASEAoGbGVuZ3RoGAIgASgNSAFCEwoRY29udGVudFR5",
+            "cGVfb25lb2ZCDgoMbGVuZ3RoX29uZW9mQgoKCGlkX29uZW9mQgwKCm5hbWVf",
+            "b25lb2ZCDgoMYXZhdGFyX29uZW9mQg4KDGFjdGl2ZV9vbmVvZkJaCitvcmcu",
+            "d2hpc3BlcnN5c3RlbXMudGV4dHNlY3VyZS5pbnRlcm5hbC5wdXNoQhNTaWdu",
+            "YWxTZXJ2aWNlUHJvdG9zqgIVbGlic2lnbmFsc2VydmljZS5wdXNoYgZwcm90",
+            "bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -146,12 +150,13 @@ namespace libsignalservice.push {
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.NullMessage), global::libsignalservice.push.NullMessage.Parser, new[]{ "Padding" }, new[]{ "PaddingOneof" }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.ReceiptMessage), global::libsignalservice.push.ReceiptMessage.Parser, new[]{ "Type", "Timestamp" }, new[]{ "TypeOneof" }, new[]{ typeof(global::libsignalservice.push.ReceiptMessage.Types.Type) }, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.Verified), global::libsignalservice.push.Verified.Parser, new[]{ "Destination", "IdentityKey", "State", "NullMessage" }, new[]{ "DestinationOneof", "IdentityKeyOneof", "StateOneof", "NullMessageOneof" }, new[]{ typeof(global::libsignalservice.push.Verified.Types.State) }, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage), global::libsignalservice.push.SyncMessage.Parser, new[]{ "Sent", "Contacts", "Groups", "Request", "Read", "Blocked", "Verified", "Padding" }, new[]{ "SentOneof", "ContactsOneof", "GroupsOneof", "RequestOneof", "BlockedOneof", "VerifiedOneof", "PaddingOneof" }, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Sent), global::libsignalservice.push.SyncMessage.Types.Sent.Parser, new[]{ "Destination", "Timestamp", "Message", "ExpirationStartTimestamp" }, new[]{ "DestinationOneof", "TimestampOneof", "MessageOneof", "ExpirationStartTimestampOneof" }, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage), global::libsignalservice.push.SyncMessage.Parser, new[]{ "Sent", "Contacts", "Groups", "Request", "Read", "Blocked", "Verified", "Configuration", "Padding" }, new[]{ "SentOneof", "ContactsOneof", "GroupsOneof", "RequestOneof", "BlockedOneof", "VerifiedOneof", "ConfigurationOneof", "PaddingOneof" }, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Sent), global::libsignalservice.push.SyncMessage.Types.Sent.Parser, new[]{ "Destination", "Timestamp", "Message", "ExpirationStartTimestamp" }, new[]{ "DestinationOneof", "TimestampOneof", "MessageOneof", "ExpirationStartTimestampOneof" }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Contacts), global::libsignalservice.push.SyncMessage.Types.Contacts.Parser, new[]{ "Blob", "Complete" }, new[]{ "BlobOneof", "CompleteOneof" }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Groups), global::libsignalservice.push.SyncMessage.Types.Groups.Parser, new[]{ "Blob" }, new[]{ "BlobOneof" }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Blocked), global::libsignalservice.push.SyncMessage.Types.Blocked.Parser, new[]{ "Numbers" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Request), global::libsignalservice.push.SyncMessage.Types.Request.Parser, new[]{ "Type" }, new[]{ "TypeOneof" }, new[]{ typeof(global::libsignalservice.push.SyncMessage.Types.Request.Types.Type) }, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Read), global::libsignalservice.push.SyncMessage.Types.Read.Parser, new[]{ "Sender", "Timestamp" }, new[]{ "SenderOneof", "TimestampOneof" }, null, null)}),
+            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Read), global::libsignalservice.push.SyncMessage.Types.Read.Parser, new[]{ "Sender", "Timestamp" }, new[]{ "SenderOneof", "TimestampOneof" }, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Configuration), global::libsignalservice.push.SyncMessage.Types.Configuration.Parser, new[]{ "ReadReceipts" }, new[]{ "ReadReceiptsOneof" }, null, null)}),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.AttachmentPointer), global::libsignalservice.push.AttachmentPointer.Parser, new[]{ "Id", "ContentType", "Key", "Size", "Thumbnail", "Digest", "FileName", "Flags" }, new[]{ "IdOneof", "ContentTypeOneof", "KeyOneof", "SizeOneof", "ThumbnailOneof", "DigestOneof", "FileNameOneof", "FlagsOneof" }, new[]{ typeof(global::libsignalservice.push.AttachmentPointer.Types.Flags) }, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.GroupContext), global::libsignalservice.push.GroupContext.Parser, new[]{ "Id", "Type", "Name", "Members", "Avatar" }, new[]{ "IdOneof", "TypeOneof", "NameOneof", "AvatarOneof" }, new[]{ typeof(global::libsignalservice.push.GroupContext.Types.Type) }, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.ContactDetails), global::libsignalservice.push.ContactDetails.Parser, new[]{ "Number", "Name", "Avatar", "Color", "Verified", "ProfileKey" }, new[]{ "NumberOneof", "NameOneof", "AvatarOneof", "ColorOneof", "VerifiedOneof", "ProfileKeyOneof" }, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.ContactDetails.Types.Avatar), global::libsignalservice.push.ContactDetails.Types.Avatar.Parser, new[]{ "ContentType", "Length" }, new[]{ "ContentTypeOneof", "LengthOneof" }, null, null)}),
@@ -3713,6 +3718,12 @@ namespace libsignalservice.push {
           break;
       }
 
+      switch (other.ConfigurationOneofCase) {
+        case ConfigurationOneofOneofCase.Configuration:
+          Configuration = other.Configuration.Clone();
+          break;
+      }
+
       switch (other.PaddingOneofCase) {
         case PaddingOneofOneofCase.Padding:
           Padding = other.Padding;
@@ -3800,6 +3811,17 @@ namespace libsignalservice.push {
       set {
         verifiedOneof_ = value;
         verifiedOneofCase_ = value == null ? VerifiedOneofOneofCase.None : VerifiedOneofOneofCase.Verified;
+      }
+    }
+
+    /// <summary>Field number for the "configuration" field.</summary>
+    public const int ConfigurationFieldNumber = 9;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::libsignalservice.push.SyncMessage.Types.Configuration Configuration {
+      get { return configurationOneofCase_ == ConfigurationOneofOneofCase.Configuration ? (global::libsignalservice.push.SyncMessage.Types.Configuration) configurationOneof_ : null; }
+      set {
+        configurationOneof_ = value;
+        configurationOneofCase_ = value == null ? ConfigurationOneofOneofCase.None : ConfigurationOneofOneofCase.Configuration;
       }
     }
 
@@ -3922,6 +3944,24 @@ namespace libsignalservice.push {
       verifiedOneof_ = null;
     }
 
+    private object configurationOneof_;
+    /// <summary>Enum of possible cases for the "configuration_oneof" oneof.</summary>
+    public enum ConfigurationOneofOneofCase {
+      None = 0,
+      Configuration = 9,
+    }
+    private ConfigurationOneofOneofCase configurationOneofCase_ = ConfigurationOneofOneofCase.None;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ConfigurationOneofOneofCase ConfigurationOneofCase {
+      get { return configurationOneofCase_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearConfigurationOneof() {
+      configurationOneofCase_ = ConfigurationOneofOneofCase.None;
+      configurationOneof_ = null;
+    }
+
     private object paddingOneof_;
     /// <summary>Enum of possible cases for the "padding_oneof" oneof.</summary>
     public enum PaddingOneofOneofCase {
@@ -3960,6 +4000,7 @@ namespace libsignalservice.push {
       if(!read_.Equals(other.read_)) return false;
       if (!object.Equals(Blocked, other.Blocked)) return false;
       if (!object.Equals(Verified, other.Verified)) return false;
+      if (!object.Equals(Configuration, other.Configuration)) return false;
       if (Padding != other.Padding) return false;
       if (SentOneofCase != other.SentOneofCase) return false;
       if (ContactsOneofCase != other.ContactsOneofCase) return false;
@@ -3967,6 +4008,7 @@ namespace libsignalservice.push {
       if (RequestOneofCase != other.RequestOneofCase) return false;
       if (BlockedOneofCase != other.BlockedOneofCase) return false;
       if (VerifiedOneofCase != other.VerifiedOneofCase) return false;
+      if (ConfigurationOneofCase != other.ConfigurationOneofCase) return false;
       if (PaddingOneofCase != other.PaddingOneofCase) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -3981,6 +4023,7 @@ namespace libsignalservice.push {
       hash ^= read_.GetHashCode();
       if (blockedOneofCase_ == BlockedOneofOneofCase.Blocked) hash ^= Blocked.GetHashCode();
       if (verifiedOneofCase_ == VerifiedOneofOneofCase.Verified) hash ^= Verified.GetHashCode();
+      if (configurationOneofCase_ == ConfigurationOneofOneofCase.Configuration) hash ^= Configuration.GetHashCode();
       if (paddingOneofCase_ == PaddingOneofOneofCase.Padding) hash ^= Padding.GetHashCode();
       hash ^= (int) sentOneofCase_;
       hash ^= (int) contactsOneofCase_;
@@ -3988,6 +4031,7 @@ namespace libsignalservice.push {
       hash ^= (int) requestOneofCase_;
       hash ^= (int) blockedOneofCase_;
       hash ^= (int) verifiedOneofCase_;
+      hash ^= (int) configurationOneofCase_;
       hash ^= (int) paddingOneofCase_;
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -4031,6 +4075,10 @@ namespace libsignalservice.push {
         output.WriteRawTag(66);
         output.WriteBytes(Padding);
       }
+      if (configurationOneofCase_ == ConfigurationOneofOneofCase.Configuration) {
+        output.WriteRawTag(74);
+        output.WriteMessage(Configuration);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -4057,6 +4105,9 @@ namespace libsignalservice.push {
       }
       if (verifiedOneofCase_ == VerifiedOneofOneofCase.Verified) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Verified);
+      }
+      if (configurationOneofCase_ == ConfigurationOneofOneofCase.Configuration) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Configuration);
       }
       if (paddingOneofCase_ == PaddingOneofOneofCase.Padding) {
         size += 1 + pb::CodedOutputStream.ComputeBytesSize(Padding);
@@ -4124,6 +4175,15 @@ namespace libsignalservice.push {
             Verified = new global::libsignalservice.push.Verified();
           }
           Verified.MergeFrom(other.Verified);
+          break;
+      }
+
+      switch (other.ConfigurationOneofCase) {
+        case ConfigurationOneofOneofCase.Configuration:
+          if (Configuration == null) {
+            Configuration = new global::libsignalservice.push.SyncMessage.Types.Configuration();
+          }
+          Configuration.MergeFrom(other.Configuration);
           break;
       }
 
@@ -4204,6 +4264,15 @@ namespace libsignalservice.push {
           }
           case 66: {
             Padding = input.ReadBytes();
+            break;
+          }
+          case 74: {
+            global::libsignalservice.push.SyncMessage.Types.Configuration subBuilder = new global::libsignalservice.push.SyncMessage.Types.Configuration();
+            if (configurationOneofCase_ == ConfigurationOneofOneofCase.Configuration) {
+              subBuilder.MergeFrom(Configuration);
+            }
+            input.ReadMessage(subBuilder);
+            Configuration = subBuilder;
             break;
           }
         }
@@ -5431,6 +5500,163 @@ namespace libsignalservice.push {
               }
               case 16: {
                 Timestamp = input.ReadUInt64();
+                break;
+              }
+            }
+          }
+        }
+
+      }
+
+      public sealed partial class Configuration : pb::IMessage<Configuration> {
+        private static readonly pb::MessageParser<Configuration> _parser = new pb::MessageParser<Configuration>(() => new Configuration());
+        private pb::UnknownFieldSet _unknownFields;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public static pb::MessageParser<Configuration> Parser { get { return _parser; } }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public static pbr::MessageDescriptor Descriptor {
+          get { return global::libsignalservice.push.SyncMessage.Descriptor.NestedTypes[6]; }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        pbr::MessageDescriptor pb::IMessage.Descriptor {
+          get { return Descriptor; }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public Configuration() {
+          OnConstruction();
+        }
+
+        partial void OnConstruction();
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public Configuration(Configuration other) : this() {
+          switch (other.ReadReceiptsOneofCase) {
+            case ReadReceiptsOneofOneofCase.ReadReceipts:
+              ReadReceipts = other.ReadReceipts;
+              break;
+          }
+
+          _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public Configuration Clone() {
+          return new Configuration(this);
+        }
+
+        /// <summary>Field number for the "readReceipts" field.</summary>
+        public const int ReadReceiptsFieldNumber = 1;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public bool ReadReceipts {
+          get { return readReceiptsOneofCase_ == ReadReceiptsOneofOneofCase.ReadReceipts ? (bool) readReceiptsOneof_ : false; }
+          set {
+            readReceiptsOneof_ = value;
+            readReceiptsOneofCase_ = ReadReceiptsOneofOneofCase.ReadReceipts;
+          }
+        }
+
+        private object readReceiptsOneof_;
+        /// <summary>Enum of possible cases for the "readReceipts_oneof" oneof.</summary>
+        public enum ReadReceiptsOneofOneofCase {
+          None = 0,
+          ReadReceipts = 1,
+        }
+        private ReadReceiptsOneofOneofCase readReceiptsOneofCase_ = ReadReceiptsOneofOneofCase.None;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public ReadReceiptsOneofOneofCase ReadReceiptsOneofCase {
+          get { return readReceiptsOneofCase_; }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void ClearReadReceiptsOneof() {
+          readReceiptsOneofCase_ = ReadReceiptsOneofOneofCase.None;
+          readReceiptsOneof_ = null;
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public override bool Equals(object other) {
+          return Equals(other as Configuration);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public bool Equals(Configuration other) {
+          if (ReferenceEquals(other, null)) {
+            return false;
+          }
+          if (ReferenceEquals(other, this)) {
+            return true;
+          }
+          if (ReadReceipts != other.ReadReceipts) return false;
+          if (ReadReceiptsOneofCase != other.ReadReceiptsOneofCase) return false;
+          return Equals(_unknownFields, other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public override int GetHashCode() {
+          int hash = 1;
+          if (readReceiptsOneofCase_ == ReadReceiptsOneofOneofCase.ReadReceipts) hash ^= ReadReceipts.GetHashCode();
+          hash ^= (int) readReceiptsOneofCase_;
+          if (_unknownFields != null) {
+            hash ^= _unknownFields.GetHashCode();
+          }
+          return hash;
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public override string ToString() {
+          return pb::JsonFormatter.ToDiagnosticString(this);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void WriteTo(pb::CodedOutputStream output) {
+          if (readReceiptsOneofCase_ == ReadReceiptsOneofOneofCase.ReadReceipts) {
+            output.WriteRawTag(8);
+            output.WriteBool(ReadReceipts);
+          }
+          if (_unknownFields != null) {
+            _unknownFields.WriteTo(output);
+          }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public int CalculateSize() {
+          int size = 0;
+          if (readReceiptsOneofCase_ == ReadReceiptsOneofOneofCase.ReadReceipts) {
+            size += 1 + 1;
+          }
+          if (_unknownFields != null) {
+            size += _unknownFields.CalculateSize();
+          }
+          return size;
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void MergeFrom(Configuration other) {
+          if (other == null) {
+            return;
+          }
+          switch (other.ReadReceiptsOneofCase) {
+            case ReadReceiptsOneofOneofCase.ReadReceipts:
+              ReadReceipts = other.ReadReceipts;
+              break;
+          }
+
+          _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void MergeFrom(pb::CodedInputStream input) {
+          uint tag;
+          while ((tag = input.ReadTag()) != 0) {
+            switch(tag) {
+              default:
+                _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+                break;
+              case 8: {
+                ReadReceipts = input.ReadBool();
                 break;
               }
             }
