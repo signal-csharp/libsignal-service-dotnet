@@ -10,6 +10,7 @@ using libsignalservice.util;
 
 using System;
 using System.Collections.Generic;
+using static libsignalservice.messages.SignalServiceDataMessage;
 using static libsignalservice.push.DataMessage;
 
 namespace libsignalservice.crypto
@@ -341,11 +342,13 @@ namespace libsignalservice.crypto
             if (content.QuoteOneofCase != QuoteOneofOneofCase.Quote)
                 return null;
 
-            List<SignalServiceAttachment> attachments = new List<SignalServiceAttachment>();
+            List<SignalServiceQuotedAttachment> attachments = new List<SignalServiceQuotedAttachment>();
 
-            foreach (AttachmentPointer pointer in content.Quote.Attachments)
+            foreach (var pointer in content.Quote.Attachments)
             {
-                attachments.Add(CreateAttachmentPointer(envelope, pointer));
+                attachments.Add(new SignalServiceQuotedAttachment(pointer.ContentType,
+                    pointer.FileName,
+                    pointer.ThumbnailOneofCase == Types.Quote.Types.QuotedAttachment.ThumbnailOneofOneofCase.Thumbnail ? CreateAttachmentPointer(envelope, pointer.Thumbnail) : null));
             }
 
             return new SignalServiceDataMessage.SignalServiceQuote((long) content.Quote.Id,

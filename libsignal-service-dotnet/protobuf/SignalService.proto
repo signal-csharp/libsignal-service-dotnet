@@ -73,10 +73,15 @@ message DataMessage {
   }
 
   message Quote {
+    message QuotedAttachment {
+	  oneof contentType_oneof { string contentType = 1; }
+	  oneof fileName_oneof { string fileName = 2;}
+	  oneof thumbnail_oneof { AttachmentPointer thumbnail = 3; }
+	}
     oneof id_oneof { uint64 id = 1; }
 	oneof author_oneof { string author = 2; }
 	oneof text_oneof { string text = 3; }
-	repeated AttachmentPointer attachments = 4;
+	repeated QuotedAttachment attachments = 4;
   }
 
   oneof body_oneof						{ string             body        = 1; }

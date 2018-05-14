@@ -16,6 +16,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
+using static libsignalservice.messages.SignalServiceDataMessage;
+using static libsignalservice.push.DataMessage.Types.Quote.Types;
 using static libsignalservice.push.SyncMessage.Types;
 
 namespace libsignalservice
@@ -300,25 +302,22 @@ namespace libsignalservice
                     Author = message.Quote.Author.E164number,
                     Text = message.Quote.Text
                 };
-                foreach (SignalServiceAttachment attachment in message.Quote.Attachments)
+                foreach (SignalServiceQuotedAttachment attachment in message.Quote.Attachments)
                 {
-                    if (attachment.IsPointer())
+                    QuotedAttachment protoAttachment = new QuotedAttachment()
                     {
-                        var pointer = attachment.AsPointer();
-                        var protoPointer = new AttachmentPointer()
-                        {
-                            ContentType = pointer.ContentType
-                        };
-                        if (pointer.FileName != null)
-                        {
-                            protoPointer.FileName = pointer.FileName;
-                        }
-                        quote.Attachments.Add(protoPointer);
-                    }
-                    else
+                        ContentType = attachment.ContentType
+                    };
+                    if (attachment.FileName != null)
                     {
-                        quote.Attachments.Add(CreateAttachmentPointer(attachment.AsStream()));
+                        protoAttachment.FileName = attachment.FileName;
                     }
+
+                    if (attachment.Thumbnail != null)
+                    {
+                        protoAttachment.Thumbnail = CreateAttachmentPointer(attachment.Thumbnail.AsStream());
+                    }
+                    quote.Attachments.Add(protoAttachment);
                 }
                 dataMessage.Quote = quote;
             }

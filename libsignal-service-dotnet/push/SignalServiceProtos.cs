@@ -57,95 +57,99 @@ namespace libsignalservice.push {
             "b2ZCCwoJc2RwX29uZW9mGiAKBEJ1c3kSDAoCaWQYASABKARIAEIKCghpZF9v",
             "bmVvZhoiCgZIYW5ndXASDAoCaWQYASABKARIAEIKCghpZF9vbmVvZkINCgtv",
             "ZmZlcl9vbmVvZkIOCgxhbnN3ZXJfb25lb2ZCDgoMaGFuZ3VwX29uZW9mQgwK",
-            "CmJ1c3lfb25lb2Yi8wQKC0RhdGFNZXNzYWdlEg4KBGJvZHkYASABKAlIABIy",
+            "CmJ1c3lfb25lb2YisgYKC0RhdGFNZXNzYWdlEg4KBGJvZHkYASABKAlIABIy",
             "CgthdHRhY2htZW50cxgCIAMoCzIdLnRleHRzZWN1cmUuQXR0YWNobWVudFBv",
             "aW50ZXISKQoFZ3JvdXAYAyABKAsyGC50ZXh0c2VjdXJlLkdyb3VwQ29udGV4",
             "dEgBEg8KBWZsYWdzGAQgASgNSAISFQoLZXhwaXJlVGltZXIYBSABKA1IAxIU",
             "Cgpwcm9maWxlS2V5GAYgASgMSAQSEwoJdGltZXN0YW1wGAcgASgESAUSLgoF",
             "cXVvdGUYCCABKAsyHS50ZXh0c2VjdXJlLkRhdGFNZXNzYWdlLlF1b3RlSAYa",
-            "lQEKBVF1b3RlEgwKAmlkGAEgASgESAASEAoGYXV0aG9yGAIgASgJSAESDgoE",
-            "dGV4dBgDIAEoCUgCEjIKC2F0dGFjaG1lbnRzGAQgAygLMh0udGV4dHNlY3Vy",
-            "ZS5BdHRhY2htZW50UG9pbnRlckIKCghpZF9vbmVvZkIOCgxhdXRob3Jfb25l",
-            "b2ZCDAoKdGV4dF9vbmVvZiJjCgVGbGFncxIUChBaRVJPX1BMQUNFSE9MREVS",
-            "EAASDwoLRU5EX1NFU1NJT04QARIbChdFWFBJUkFUSU9OX1RJTUVSX1VQREFU",
-            "RRACEhYKElBST0ZJTEVfS0VZX1VQREFURRAEQgwKCmJvZHlfb25lb2ZCDQoL",
-            "Z3JvdXBfb25lb2ZCDQoLZmxhZ3Nfb25lb2ZCEwoRZXhwaXJlVGltZXJfb25l",
-            "b2ZCEgoQcHJvZmlsZUtleV9vbmVvZkIRCg90aW1lc3RhbXBfb25lb2ZCDQoL",
-            "cXVvdGVfb25lb2YiMQoLTnVsbE1lc3NhZ2USEQoHcGFkZGluZxgBIAEoDEgA",
-            "Qg8KDXBhZGRpbmdfb25lb2YiggEKDlJlY2VpcHRNZXNzYWdlEi8KBHR5cGUY",
-            "ASABKA4yHy50ZXh0c2VjdXJlLlJlY2VpcHRNZXNzYWdlLlR5cGVIABIRCgl0",
-            "aW1lc3RhbXAYAiADKAQiHgoEVHlwZRIMCghERUxJVkVSWRAAEggKBFJFQUQQ",
-            "AUIMCgp0eXBlX29uZW9mIv4BCghWZXJpZmllZBIVCgtkZXN0aW5hdGlvbhgB",
-            "IAEoCUgAEhUKC2lkZW50aXR5S2V5GAIgASgMSAESKwoFc3RhdGUYAyABKA4y",
-            "Gi50ZXh0c2VjdXJlLlZlcmlmaWVkLlN0YXRlSAISFQoLbnVsbE1lc3NhZ2UY",
-            "BCABKAxIAyIyCgVTdGF0ZRILCgdERUZBVUxUEAASDAoIVkVSSUZJRUQQARIO",
-            "CgpVTlZFUklGSUVEEAJCEwoRZGVzdGluYXRpb25fb25lb2ZCEwoRaWRlbnRp",
-            "dHlLZXlfb25lb2ZCDQoLc3RhdGVfb25lb2ZCEwoRbnVsbE1lc3NhZ2Vfb25l",
-            "b2YiogoKC1N5bmNNZXNzYWdlEiwKBHNlbnQYASABKAsyHC50ZXh0c2VjdXJl",
-            "LlN5bmNNZXNzYWdlLlNlbnRIABI0Cghjb250YWN0cxgCIAEoCzIgLnRleHRz",
-            "ZWN1cmUuU3luY01lc3NhZ2UuQ29udGFjdHNIARIwCgZncm91cHMYAyABKAsy",
-            "Hi50ZXh0c2VjdXJlLlN5bmNNZXNzYWdlLkdyb3Vwc0gCEjIKB3JlcXVlc3QY",
-            "BCABKAsyHy50ZXh0c2VjdXJlLlN5bmNNZXNzYWdlLlJlcXVlc3RIAxIqCgRy",
-            "ZWFkGAUgAygLMhwudGV4dHNlY3VyZS5TeW5jTWVzc2FnZS5SZWFkEjIKB2Js",
-            "b2NrZWQYBiABKAsyHy50ZXh0c2VjdXJlLlN5bmNNZXNzYWdlLkJsb2NrZWRI",
-            "BBIoCgh2ZXJpZmllZBgHIAEoCzIULnRleHRzZWN1cmUuVmVyaWZpZWRIBRI+",
-            "Cg1jb25maWd1cmF0aW9uGAkgASgLMiUudGV4dHNlY3VyZS5TeW5jTWVzc2Fn",
-            "ZS5Db25maWd1cmF0aW9uSAYSEQoHcGFkZGluZxgIIAEoDEgHGt0BCgRTZW50",
-            "EhUKC2Rlc3RpbmF0aW9uGAEgASgJSAASEwoJdGltZXN0YW1wGAIgASgESAES",
-            "KgoHbWVzc2FnZRgDIAEoCzIXLnRleHRzZWN1cmUuRGF0YU1lc3NhZ2VIAhIi",
-            "ChhleHBpcmF0aW9uU3RhcnRUaW1lc3RhbXAYBCABKARIA0ITChFkZXN0aW5h",
-            "dGlvbl9vbmVvZkIRCg90aW1lc3RhbXBfb25lb2ZCDwoNbWVzc2FnZV9vbmVv",
-            "ZkIgCh5leHBpcmF0aW9uU3RhcnRUaW1lc3RhbXBfb25lb2YabQoIQ29udGFj",
-            "dHMSLQoEYmxvYhgBIAEoCzIdLnRleHRzZWN1cmUuQXR0YWNobWVudFBvaW50",
-            "ZXJIABISCghjb21wbGV0ZRgCIAEoCEgBQgwKCmJsb2Jfb25lb2ZCEAoOY29t",
-            "cGxldGVfb25lb2YaRQoGR3JvdXBzEi0KBGJsb2IYASABKAsyHS50ZXh0c2Vj",
-            "dXJlLkF0dGFjaG1lbnRQb2ludGVySABCDAoKYmxvYl9vbmVvZhoaCgdCbG9j",
-            "a2VkEg8KB251bWJlcnMYASADKAkanAEKB1JlcXVlc3QSNAoEdHlwZRgBIAEo",
-            "DjIkLnRleHRzZWN1cmUuU3luY01lc3NhZ2UuUmVxdWVzdC5UeXBlSAAiTQoE",
-            "VHlwZRILCgdVTktOT1dOEAASDAoIQ09OVEFDVFMQARIKCgZHUk9VUFMQAhIL",
-            "CgdCTE9DS0VEEAMSEQoNQ09ORklHVVJBVElPThAEQgwKCnR5cGVfb25lb2Ya",
-            "UAoEUmVhZBIQCgZzZW5kZXIYASABKAlIABITCgl0aW1lc3RhbXAYAiABKARI",
-            "AUIOCgxzZW5kZXJfb25lb2ZCEQoPdGltZXN0YW1wX29uZW9mGj0KDUNvbmZp",
-            "Z3VyYXRpb24SFgoMcmVhZFJlY2VpcHRzGAEgASgISABCFAoScmVhZFJlY2Vp",
-            "cHRzX29uZW9mQgwKCnNlbnRfb25lb2ZCEAoOY29udGFjdHNfb25lb2ZCDgoM",
-            "Z3JvdXBzX29uZW9mQg8KDXJlcXVlc3Rfb25lb2ZCDwoNYmxvY2tlZF9vbmVv",
-            "ZkIQCg52ZXJpZmllZF9vbmVvZkIVChNjb25maWd1cmF0aW9uX29uZW9mQg8K",
-            "DXBhZGRpbmdfb25lb2YilwMKEUF0dGFjaG1lbnRQb2ludGVyEgwKAmlkGAEg",
-            "ASgGSAASFQoLY29udGVudFR5cGUYAiABKAlIARINCgNrZXkYAyABKAxIAhIO",
-            "CgRzaXplGAQgASgNSAMSEwoJdGh1bWJuYWlsGAUgASgMSAQSEAoGZGlnZXN0",
-            "GAYgASgMSAUSEgoIZmlsZU5hbWUYByABKAlIBhIPCgVmbGFncxgIIAEoDUgH",
-            "Eg8KBXdpZHRoGAkgASgNSAgSEAoGaGVpZ2h0GAogASgNSAkiMAoFRmxhZ3MS",
-            "FAoQWkVST19QTEFDRUhPTERFUhAAEhEKDVZPSUNFX01FU1NBR0UQAUIKCghp",
-            "ZF9vbmVvZkITChFjb250ZW50VHlwZV9vbmVvZkILCglrZXlfb25lb2ZCDAoK",
-            "c2l6ZV9vbmVvZkIRCg90aHVtYm5haWxfb25lb2ZCDgoMZGlnZXN0X29uZW9m",
-            "QhAKDmZpbGVOYW1lX29uZW9mQg0KC2ZsYWdzX29uZW9mQg0KC3dpZHRoX29u",
-            "ZW9mQg4KDGhlaWdodF9vbmVvZiKfAgoMR3JvdXBDb250ZXh0EgwKAmlkGAEg",
-            "ASgMSAASLQoEdHlwZRgCIAEoDjIdLnRleHRzZWN1cmUuR3JvdXBDb250ZXh0",
-            "LlR5cGVIARIOCgRuYW1lGAMgASgJSAISDwoHbWVtYmVycxgEIAMoCRIvCgZh",
-            "dmF0YXIYBSABKAsyHS50ZXh0c2VjdXJlLkF0dGFjaG1lbnRQb2ludGVySAMi",
-            "SAoEVHlwZRILCgdVTktOT1dOEAASCgoGVVBEQVRFEAESCwoHREVMSVZFUhAC",
-            "EggKBFFVSVQQAxIQCgxSRVFVRVNUX0lORk8QBEIKCghpZF9vbmVvZkIMCgp0",
-            "eXBlX29uZW9mQgwKCm5hbWVfb25lb2ZCDgoMYXZhdGFyX29uZW9mIsMDCg5D",
-            "b250YWN0RGV0YWlscxIQCgZudW1iZXIYASABKAlIABIOCgRuYW1lGAIgASgJ",
-            "SAESMwoGYXZhdGFyGAMgASgLMiEudGV4dHNlY3VyZS5Db250YWN0RGV0YWls",
-            "cy5BdmF0YXJIAhIPCgVjb2xvchgEIAEoCUgDEigKCHZlcmlmaWVkGAUgASgL",
-            "MhQudGV4dHNlY3VyZS5WZXJpZmllZEgEEhQKCnByb2ZpbGVLZXkYBiABKAxI",
-            "BRIRCgdibG9ja2VkGAcgASgISAYSFQoLZXhwaXJlVGltZXIYCCABKA1IBxpW",
-            "CgZBdmF0YXISFQoLY29udGVudFR5cGUYASABKAlIABIQCgZsZW5ndGgYAiAB",
-            "KA1IAUITChFjb250ZW50VHlwZV9vbmVvZkIOCgxsZW5ndGhfb25lb2ZCDgoM",
-            "bnVtYmVyX29uZW9mQgwKCm5hbWVfb25lb2ZCDgoMYXZhdGFyX29uZW9mQg0K",
-            "C2NvbG9yX29uZW9mQhAKDnZlcmlmaWVkX29uZW9mQhIKEHByb2ZpbGVLZXlf",
-            "b25lb2ZCDwoNYmxvY2tlZF9vbmVvZkITChFleHBpcmVUaW1lcl9vbmVvZiLA",
-            "AgoMR3JvdXBEZXRhaWxzEgwKAmlkGAEgASgMSAASDgoEbmFtZRgCIAEoCUgB",
-            "Eg8KB21lbWJlcnMYAyADKAkSMQoGYXZhdGFyGAQgASgLMh8udGV4dHNlY3Vy",
-            "ZS5Hcm91cERldGFpbHMuQXZhdGFySAISEAoGYWN0aXZlGAUgASgISAMSFQoL",
-            "ZXhwaXJlVGltZXIYBiABKA1IBBpWCgZBdmF0YXISFQoLY29udGVudFR5cGUY",
-            "ASABKAlIABIQCgZsZW5ndGgYAiABKA1IAUITChFjb250ZW50VHlwZV9vbmVv",
-            "ZkIOCgxsZW5ndGhfb25lb2ZCCgoIaWRfb25lb2ZCDAoKbmFtZV9vbmVvZkIO",
-            "CgxhdmF0YXJfb25lb2ZCDgoMYWN0aXZlX29uZW9mQhMKEWV4cGlyZVRpbWVy",
-            "X29uZW9mQloKK29yZy53aGlzcGVyc3lzdGVtcy50ZXh0c2VjdXJlLmludGVy",
-            "bmFsLnB1c2hCE1NpZ25hbFNlcnZpY2VQcm90b3OqAhVsaWJzaWduYWxzZXJ2",
-            "aWNlLnB1c2hiBnByb3RvMw=="));
+            "1AIKBVF1b3RlEgwKAmlkGAEgASgESAASEAoGYXV0aG9yGAIgASgJSAESDgoE",
+            "dGV4dBgDIAEoCUgCEkMKC2F0dGFjaG1lbnRzGAQgAygLMi4udGV4dHNlY3Vy",
+            "ZS5EYXRhTWVzc2FnZS5RdW90ZS5RdW90ZWRBdHRhY2htZW50GqsBChBRdW90",
+            "ZWRBdHRhY2htZW50EhUKC2NvbnRlbnRUeXBlGAEgASgJSAASEgoIZmlsZU5h",
+            "bWUYAiABKAlIARIyCgl0aHVtYm5haWwYAyABKAsyHS50ZXh0c2VjdXJlLkF0",
+            "dGFjaG1lbnRQb2ludGVySAJCEwoRY29udGVudFR5cGVfb25lb2ZCEAoOZmls",
+            "ZU5hbWVfb25lb2ZCEQoPdGh1bWJuYWlsX29uZW9mQgoKCGlkX29uZW9mQg4K",
+            "DGF1dGhvcl9vbmVvZkIMCgp0ZXh0X29uZW9mImMKBUZsYWdzEhQKEFpFUk9f",
+            "UExBQ0VIT0xERVIQABIPCgtFTkRfU0VTU0lPThABEhsKF0VYUElSQVRJT05f",
+            "VElNRVJfVVBEQVRFEAISFgoSUFJPRklMRV9LRVlfVVBEQVRFEARCDAoKYm9k",
+            "eV9vbmVvZkINCgtncm91cF9vbmVvZkINCgtmbGFnc19vbmVvZkITChFleHBp",
+            "cmVUaW1lcl9vbmVvZkISChBwcm9maWxlS2V5X29uZW9mQhEKD3RpbWVzdGFt",
+            "cF9vbmVvZkINCgtxdW90ZV9vbmVvZiIxCgtOdWxsTWVzc2FnZRIRCgdwYWRk",
+            "aW5nGAEgASgMSABCDwoNcGFkZGluZ19vbmVvZiKCAQoOUmVjZWlwdE1lc3Nh",
+            "Z2USLwoEdHlwZRgBIAEoDjIfLnRleHRzZWN1cmUuUmVjZWlwdE1lc3NhZ2Uu",
+            "VHlwZUgAEhEKCXRpbWVzdGFtcBgCIAMoBCIeCgRUeXBlEgwKCERFTElWRVJZ",
+            "EAASCAoEUkVBRBABQgwKCnR5cGVfb25lb2Yi/gEKCFZlcmlmaWVkEhUKC2Rl",
+            "c3RpbmF0aW9uGAEgASgJSAASFQoLaWRlbnRpdHlLZXkYAiABKAxIARIrCgVz",
+            "dGF0ZRgDIAEoDjIaLnRleHRzZWN1cmUuVmVyaWZpZWQuU3RhdGVIAhIVCgtu",
+            "dWxsTWVzc2FnZRgEIAEoDEgDIjIKBVN0YXRlEgsKB0RFRkFVTFQQABIMCghW",
+            "RVJJRklFRBABEg4KClVOVkVSSUZJRUQQAkITChFkZXN0aW5hdGlvbl9vbmVv",
+            "ZkITChFpZGVudGl0eUtleV9vbmVvZkINCgtzdGF0ZV9vbmVvZkITChFudWxs",
+            "TWVzc2FnZV9vbmVvZiKiCgoLU3luY01lc3NhZ2USLAoEc2VudBgBIAEoCzIc",
+            "LnRleHRzZWN1cmUuU3luY01lc3NhZ2UuU2VudEgAEjQKCGNvbnRhY3RzGAIg",
+            "ASgLMiAudGV4dHNlY3VyZS5TeW5jTWVzc2FnZS5Db250YWN0c0gBEjAKBmdy",
+            "b3VwcxgDIAEoCzIeLnRleHRzZWN1cmUuU3luY01lc3NhZ2UuR3JvdXBzSAIS",
+            "MgoHcmVxdWVzdBgEIAEoCzIfLnRleHRzZWN1cmUuU3luY01lc3NhZ2UuUmVx",
+            "dWVzdEgDEioKBHJlYWQYBSADKAsyHC50ZXh0c2VjdXJlLlN5bmNNZXNzYWdl",
+            "LlJlYWQSMgoHYmxvY2tlZBgGIAEoCzIfLnRleHRzZWN1cmUuU3luY01lc3Nh",
+            "Z2UuQmxvY2tlZEgEEigKCHZlcmlmaWVkGAcgASgLMhQudGV4dHNlY3VyZS5W",
+            "ZXJpZmllZEgFEj4KDWNvbmZpZ3VyYXRpb24YCSABKAsyJS50ZXh0c2VjdXJl",
+            "LlN5bmNNZXNzYWdlLkNvbmZpZ3VyYXRpb25IBhIRCgdwYWRkaW5nGAggASgM",
+            "SAca3QEKBFNlbnQSFQoLZGVzdGluYXRpb24YASABKAlIABITCgl0aW1lc3Rh",
+            "bXAYAiABKARIARIqCgdtZXNzYWdlGAMgASgLMhcudGV4dHNlY3VyZS5EYXRh",
+            "TWVzc2FnZUgCEiIKGGV4cGlyYXRpb25TdGFydFRpbWVzdGFtcBgEIAEoBEgD",
+            "QhMKEWRlc3RpbmF0aW9uX29uZW9mQhEKD3RpbWVzdGFtcF9vbmVvZkIPCg1t",
+            "ZXNzYWdlX29uZW9mQiAKHmV4cGlyYXRpb25TdGFydFRpbWVzdGFtcF9vbmVv",
+            "ZhptCghDb250YWN0cxItCgRibG9iGAEgASgLMh0udGV4dHNlY3VyZS5BdHRh",
+            "Y2htZW50UG9pbnRlckgAEhIKCGNvbXBsZXRlGAIgASgISAFCDAoKYmxvYl9v",
+            "bmVvZkIQCg5jb21wbGV0ZV9vbmVvZhpFCgZHcm91cHMSLQoEYmxvYhgBIAEo",
+            "CzIdLnRleHRzZWN1cmUuQXR0YWNobWVudFBvaW50ZXJIAEIMCgpibG9iX29u",
+            "ZW9mGhoKB0Jsb2NrZWQSDwoHbnVtYmVycxgBIAMoCRqcAQoHUmVxdWVzdBI0",
+            "CgR0eXBlGAEgASgOMiQudGV4dHNlY3VyZS5TeW5jTWVzc2FnZS5SZXF1ZXN0",
+            "LlR5cGVIACJNCgRUeXBlEgsKB1VOS05PV04QABIMCghDT05UQUNUUxABEgoK",
+            "BkdST1VQUxACEgsKB0JMT0NLRUQQAxIRCg1DT05GSUdVUkFUSU9OEARCDAoK",
+            "dHlwZV9vbmVvZhpQCgRSZWFkEhAKBnNlbmRlchgBIAEoCUgAEhMKCXRpbWVz",
+            "dGFtcBgCIAEoBEgBQg4KDHNlbmRlcl9vbmVvZkIRCg90aW1lc3RhbXBfb25l",
+            "b2YaPQoNQ29uZmlndXJhdGlvbhIWCgxyZWFkUmVjZWlwdHMYASABKAhIAEIU",
+            "ChJyZWFkUmVjZWlwdHNfb25lb2ZCDAoKc2VudF9vbmVvZkIQCg5jb250YWN0",
+            "c19vbmVvZkIOCgxncm91cHNfb25lb2ZCDwoNcmVxdWVzdF9vbmVvZkIPCg1i",
+            "bG9ja2VkX29uZW9mQhAKDnZlcmlmaWVkX29uZW9mQhUKE2NvbmZpZ3VyYXRp",
+            "b25fb25lb2ZCDwoNcGFkZGluZ19vbmVvZiKXAwoRQXR0YWNobWVudFBvaW50",
+            "ZXISDAoCaWQYASABKAZIABIVCgtjb250ZW50VHlwZRgCIAEoCUgBEg0KA2tl",
+            "eRgDIAEoDEgCEg4KBHNpemUYBCABKA1IAxITCgl0aHVtYm5haWwYBSABKAxI",
+            "BBIQCgZkaWdlc3QYBiABKAxIBRISCghmaWxlTmFtZRgHIAEoCUgGEg8KBWZs",
+            "YWdzGAggASgNSAcSDwoFd2lkdGgYCSABKA1ICBIQCgZoZWlnaHQYCiABKA1I",
+            "CSIwCgVGbGFncxIUChBaRVJPX1BMQUNFSE9MREVSEAASEQoNVk9JQ0VfTUVT",
+            "U0FHRRABQgoKCGlkX29uZW9mQhMKEWNvbnRlbnRUeXBlX29uZW9mQgsKCWtl",
+            "eV9vbmVvZkIMCgpzaXplX29uZW9mQhEKD3RodW1ibmFpbF9vbmVvZkIOCgxk",
+            "aWdlc3Rfb25lb2ZCEAoOZmlsZU5hbWVfb25lb2ZCDQoLZmxhZ3Nfb25lb2ZC",
+            "DQoLd2lkdGhfb25lb2ZCDgoMaGVpZ2h0X29uZW9mIp8CCgxHcm91cENvbnRl",
+            "eHQSDAoCaWQYASABKAxIABItCgR0eXBlGAIgASgOMh0udGV4dHNlY3VyZS5H",
+            "cm91cENvbnRleHQuVHlwZUgBEg4KBG5hbWUYAyABKAlIAhIPCgdtZW1iZXJz",
+            "GAQgAygJEi8KBmF2YXRhchgFIAEoCzIdLnRleHRzZWN1cmUuQXR0YWNobWVu",
+            "dFBvaW50ZXJIAyJICgRUeXBlEgsKB1VOS05PV04QABIKCgZVUERBVEUQARIL",
+            "CgdERUxJVkVSEAISCAoEUVVJVBADEhAKDFJFUVVFU1RfSU5GTxAEQgoKCGlk",
+            "X29uZW9mQgwKCnR5cGVfb25lb2ZCDAoKbmFtZV9vbmVvZkIOCgxhdmF0YXJf",
+            "b25lb2YiwwMKDkNvbnRhY3REZXRhaWxzEhAKBm51bWJlchgBIAEoCUgAEg4K",
+            "BG5hbWUYAiABKAlIARIzCgZhdmF0YXIYAyABKAsyIS50ZXh0c2VjdXJlLkNv",
+            "bnRhY3REZXRhaWxzLkF2YXRhckgCEg8KBWNvbG9yGAQgASgJSAMSKAoIdmVy",
+            "aWZpZWQYBSABKAsyFC50ZXh0c2VjdXJlLlZlcmlmaWVkSAQSFAoKcHJvZmls",
+            "ZUtleRgGIAEoDEgFEhEKB2Jsb2NrZWQYByABKAhIBhIVCgtleHBpcmVUaW1l",
+            "chgIIAEoDUgHGlYKBkF2YXRhchIVCgtjb250ZW50VHlwZRgBIAEoCUgAEhAK",
+            "Bmxlbmd0aBgCIAEoDUgBQhMKEWNvbnRlbnRUeXBlX29uZW9mQg4KDGxlbmd0",
+            "aF9vbmVvZkIOCgxudW1iZXJfb25lb2ZCDAoKbmFtZV9vbmVvZkIOCgxhdmF0",
+            "YXJfb25lb2ZCDQoLY29sb3Jfb25lb2ZCEAoOdmVyaWZpZWRfb25lb2ZCEgoQ",
+            "cHJvZmlsZUtleV9vbmVvZkIPCg1ibG9ja2VkX29uZW9mQhMKEWV4cGlyZVRp",
+            "bWVyX29uZW9mIsACCgxHcm91cERldGFpbHMSDAoCaWQYASABKAxIABIOCgRu",
+            "YW1lGAIgASgJSAESDwoHbWVtYmVycxgDIAMoCRIxCgZhdmF0YXIYBCABKAsy",
+            "Hy50ZXh0c2VjdXJlLkdyb3VwRGV0YWlscy5BdmF0YXJIAhIQCgZhY3RpdmUY",
+            "BSABKAhIAxIVCgtleHBpcmVUaW1lchgGIAEoDUgEGlYKBkF2YXRhchIVCgtj",
+            "b250ZW50VHlwZRgBIAEoCUgAEhAKBmxlbmd0aBgCIAEoDUgBQhMKEWNvbnRl",
+            "bnRUeXBlX29uZW9mQg4KDGxlbmd0aF9vbmVvZkIKCghpZF9vbmVvZkIMCgpu",
+            "YW1lX29uZW9mQg4KDGF2YXRhcl9vbmVvZkIOCgxhY3RpdmVfb25lb2ZCEwoR",
+            "ZXhwaXJlVGltZXJfb25lb2ZCWgorb3JnLndoaXNwZXJzeXN0ZW1zLnRleHRz",
+            "ZWN1cmUuaW50ZXJuYWwucHVzaEITU2lnbmFsU2VydmljZVByb3Rvc6oCFWxp",
+            "YnNpZ25hbHNlcnZpY2UucHVzaGIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -156,7 +160,7 @@ namespace libsignalservice.push {
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.CallMessage.Types.IceUpdate), global::libsignalservice.push.CallMessage.Types.IceUpdate.Parser, new[]{ "Id", "SdpMid", "SdpMLineIndex", "Sdp" }, new[]{ "IdOneof", "SdpMidOneof", "SdpMLineIndexOneof", "SdpOneof" }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.CallMessage.Types.Busy), global::libsignalservice.push.CallMessage.Types.Busy.Parser, new[]{ "Id" }, new[]{ "IdOneof" }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.CallMessage.Types.Hangup), global::libsignalservice.push.CallMessage.Types.Hangup.Parser, new[]{ "Id" }, new[]{ "IdOneof" }, null, null)}),
-            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.DataMessage), global::libsignalservice.push.DataMessage.Parser, new[]{ "Body", "Attachments", "Group", "Flags", "ExpireTimer", "ProfileKey", "Timestamp", "Quote" }, new[]{ "BodyOneof", "GroupOneof", "FlagsOneof", "ExpireTimerOneof", "ProfileKeyOneof", "TimestampOneof", "QuoteOneof" }, new[]{ typeof(global::libsignalservice.push.DataMessage.Types.Flags) }, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.DataMessage.Types.Quote), global::libsignalservice.push.DataMessage.Types.Quote.Parser, new[]{ "Id", "Author", "Text", "Attachments" }, new[]{ "IdOneof", "AuthorOneof", "TextOneof" }, null, null)}),
+            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.DataMessage), global::libsignalservice.push.DataMessage.Parser, new[]{ "Body", "Attachments", "Group", "Flags", "ExpireTimer", "ProfileKey", "Timestamp", "Quote" }, new[]{ "BodyOneof", "GroupOneof", "FlagsOneof", "ExpireTimerOneof", "ProfileKeyOneof", "TimestampOneof", "QuoteOneof" }, new[]{ typeof(global::libsignalservice.push.DataMessage.Types.Flags) }, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.DataMessage.Types.Quote), global::libsignalservice.push.DataMessage.Types.Quote.Parser, new[]{ "Id", "Author", "Text", "Attachments" }, new[]{ "IdOneof", "AuthorOneof", "TextOneof" }, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.DataMessage.Types.Quote.Types.QuotedAttachment), global::libsignalservice.push.DataMessage.Types.Quote.Types.QuotedAttachment.Parser, new[]{ "ContentType", "FileName", "Thumbnail" }, new[]{ "ContentTypeOneof", "FileNameOneof", "ThumbnailOneof" }, null, null)})}),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.NullMessage), global::libsignalservice.push.NullMessage.Parser, new[]{ "Padding" }, new[]{ "PaddingOneof" }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.ReceiptMessage), global::libsignalservice.push.ReceiptMessage.Parser, new[]{ "Type", "Timestamp" }, new[]{ "TypeOneof" }, new[]{ typeof(global::libsignalservice.push.ReceiptMessage.Types.Type) }, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.Verified), global::libsignalservice.push.Verified.Parser, new[]{ "Destination", "IdentityKey", "State", "NullMessage" }, new[]{ "DestinationOneof", "IdentityKeyOneof", "StateOneof", "NullMessageOneof" }, new[]{ typeof(global::libsignalservice.push.Verified.Types.State) }, null),
@@ -3181,11 +3185,11 @@ namespace libsignalservice.push {
 
         /// <summary>Field number for the "attachments" field.</summary>
         public const int AttachmentsFieldNumber = 4;
-        private static readonly pb::FieldCodec<global::libsignalservice.push.AttachmentPointer> _repeated_attachments_codec
-            = pb::FieldCodec.ForMessage(34, global::libsignalservice.push.AttachmentPointer.Parser);
-        private readonly pbc::RepeatedField<global::libsignalservice.push.AttachmentPointer> attachments_ = new pbc::RepeatedField<global::libsignalservice.push.AttachmentPointer>();
+        private static readonly pb::FieldCodec<global::libsignalservice.push.DataMessage.Types.Quote.Types.QuotedAttachment> _repeated_attachments_codec
+            = pb::FieldCodec.ForMessage(34, global::libsignalservice.push.DataMessage.Types.Quote.Types.QuotedAttachment.Parser);
+        private readonly pbc::RepeatedField<global::libsignalservice.push.DataMessage.Types.Quote.Types.QuotedAttachment> attachments_ = new pbc::RepeatedField<global::libsignalservice.push.DataMessage.Types.Quote.Types.QuotedAttachment>();
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public pbc::RepeatedField<global::libsignalservice.push.AttachmentPointer> Attachments {
+        public pbc::RepeatedField<global::libsignalservice.push.DataMessage.Types.Quote.Types.QuotedAttachment> Attachments {
           get { return attachments_; }
         }
 
@@ -3380,6 +3384,290 @@ namespace libsignalservice.push {
             }
           }
         }
+
+        #region Nested types
+        /// <summary>Container for nested types declared in the Quote message type.</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public static partial class Types {
+          public sealed partial class QuotedAttachment : pb::IMessage<QuotedAttachment> {
+            private static readonly pb::MessageParser<QuotedAttachment> _parser = new pb::MessageParser<QuotedAttachment>(() => new QuotedAttachment());
+            private pb::UnknownFieldSet _unknownFields;
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+            public static pb::MessageParser<QuotedAttachment> Parser { get { return _parser; } }
+
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+            public static pbr::MessageDescriptor Descriptor {
+              get { return global::libsignalservice.push.DataMessage.Types.Quote.Descriptor.NestedTypes[0]; }
+            }
+
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+            pbr::MessageDescriptor pb::IMessage.Descriptor {
+              get { return Descriptor; }
+            }
+
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+            public QuotedAttachment() {
+              OnConstruction();
+            }
+
+            partial void OnConstruction();
+
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+            public QuotedAttachment(QuotedAttachment other) : this() {
+              switch (other.ContentTypeOneofCase) {
+                case ContentTypeOneofOneofCase.ContentType:
+                  ContentType = other.ContentType;
+                  break;
+              }
+
+              switch (other.FileNameOneofCase) {
+                case FileNameOneofOneofCase.FileName:
+                  FileName = other.FileName;
+                  break;
+              }
+
+              switch (other.ThumbnailOneofCase) {
+                case ThumbnailOneofOneofCase.Thumbnail:
+                  Thumbnail = other.Thumbnail.Clone();
+                  break;
+              }
+
+              _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+            }
+
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+            public QuotedAttachment Clone() {
+              return new QuotedAttachment(this);
+            }
+
+            /// <summary>Field number for the "contentType" field.</summary>
+            public const int ContentTypeFieldNumber = 1;
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+            public string ContentType {
+              get { return contentTypeOneofCase_ == ContentTypeOneofOneofCase.ContentType ? (string) contentTypeOneof_ : ""; }
+              set {
+                contentTypeOneof_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+                contentTypeOneofCase_ = ContentTypeOneofOneofCase.ContentType;
+              }
+            }
+
+            /// <summary>Field number for the "fileName" field.</summary>
+            public const int FileNameFieldNumber = 2;
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+            public string FileName {
+              get { return fileNameOneofCase_ == FileNameOneofOneofCase.FileName ? (string) fileNameOneof_ : ""; }
+              set {
+                fileNameOneof_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+                fileNameOneofCase_ = FileNameOneofOneofCase.FileName;
+              }
+            }
+
+            /// <summary>Field number for the "thumbnail" field.</summary>
+            public const int ThumbnailFieldNumber = 3;
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+            public global::libsignalservice.push.AttachmentPointer Thumbnail {
+              get { return thumbnailOneofCase_ == ThumbnailOneofOneofCase.Thumbnail ? (global::libsignalservice.push.AttachmentPointer) thumbnailOneof_ : null; }
+              set {
+                thumbnailOneof_ = value;
+                thumbnailOneofCase_ = value == null ? ThumbnailOneofOneofCase.None : ThumbnailOneofOneofCase.Thumbnail;
+              }
+            }
+
+            private object contentTypeOneof_;
+            /// <summary>Enum of possible cases for the "contentType_oneof" oneof.</summary>
+            public enum ContentTypeOneofOneofCase {
+              None = 0,
+              ContentType = 1,
+            }
+            private ContentTypeOneofOneofCase contentTypeOneofCase_ = ContentTypeOneofOneofCase.None;
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+            public ContentTypeOneofOneofCase ContentTypeOneofCase {
+              get { return contentTypeOneofCase_; }
+            }
+
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+            public void ClearContentTypeOneof() {
+              contentTypeOneofCase_ = ContentTypeOneofOneofCase.None;
+              contentTypeOneof_ = null;
+            }
+
+            private object fileNameOneof_;
+            /// <summary>Enum of possible cases for the "fileName_oneof" oneof.</summary>
+            public enum FileNameOneofOneofCase {
+              None = 0,
+              FileName = 2,
+            }
+            private FileNameOneofOneofCase fileNameOneofCase_ = FileNameOneofOneofCase.None;
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+            public FileNameOneofOneofCase FileNameOneofCase {
+              get { return fileNameOneofCase_; }
+            }
+
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+            public void ClearFileNameOneof() {
+              fileNameOneofCase_ = FileNameOneofOneofCase.None;
+              fileNameOneof_ = null;
+            }
+
+            private object thumbnailOneof_;
+            /// <summary>Enum of possible cases for the "thumbnail_oneof" oneof.</summary>
+            public enum ThumbnailOneofOneofCase {
+              None = 0,
+              Thumbnail = 3,
+            }
+            private ThumbnailOneofOneofCase thumbnailOneofCase_ = ThumbnailOneofOneofCase.None;
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+            public ThumbnailOneofOneofCase ThumbnailOneofCase {
+              get { return thumbnailOneofCase_; }
+            }
+
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+            public void ClearThumbnailOneof() {
+              thumbnailOneofCase_ = ThumbnailOneofOneofCase.None;
+              thumbnailOneof_ = null;
+            }
+
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+            public override bool Equals(object other) {
+              return Equals(other as QuotedAttachment);
+            }
+
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+            public bool Equals(QuotedAttachment other) {
+              if (ReferenceEquals(other, null)) {
+                return false;
+              }
+              if (ReferenceEquals(other, this)) {
+                return true;
+              }
+              if (ContentType != other.ContentType) return false;
+              if (FileName != other.FileName) return false;
+              if (!object.Equals(Thumbnail, other.Thumbnail)) return false;
+              if (ContentTypeOneofCase != other.ContentTypeOneofCase) return false;
+              if (FileNameOneofCase != other.FileNameOneofCase) return false;
+              if (ThumbnailOneofCase != other.ThumbnailOneofCase) return false;
+              return Equals(_unknownFields, other._unknownFields);
+            }
+
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+            public override int GetHashCode() {
+              int hash = 1;
+              if (contentTypeOneofCase_ == ContentTypeOneofOneofCase.ContentType) hash ^= ContentType.GetHashCode();
+              if (fileNameOneofCase_ == FileNameOneofOneofCase.FileName) hash ^= FileName.GetHashCode();
+              if (thumbnailOneofCase_ == ThumbnailOneofOneofCase.Thumbnail) hash ^= Thumbnail.GetHashCode();
+              hash ^= (int) contentTypeOneofCase_;
+              hash ^= (int) fileNameOneofCase_;
+              hash ^= (int) thumbnailOneofCase_;
+              if (_unknownFields != null) {
+                hash ^= _unknownFields.GetHashCode();
+              }
+              return hash;
+            }
+
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+            public override string ToString() {
+              return pb::JsonFormatter.ToDiagnosticString(this);
+            }
+
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+            public void WriteTo(pb::CodedOutputStream output) {
+              if (contentTypeOneofCase_ == ContentTypeOneofOneofCase.ContentType) {
+                output.WriteRawTag(10);
+                output.WriteString(ContentType);
+              }
+              if (fileNameOneofCase_ == FileNameOneofOneofCase.FileName) {
+                output.WriteRawTag(18);
+                output.WriteString(FileName);
+              }
+              if (thumbnailOneofCase_ == ThumbnailOneofOneofCase.Thumbnail) {
+                output.WriteRawTag(26);
+                output.WriteMessage(Thumbnail);
+              }
+              if (_unknownFields != null) {
+                _unknownFields.WriteTo(output);
+              }
+            }
+
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+            public int CalculateSize() {
+              int size = 0;
+              if (contentTypeOneofCase_ == ContentTypeOneofOneofCase.ContentType) {
+                size += 1 + pb::CodedOutputStream.ComputeStringSize(ContentType);
+              }
+              if (fileNameOneofCase_ == FileNameOneofOneofCase.FileName) {
+                size += 1 + pb::CodedOutputStream.ComputeStringSize(FileName);
+              }
+              if (thumbnailOneofCase_ == ThumbnailOneofOneofCase.Thumbnail) {
+                size += 1 + pb::CodedOutputStream.ComputeMessageSize(Thumbnail);
+              }
+              if (_unknownFields != null) {
+                size += _unknownFields.CalculateSize();
+              }
+              return size;
+            }
+
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+            public void MergeFrom(QuotedAttachment other) {
+              if (other == null) {
+                return;
+              }
+              switch (other.ContentTypeOneofCase) {
+                case ContentTypeOneofOneofCase.ContentType:
+                  ContentType = other.ContentType;
+                  break;
+              }
+
+              switch (other.FileNameOneofCase) {
+                case FileNameOneofOneofCase.FileName:
+                  FileName = other.FileName;
+                  break;
+              }
+
+              switch (other.ThumbnailOneofCase) {
+                case ThumbnailOneofOneofCase.Thumbnail:
+                  if (Thumbnail == null) {
+                    Thumbnail = new global::libsignalservice.push.AttachmentPointer();
+                  }
+                  Thumbnail.MergeFrom(other.Thumbnail);
+                  break;
+              }
+
+              _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+            }
+
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+            public void MergeFrom(pb::CodedInputStream input) {
+              uint tag;
+              while ((tag = input.ReadTag()) != 0) {
+                switch(tag) {
+                  default:
+                    _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+                    break;
+                  case 10: {
+                    ContentType = input.ReadString();
+                    break;
+                  }
+                  case 18: {
+                    FileName = input.ReadString();
+                    break;
+                  }
+                  case 26: {
+                    global::libsignalservice.push.AttachmentPointer subBuilder = new global::libsignalservice.push.AttachmentPointer();
+                    if (thumbnailOneofCase_ == ThumbnailOneofOneofCase.Thumbnail) {
+                      subBuilder.MergeFrom(Thumbnail);
+                    }
+                    input.ReadMessage(subBuilder);
+                    Thumbnail = subBuilder;
+                    break;
+                  }
+                }
+              }
+            }
+
+          }
+
+        }
+        #endregion
 
       }
 

@@ -35,14 +35,28 @@ namespace libsignalservice.messages
             public long Id { get; }
             public SignalServiceAddress Author { get; }
             public string Text { get; }
-            public List<SignalServiceAttachment> Attachments { get; }
+            public List<SignalServiceQuotedAttachment> Attachments { get; }
 
-            public SignalServiceQuote(long id, SignalServiceAddress author, string text, List<SignalServiceAttachment> attachments)
+            public SignalServiceQuote(long id, SignalServiceAddress author, string text, List<SignalServiceQuotedAttachment> attachments)
             {
                 Id = id;
                 Author = author;
                 Text = text;
                 Attachments = attachments;
+            }
+        }
+
+        public class SignalServiceQuotedAttachment
+        {
+            public string ContentType { get; }
+            public string FileName { get; }
+            public SignalServiceAttachment Thumbnail { get; }
+
+            public SignalServiceQuotedAttachment(string contentType, string filename, SignalServiceAttachment thumbnail)
+            {
+                ContentType = contentType;
+                FileName = filename;
+                Thumbnail = thumbnail;
             }
         }
     }
