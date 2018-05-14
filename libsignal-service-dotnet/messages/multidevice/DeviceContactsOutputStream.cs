@@ -40,7 +40,7 @@ namespace libsignalservice.messages.multidevice
 
         private void writeAvatarImage(DeviceContact contact)// throws IOException
         {
-            if (contact.getAvatar().HasValue)
+            if (contact.Avatar != null)
             {
                 //writeStream(contact.getAvatar().get().getInputStream());
             }

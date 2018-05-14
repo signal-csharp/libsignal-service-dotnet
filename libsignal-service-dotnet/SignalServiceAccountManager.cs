@@ -203,8 +203,7 @@ namespace libsignalservice
 
             foreach (ContactTokenDetails activeToken in activeTokens)
             {
-                string number;
-                contactTokensMap.TryGetValue(activeToken.getToken(), out number);
+                contactTokensMap.TryGetValue(activeToken.getToken(), out string number);
                 activeToken.setNumber(number);
             }
 
@@ -284,10 +283,12 @@ namespace libsignalservice
         /// <param name="deviceIdentifier"></param>
         /// <param name="deviceKey"></param>
         /// <param name="identityKeyPair"></param>
+        /// <param name="profileKey"></param>
         /// <param name="code"></param>
         public void AddDevice(string deviceIdentifier,
                               ECPublicKey deviceKey,
                               IdentityKeyPair identityKeyPair,
+                              byte[] profileKey,
                               string code)//throws InvalidKeyException, IOException
         {
             ProvisioningCipher cipher = new ProvisioningCipher(deviceKey);
@@ -298,6 +299,11 @@ namespace libsignalservice
                 Number = User,
                 ProvisioningCode = code
             };
+
+            if (profileKey != null)
+            {
+                message.ProfileKey = ByteString.CopyFrom(profileKey);
+            }
 
             byte[] ciphertext = cipher.encrypt(message);
             this.PushServiceSocket.SendProvisioningMessage(deviceIdentifier, ciphertext);

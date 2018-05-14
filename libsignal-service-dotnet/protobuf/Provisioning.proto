@@ -18,4 +18,5 @@ message ProvisionMessage {
   oneof identityKeyPrivate_oneof	{ bytes  identityKeyPrivate = 2; }
   oneof number_oneof				{ string number             = 3; }
   oneof provisioningCode_oneof		{ string provisioningCode   = 4; }
+  oneof profileKey_oneof            { bytes profileKey          = 5; }
 }

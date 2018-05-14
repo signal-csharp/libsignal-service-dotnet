@@ -109,23 +109,24 @@ namespace libsignalservice.push {
             "GAUgASgLMh0udGV4dHNlY3VyZS5BdHRhY2htZW50UG9pbnRlckgDIkgKBFR5",
             "cGUSCwoHVU5LTk9XThAAEgoKBlVQREFURRABEgsKB0RFTElWRVIQAhIICgRR",
             "VUlUEAMSEAoMUkVRVUVTVF9JTkZPEARCCgoIaWRfb25lb2ZCDAoKdHlwZV9v",
-            "bmVvZkIMCgpuYW1lX29uZW9mQg4KDGF2YXRhcl9vbmVvZiLJAgoOQ29udGFj",
+            "bmVvZkIMCgpuYW1lX29uZW9mQg4KDGF2YXRhcl9vbmVvZiLzAgoOQ29udGFj",
             "dERldGFpbHMSEAoGbnVtYmVyGAEgASgJSAASDgoEbmFtZRgCIAEoCUgBEjMK",
             "BmF2YXRhchgDIAEoCzIhLnRleHRzZWN1cmUuQ29udGFjdERldGFpbHMuQXZh",
             "dGFySAISDwoFY29sb3IYBCABKAlIAxIoCgh2ZXJpZmllZBgFIAEoCzIULnRl",
-            "eHRzZWN1cmUuVmVyaWZpZWRIBBpWCgZBdmF0YXISFQoLY29udGVudFR5cGUY",
-            "ASABKAlIABIQCgZsZW5ndGgYAiABKA1IAUITChFjb250ZW50VHlwZV9vbmVv",
-            "ZkIOCgxsZW5ndGhfb25lb2ZCDgoMbnVtYmVyX29uZW9mQgwKCm5hbWVfb25l",
-            "b2ZCDgoMYXZhdGFyX29uZW9mQg0KC2NvbG9yX29uZW9mQhAKDnZlcmlmaWVk",
-            "X29uZW9mIpQCCgxHcm91cERldGFpbHMSDAoCaWQYASABKAxIABIOCgRuYW1l",
-            "GAIgASgJSAESDwoHbWVtYmVycxgDIAMoCRIxCgZhdmF0YXIYBCABKAsyHy50",
-            "ZXh0c2VjdXJlLkdyb3VwRGV0YWlscy5BdmF0YXJIAhIQCgZhY3RpdmUYBSAB",
-            "KAhIAxpWCgZBdmF0YXISFQoLY29udGVudFR5cGUYASABKAlIABIQCgZsZW5n",
-            "dGgYAiABKA1IAUITChFjb250ZW50VHlwZV9vbmVvZkIOCgxsZW5ndGhfb25l",
-            "b2ZCCgoIaWRfb25lb2ZCDAoKbmFtZV9vbmVvZkIOCgxhdmF0YXJfb25lb2ZC",
-            "DgoMYWN0aXZlX29uZW9mQloKK29yZy53aGlzcGVyc3lzdGVtcy50ZXh0c2Vj",
-            "dXJlLmludGVybmFsLnB1c2hCE1NpZ25hbFNlcnZpY2VQcm90b3OqAhVsaWJz",
-            "aWduYWxzZXJ2aWNlLnB1c2hiBnByb3RvMw=="));
+            "eHRzZWN1cmUuVmVyaWZpZWRIBBIUCgpwcm9maWxlS2V5GAYgASgMSAUaVgoG",
+            "QXZhdGFyEhUKC2NvbnRlbnRUeXBlGAEgASgJSAASEAoGbGVuZ3RoGAIgASgN",
+            "SAFCEwoRY29udGVudFR5cGVfb25lb2ZCDgoMbGVuZ3RoX29uZW9mQg4KDG51",
+            "bWJlcl9vbmVvZkIMCgpuYW1lX29uZW9mQg4KDGF2YXRhcl9vbmVvZkINCgtj",
+            "b2xvcl9vbmVvZkIQCg52ZXJpZmllZF9vbmVvZkISChBwcm9maWxlS2V5X29u",
+            "ZW9mIpQCCgxHcm91cERldGFpbHMSDAoCaWQYASABKAxIABIOCgRuYW1lGAIg",
+            "ASgJSAESDwoHbWVtYmVycxgDIAMoCRIxCgZhdmF0YXIYBCABKAsyHy50ZXh0",
+            "c2VjdXJlLkdyb3VwRGV0YWlscy5BdmF0YXJIAhIQCgZhY3RpdmUYBSABKAhI",
+            "AxpWCgZBdmF0YXISFQoLY29udGVudFR5cGUYASABKAlIABIQCgZsZW5ndGgY",
+            "AiABKA1IAUITChFjb250ZW50VHlwZV9vbmVvZkIOCgxsZW5ndGhfb25lb2ZC",
+            "CgoIaWRfb25lb2ZCDAoKbmFtZV9vbmVvZkIOCgxhdmF0YXJfb25lb2ZCDgoM",
+            "YWN0aXZlX29uZW9mQloKK29yZy53aGlzcGVyc3lzdGVtcy50ZXh0c2VjdXJl",
+            "LmludGVybmFsLnB1c2hCE1NpZ25hbFNlcnZpY2VQcm90b3OqAhVsaWJzaWdu",
+            "YWxzZXJ2aWNlLnB1c2hiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -147,7 +148,7 @@ namespace libsignalservice.push {
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Read), global::libsignalservice.push.SyncMessage.Types.Read.Parser, new[]{ "Sender", "Timestamp" }, new[]{ "SenderOneof", "TimestampOneof" }, null, null)}),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.AttachmentPointer), global::libsignalservice.push.AttachmentPointer.Parser, new[]{ "Id", "ContentType", "Key", "Size", "Thumbnail", "Digest", "FileName", "Flags" }, new[]{ "IdOneof", "ContentTypeOneof", "KeyOneof", "SizeOneof", "ThumbnailOneof", "DigestOneof", "FileNameOneof", "FlagsOneof" }, new[]{ typeof(global::libsignalservice.push.AttachmentPointer.Types.Flags) }, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.GroupContext), global::libsignalservice.push.GroupContext.Parser, new[]{ "Id", "Type", "Name", "Members", "Avatar" }, new[]{ "IdOneof", "TypeOneof", "NameOneof", "AvatarOneof" }, new[]{ typeof(global::libsignalservice.push.GroupContext.Types.Type) }, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.ContactDetails), global::libsignalservice.push.ContactDetails.Parser, new[]{ "Number", "Name", "Avatar", "Color", "Verified" }, new[]{ "NumberOneof", "NameOneof", "AvatarOneof", "ColorOneof", "VerifiedOneof" }, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.ContactDetails.Types.Avatar), global::libsignalservice.push.ContactDetails.Types.Avatar.Parser, new[]{ "ContentType", "Length" }, new[]{ "ContentTypeOneof", "LengthOneof" }, null, null)}),
+            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.ContactDetails), global::libsignalservice.push.ContactDetails.Parser, new[]{ "Number", "Name", "Avatar", "Color", "Verified", "ProfileKey" }, new[]{ "NumberOneof", "NameOneof", "AvatarOneof", "ColorOneof", "VerifiedOneof", "ProfileKeyOneof" }, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.ContactDetails.Types.Avatar), global::libsignalservice.push.ContactDetails.Types.Avatar.Parser, new[]{ "ContentType", "Length" }, new[]{ "ContentTypeOneof", "LengthOneof" }, null, null)}),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.GroupDetails), global::libsignalservice.push.GroupDetails.Parser, new[]{ "Id", "Name", "Members", "Avatar", "Active" }, new[]{ "IdOneof", "NameOneof", "AvatarOneof", "ActiveOneof" }, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.GroupDetails.Types.Avatar), global::libsignalservice.push.GroupDetails.Types.Avatar.Parser, new[]{ "ContentType", "Length" }, new[]{ "ContentTypeOneof", "LengthOneof" }, null, null)})
           }));
     }
@@ -6166,6 +6167,12 @@ namespace libsignalservice.push {
           break;
       }
 
+      switch (other.ProfileKeyOneofCase) {
+        case ProfileKeyOneofOneofCase.ProfileKey:
+          ProfileKey = other.ProfileKey;
+          break;
+      }
+
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -6226,6 +6233,17 @@ namespace libsignalservice.push {
       set {
         verifiedOneof_ = value;
         verifiedOneofCase_ = value == null ? VerifiedOneofOneofCase.None : VerifiedOneofOneofCase.Verified;
+      }
+    }
+
+    /// <summary>Field number for the "profileKey" field.</summary>
+    public const int ProfileKeyFieldNumber = 6;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pb::ByteString ProfileKey {
+      get { return profileKeyOneofCase_ == ProfileKeyOneofOneofCase.ProfileKey ? (pb::ByteString) profileKeyOneof_ : pb::ByteString.Empty; }
+      set {
+        profileKeyOneof_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        profileKeyOneofCase_ = ProfileKeyOneofOneofCase.ProfileKey;
       }
     }
 
@@ -6319,6 +6337,24 @@ namespace libsignalservice.push {
       verifiedOneof_ = null;
     }
 
+    private object profileKeyOneof_;
+    /// <summary>Enum of possible cases for the "profileKey_oneof" oneof.</summary>
+    public enum ProfileKeyOneofOneofCase {
+      None = 0,
+      ProfileKey = 6,
+    }
+    private ProfileKeyOneofOneofCase profileKeyOneofCase_ = ProfileKeyOneofOneofCase.None;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ProfileKeyOneofOneofCase ProfileKeyOneofCase {
+      get { return profileKeyOneofCase_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearProfileKeyOneof() {
+      profileKeyOneofCase_ = ProfileKeyOneofOneofCase.None;
+      profileKeyOneof_ = null;
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as ContactDetails);
@@ -6337,11 +6373,13 @@ namespace libsignalservice.push {
       if (!object.Equals(Avatar, other.Avatar)) return false;
       if (Color != other.Color) return false;
       if (!object.Equals(Verified, other.Verified)) return false;
+      if (ProfileKey != other.ProfileKey) return false;
       if (NumberOneofCase != other.NumberOneofCase) return false;
       if (NameOneofCase != other.NameOneofCase) return false;
       if (AvatarOneofCase != other.AvatarOneofCase) return false;
       if (ColorOneofCase != other.ColorOneofCase) return false;
       if (VerifiedOneofCase != other.VerifiedOneofCase) return false;
+      if (ProfileKeyOneofCase != other.ProfileKeyOneofCase) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -6353,11 +6391,13 @@ namespace libsignalservice.push {
       if (avatarOneofCase_ == AvatarOneofOneofCase.Avatar) hash ^= Avatar.GetHashCode();
       if (colorOneofCase_ == ColorOneofOneofCase.Color) hash ^= Color.GetHashCode();
       if (verifiedOneofCase_ == VerifiedOneofOneofCase.Verified) hash ^= Verified.GetHashCode();
+      if (profileKeyOneofCase_ == ProfileKeyOneofOneofCase.ProfileKey) hash ^= ProfileKey.GetHashCode();
       hash ^= (int) numberOneofCase_;
       hash ^= (int) nameOneofCase_;
       hash ^= (int) avatarOneofCase_;
       hash ^= (int) colorOneofCase_;
       hash ^= (int) verifiedOneofCase_;
+      hash ^= (int) profileKeyOneofCase_;
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -6391,6 +6431,10 @@ namespace libsignalservice.push {
         output.WriteRawTag(42);
         output.WriteMessage(Verified);
       }
+      if (profileKeyOneofCase_ == ProfileKeyOneofOneofCase.ProfileKey) {
+        output.WriteRawTag(50);
+        output.WriteBytes(ProfileKey);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -6413,6 +6457,9 @@ namespace libsignalservice.push {
       }
       if (verifiedOneofCase_ == VerifiedOneofOneofCase.Verified) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Verified);
+      }
+      if (profileKeyOneofCase_ == ProfileKeyOneofOneofCase.ProfileKey) {
+        size += 1 + pb::CodedOutputStream.ComputeBytesSize(ProfileKey);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -6461,6 +6508,12 @@ namespace libsignalservice.push {
           break;
       }
 
+      switch (other.ProfileKeyOneofCase) {
+        case ProfileKeyOneofOneofCase.ProfileKey:
+          ProfileKey = other.ProfileKey;
+          break;
+      }
+
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -6500,6 +6553,10 @@ namespace libsignalservice.push {
             }
             input.ReadMessage(subBuilder);
             Verified = subBuilder;
+            break;
+          }
+          case 50: {
+            ProfileKey = input.ReadBytes();
             break;
           }
         }

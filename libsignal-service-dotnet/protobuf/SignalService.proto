@@ -179,11 +179,12 @@ message ContactDetails {
     oneof length_oneof					{ uint32 length      = 2; }
   }
 
-  oneof number_oneof				{ string number = 1; }
-  oneof name_oneof					{ string name   = 2; }
-  oneof avatar_oneof				{ Avatar avatar = 3; }
-  oneof color_oneof					{ string color  = 4; }
-  oneof verified_oneof      { Verified verified = 5; }
+  oneof number_oneof				{ string number     = 1; }
+  oneof name_oneof					{ string name       = 2; }
+  oneof avatar_oneof				{ Avatar avatar     = 3; }
+  oneof color_oneof					{ string color      = 4; }
+  oneof verified_oneof              { Verified verified = 5; }
+  oneof profileKey_oneof            { bytes profileKey  = 6; }
 }
 
 message GroupDetails {
