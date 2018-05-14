@@ -72,6 +72,13 @@ message DataMessage {
 	PROFILE_KEY_UPDATE = 4;
   }
 
+  message Quote {
+    oneof id_oneof { uint64 id = 1; }
+	oneof author_oneof { string author = 2; }
+	oneof text_oneof { string text = 3; }
+	repeated AttachmentPointer attachments = 4;
+  }
+
   oneof body_oneof						{ string             body        = 1; }
   repeated AttachmentPointer attachments = 2;
   oneof group_oneof						{ GroupContext       group       = 3; }
@@ -79,6 +86,7 @@ message DataMessage {
   oneof expireTimer_oneof				{ uint32             expireTimer = 5; }
   oneof profileKey_oneof                { bytes              profileKey  = 6; }
   oneof timestamp_oneof                 { uint64             timestamp   = 7; }
+  oneof quote_oneof                     { Quote              quote       = 8; }
 }
 
 message NullMessage {

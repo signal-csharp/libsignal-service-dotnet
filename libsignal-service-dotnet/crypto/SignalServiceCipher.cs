@@ -10,6 +10,7 @@ using libsignalservice.util;
 
 using System;
 using System.Collections.Generic;
+using static libsignalservice.push.DataMessage;
 
 namespace libsignalservice.crypto
 {
@@ -97,7 +98,7 @@ namespace libsignalservice.crypto
                     {
                         content = new SignalServiceContent()
                         {
-                            ReadMessage = createReceiptMessage(envelope, message.ReceiptMessage)
+                            ReadMessage = CreateReceiptMessage(envelope, message.ReceiptMessage)
                         };
                     }
                 }
@@ -142,19 +143,11 @@ namespace libsignalservice.crypto
             bool endSession = ((content.Flags & (uint)DataMessage.Types.Flags.EndSession) != 0);
             bool expirationUpdate = ((content.Flags & (uint)DataMessage.Types.Flags.ExpirationTimerUpdate) != 0);
             bool profileKeyUpdate = ((content.Flags & (uint)DataMessage.Types.Flags.ProfileKeyUpdate) != 0);
+            SignalServiceDataMessage.SignalServiceQuote quote = CreateQuote(envelope, content);
 
             foreach (AttachmentPointer pointer in content.Attachments)
             {
-                attachments.Add(new SignalServiceAttachmentPointer(pointer.Id,
-                                                                pointer.ContentType,
-                                                                pointer.Key.ToByteArray(),
-                                                                envelope.getRelay(),
-                                                                pointer.SizeOneofCase == AttachmentPointer.SizeOneofOneofCase.Size ? pointer.Size : 0,
-                                                                pointer.ThumbnailOneofCase == AttachmentPointer.ThumbnailOneofOneofCase.Thumbnail ? pointer.Thumbnail.ToByteArray() : null,
-                                                                (int) pointer.Width, (int) pointer.Height,
-                                                                pointer.DigestOneofCase == AttachmentPointer.DigestOneofOneofCase.Digest ? pointer.Digest.ToByteArray() : null,
-                                                                pointer.FileNameOneofCase == AttachmentPointer.FileNameOneofOneofCase.FileName ? pointer.FileName : null,
-                                                                pointer.FlagsOneofCase == AttachmentPointer.FlagsOneofOneofCase.Flags && (pointer.Flags & (uint) AttachmentPointer.Types.Flags.VoiceMessage) != 0));
+                attachments.Add(CreateAttachmentPointer(envelope, pointer));
             }
 
             if (content.TimestampOneofCase == DataMessage.TimestampOneofOneofCase.Timestamp && (long) content.Timestamp != envelope.getTimestamp())
@@ -172,7 +165,8 @@ namespace libsignalservice.crypto
                 ExpiresInSeconds = (int)content.ExpireTimer,
                 ExpirationUpdate = expirationUpdate,
                 ProfileKey = content.ProfileKeyOneofCase == DataMessage.ProfileKeyOneofOneofCase.ProfileKey ? content.ProfileKey.ToByteArray() : null,
-                ProfileKeyUpdate = profileKeyUpdate
+                ProfileKeyUpdate = profileKeyUpdate,
+                Quote = quote
             };
         }
 
@@ -306,7 +300,7 @@ namespace libsignalservice.crypto
             return new SignalServiceCallMessage();
         }
 
-        private SignalServiceReceiptMessage createReceiptMessage(SignalServiceEnvelope envelope, ReceiptMessage content)
+        private SignalServiceReceiptMessage CreateReceiptMessage(SignalServiceEnvelope envelope, ReceiptMessage content)
         {
             SignalServiceReceiptMessage.Type type;
 
@@ -340,6 +334,44 @@ namespace libsignalservice.crypto
                 Timestamps = timestamps,
                 When = envelope.getTimestamp()
             };
+        }
+
+        private SignalServiceDataMessage.SignalServiceQuote CreateQuote(SignalServiceEnvelope envelope, DataMessage content)
+        {
+            if (content.QuoteOneofCase != QuoteOneofOneofCase.Quote)
+                return null;
+
+            List<SignalServiceAttachment> attachments = new List<SignalServiceAttachment>();
+
+            foreach (AttachmentPointer pointer in content.Quote.Attachments)
+            {
+                attachments.Add(CreateAttachmentPointer(envelope, pointer));
+            }
+
+            return new SignalServiceDataMessage.SignalServiceQuote((long) content.Quote.Id,
+                new SignalServiceAddress(content.Quote.Author),
+                content.Quote.Text,
+                attachments);
+        }
+
+        private SignalServiceAttachmentPointer CreateAttachmentPointer(SignalServiceEnvelope envelope, AttachmentPointer pointer)
+        {
+            uint? size = null;
+            if (pointer.SizeOneofCase == AttachmentPointer.SizeOneofOneofCase.Size)
+            {
+                size = pointer.Size;
+            }
+            return new SignalServiceAttachmentPointer(pointer.Id,
+                pointer.ContentType,
+                pointer.Key.ToByteArray(),
+                envelope.getRelay(),
+                size,
+                pointer.ThumbnailOneofCase == AttachmentPointer.ThumbnailOneofOneofCase.Thumbnail ? pointer.Thumbnail.ToByteArray() : null,
+                (int) pointer.Width,
+                (int) pointer.Height,
+                pointer.DigestOneofCase == AttachmentPointer.DigestOneofOneofCase.Digest ? pointer.Digest.ToByteArray() : null,
+                pointer.FileNameOneofCase == AttachmentPointer.FileNameOneofOneofCase.FileName ? pointer.FileName : null,
+                (pointer.Flags & (uint) AttachmentPointer.Types.Flags.VoiceMessage) != 0);
         }
 
         private SignalServiceGroup CreateGroupInfo(SignalServiceEnvelope envelope, DataMessage content)

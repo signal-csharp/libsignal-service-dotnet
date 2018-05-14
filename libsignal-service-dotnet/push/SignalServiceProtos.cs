@@ -57,90 +57,95 @@ namespace libsignalservice.push {
             "b2ZCCwoJc2RwX29uZW9mGiAKBEJ1c3kSDAoCaWQYASABKARIAEIKCghpZF9v",
             "bmVvZhoiCgZIYW5ndXASDAoCaWQYASABKARIAEIKCghpZF9vbmVvZkINCgtv",
             "ZmZlcl9vbmVvZkIOCgxhbnN3ZXJfb25lb2ZCDgoMaGFuZ3VwX29uZW9mQgwK",
-            "CmJ1c3lfb25lb2YinAMKC0RhdGFNZXNzYWdlEg4KBGJvZHkYASABKAlIABIy",
+            "CmJ1c3lfb25lb2Yi8wQKC0RhdGFNZXNzYWdlEg4KBGJvZHkYASABKAlIABIy",
             "CgthdHRhY2htZW50cxgCIAMoCzIdLnRleHRzZWN1cmUuQXR0YWNobWVudFBv",
             "aW50ZXISKQoFZ3JvdXAYAyABKAsyGC50ZXh0c2VjdXJlLkdyb3VwQ29udGV4",
             "dEgBEg8KBWZsYWdzGAQgASgNSAISFQoLZXhwaXJlVGltZXIYBSABKA1IAxIU",
-            "Cgpwcm9maWxlS2V5GAYgASgMSAQSEwoJdGltZXN0YW1wGAcgASgESAUiYwoF",
-            "RmxhZ3MSFAoQWkVST19QTEFDRUhPTERFUhAAEg8KC0VORF9TRVNTSU9OEAES",
-            "GwoXRVhQSVJBVElPTl9USU1FUl9VUERBVEUQAhIWChJQUk9GSUxFX0tFWV9V",
-            "UERBVEUQBEIMCgpib2R5X29uZW9mQg0KC2dyb3VwX29uZW9mQg0KC2ZsYWdz",
-            "X29uZW9mQhMKEWV4cGlyZVRpbWVyX29uZW9mQhIKEHByb2ZpbGVLZXlfb25l",
-            "b2ZCEQoPdGltZXN0YW1wX29uZW9mIjEKC051bGxNZXNzYWdlEhEKB3BhZGRp",
-            "bmcYASABKAxIAEIPCg1wYWRkaW5nX29uZW9mIoIBCg5SZWNlaXB0TWVzc2Fn",
-            "ZRIvCgR0eXBlGAEgASgOMh8udGV4dHNlY3VyZS5SZWNlaXB0TWVzc2FnZS5U",
-            "eXBlSAASEQoJdGltZXN0YW1wGAIgAygEIh4KBFR5cGUSDAoIREVMSVZFUlkQ",
-            "ABIICgRSRUFEEAFCDAoKdHlwZV9vbmVvZiL+AQoIVmVyaWZpZWQSFQoLZGVz",
-            "dGluYXRpb24YASABKAlIABIVCgtpZGVudGl0eUtleRgCIAEoDEgBEisKBXN0",
-            "YXRlGAMgASgOMhoudGV4dHNlY3VyZS5WZXJpZmllZC5TdGF0ZUgCEhUKC251",
-            "bGxNZXNzYWdlGAQgASgMSAMiMgoFU3RhdGUSCwoHREVGQVVMVBAAEgwKCFZF",
-            "UklGSUVEEAESDgoKVU5WRVJJRklFRBACQhMKEWRlc3RpbmF0aW9uX29uZW9m",
-            "QhMKEWlkZW50aXR5S2V5X29uZW9mQg0KC3N0YXRlX29uZW9mQhMKEW51bGxN",
-            "ZXNzYWdlX29uZW9mIqIKCgtTeW5jTWVzc2FnZRIsCgRzZW50GAEgASgLMhwu",
-            "dGV4dHNlY3VyZS5TeW5jTWVzc2FnZS5TZW50SAASNAoIY29udGFjdHMYAiAB",
-            "KAsyIC50ZXh0c2VjdXJlLlN5bmNNZXNzYWdlLkNvbnRhY3RzSAESMAoGZ3Jv",
-            "dXBzGAMgASgLMh4udGV4dHNlY3VyZS5TeW5jTWVzc2FnZS5Hcm91cHNIAhIy",
-            "CgdyZXF1ZXN0GAQgASgLMh8udGV4dHNlY3VyZS5TeW5jTWVzc2FnZS5SZXF1",
-            "ZXN0SAMSKgoEcmVhZBgFIAMoCzIcLnRleHRzZWN1cmUuU3luY01lc3NhZ2Uu",
-            "UmVhZBIyCgdibG9ja2VkGAYgASgLMh8udGV4dHNlY3VyZS5TeW5jTWVzc2Fn",
-            "ZS5CbG9ja2VkSAQSKAoIdmVyaWZpZWQYByABKAsyFC50ZXh0c2VjdXJlLlZl",
-            "cmlmaWVkSAUSPgoNY29uZmlndXJhdGlvbhgJIAEoCzIlLnRleHRzZWN1cmUu",
-            "U3luY01lc3NhZ2UuQ29uZmlndXJhdGlvbkgGEhEKB3BhZGRpbmcYCCABKAxI",
-            "BxrdAQoEU2VudBIVCgtkZXN0aW5hdGlvbhgBIAEoCUgAEhMKCXRpbWVzdGFt",
-            "cBgCIAEoBEgBEioKB21lc3NhZ2UYAyABKAsyFy50ZXh0c2VjdXJlLkRhdGFN",
-            "ZXNzYWdlSAISIgoYZXhwaXJhdGlvblN0YXJ0VGltZXN0YW1wGAQgASgESANC",
-            "EwoRZGVzdGluYXRpb25fb25lb2ZCEQoPdGltZXN0YW1wX29uZW9mQg8KDW1l",
-            "c3NhZ2Vfb25lb2ZCIAoeZXhwaXJhdGlvblN0YXJ0VGltZXN0YW1wX29uZW9m",
-            "Gm0KCENvbnRhY3RzEi0KBGJsb2IYASABKAsyHS50ZXh0c2VjdXJlLkF0dGFj",
-            "aG1lbnRQb2ludGVySAASEgoIY29tcGxldGUYAiABKAhIAUIMCgpibG9iX29u",
-            "ZW9mQhAKDmNvbXBsZXRlX29uZW9mGkUKBkdyb3VwcxItCgRibG9iGAEgASgL",
-            "Mh0udGV4dHNlY3VyZS5BdHRhY2htZW50UG9pbnRlckgAQgwKCmJsb2Jfb25l",
-            "b2YaGgoHQmxvY2tlZBIPCgdudW1iZXJzGAEgAygJGpwBCgdSZXF1ZXN0EjQK",
-            "BHR5cGUYASABKA4yJC50ZXh0c2VjdXJlLlN5bmNNZXNzYWdlLlJlcXVlc3Qu",
-            "VHlwZUgAIk0KBFR5cGUSCwoHVU5LTk9XThAAEgwKCENPTlRBQ1RTEAESCgoG",
-            "R1JPVVBTEAISCwoHQkxPQ0tFRBADEhEKDUNPTkZJR1VSQVRJT04QBEIMCgp0",
-            "eXBlX29uZW9mGlAKBFJlYWQSEAoGc2VuZGVyGAEgASgJSAASEwoJdGltZXN0",
-            "YW1wGAIgASgESAFCDgoMc2VuZGVyX29uZW9mQhEKD3RpbWVzdGFtcF9vbmVv",
-            "Zho9Cg1Db25maWd1cmF0aW9uEhYKDHJlYWRSZWNlaXB0cxgBIAEoCEgAQhQK",
-            "EnJlYWRSZWNlaXB0c19vbmVvZkIMCgpzZW50X29uZW9mQhAKDmNvbnRhY3Rz",
-            "X29uZW9mQg4KDGdyb3Vwc19vbmVvZkIPCg1yZXF1ZXN0X29uZW9mQg8KDWJs",
-            "b2NrZWRfb25lb2ZCEAoOdmVyaWZpZWRfb25lb2ZCFQoTY29uZmlndXJhdGlv",
-            "bl9vbmVvZkIPCg1wYWRkaW5nX29uZW9mIpcDChFBdHRhY2htZW50UG9pbnRl",
-            "chIMCgJpZBgBIAEoBkgAEhUKC2NvbnRlbnRUeXBlGAIgASgJSAESDQoDa2V5",
-            "GAMgASgMSAISDgoEc2l6ZRgEIAEoDUgDEhMKCXRodW1ibmFpbBgFIAEoDEgE",
-            "EhAKBmRpZ2VzdBgGIAEoDEgFEhIKCGZpbGVOYW1lGAcgASgJSAYSDwoFZmxh",
-            "Z3MYCCABKA1IBxIPCgV3aWR0aBgJIAEoDUgIEhAKBmhlaWdodBgKIAEoDUgJ",
-            "IjAKBUZsYWdzEhQKEFpFUk9fUExBQ0VIT0xERVIQABIRCg1WT0lDRV9NRVNT",
-            "QUdFEAFCCgoIaWRfb25lb2ZCEwoRY29udGVudFR5cGVfb25lb2ZCCwoJa2V5",
-            "X29uZW9mQgwKCnNpemVfb25lb2ZCEQoPdGh1bWJuYWlsX29uZW9mQg4KDGRp",
-            "Z2VzdF9vbmVvZkIQCg5maWxlTmFtZV9vbmVvZkINCgtmbGFnc19vbmVvZkIN",
-            "Cgt3aWR0aF9vbmVvZkIOCgxoZWlnaHRfb25lb2YinwIKDEdyb3VwQ29udGV4",
-            "dBIMCgJpZBgBIAEoDEgAEi0KBHR5cGUYAiABKA4yHS50ZXh0c2VjdXJlLkdy",
-            "b3VwQ29udGV4dC5UeXBlSAESDgoEbmFtZRgDIAEoCUgCEg8KB21lbWJlcnMY",
-            "BCADKAkSLwoGYXZhdGFyGAUgASgLMh0udGV4dHNlY3VyZS5BdHRhY2htZW50",
-            "UG9pbnRlckgDIkgKBFR5cGUSCwoHVU5LTk9XThAAEgoKBlVQREFURRABEgsK",
-            "B0RFTElWRVIQAhIICgRRVUlUEAMSEAoMUkVRVUVTVF9JTkZPEARCCgoIaWRf",
-            "b25lb2ZCDAoKdHlwZV9vbmVvZkIMCgpuYW1lX29uZW9mQg4KDGF2YXRhcl9v",
-            "bmVvZiLDAwoOQ29udGFjdERldGFpbHMSEAoGbnVtYmVyGAEgASgJSAASDgoE",
-            "bmFtZRgCIAEoCUgBEjMKBmF2YXRhchgDIAEoCzIhLnRleHRzZWN1cmUuQ29u",
-            "dGFjdERldGFpbHMuQXZhdGFySAISDwoFY29sb3IYBCABKAlIAxIoCgh2ZXJp",
-            "ZmllZBgFIAEoCzIULnRleHRzZWN1cmUuVmVyaWZpZWRIBBIUCgpwcm9maWxl",
-            "S2V5GAYgASgMSAUSEQoHYmxvY2tlZBgHIAEoCEgGEhUKC2V4cGlyZVRpbWVy",
-            "GAggASgNSAcaVgoGQXZhdGFyEhUKC2NvbnRlbnRUeXBlGAEgASgJSAASEAoG",
-            "bGVuZ3RoGAIgASgNSAFCEwoRY29udGVudFR5cGVfb25lb2ZCDgoMbGVuZ3Ro",
-            "X29uZW9mQg4KDG51bWJlcl9vbmVvZkIMCgpuYW1lX29uZW9mQg4KDGF2YXRh",
-            "cl9vbmVvZkINCgtjb2xvcl9vbmVvZkIQCg52ZXJpZmllZF9vbmVvZkISChBw",
-            "cm9maWxlS2V5X29uZW9mQg8KDWJsb2NrZWRfb25lb2ZCEwoRZXhwaXJlVGlt",
-            "ZXJfb25lb2YiwAIKDEdyb3VwRGV0YWlscxIMCgJpZBgBIAEoDEgAEg4KBG5h",
-            "bWUYAiABKAlIARIPCgdtZW1iZXJzGAMgAygJEjEKBmF2YXRhchgEIAEoCzIf",
-            "LnRleHRzZWN1cmUuR3JvdXBEZXRhaWxzLkF2YXRhckgCEhAKBmFjdGl2ZRgF",
-            "IAEoCEgDEhUKC2V4cGlyZVRpbWVyGAYgASgNSAQaVgoGQXZhdGFyEhUKC2Nv",
-            "bnRlbnRUeXBlGAEgASgJSAASEAoGbGVuZ3RoGAIgASgNSAFCEwoRY29udGVu",
-            "dFR5cGVfb25lb2ZCDgoMbGVuZ3RoX29uZW9mQgoKCGlkX29uZW9mQgwKCm5h",
-            "bWVfb25lb2ZCDgoMYXZhdGFyX29uZW9mQg4KDGFjdGl2ZV9vbmVvZkITChFl",
-            "eHBpcmVUaW1lcl9vbmVvZkJaCitvcmcud2hpc3BlcnN5c3RlbXMudGV4dHNl",
-            "Y3VyZS5pbnRlcm5hbC5wdXNoQhNTaWduYWxTZXJ2aWNlUHJvdG9zqgIVbGli",
-            "c2lnbmFsc2VydmljZS5wdXNoYgZwcm90bzM="));
+            "Cgpwcm9maWxlS2V5GAYgASgMSAQSEwoJdGltZXN0YW1wGAcgASgESAUSLgoF",
+            "cXVvdGUYCCABKAsyHS50ZXh0c2VjdXJlLkRhdGFNZXNzYWdlLlF1b3RlSAYa",
+            "lQEKBVF1b3RlEgwKAmlkGAEgASgESAASEAoGYXV0aG9yGAIgASgJSAESDgoE",
+            "dGV4dBgDIAEoCUgCEjIKC2F0dGFjaG1lbnRzGAQgAygLMh0udGV4dHNlY3Vy",
+            "ZS5BdHRhY2htZW50UG9pbnRlckIKCghpZF9vbmVvZkIOCgxhdXRob3Jfb25l",
+            "b2ZCDAoKdGV4dF9vbmVvZiJjCgVGbGFncxIUChBaRVJPX1BMQUNFSE9MREVS",
+            "EAASDwoLRU5EX1NFU1NJT04QARIbChdFWFBJUkFUSU9OX1RJTUVSX1VQREFU",
+            "RRACEhYKElBST0ZJTEVfS0VZX1VQREFURRAEQgwKCmJvZHlfb25lb2ZCDQoL",
+            "Z3JvdXBfb25lb2ZCDQoLZmxhZ3Nfb25lb2ZCEwoRZXhwaXJlVGltZXJfb25l",
+            "b2ZCEgoQcHJvZmlsZUtleV9vbmVvZkIRCg90aW1lc3RhbXBfb25lb2ZCDQoL",
+            "cXVvdGVfb25lb2YiMQoLTnVsbE1lc3NhZ2USEQoHcGFkZGluZxgBIAEoDEgA",
+            "Qg8KDXBhZGRpbmdfb25lb2YiggEKDlJlY2VpcHRNZXNzYWdlEi8KBHR5cGUY",
+            "ASABKA4yHy50ZXh0c2VjdXJlLlJlY2VpcHRNZXNzYWdlLlR5cGVIABIRCgl0",
+            "aW1lc3RhbXAYAiADKAQiHgoEVHlwZRIMCghERUxJVkVSWRAAEggKBFJFQUQQ",
+            "AUIMCgp0eXBlX29uZW9mIv4BCghWZXJpZmllZBIVCgtkZXN0aW5hdGlvbhgB",
+            "IAEoCUgAEhUKC2lkZW50aXR5S2V5GAIgASgMSAESKwoFc3RhdGUYAyABKA4y",
+            "Gi50ZXh0c2VjdXJlLlZlcmlmaWVkLlN0YXRlSAISFQoLbnVsbE1lc3NhZ2UY",
+            "BCABKAxIAyIyCgVTdGF0ZRILCgdERUZBVUxUEAASDAoIVkVSSUZJRUQQARIO",
+            "CgpVTlZFUklGSUVEEAJCEwoRZGVzdGluYXRpb25fb25lb2ZCEwoRaWRlbnRp",
+            "dHlLZXlfb25lb2ZCDQoLc3RhdGVfb25lb2ZCEwoRbnVsbE1lc3NhZ2Vfb25l",
+            "b2YiogoKC1N5bmNNZXNzYWdlEiwKBHNlbnQYASABKAsyHC50ZXh0c2VjdXJl",
+            "LlN5bmNNZXNzYWdlLlNlbnRIABI0Cghjb250YWN0cxgCIAEoCzIgLnRleHRz",
+            "ZWN1cmUuU3luY01lc3NhZ2UuQ29udGFjdHNIARIwCgZncm91cHMYAyABKAsy",
+            "Hi50ZXh0c2VjdXJlLlN5bmNNZXNzYWdlLkdyb3Vwc0gCEjIKB3JlcXVlc3QY",
+            "BCABKAsyHy50ZXh0c2VjdXJlLlN5bmNNZXNzYWdlLlJlcXVlc3RIAxIqCgRy",
+            "ZWFkGAUgAygLMhwudGV4dHNlY3VyZS5TeW5jTWVzc2FnZS5SZWFkEjIKB2Js",
+            "b2NrZWQYBiABKAsyHy50ZXh0c2VjdXJlLlN5bmNNZXNzYWdlLkJsb2NrZWRI",
+            "BBIoCgh2ZXJpZmllZBgHIAEoCzIULnRleHRzZWN1cmUuVmVyaWZpZWRIBRI+",
+            "Cg1jb25maWd1cmF0aW9uGAkgASgLMiUudGV4dHNlY3VyZS5TeW5jTWVzc2Fn",
+            "ZS5Db25maWd1cmF0aW9uSAYSEQoHcGFkZGluZxgIIAEoDEgHGt0BCgRTZW50",
+            "EhUKC2Rlc3RpbmF0aW9uGAEgASgJSAASEwoJdGltZXN0YW1wGAIgASgESAES",
+            "KgoHbWVzc2FnZRgDIAEoCzIXLnRleHRzZWN1cmUuRGF0YU1lc3NhZ2VIAhIi",
+            "ChhleHBpcmF0aW9uU3RhcnRUaW1lc3RhbXAYBCABKARIA0ITChFkZXN0aW5h",
+            "dGlvbl9vbmVvZkIRCg90aW1lc3RhbXBfb25lb2ZCDwoNbWVzc2FnZV9vbmVv",
+            "ZkIgCh5leHBpcmF0aW9uU3RhcnRUaW1lc3RhbXBfb25lb2YabQoIQ29udGFj",
+            "dHMSLQoEYmxvYhgBIAEoCzIdLnRleHRzZWN1cmUuQXR0YWNobWVudFBvaW50",
+            "ZXJIABISCghjb21wbGV0ZRgCIAEoCEgBQgwKCmJsb2Jfb25lb2ZCEAoOY29t",
+            "cGxldGVfb25lb2YaRQoGR3JvdXBzEi0KBGJsb2IYASABKAsyHS50ZXh0c2Vj",
+            "dXJlLkF0dGFjaG1lbnRQb2ludGVySABCDAoKYmxvYl9vbmVvZhoaCgdCbG9j",
+            "a2VkEg8KB251bWJlcnMYASADKAkanAEKB1JlcXVlc3QSNAoEdHlwZRgBIAEo",
+            "DjIkLnRleHRzZWN1cmUuU3luY01lc3NhZ2UuUmVxdWVzdC5UeXBlSAAiTQoE",
+            "VHlwZRILCgdVTktOT1dOEAASDAoIQ09OVEFDVFMQARIKCgZHUk9VUFMQAhIL",
+            "CgdCTE9DS0VEEAMSEQoNQ09ORklHVVJBVElPThAEQgwKCnR5cGVfb25lb2Ya",
+            "UAoEUmVhZBIQCgZzZW5kZXIYASABKAlIABITCgl0aW1lc3RhbXAYAiABKARI",
+            "AUIOCgxzZW5kZXJfb25lb2ZCEQoPdGltZXN0YW1wX29uZW9mGj0KDUNvbmZp",
+            "Z3VyYXRpb24SFgoMcmVhZFJlY2VpcHRzGAEgASgISABCFAoScmVhZFJlY2Vp",
+            "cHRzX29uZW9mQgwKCnNlbnRfb25lb2ZCEAoOY29udGFjdHNfb25lb2ZCDgoM",
+            "Z3JvdXBzX29uZW9mQg8KDXJlcXVlc3Rfb25lb2ZCDwoNYmxvY2tlZF9vbmVv",
+            "ZkIQCg52ZXJpZmllZF9vbmVvZkIVChNjb25maWd1cmF0aW9uX29uZW9mQg8K",
+            "DXBhZGRpbmdfb25lb2YilwMKEUF0dGFjaG1lbnRQb2ludGVyEgwKAmlkGAEg",
+            "ASgGSAASFQoLY29udGVudFR5cGUYAiABKAlIARINCgNrZXkYAyABKAxIAhIO",
+            "CgRzaXplGAQgASgNSAMSEwoJdGh1bWJuYWlsGAUgASgMSAQSEAoGZGlnZXN0",
+            "GAYgASgMSAUSEgoIZmlsZU5hbWUYByABKAlIBhIPCgVmbGFncxgIIAEoDUgH",
+            "Eg8KBXdpZHRoGAkgASgNSAgSEAoGaGVpZ2h0GAogASgNSAkiMAoFRmxhZ3MS",
+            "FAoQWkVST19QTEFDRUhPTERFUhAAEhEKDVZPSUNFX01FU1NBR0UQAUIKCghp",
+            "ZF9vbmVvZkITChFjb250ZW50VHlwZV9vbmVvZkILCglrZXlfb25lb2ZCDAoK",
+            "c2l6ZV9vbmVvZkIRCg90aHVtYm5haWxfb25lb2ZCDgoMZGlnZXN0X29uZW9m",
+            "QhAKDmZpbGVOYW1lX29uZW9mQg0KC2ZsYWdzX29uZW9mQg0KC3dpZHRoX29u",
+            "ZW9mQg4KDGhlaWdodF9vbmVvZiKfAgoMR3JvdXBDb250ZXh0EgwKAmlkGAEg",
+            "ASgMSAASLQoEdHlwZRgCIAEoDjIdLnRleHRzZWN1cmUuR3JvdXBDb250ZXh0",
+            "LlR5cGVIARIOCgRuYW1lGAMgASgJSAISDwoHbWVtYmVycxgEIAMoCRIvCgZh",
+            "dmF0YXIYBSABKAsyHS50ZXh0c2VjdXJlLkF0dGFjaG1lbnRQb2ludGVySAMi",
+            "SAoEVHlwZRILCgdVTktOT1dOEAASCgoGVVBEQVRFEAESCwoHREVMSVZFUhAC",
+            "EggKBFFVSVQQAxIQCgxSRVFVRVNUX0lORk8QBEIKCghpZF9vbmVvZkIMCgp0",
+            "eXBlX29uZW9mQgwKCm5hbWVfb25lb2ZCDgoMYXZhdGFyX29uZW9mIsMDCg5D",
+            "b250YWN0RGV0YWlscxIQCgZudW1iZXIYASABKAlIABIOCgRuYW1lGAIgASgJ",
+            "SAESMwoGYXZhdGFyGAMgASgLMiEudGV4dHNlY3VyZS5Db250YWN0RGV0YWls",
+            "cy5BdmF0YXJIAhIPCgVjb2xvchgEIAEoCUgDEigKCHZlcmlmaWVkGAUgASgL",
+            "MhQudGV4dHNlY3VyZS5WZXJpZmllZEgEEhQKCnByb2ZpbGVLZXkYBiABKAxI",
+            "BRIRCgdibG9ja2VkGAcgASgISAYSFQoLZXhwaXJlVGltZXIYCCABKA1IBxpW",
+            "CgZBdmF0YXISFQoLY29udGVudFR5cGUYASABKAlIABIQCgZsZW5ndGgYAiAB",
+            "KA1IAUITChFjb250ZW50VHlwZV9vbmVvZkIOCgxsZW5ndGhfb25lb2ZCDgoM",
+            "bnVtYmVyX29uZW9mQgwKCm5hbWVfb25lb2ZCDgoMYXZhdGFyX29uZW9mQg0K",
+            "C2NvbG9yX29uZW9mQhAKDnZlcmlmaWVkX29uZW9mQhIKEHByb2ZpbGVLZXlf",
+            "b25lb2ZCDwoNYmxvY2tlZF9vbmVvZkITChFleHBpcmVUaW1lcl9vbmVvZiLA",
+            "AgoMR3JvdXBEZXRhaWxzEgwKAmlkGAEgASgMSAASDgoEbmFtZRgCIAEoCUgB",
+            "Eg8KB21lbWJlcnMYAyADKAkSMQoGYXZhdGFyGAQgASgLMh8udGV4dHNlY3Vy",
+            "ZS5Hcm91cERldGFpbHMuQXZhdGFySAISEAoGYWN0aXZlGAUgASgISAMSFQoL",
+            "ZXhwaXJlVGltZXIYBiABKA1IBBpWCgZBdmF0YXISFQoLY29udGVudFR5cGUY",
+            "ASABKAlIABIQCgZsZW5ndGgYAiABKA1IAUITChFjb250ZW50VHlwZV9vbmVv",
+            "ZkIOCgxsZW5ndGhfb25lb2ZCCgoIaWRfb25lb2ZCDAoKbmFtZV9vbmVvZkIO",
+            "CgxhdmF0YXJfb25lb2ZCDgoMYWN0aXZlX29uZW9mQhMKEWV4cGlyZVRpbWVy",
+            "X29uZW9mQloKK29yZy53aGlzcGVyc3lzdGVtcy50ZXh0c2VjdXJlLmludGVy",
+            "bmFsLnB1c2hCE1NpZ25hbFNlcnZpY2VQcm90b3OqAhVsaWJzaWduYWxzZXJ2",
+            "aWNlLnB1c2hiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -151,7 +156,7 @@ namespace libsignalservice.push {
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.CallMessage.Types.IceUpdate), global::libsignalservice.push.CallMessage.Types.IceUpdate.Parser, new[]{ "Id", "SdpMid", "SdpMLineIndex", "Sdp" }, new[]{ "IdOneof", "SdpMidOneof", "SdpMLineIndexOneof", "SdpOneof" }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.CallMessage.Types.Busy), global::libsignalservice.push.CallMessage.Types.Busy.Parser, new[]{ "Id" }, new[]{ "IdOneof" }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.CallMessage.Types.Hangup), global::libsignalservice.push.CallMessage.Types.Hangup.Parser, new[]{ "Id" }, new[]{ "IdOneof" }, null, null)}),
-            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.DataMessage), global::libsignalservice.push.DataMessage.Parser, new[]{ "Body", "Attachments", "Group", "Flags", "ExpireTimer", "ProfileKey", "Timestamp" }, new[]{ "BodyOneof", "GroupOneof", "FlagsOneof", "ExpireTimerOneof", "ProfileKeyOneof", "TimestampOneof" }, new[]{ typeof(global::libsignalservice.push.DataMessage.Types.Flags) }, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.DataMessage), global::libsignalservice.push.DataMessage.Parser, new[]{ "Body", "Attachments", "Group", "Flags", "ExpireTimer", "ProfileKey", "Timestamp", "Quote" }, new[]{ "BodyOneof", "GroupOneof", "FlagsOneof", "ExpireTimerOneof", "ProfileKeyOneof", "TimestampOneof", "QuoteOneof" }, new[]{ typeof(global::libsignalservice.push.DataMessage.Types.Flags) }, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.DataMessage.Types.Quote), global::libsignalservice.push.DataMessage.Types.Quote.Parser, new[]{ "Id", "Author", "Text", "Attachments" }, new[]{ "IdOneof", "AuthorOneof", "TextOneof" }, null, null)}),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.NullMessage), global::libsignalservice.push.NullMessage.Parser, new[]{ "Padding" }, new[]{ "PaddingOneof" }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.ReceiptMessage), global::libsignalservice.push.ReceiptMessage.Parser, new[]{ "Type", "Timestamp" }, new[]{ "TypeOneof" }, new[]{ typeof(global::libsignalservice.push.ReceiptMessage.Types.Type) }, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.Verified), global::libsignalservice.push.Verified.Parser, new[]{ "Destination", "IdentityKey", "State", "NullMessage" }, new[]{ "DestinationOneof", "IdentityKeyOneof", "StateOneof", "NullMessageOneof" }, new[]{ typeof(global::libsignalservice.push.Verified.Types.State) }, null),
@@ -2613,6 +2618,12 @@ namespace libsignalservice.push {
           break;
       }
 
+      switch (other.QuoteOneofCase) {
+        case QuoteOneofOneofCase.Quote:
+          Quote = other.Quote.Clone();
+          break;
+      }
+
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -2694,6 +2705,17 @@ namespace libsignalservice.push {
       set {
         timestampOneof_ = value;
         timestampOneofCase_ = TimestampOneofOneofCase.Timestamp;
+      }
+    }
+
+    /// <summary>Field number for the "quote" field.</summary>
+    public const int QuoteFieldNumber = 8;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::libsignalservice.push.DataMessage.Types.Quote Quote {
+      get { return quoteOneofCase_ == QuoteOneofOneofCase.Quote ? (global::libsignalservice.push.DataMessage.Types.Quote) quoteOneof_ : null; }
+      set {
+        quoteOneof_ = value;
+        quoteOneofCase_ = value == null ? QuoteOneofOneofCase.None : QuoteOneofOneofCase.Quote;
       }
     }
 
@@ -2805,6 +2827,24 @@ namespace libsignalservice.push {
       timestampOneof_ = null;
     }
 
+    private object quoteOneof_;
+    /// <summary>Enum of possible cases for the "quote_oneof" oneof.</summary>
+    public enum QuoteOneofOneofCase {
+      None = 0,
+      Quote = 8,
+    }
+    private QuoteOneofOneofCase quoteOneofCase_ = QuoteOneofOneofCase.None;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public QuoteOneofOneofCase QuoteOneofCase {
+      get { return quoteOneofCase_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearQuoteOneof() {
+      quoteOneofCase_ = QuoteOneofOneofCase.None;
+      quoteOneof_ = null;
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as DataMessage);
@@ -2825,12 +2865,14 @@ namespace libsignalservice.push {
       if (ExpireTimer != other.ExpireTimer) return false;
       if (ProfileKey != other.ProfileKey) return false;
       if (Timestamp != other.Timestamp) return false;
+      if (!object.Equals(Quote, other.Quote)) return false;
       if (BodyOneofCase != other.BodyOneofCase) return false;
       if (GroupOneofCase != other.GroupOneofCase) return false;
       if (FlagsOneofCase != other.FlagsOneofCase) return false;
       if (ExpireTimerOneofCase != other.ExpireTimerOneofCase) return false;
       if (ProfileKeyOneofCase != other.ProfileKeyOneofCase) return false;
       if (TimestampOneofCase != other.TimestampOneofCase) return false;
+      if (QuoteOneofCase != other.QuoteOneofCase) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -2844,12 +2886,14 @@ namespace libsignalservice.push {
       if (expireTimerOneofCase_ == ExpireTimerOneofOneofCase.ExpireTimer) hash ^= ExpireTimer.GetHashCode();
       if (profileKeyOneofCase_ == ProfileKeyOneofOneofCase.ProfileKey) hash ^= ProfileKey.GetHashCode();
       if (timestampOneofCase_ == TimestampOneofOneofCase.Timestamp) hash ^= Timestamp.GetHashCode();
+      if (quoteOneofCase_ == QuoteOneofOneofCase.Quote) hash ^= Quote.GetHashCode();
       hash ^= (int) bodyOneofCase_;
       hash ^= (int) groupOneofCase_;
       hash ^= (int) flagsOneofCase_;
       hash ^= (int) expireTimerOneofCase_;
       hash ^= (int) profileKeyOneofCase_;
       hash ^= (int) timestampOneofCase_;
+      hash ^= (int) quoteOneofCase_;
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -2888,6 +2932,10 @@ namespace libsignalservice.push {
         output.WriteRawTag(56);
         output.WriteUInt64(Timestamp);
       }
+      if (quoteOneofCase_ == QuoteOneofOneofCase.Quote) {
+        output.WriteRawTag(66);
+        output.WriteMessage(Quote);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -2914,6 +2962,9 @@ namespace libsignalservice.push {
       }
       if (timestampOneofCase_ == TimestampOneofOneofCase.Timestamp) {
         size += 1 + pb::CodedOutputStream.ComputeUInt64Size(Timestamp);
+      }
+      if (quoteOneofCase_ == QuoteOneofOneofCase.Quote) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Quote);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -2966,6 +3017,15 @@ namespace libsignalservice.push {
           break;
       }
 
+      switch (other.QuoteOneofCase) {
+        case QuoteOneofOneofCase.Quote:
+          if (Quote == null) {
+            Quote = new global::libsignalservice.push.DataMessage.Types.Quote();
+          }
+          Quote.MergeFrom(other.Quote);
+          break;
+      }
+
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -3010,6 +3070,15 @@ namespace libsignalservice.push {
             Timestamp = input.ReadUInt64();
             break;
           }
+          case 66: {
+            global::libsignalservice.push.DataMessage.Types.Quote subBuilder = new global::libsignalservice.push.DataMessage.Types.Quote();
+            if (quoteOneofCase_ == QuoteOneofOneofCase.Quote) {
+              subBuilder.MergeFrom(Quote);
+            }
+            input.ReadMessage(subBuilder);
+            Quote = subBuilder;
+            break;
+          }
         }
       }
     }
@@ -3023,6 +3092,295 @@ namespace libsignalservice.push {
         [pbr::OriginalName("END_SESSION")] EndSession = 1,
         [pbr::OriginalName("EXPIRATION_TIMER_UPDATE")] ExpirationTimerUpdate = 2,
         [pbr::OriginalName("PROFILE_KEY_UPDATE")] ProfileKeyUpdate = 4,
+      }
+
+      public sealed partial class Quote : pb::IMessage<Quote> {
+        private static readonly pb::MessageParser<Quote> _parser = new pb::MessageParser<Quote>(() => new Quote());
+        private pb::UnknownFieldSet _unknownFields;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public static pb::MessageParser<Quote> Parser { get { return _parser; } }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public static pbr::MessageDescriptor Descriptor {
+          get { return global::libsignalservice.push.DataMessage.Descriptor.NestedTypes[0]; }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        pbr::MessageDescriptor pb::IMessage.Descriptor {
+          get { return Descriptor; }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public Quote() {
+          OnConstruction();
+        }
+
+        partial void OnConstruction();
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public Quote(Quote other) : this() {
+          attachments_ = other.attachments_.Clone();
+          switch (other.IdOneofCase) {
+            case IdOneofOneofCase.Id:
+              Id = other.Id;
+              break;
+          }
+
+          switch (other.AuthorOneofCase) {
+            case AuthorOneofOneofCase.Author:
+              Author = other.Author;
+              break;
+          }
+
+          switch (other.TextOneofCase) {
+            case TextOneofOneofCase.Text:
+              Text = other.Text;
+              break;
+          }
+
+          _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public Quote Clone() {
+          return new Quote(this);
+        }
+
+        /// <summary>Field number for the "id" field.</summary>
+        public const int IdFieldNumber = 1;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public ulong Id {
+          get { return idOneofCase_ == IdOneofOneofCase.Id ? (ulong) idOneof_ : 0UL; }
+          set {
+            idOneof_ = value;
+            idOneofCase_ = IdOneofOneofCase.Id;
+          }
+        }
+
+        /// <summary>Field number for the "author" field.</summary>
+        public const int AuthorFieldNumber = 2;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public string Author {
+          get { return authorOneofCase_ == AuthorOneofOneofCase.Author ? (string) authorOneof_ : ""; }
+          set {
+            authorOneof_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+            authorOneofCase_ = AuthorOneofOneofCase.Author;
+          }
+        }
+
+        /// <summary>Field number for the "text" field.</summary>
+        public const int TextFieldNumber = 3;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public string Text {
+          get { return textOneofCase_ == TextOneofOneofCase.Text ? (string) textOneof_ : ""; }
+          set {
+            textOneof_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+            textOneofCase_ = TextOneofOneofCase.Text;
+          }
+        }
+
+        /// <summary>Field number for the "attachments" field.</summary>
+        public const int AttachmentsFieldNumber = 4;
+        private static readonly pb::FieldCodec<global::libsignalservice.push.AttachmentPointer> _repeated_attachments_codec
+            = pb::FieldCodec.ForMessage(34, global::libsignalservice.push.AttachmentPointer.Parser);
+        private readonly pbc::RepeatedField<global::libsignalservice.push.AttachmentPointer> attachments_ = new pbc::RepeatedField<global::libsignalservice.push.AttachmentPointer>();
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public pbc::RepeatedField<global::libsignalservice.push.AttachmentPointer> Attachments {
+          get { return attachments_; }
+        }
+
+        private object idOneof_;
+        /// <summary>Enum of possible cases for the "id_oneof" oneof.</summary>
+        public enum IdOneofOneofCase {
+          None = 0,
+          Id = 1,
+        }
+        private IdOneofOneofCase idOneofCase_ = IdOneofOneofCase.None;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public IdOneofOneofCase IdOneofCase {
+          get { return idOneofCase_; }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void ClearIdOneof() {
+          idOneofCase_ = IdOneofOneofCase.None;
+          idOneof_ = null;
+        }
+
+        private object authorOneof_;
+        /// <summary>Enum of possible cases for the "author_oneof" oneof.</summary>
+        public enum AuthorOneofOneofCase {
+          None = 0,
+          Author = 2,
+        }
+        private AuthorOneofOneofCase authorOneofCase_ = AuthorOneofOneofCase.None;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public AuthorOneofOneofCase AuthorOneofCase {
+          get { return authorOneofCase_; }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void ClearAuthorOneof() {
+          authorOneofCase_ = AuthorOneofOneofCase.None;
+          authorOneof_ = null;
+        }
+
+        private object textOneof_;
+        /// <summary>Enum of possible cases for the "text_oneof" oneof.</summary>
+        public enum TextOneofOneofCase {
+          None = 0,
+          Text = 3,
+        }
+        private TextOneofOneofCase textOneofCase_ = TextOneofOneofCase.None;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public TextOneofOneofCase TextOneofCase {
+          get { return textOneofCase_; }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void ClearTextOneof() {
+          textOneofCase_ = TextOneofOneofCase.None;
+          textOneof_ = null;
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public override bool Equals(object other) {
+          return Equals(other as Quote);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public bool Equals(Quote other) {
+          if (ReferenceEquals(other, null)) {
+            return false;
+          }
+          if (ReferenceEquals(other, this)) {
+            return true;
+          }
+          if (Id != other.Id) return false;
+          if (Author != other.Author) return false;
+          if (Text != other.Text) return false;
+          if(!attachments_.Equals(other.attachments_)) return false;
+          if (IdOneofCase != other.IdOneofCase) return false;
+          if (AuthorOneofCase != other.AuthorOneofCase) return false;
+          if (TextOneofCase != other.TextOneofCase) return false;
+          return Equals(_unknownFields, other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public override int GetHashCode() {
+          int hash = 1;
+          if (idOneofCase_ == IdOneofOneofCase.Id) hash ^= Id.GetHashCode();
+          if (authorOneofCase_ == AuthorOneofOneofCase.Author) hash ^= Author.GetHashCode();
+          if (textOneofCase_ == TextOneofOneofCase.Text) hash ^= Text.GetHashCode();
+          hash ^= attachments_.GetHashCode();
+          hash ^= (int) idOneofCase_;
+          hash ^= (int) authorOneofCase_;
+          hash ^= (int) textOneofCase_;
+          if (_unknownFields != null) {
+            hash ^= _unknownFields.GetHashCode();
+          }
+          return hash;
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public override string ToString() {
+          return pb::JsonFormatter.ToDiagnosticString(this);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void WriteTo(pb::CodedOutputStream output) {
+          if (idOneofCase_ == IdOneofOneofCase.Id) {
+            output.WriteRawTag(8);
+            output.WriteUInt64(Id);
+          }
+          if (authorOneofCase_ == AuthorOneofOneofCase.Author) {
+            output.WriteRawTag(18);
+            output.WriteString(Author);
+          }
+          if (textOneofCase_ == TextOneofOneofCase.Text) {
+            output.WriteRawTag(26);
+            output.WriteString(Text);
+          }
+          attachments_.WriteTo(output, _repeated_attachments_codec);
+          if (_unknownFields != null) {
+            _unknownFields.WriteTo(output);
+          }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public int CalculateSize() {
+          int size = 0;
+          if (idOneofCase_ == IdOneofOneofCase.Id) {
+            size += 1 + pb::CodedOutputStream.ComputeUInt64Size(Id);
+          }
+          if (authorOneofCase_ == AuthorOneofOneofCase.Author) {
+            size += 1 + pb::CodedOutputStream.ComputeStringSize(Author);
+          }
+          if (textOneofCase_ == TextOneofOneofCase.Text) {
+            size += 1 + pb::CodedOutputStream.ComputeStringSize(Text);
+          }
+          size += attachments_.CalculateSize(_repeated_attachments_codec);
+          if (_unknownFields != null) {
+            size += _unknownFields.CalculateSize();
+          }
+          return size;
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void MergeFrom(Quote other) {
+          if (other == null) {
+            return;
+          }
+          attachments_.Add(other.attachments_);
+          switch (other.IdOneofCase) {
+            case IdOneofOneofCase.Id:
+              Id = other.Id;
+              break;
+          }
+
+          switch (other.AuthorOneofCase) {
+            case AuthorOneofOneofCase.Author:
+              Author = other.Author;
+              break;
+          }
+
+          switch (other.TextOneofCase) {
+            case TextOneofOneofCase.Text:
+              Text = other.Text;
+              break;
+          }
+
+          _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void MergeFrom(pb::CodedInputStream input) {
+          uint tag;
+          while ((tag = input.ReadTag()) != 0) {
+            switch(tag) {
+              default:
+                _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+                break;
+              case 8: {
+                Id = input.ReadUInt64();
+                break;
+              }
+              case 18: {
+                Author = input.ReadString();
+                break;
+              }
+              case 26: {
+                Text = input.ReadString();
+                break;
+              }
+              case 34: {
+                attachments_.AddEntriesFrom(input, _repeated_attachments_codec);
+                break;
+              }
+            }
+          }
+        }
+
       }
 
     }

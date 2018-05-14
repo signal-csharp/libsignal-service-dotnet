@@ -292,6 +292,32 @@ namespace libsignalservice
                 dataMessage.ProfileKey = ByteString.CopyFrom(message.ProfileKey);
             }
 
+            if (message.Quote != null)
+            {
+                var quote = new DataMessage.Types.Quote()
+                {
+                    Id = (ulong) message.Quote.Id,
+                    Author = message.Quote.Author.E164number,
+                    Text = message.Quote.Text
+                };
+                foreach (SignalServiceAttachment attachment in message.Quote.Attachments)
+                {
+                    if (attachment.IsPointer())
+                    {
+                        var pointer = attachment.AsPointer();
+                        quote.Attachments.Add(new AttachmentPointer()
+                        {
+                            ContentType = pointer.ContentType
+                        });
+                    }
+                    else
+                    {
+                        quote.Attachments.Add(CreateAttachmentPointer(attachment.AsStream()));
+                    }
+                }
+                dataMessage.Quote = quote;
+            }
+
             dataMessage.Timestamp = (ulong) message.Timestamp;
 
             content.DataMessage = dataMessage;
