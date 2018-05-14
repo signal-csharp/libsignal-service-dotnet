@@ -156,6 +156,11 @@ namespace libsignalservice.crypto
                                                                 pointer.FlagsOneofCase == AttachmentPointer.FlagsOneofOneofCase.Flags && (pointer.Flags & (uint) AttachmentPointer.Types.Flags.VoiceMessage) != 0));
             }
 
+            if (content.TimestampOneofCase == DataMessage.TimestampOneofOneofCase.Timestamp && (long) content.Timestamp != envelope.getTimestamp())
+            {
+                throw new InvalidMessageException("Timestamps don't match: " + content.Timestamp + " vs " + envelope.getTimestamp());
+            }
+
             return new SignalServiceDataMessage()
             {
                 Timestamp = envelope.getTimestamp(),

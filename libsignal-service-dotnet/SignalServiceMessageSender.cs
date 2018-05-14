@@ -292,6 +292,8 @@ namespace libsignalservice
                 dataMessage.ProfileKey = ByteString.CopyFrom(message.ProfileKey);
             }
 
+            dataMessage.Timestamp = (ulong) message.Timestamp;
+
             content.DataMessage = dataMessage;
             return content.ToByteArray();
         }
