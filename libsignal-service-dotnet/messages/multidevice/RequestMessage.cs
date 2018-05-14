@@ -19,28 +19,35 @@ using static libsignalservice.push.SyncMessage.Types;
 
 namespace libsignalservice.messages.multidevice
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public class RequestMessage
     {
-        private readonly Request request;
+        private readonly Request Request;
 
         public RequestMessage(Request request)
         {
-            this.request = request;
+            this.Request = request;
         }
 
-        public bool isContactsRequest()
+        public bool IsContactsRequest()
         {
-            return request.Type == Request.Types.Type.Contacts;
+            return Request.Type == Request.Types.Type.Contacts;
         }
 
-        public bool isGroupsRequest()
+        public bool IsGroupsRequest()
         {
-            return request.Type == Request.Types.Type.Groups;
+            return Request.Type == Request.Types.Type.Groups;
         }
 
-        public bool isBlockedListRequest()
+        public bool IsBlockedListRequest()
         {
-            return request.Type == Request.Types.Type.Blocked;
+            return Request.Type == Request.Types.Type.Blocked;
+        }
+
+        public bool IsConfigurationRequest()
+        {
+            return Request.Type == Request.Types.Type.Configuration;
         }
     }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

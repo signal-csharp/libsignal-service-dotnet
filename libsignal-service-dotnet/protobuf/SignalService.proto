@@ -134,6 +134,7 @@ message SyncMessage {
       CONTACTS = 1;
       GROUPS   = 2;
 	  BLOCKED  = 3;
+	  CONFIGURATION = 4;
     }
 
     oneof type_oneof						{ Type type = 1; }
