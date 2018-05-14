@@ -68,6 +68,7 @@ message DataMessage {
     ZERO_PLACEHOLDER = 0;
     END_SESSION = 1;
     EXPIRATION_TIMER_UPDATE = 2;
+	PROFILE_KEY_UPDATE = 4;
   }
 
   oneof body_oneof						{ string             body        = 1; }

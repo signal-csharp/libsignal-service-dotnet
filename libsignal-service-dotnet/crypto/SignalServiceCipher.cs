@@ -132,6 +132,7 @@ namespace libsignalservice.crypto
             List<SignalServiceAttachment> attachments = new List<SignalServiceAttachment>();
             bool endSession = ((content.Flags & (uint)DataMessage.Types.Flags.EndSession) != 0);
             bool expirationUpdate = ((content.Flags & (uint)DataMessage.Types.Flags.ExpirationTimerUpdate) != 0);
+            bool profileKeyUpdate = ((content.Flags & (uint)DataMessage.Types.Flags.ProfileKeyUpdate) != 0);
 
             foreach (AttachmentPointer pointer in content.Attachments)
             {
@@ -155,7 +156,8 @@ namespace libsignalservice.crypto
                 EndSession = endSession,
                 ExpiresInSeconds = (int)content.ExpireTimer,
                 ExpirationUpdate = expirationUpdate,
-                ProfileKey = content.ProfileKeyOneofCase == DataMessage.ProfileKeyOneofOneofCase.ProfileKey? content.ProfileKey.ToByteArray() : null
+                ProfileKey = content.ProfileKeyOneofCase == DataMessage.ProfileKeyOneofOneofCase.ProfileKey ? content.ProfileKey.ToByteArray() : null,
+                ProfileKeyUpdate = profileKeyUpdate
             };
         }
 
