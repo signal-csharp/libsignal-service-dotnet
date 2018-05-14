@@ -13,23 +13,25 @@ using System.Collections.Generic;
 
 namespace libsignalservice.crypto
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     /// <summary>
     /// This is used to decrypt received <see cref="SignalServiceEnvelope"/>s
     /// </summary>
-    internal class SignalServiceCipher
+    public class SignalServiceCipher
     {
-        private readonly SignalProtocolStore signalProtocolStore;
-        private readonly SignalServiceAddress localAddress;
+        private readonly SignalProtocolStore SignalProtocolStore;
+        private readonly SignalServiceAddress LocalAddress;
 
         public SignalServiceCipher(SignalServiceAddress localAddress, SignalProtocolStore signalProtocolStore)
         {
-            this.signalProtocolStore = signalProtocolStore;
-            this.localAddress = localAddress;
+            this.SignalProtocolStore = signalProtocolStore;
+            this.LocalAddress = localAddress;
         }
+
 
         public OutgoingPushMessage Encrypt(SignalProtocolAddress destination, byte[] unpaddedMessage, bool silent)
         {
-            SessionCipher sessionCipher = new SessionCipher(signalProtocolStore, destination);
+            SessionCipher sessionCipher = new SessionCipher(SignalProtocolStore, destination);
             PushTransportDetails transportDetails = new PushTransportDetails(sessionCipher.getSessionVersion());
             CiphertextMessage message = sessionCipher.encrypt(transportDetails.getPaddedMessageBody(unpaddedMessage));
             uint remoteRegistrationId = sessionCipher.getRemoteRegistrationId();
@@ -77,7 +79,7 @@ namespace libsignalservice.crypto
                             Message = CreateSignalServiceMessage(envelope, message.DataMessage)
                         };
                     }
-                    else if (message.SyncMessageOneofCase == Content.SyncMessageOneofOneofCase.SyncMessage && localAddress.E164number == envelope.getSource())
+                    else if (message.SyncMessageOneofCase == Content.SyncMessageOneofOneofCase.SyncMessage && LocalAddress.E164number == envelope.getSource())
                     {
                         content = new SignalServiceContent()
                         {
@@ -89,6 +91,13 @@ namespace libsignalservice.crypto
                         content = new SignalServiceContent()
                         {
                             CallMessage = CreateCallMessage(message.CallMessage)
+                        };
+                    }
+                    else if (message.ReceiptMessageOneofCase == Content.ReceiptMessageOneofOneofCase.ReceiptMessage)
+                    {
+                        content = new SignalServiceContent()
+                        {
+                            ReadMessage = createReceiptMessage(envelope, message.ReceiptMessage)
                         };
                     }
                 }
@@ -105,7 +114,7 @@ namespace libsignalservice.crypto
 
         {
             SignalProtocolAddress sourceAddress = new SignalProtocolAddress(envelope.getSource(), (uint)envelope.getSourceDevice());
-            SessionCipher sessionCipher = new SessionCipher(signalProtocolStore, sourceAddress);
+            SessionCipher sessionCipher = new SessionCipher(SignalProtocolStore, sourceAddress);
 
             byte[] paddedMessage;
 
@@ -291,6 +300,42 @@ namespace libsignalservice.crypto
             return new SignalServiceCallMessage();
         }
 
+        private SignalServiceReceiptMessage createReceiptMessage(SignalServiceEnvelope envelope, ReceiptMessage content)
+        {
+            SignalServiceReceiptMessage.Type type;
+
+            if (content.TypeOneofCase == ReceiptMessage.TypeOneofOneofCase.Type)
+            {
+                if (content.Type == ReceiptMessage.Types.Type.Delivery)
+                {
+                    type = SignalServiceReceiptMessage.Type.DELIVERY;
+                }
+                else if (content.Type == ReceiptMessage.Types.Type.Read)
+                {
+                    type = SignalServiceReceiptMessage.Type.READ;
+                }
+                else
+                {
+                    type = SignalServiceReceiptMessage.Type.UNKNOWN;
+                }
+            }
+            else
+            {
+                type = SignalServiceReceiptMessage.Type.UNKNOWN;
+            }
+            var timestamps = new List<ulong>();
+            foreach (var timestamp in content.Timestamp)
+            {
+                timestamps.Add(timestamp);
+            }
+            return new SignalServiceReceiptMessage()
+            {
+                ReceiptType = type,
+                Timestamps = timestamps,
+                When = envelope.getTimestamp()
+            };
+        }
+
         private SignalServiceGroup CreateGroupInfo(SignalServiceEnvelope envelope, DataMessage content)
         {
             if (content.GroupOneofCase == DataMessage.GroupOneofOneofCase.None) return null;
@@ -352,4 +397,5 @@ namespace libsignalservice.crypto
             };
         }
     }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

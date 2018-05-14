@@ -66,18 +66,19 @@ namespace libsignalservice
         /// Send a delivery receipt for a received message.  It is not necessary to call this
         /// when receiving messages through <see cref="SignalServiceMessagePipe"/>
         /// </summary>
-        /// <param name="recipient">The sender of the received message you're acknowledging.</param>
-        /// <param name="messageId">The message id of the received message you're acknowledging.</param>
-        public void SendDeliveryReceipt(SignalServiceAddress recipient, ulong messageId)
+        /// <param name="recipient">The sender of the received message you're acknowledging</param>
+        /// <param name="message">The receipt message</param>
+        public void SendDeliveryReceipt(SignalServiceAddress recipient, SignalServiceReceiptMessage message)
         {
-            this.socket.RendReceipt(recipient.E164number, messageId, recipient.Relay);
+            byte[] content = CreateReceiptContent(message);
+            SendMessage(recipient, message.When, content, true);
         }
 
         /// <summary>
-        /// Send a call setup message to a single recipient.
+        /// Send a call setup message to a single recipient
         /// </summary>
-        /// <param name="recipient">The message's destination.</param>
-        /// <param name="message">The call message.</param>
+        /// <param name="recipient">The message's destination</param>
+        /// <param name="message">The call message</param>
         public void SendCallMessage(SignalServiceAddress recipient, SignalServiceCallMessage message)
         {
             byte[] content = CreateCallContent(message);
@@ -225,6 +226,24 @@ namespace libsignalservice
                 byte[] syncMessage = CreateMultiDeviceVerifiedContent(message, nullMessage.ToByteArray());
                 SendMessage(localAddress, message.Timestamp, syncMessage, false);
             }
+        }
+
+        private byte[] CreateReceiptContent(SignalServiceReceiptMessage message)
+        {
+            Content content = new Content();
+            ReceiptMessage receiptMessage = new ReceiptMessage();
+            foreach (var timestamp in message.Timestamps)
+            {
+                receiptMessage.Timestamp.Add(timestamp);
+            }
+
+            if (message.IsDeliveryReceipt())
+                receiptMessage.Type = ReceiptMessage.Types.Type.Delivery;
+            else if (message.IsReadReceipt())
+                receiptMessage.Type = ReceiptMessage.Types.Type.Read;
+
+            content.ReceiptMessage = receiptMessage;
+            return receiptMessage.ToByteArray();
         }
 
         private byte[] CreateMessageContent(SignalServiceDataMessage message)// throws IOException

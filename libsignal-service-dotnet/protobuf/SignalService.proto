@@ -27,6 +27,7 @@ message Content {
   oneof syncMessage_oneof				{ SyncMessage syncMessage     = 2; }
   oneof callMessage_oneof               { CallMessage callMessage     = 3; }
   oneof nullMessage_oneof       { NullMessage nullMessage = 4; }
+  oneof receiptMessage_oneof { ReceiptMessage receiptMessage = 5; }
 }
 
 message CallMessage {
@@ -81,6 +82,16 @@ message DataMessage {
 
 message NullMessage {
   oneof padding_oneof { bytes padding = 1; }
+}
+
+message ReceiptMessage {
+	enum Type {
+		DELIVERY = 0;
+		READ = 1;
+	}
+
+	oneof type_oneof { Type type = 1; }
+	repeated uint64 timestamp = 2;
 }
 
 message Verified {

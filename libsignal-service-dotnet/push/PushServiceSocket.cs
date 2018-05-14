@@ -55,7 +55,6 @@ namespace libsignalservice.push
         private static readonly string DIRECTORY_VERIFY_PATH = "/v1/directory/{0}";
         private static readonly string MESSAGE_PATH = "/v1/messages/{0}";
         private static readonly string ACKNOWLEDGE_MESSAGE_PATH = "/v1/messages/{0}/{1}";
-        private static readonly string RECEIPT_PATH = "/v1/receipt/{0}/{1}";
         private static readonly string ATTACHMENT_PATH = "/v1/attachments/{0}";
 
         private static readonly string PROFILE_PATH = "/v1/profile/%s";
@@ -129,19 +128,6 @@ namespace libsignalservice.push
         public bool RemoveDevice(long deviceId)// throws IOException
         {
             MakeServiceRequest(string.Format(DEVICE_PATH, deviceId), "DELETE", null);
-            return true;
-        }
-
-        public bool RendReceipt(string destination, ulong messageId, May<string> relay)// throws IOException
-        {
-            string path = string.Format(RECEIPT_PATH, destination, messageId);
-
-            if (relay.HasValue)
-            {
-                path += "?relay=" + relay.ForceGetValue();
-            }
-
-            MakeServiceRequest(path, "PUT", null);
             return true;
         }
 

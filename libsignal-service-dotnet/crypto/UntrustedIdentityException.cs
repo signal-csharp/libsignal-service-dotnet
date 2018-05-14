@@ -21,31 +21,18 @@ using System;
 
 namespace libsignalservice.crypto
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public class UntrustedIdentityException : Exception
     {
-        private readonly IdentityKey identityKey;
-        private readonly String e164number;
+        public IdentityKey IdentityKey { get; }
+        public String E164number { get; }
 
         public UntrustedIdentityException(String s, String e164number, IdentityKey identityKey)
                   : base(s)
         {
-            this.e164number = e164number;
-            this.identityKey = identityKey;
-        }
-
-        public UntrustedIdentityException(UntrustedIdentityException e)
-            : this(e.Message, e.getE164Number(), e.getIdentityKey())
-        {
-        }
-
-        public IdentityKey getIdentityKey()
-        {
-            return identityKey;
-        }
-
-        public String getE164Number()
-        {
-            return e164number;
+            E164number = e164number;
+            IdentityKey = identityKey;
         }
     }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }
