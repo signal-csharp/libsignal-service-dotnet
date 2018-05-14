@@ -1,86 +1,67 @@
-/**
- * Copyright (C) 2017 smndtrl, golf1052
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 using System;
 using System.IO;
 
 namespace libsignalservice.messages
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public abstract class SignalServiceAttachment
     {
-        private readonly String contentType;
+        public String ContentType { get; }
 
         internal SignalServiceAttachment(String contentType)
         {
-            this.contentType = contentType;
+            this.ContentType = contentType;
         }
 
         public String getContentType()
         {
-            return contentType;
+            return ContentType;
         }
 
-        public abstract bool isStream();
+        public abstract bool IsStream();
 
-        public abstract bool isPointer();
+        public abstract bool IsPointer();
 
         public SignalServiceAttachmentStream AsStream()
         {
             return (SignalServiceAttachmentStream)this;
         }
 
-        public SignalServiceAttachmentPointer asPointer()
+        public SignalServiceAttachmentPointer AsPointer()
         {
             return (SignalServiceAttachmentPointer)this;
         }
 
-        public static Builder newStreamBuilder()
-        {
-            return new Builder();
-        }
-
         public class Builder
         {
-            private Stream inputStream;
-            private string contentType;
+            private Stream InputStream;
+            private string ContentType;
             private string FileName;
-            private long length;
-            private ProgressListener listener;
-            private bool voiceNote;
+            private long Length;
+            private IProgressListener Listener;
+            private bool VoiceNote;
+            private int Width;
+            private int Height;
 
-            internal Builder()
+            Builder()
             {
             }
 
-            public Builder withStream(Stream inputStream)
+            public Builder WithStream(Stream inputStream)
             {
-                this.inputStream = inputStream;
+                InputStream = inputStream;
                 return this;
             }
 
-            public Builder withContentType(string contentType)
+            public Builder WithContentType(string contentType)
             {
-                this.contentType = contentType;
+                ContentType = contentType;
                 return this;
             }
 
-            public Builder withLength(long length)
+            public Builder WithLength(long length)
             {
-                this.length = length;
+                Length = length;
                 return this;
             }
 
@@ -90,45 +71,58 @@ namespace libsignalservice.messages
                 return this;
             }
 
-            public Builder withListener(ProgressListener listener)
+            public Builder WithListener(IProgressListener listener)
             {
-                this.listener = listener;
+                Listener = listener;
                 return this;
             }
 
-            public Builder withVoiceNote(bool voiceNote)
+            public Builder WithVoiceNote(bool voiceNote)
             {
-                this.voiceNote = voiceNote;
+                VoiceNote = voiceNote;
                 return this;
             }
 
-            public SignalServiceAttachmentStream build()
+            public Builder WithWidth(int width)
             {
-                if (inputStream == null)
+                Width = width;
+                return this;
+            }
+
+            public Builder WithHeight(int height)
+            {
+                Height = height;
+                return this;
+            }
+
+            public SignalServiceAttachmentStream Build()
+            {
+                if (InputStream == null)
                 {
                     throw new ArgumentException("Must specify stream!");
                 }
-                if (contentType == null)
+                if (ContentType == null)
                 {
                     throw new ArgumentException("No content type specified!");
                 }
-                if (length == 0)
+                if (Length == 0)
                 {
                     throw new ArgumentException("No length specified!");
                 }
 
-                return new SignalServiceAttachmentStream(inputStream, contentType, (uint)length, FileName, voiceNote, listener);
+                return new SignalServiceAttachmentStream(InputStream, ContentType, (uint)Length, FileName, VoiceNote, null, Width, Height, Listener);
             }
         }
 
-        public interface ProgressListener
+        public interface IProgressListener
         {
             /// <summary>
             /// Called on a progress change event.
             /// </summary>
             /// <param name="total">The total amount of transmit/receive in bytes.</param>
             /// <param name="progress">The amount that has been transmitted/received in bytes thus far</param>
-            void onAttachmentProgress(long total, long progress);
+            void OnAttachmentProgress(long total, long progress);
         }
     }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

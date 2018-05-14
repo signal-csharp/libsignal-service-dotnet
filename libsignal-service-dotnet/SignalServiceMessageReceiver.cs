@@ -83,7 +83,7 @@ namespace libsignalservice
         /// <param name="tmpCipherDestination">The temporary destination for this attachment before decryption</param>
         /// <param name="maxSizeBytes">The maximum size for this attachment (not yet implemented)</param>
         /// <param name="listener">An optional listener (may be null) to receive callbacks on download progress.</param>
-        public Stream RetrieveAttachment(SignalServiceAttachmentPointer pointer, Stream tmpCipherDestination, int maxSizeBytes, ProgressListener listener)
+        public Stream RetrieveAttachment(SignalServiceAttachmentPointer pointer, Stream tmpCipherDestination, int maxSizeBytes, IProgressListener listener)
         {
             Socket.RetrieveAttachment(pointer.Relay, pointer.Id, tmpCipherDestination, maxSizeBytes);
             return AttachmentCipherInputStream.CreateFor(tmpCipherDestination, pointer.Size != null ? pointer.Size.Value : 0, pointer.Key, pointer.Digest);

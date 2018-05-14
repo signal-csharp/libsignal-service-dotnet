@@ -1,22 +1,5 @@
 using Strilanc.Value;
 
-/**
-* Copyright (C) 2017 smndtrl, golf1052
-*
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
 using System;
 using System.IO;
 
@@ -25,60 +8,46 @@ namespace libsignalservice.messages
     /// <summary>
     /// Represents a local SignalServiceAttachment to be sent.
     /// </summary>
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public class SignalServiceAttachmentStream : SignalServiceAttachment
     {
-        private readonly Stream inputStream;
-        private readonly long length;
-        public readonly string FileName;
-        private readonly ProgressListener listener;
-        private readonly May<byte[]> preview;
+        public Stream InputStream { get; }
+        public long Length { get; }
+        public string FileName { get; }
+        public IProgressListener Listener { get; }
+        public byte[] Preview { get; }
         public bool VoiceNote { get; }
+        public int Width { get; }
+        public int Height { get; }
         
 
-        public SignalServiceAttachmentStream(Stream inputStream, string contentType, long length, string fileName, bool voiceNote, ProgressListener listener)
-           : this(inputStream, contentType, length, fileName, voiceNote, May<byte[]>.NoValue, listener)
+        public SignalServiceAttachmentStream(Stream inputStream, string contentType, long length, string fileName, bool voiceNote, IProgressListener listener)
+           : this(inputStream, contentType, length, fileName, voiceNote, null, 0, 0, listener)
         {
         }
 
-        public SignalServiceAttachmentStream(Stream inputStream, String contentType, long length, string fileName, bool voiceNote, May<byte[]> preview, ProgressListener listener)
+        public SignalServiceAttachmentStream(Stream inputStream, String contentType, long length, string fileName, bool voiceNote, byte[] preview, int width, int height, IProgressListener listener)
             : base(contentType)
         {
-            this.inputStream = inputStream;
-            this.length = length;
+            InputStream = inputStream;
+            Length = length;
             FileName = fileName;
-            this.listener = listener;
+            Listener = listener;
             VoiceNote = voiceNote;
-            this.preview = preview;
+            Preview = preview;
+            Width = width;
+            Height = height;
         }
 
-        public override bool isStream()
+        public override bool IsStream()
         {
             return true;
         }
 
-        public override bool isPointer()
+        public override bool IsPointer()
         {
             return false;
         }
-
-        public Stream getInputStream()
-        {
-            return inputStream;
-        }
-
-        public long getLength()
-        {
-            return length;
-        }
-
-        public ProgressListener getListener()
-        {
-            return listener;
-        }
-
-        public May<byte[]> getPreview()
-        {
-            return preview;
-        }
     }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

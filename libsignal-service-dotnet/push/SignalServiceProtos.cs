@@ -105,38 +105,39 @@ namespace libsignalservice.push {
             "EnJlYWRSZWNlaXB0c19vbmVvZkIMCgpzZW50X29uZW9mQhAKDmNvbnRhY3Rz",
             "X29uZW9mQg4KDGdyb3Vwc19vbmVvZkIPCg1yZXF1ZXN0X29uZW9mQg8KDWJs",
             "b2NrZWRfb25lb2ZCEAoOdmVyaWZpZWRfb25lb2ZCFQoTY29uZmlndXJhdGlv",
-            "bl9vbmVvZkIPCg1wYWRkaW5nX29uZW9mItUCChFBdHRhY2htZW50UG9pbnRl",
+            "bl9vbmVvZkIPCg1wYWRkaW5nX29uZW9mIpcDChFBdHRhY2htZW50UG9pbnRl",
             "chIMCgJpZBgBIAEoBkgAEhUKC2NvbnRlbnRUeXBlGAIgASgJSAESDQoDa2V5",
             "GAMgASgMSAISDgoEc2l6ZRgEIAEoDUgDEhMKCXRodW1ibmFpbBgFIAEoDEgE",
             "EhAKBmRpZ2VzdBgGIAEoDEgFEhIKCGZpbGVOYW1lGAcgASgJSAYSDwoFZmxh",
-            "Z3MYCCABKA1IByIwCgVGbGFncxIUChBaRVJPX1BMQUNFSE9MREVSEAASEQoN",
-            "Vk9JQ0VfTUVTU0FHRRABQgoKCGlkX29uZW9mQhMKEWNvbnRlbnRUeXBlX29u",
-            "ZW9mQgsKCWtleV9vbmVvZkIMCgpzaXplX29uZW9mQhEKD3RodW1ibmFpbF9v",
-            "bmVvZkIOCgxkaWdlc3Rfb25lb2ZCEAoOZmlsZU5hbWVfb25lb2ZCDQoLZmxh",
-            "Z3Nfb25lb2YinwIKDEdyb3VwQ29udGV4dBIMCgJpZBgBIAEoDEgAEi0KBHR5",
-            "cGUYAiABKA4yHS50ZXh0c2VjdXJlLkdyb3VwQ29udGV4dC5UeXBlSAESDgoE",
-            "bmFtZRgDIAEoCUgCEg8KB21lbWJlcnMYBCADKAkSLwoGYXZhdGFyGAUgASgL",
-            "Mh0udGV4dHNlY3VyZS5BdHRhY2htZW50UG9pbnRlckgDIkgKBFR5cGUSCwoH",
-            "VU5LTk9XThAAEgoKBlVQREFURRABEgsKB0RFTElWRVIQAhIICgRRVUlUEAMS",
-            "EAoMUkVRVUVTVF9JTkZPEARCCgoIaWRfb25lb2ZCDAoKdHlwZV9vbmVvZkIM",
-            "CgpuYW1lX29uZW9mQg4KDGF2YXRhcl9vbmVvZiLzAgoOQ29udGFjdERldGFp",
-            "bHMSEAoGbnVtYmVyGAEgASgJSAASDgoEbmFtZRgCIAEoCUgBEjMKBmF2YXRh",
-            "chgDIAEoCzIhLnRleHRzZWN1cmUuQ29udGFjdERldGFpbHMuQXZhdGFySAIS",
-            "DwoFY29sb3IYBCABKAlIAxIoCgh2ZXJpZmllZBgFIAEoCzIULnRleHRzZWN1",
-            "cmUuVmVyaWZpZWRIBBIUCgpwcm9maWxlS2V5GAYgASgMSAUaVgoGQXZhdGFy",
-            "EhUKC2NvbnRlbnRUeXBlGAEgASgJSAASEAoGbGVuZ3RoGAIgASgNSAFCEwoR",
-            "Y29udGVudFR5cGVfb25lb2ZCDgoMbGVuZ3RoX29uZW9mQg4KDG51bWJlcl9v",
-            "bmVvZkIMCgpuYW1lX29uZW9mQg4KDGF2YXRhcl9vbmVvZkINCgtjb2xvcl9v",
-            "bmVvZkIQCg52ZXJpZmllZF9vbmVvZkISChBwcm9maWxlS2V5X29uZW9mIpQC",
-            "CgxHcm91cERldGFpbHMSDAoCaWQYASABKAxIABIOCgRuYW1lGAIgASgJSAES",
-            "DwoHbWVtYmVycxgDIAMoCRIxCgZhdmF0YXIYBCABKAsyHy50ZXh0c2VjdXJl",
-            "Lkdyb3VwRGV0YWlscy5BdmF0YXJIAhIQCgZhY3RpdmUYBSABKAhIAxpWCgZB",
-            "dmF0YXISFQoLY29udGVudFR5cGUYASABKAlIABIQCgZsZW5ndGgYAiABKA1I",
-            "AUITChFjb250ZW50VHlwZV9vbmVvZkIOCgxsZW5ndGhfb25lb2ZCCgoIaWRf",
-            "b25lb2ZCDAoKbmFtZV9vbmVvZkIOCgxhdmF0YXJfb25lb2ZCDgoMYWN0aXZl",
-            "X29uZW9mQloKK29yZy53aGlzcGVyc3lzdGVtcy50ZXh0c2VjdXJlLmludGVy",
-            "bmFsLnB1c2hCE1NpZ25hbFNlcnZpY2VQcm90b3OqAhVsaWJzaWduYWxzZXJ2",
-            "aWNlLnB1c2hiBnByb3RvMw=="));
+            "Z3MYCCABKA1IBxIPCgV3aWR0aBgJIAEoDUgIEhAKBmhlaWdodBgKIAEoDUgJ",
+            "IjAKBUZsYWdzEhQKEFpFUk9fUExBQ0VIT0xERVIQABIRCg1WT0lDRV9NRVNT",
+            "QUdFEAFCCgoIaWRfb25lb2ZCEwoRY29udGVudFR5cGVfb25lb2ZCCwoJa2V5",
+            "X29uZW9mQgwKCnNpemVfb25lb2ZCEQoPdGh1bWJuYWlsX29uZW9mQg4KDGRp",
+            "Z2VzdF9vbmVvZkIQCg5maWxlTmFtZV9vbmVvZkINCgtmbGFnc19vbmVvZkIN",
+            "Cgt3aWR0aF9vbmVvZkIOCgxoZWlnaHRfb25lb2YinwIKDEdyb3VwQ29udGV4",
+            "dBIMCgJpZBgBIAEoDEgAEi0KBHR5cGUYAiABKA4yHS50ZXh0c2VjdXJlLkdy",
+            "b3VwQ29udGV4dC5UeXBlSAESDgoEbmFtZRgDIAEoCUgCEg8KB21lbWJlcnMY",
+            "BCADKAkSLwoGYXZhdGFyGAUgASgLMh0udGV4dHNlY3VyZS5BdHRhY2htZW50",
+            "UG9pbnRlckgDIkgKBFR5cGUSCwoHVU5LTk9XThAAEgoKBlVQREFURRABEgsK",
+            "B0RFTElWRVIQAhIICgRRVUlUEAMSEAoMUkVRVUVTVF9JTkZPEARCCgoIaWRf",
+            "b25lb2ZCDAoKdHlwZV9vbmVvZkIMCgpuYW1lX29uZW9mQg4KDGF2YXRhcl9v",
+            "bmVvZiLzAgoOQ29udGFjdERldGFpbHMSEAoGbnVtYmVyGAEgASgJSAASDgoE",
+            "bmFtZRgCIAEoCUgBEjMKBmF2YXRhchgDIAEoCzIhLnRleHRzZWN1cmUuQ29u",
+            "dGFjdERldGFpbHMuQXZhdGFySAISDwoFY29sb3IYBCABKAlIAxIoCgh2ZXJp",
+            "ZmllZBgFIAEoCzIULnRleHRzZWN1cmUuVmVyaWZpZWRIBBIUCgpwcm9maWxl",
+            "S2V5GAYgASgMSAUaVgoGQXZhdGFyEhUKC2NvbnRlbnRUeXBlGAEgASgJSAAS",
+            "EAoGbGVuZ3RoGAIgASgNSAFCEwoRY29udGVudFR5cGVfb25lb2ZCDgoMbGVu",
+            "Z3RoX29uZW9mQg4KDG51bWJlcl9vbmVvZkIMCgpuYW1lX29uZW9mQg4KDGF2",
+            "YXRhcl9vbmVvZkINCgtjb2xvcl9vbmVvZkIQCg52ZXJpZmllZF9vbmVvZkIS",
+            "ChBwcm9maWxlS2V5X29uZW9mIpQCCgxHcm91cERldGFpbHMSDAoCaWQYASAB",
+            "KAxIABIOCgRuYW1lGAIgASgJSAESDwoHbWVtYmVycxgDIAMoCRIxCgZhdmF0",
+            "YXIYBCABKAsyHy50ZXh0c2VjdXJlLkdyb3VwRGV0YWlscy5BdmF0YXJIAhIQ",
+            "CgZhY3RpdmUYBSABKAhIAxpWCgZBdmF0YXISFQoLY29udGVudFR5cGUYASAB",
+            "KAlIABIQCgZsZW5ndGgYAiABKA1IAUITChFjb250ZW50VHlwZV9vbmVvZkIO",
+            "CgxsZW5ndGhfb25lb2ZCCgoIaWRfb25lb2ZCDAoKbmFtZV9vbmVvZkIOCgxh",
+            "dmF0YXJfb25lb2ZCDgoMYWN0aXZlX29uZW9mQloKK29yZy53aGlzcGVyc3lz",
+            "dGVtcy50ZXh0c2VjdXJlLmludGVybmFsLnB1c2hCE1NpZ25hbFNlcnZpY2VQ",
+            "cm90b3OqAhVsaWJzaWduYWxzZXJ2aWNlLnB1c2hiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -158,7 +159,7 @@ namespace libsignalservice.push {
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Request), global::libsignalservice.push.SyncMessage.Types.Request.Parser, new[]{ "Type" }, new[]{ "TypeOneof" }, new[]{ typeof(global::libsignalservice.push.SyncMessage.Types.Request.Types.Type) }, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Read), global::libsignalservice.push.SyncMessage.Types.Read.Parser, new[]{ "Sender", "Timestamp" }, new[]{ "SenderOneof", "TimestampOneof" }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Configuration), global::libsignalservice.push.SyncMessage.Types.Configuration.Parser, new[]{ "ReadReceipts" }, new[]{ "ReadReceiptsOneof" }, null, null)}),
-            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.AttachmentPointer), global::libsignalservice.push.AttachmentPointer.Parser, new[]{ "Id", "ContentType", "Key", "Size", "Thumbnail", "Digest", "FileName", "Flags" }, new[]{ "IdOneof", "ContentTypeOneof", "KeyOneof", "SizeOneof", "ThumbnailOneof", "DigestOneof", "FileNameOneof", "FlagsOneof" }, new[]{ typeof(global::libsignalservice.push.AttachmentPointer.Types.Flags) }, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.AttachmentPointer), global::libsignalservice.push.AttachmentPointer.Parser, new[]{ "Id", "ContentType", "Key", "Size", "Thumbnail", "Digest", "FileName", "Flags", "Width", "Height" }, new[]{ "IdOneof", "ContentTypeOneof", "KeyOneof", "SizeOneof", "ThumbnailOneof", "DigestOneof", "FileNameOneof", "FlagsOneof", "WidthOneof", "HeightOneof" }, new[]{ typeof(global::libsignalservice.push.AttachmentPointer.Types.Flags) }, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.GroupContext), global::libsignalservice.push.GroupContext.Parser, new[]{ "Id", "Type", "Name", "Members", "Avatar" }, new[]{ "IdOneof", "TypeOneof", "NameOneof", "AvatarOneof" }, new[]{ typeof(global::libsignalservice.push.GroupContext.Types.Type) }, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.ContactDetails), global::libsignalservice.push.ContactDetails.Parser, new[]{ "Number", "Name", "Avatar", "Color", "Verified", "ProfileKey" }, new[]{ "NumberOneof", "NameOneof", "AvatarOneof", "ColorOneof", "VerifiedOneof", "ProfileKeyOneof" }, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.ContactDetails.Types.Avatar), global::libsignalservice.push.ContactDetails.Types.Avatar.Parser, new[]{ "ContentType", "Length" }, new[]{ "ContentTypeOneof", "LengthOneof" }, null, null)}),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.GroupDetails), global::libsignalservice.push.GroupDetails.Parser, new[]{ "Id", "Name", "Members", "Avatar", "Active" }, new[]{ "IdOneof", "NameOneof", "AvatarOneof", "ActiveOneof" }, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.GroupDetails.Types.Avatar), global::libsignalservice.push.GroupDetails.Types.Avatar.Parser, new[]{ "ContentType", "Length" }, new[]{ "ContentTypeOneof", "LengthOneof" }, null, null)})
@@ -5801,6 +5802,18 @@ namespace libsignalservice.push {
           break;
       }
 
+      switch (other.WidthOneofCase) {
+        case WidthOneofOneofCase.Width:
+          Width = other.Width;
+          break;
+      }
+
+      switch (other.HeightOneofCase) {
+        case HeightOneofOneofCase.Height:
+          Height = other.Height;
+          break;
+      }
+
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -5894,6 +5907,28 @@ namespace libsignalservice.push {
       set {
         flagsOneof_ = value;
         flagsOneofCase_ = FlagsOneofOneofCase.Flags;
+      }
+    }
+
+    /// <summary>Field number for the "width" field.</summary>
+    public const int WidthFieldNumber = 9;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public uint Width {
+      get { return widthOneofCase_ == WidthOneofOneofCase.Width ? (uint) widthOneof_ : 0; }
+      set {
+        widthOneof_ = value;
+        widthOneofCase_ = WidthOneofOneofCase.Width;
+      }
+    }
+
+    /// <summary>Field number for the "height" field.</summary>
+    public const int HeightFieldNumber = 10;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public uint Height {
+      get { return heightOneofCase_ == HeightOneofOneofCase.Height ? (uint) heightOneof_ : 0; }
+      set {
+        heightOneof_ = value;
+        heightOneofCase_ = HeightOneofOneofCase.Height;
       }
     }
 
@@ -6041,6 +6076,42 @@ namespace libsignalservice.push {
       flagsOneof_ = null;
     }
 
+    private object widthOneof_;
+    /// <summary>Enum of possible cases for the "width_oneof" oneof.</summary>
+    public enum WidthOneofOneofCase {
+      None = 0,
+      Width = 9,
+    }
+    private WidthOneofOneofCase widthOneofCase_ = WidthOneofOneofCase.None;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public WidthOneofOneofCase WidthOneofCase {
+      get { return widthOneofCase_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearWidthOneof() {
+      widthOneofCase_ = WidthOneofOneofCase.None;
+      widthOneof_ = null;
+    }
+
+    private object heightOneof_;
+    /// <summary>Enum of possible cases for the "height_oneof" oneof.</summary>
+    public enum HeightOneofOneofCase {
+      None = 0,
+      Height = 10,
+    }
+    private HeightOneofOneofCase heightOneofCase_ = HeightOneofOneofCase.None;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public HeightOneofOneofCase HeightOneofCase {
+      get { return heightOneofCase_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearHeightOneof() {
+      heightOneofCase_ = HeightOneofOneofCase.None;
+      heightOneof_ = null;
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as AttachmentPointer);
@@ -6062,6 +6133,8 @@ namespace libsignalservice.push {
       if (Digest != other.Digest) return false;
       if (FileName != other.FileName) return false;
       if (Flags != other.Flags) return false;
+      if (Width != other.Width) return false;
+      if (Height != other.Height) return false;
       if (IdOneofCase != other.IdOneofCase) return false;
       if (ContentTypeOneofCase != other.ContentTypeOneofCase) return false;
       if (KeyOneofCase != other.KeyOneofCase) return false;
@@ -6070,6 +6143,8 @@ namespace libsignalservice.push {
       if (DigestOneofCase != other.DigestOneofCase) return false;
       if (FileNameOneofCase != other.FileNameOneofCase) return false;
       if (FlagsOneofCase != other.FlagsOneofCase) return false;
+      if (WidthOneofCase != other.WidthOneofCase) return false;
+      if (HeightOneofCase != other.HeightOneofCase) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -6084,6 +6159,8 @@ namespace libsignalservice.push {
       if (digestOneofCase_ == DigestOneofOneofCase.Digest) hash ^= Digest.GetHashCode();
       if (fileNameOneofCase_ == FileNameOneofOneofCase.FileName) hash ^= FileName.GetHashCode();
       if (flagsOneofCase_ == FlagsOneofOneofCase.Flags) hash ^= Flags.GetHashCode();
+      if (widthOneofCase_ == WidthOneofOneofCase.Width) hash ^= Width.GetHashCode();
+      if (heightOneofCase_ == HeightOneofOneofCase.Height) hash ^= Height.GetHashCode();
       hash ^= (int) idOneofCase_;
       hash ^= (int) contentTypeOneofCase_;
       hash ^= (int) keyOneofCase_;
@@ -6092,6 +6169,8 @@ namespace libsignalservice.push {
       hash ^= (int) digestOneofCase_;
       hash ^= (int) fileNameOneofCase_;
       hash ^= (int) flagsOneofCase_;
+      hash ^= (int) widthOneofCase_;
+      hash ^= (int) heightOneofCase_;
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -6137,6 +6216,14 @@ namespace libsignalservice.push {
         output.WriteRawTag(64);
         output.WriteUInt32(Flags);
       }
+      if (widthOneofCase_ == WidthOneofOneofCase.Width) {
+        output.WriteRawTag(72);
+        output.WriteUInt32(Width);
+      }
+      if (heightOneofCase_ == HeightOneofOneofCase.Height) {
+        output.WriteRawTag(80);
+        output.WriteUInt32(Height);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -6168,6 +6255,12 @@ namespace libsignalservice.push {
       }
       if (flagsOneofCase_ == FlagsOneofOneofCase.Flags) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(Flags);
+      }
+      if (widthOneofCase_ == WidthOneofOneofCase.Width) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(Width);
+      }
+      if (heightOneofCase_ == HeightOneofOneofCase.Height) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(Height);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -6228,6 +6321,18 @@ namespace libsignalservice.push {
           break;
       }
 
+      switch (other.WidthOneofCase) {
+        case WidthOneofOneofCase.Width:
+          Width = other.Width;
+          break;
+      }
+
+      switch (other.HeightOneofCase) {
+        case HeightOneofOneofCase.Height:
+          Height = other.Height;
+          break;
+      }
+
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -6269,6 +6374,14 @@ namespace libsignalservice.push {
           }
           case 64: {
             Flags = input.ReadUInt32();
+            break;
+          }
+          case 72: {
+            Width = input.ReadUInt32();
+            break;
+          }
+          case 80: {
+            Height = input.ReadUInt32();
             break;
           }
         }

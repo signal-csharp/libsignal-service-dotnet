@@ -505,7 +505,7 @@ namespace libsignalservice
                 if (group.Name != null) groupContext.Name = group.Name;
                 if (group.Members != null ) groupContext.Members.AddRange(group.Members);
 
-                if (group.Avatar != null && group.Avatar.isStream())
+                if (group.Avatar != null && group.Avatar.IsStream())
                 {
                     AttachmentPointer pointer = CreateAttachmentPointer(group.Avatar.AsStream());
                     groupContext.Avatar = pointer;
@@ -602,14 +602,14 @@ namespace libsignalservice
 
             foreach (SignalServiceAttachment attachment in attachments)
             {
-                if (attachment.isStream())
+                if (attachment.IsStream())
                 {
                     Debug.WriteLine("Found attachment, creating pointer...", TAG);
                     pointers.Add(CreateAttachmentPointer(attachment.AsStream()));
                 }
-                else if (attachment.isPointer())
+                else if (attachment.IsPointer())
                 {
-                    pointers.Add(CreateAttachmentPointerFromPointer(attachment.asPointer()));
+                    pointers.Add(CreateAttachmentPointerFromPointer(attachment.AsPointer()));
                 }
             }
 
@@ -619,13 +619,13 @@ namespace libsignalservice
         private AttachmentPointer CreateAttachmentPointer(SignalServiceAttachmentStream attachment)
         {
             byte[] attachmentKey = Util.getSecretBytes(64);
-            long paddedLength = PaddingInputStream.GetPaddedSize(attachment.getLength());
+            long paddedLength = PaddingInputStream.GetPaddedSize(attachment.Length);
             long ciphertextLength = AttachmentCipherInputStream.GetCiphertextLength(paddedLength);
             PushAttachmentData attachmentData = new PushAttachmentData(attachment.getContentType(),
-                                                                       new PaddingInputStream(attachment.getInputStream(), attachment.getLength()),
+                                                                       new PaddingInputStream(attachment.InputStream, attachment.Length),
                                                                        ciphertextLength,
                                                                        new AttachmentCipherOutputStreamFactory(attachmentKey),
-                                                                       attachment.getListener());
+                                                                       attachment.Listener);
 
             (ulong id, byte[] digest)  = socket.SendAttachment(attachmentData);
 
@@ -635,7 +635,7 @@ namespace libsignalservice
                 Id = id,
                 Key = ByteString.CopyFrom(attachmentKey),
                 Digest = ByteString.CopyFrom(digest),
-                Size = (uint)attachment.getLength()
+                Size = (uint)attachment.Length
             };
 
             if (attachment.FileName != null)
@@ -643,9 +643,19 @@ namespace libsignalservice
                 attachmentPointer.FileName = attachment.FileName;
             }
 
-            if (attachment.getPreview().HasValue)
+            if (attachment.Preview != null)
             {
-                attachmentPointer.Thumbnail = ByteString.CopyFrom(attachment.getPreview().ForceGetValue());
+                attachmentPointer.Thumbnail = ByteString.CopyFrom(attachment.Preview);
+            }
+
+            if (attachment.Width > 0)
+            {
+                attachmentPointer.Width = (uint) attachment.Width;
+            }
+
+            if (attachment.Height > 0)
+            {
+                attachmentPointer.Height = (uint)attachment.Height;
             }
 
             if (attachment.VoiceNote)

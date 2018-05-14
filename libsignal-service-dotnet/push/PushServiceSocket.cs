@@ -526,7 +526,7 @@ namespace libsignalservice.push
         }
 
         private byte[] UploadAttachment(string method, string url, Stream data, long dataSize,
-            OutputStreamFactory outputStreamFactory, ProgressListener listener)
+            OutputStreamFactory outputStreamFactory, IProgressListener listener)
         {
             MemoryStream tmpStream = new MemoryStream();
             DigestingOutputStream outputStream = outputStreamFactory.CreateFor(tmpStream);

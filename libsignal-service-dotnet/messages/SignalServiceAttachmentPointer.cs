@@ -5,12 +5,11 @@ namespace libsignalservice.messages
     /// <summary>
     /// Represents a received SignalServiceAttachment "handle."  This
     /// is a pointer to the actual attachment content, which needs to be
-    /// retrieved using <see cref="SignalServiceMessageReceiver.RetrieveAttachment(SignalServiceAttachmentPointer, Stream, int, ProgressListener)"/>
+    /// retrieved using <see cref="SignalServiceMessageReceiver.RetrieveAttachment(SignalServiceAttachmentPointer, Stream, int, IProgressListener)"/>
     /// </summary>
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public class SignalServiceAttachmentPointer : SignalServiceAttachment
     {
-
         public ulong Id { get; }
         public byte[] Key { get; }
         public string Relay { get; }
@@ -19,8 +18,10 @@ namespace libsignalservice.messages
         public byte[] Digest { get; }
         public string FileName { get; }
         public bool VoiceNote { get; }
+        public int Width { get; }
+        public int Height { get; }
 
-        public SignalServiceAttachmentPointer(ulong id, string contentType, byte[] key, string relay, uint? size, byte[] preview, byte[] digest, string fileName, bool voiceNote)
+        public SignalServiceAttachmentPointer(ulong id, string contentType, byte[] key, string relay, uint? size, byte[] preview, int width, int height, byte[] digest, string fileName, bool voiceNote)
             : base(contentType)
         {
             Id = id;
@@ -31,14 +32,16 @@ namespace libsignalservice.messages
             Digest = digest;
             FileName = fileName;
             VoiceNote = voiceNote;
+            Width = width;
+            Height = height;
         }
 
-        public override bool isStream()
+        public override bool IsStream()
         {
             return false;
         }
 
-        public override bool isPointer()
+        public override bool IsPointer()
         {
             return true;
         }

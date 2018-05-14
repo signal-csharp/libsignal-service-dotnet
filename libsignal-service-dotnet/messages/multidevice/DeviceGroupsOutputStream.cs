@@ -28,7 +28,8 @@ namespace libsignalservice.messages.multidevice
         {
             if (contact.getAvatar().HasValue)
             {
-                contact.getAvatar().Match(e => e, () => { throw new Exception(); }).getInputStream();
+                throw new NotImplementedException();
+                //contact.getAvatar().Match(e => e, () => { throw new Exception(); }).InputStream;
             }
         }
 
@@ -47,7 +48,7 @@ namespace libsignalservice.messages.multidevice
                 GroupDetails.Types.Avatar avatarBuilder = new GroupDetails.Types.Avatar { };
                 SignalServiceAttachmentStream avatar = group.getAvatar().Match(e => e, () => { throw new Exception(); });
                 avatarBuilder.ContentType = avatar.getContentType();
-                avatarBuilder.Length = (uint)avatar.getLength();
+                avatarBuilder.Length = (uint)avatar.Length;
                 groupDetails.Avatar = avatarBuilder;
             }
 

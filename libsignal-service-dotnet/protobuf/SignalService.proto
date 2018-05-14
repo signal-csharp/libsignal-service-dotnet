@@ -175,6 +175,8 @@ message AttachmentPointer {
   oneof digest_oneof						{ bytes   digest      = 6; }
   oneof fileName_oneof						{ string  fileName    = 7; }
   oneof flags_oneof							{ uint32 flags        = 8; }
+  oneof width_oneof { uint32 width = 9; }
+  oneof height_oneof { uint32 height = 10; }
 }
 
 message GroupContext {
