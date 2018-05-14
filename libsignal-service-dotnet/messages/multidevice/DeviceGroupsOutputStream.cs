@@ -15,7 +15,7 @@ namespace libsignalservice.messages.multidevice
 
         public void write(DeviceGroup group)
         {
-            writeGroupDetails(group);
+            WriteGroupDetails(group);
             writeAvatarImage(group);
         }
 
@@ -26,34 +26,36 @@ namespace libsignalservice.messages.multidevice
 
         private void writeAvatarImage(DeviceGroup contact)
         {
-            if (contact.getAvatar().HasValue)
+            if (contact.Avatar != null)
             {
                 throw new NotImplementedException();
                 //contact.getAvatar().Match(e => e, () => { throw new Exception(); }).InputStream;
             }
         }
 
-        private void writeGroupDetails(DeviceGroup group)// throws IOException
+        private void WriteGroupDetails(DeviceGroup group)// throws IOException
         {
             GroupDetails groupDetails = new GroupDetails { };
-            groupDetails.Id = ByteString.CopyFrom(group.getId());
+            groupDetails.Id = ByteString.CopyFrom(group.Id);
 
-            if (group.getName().HasValue)
+            if (group.Name != null)
             {
-                groupDetails.Name = group.getName().Match(e => e, () => { throw new Exception(); });
+                //groupDetails.Name = group.getName().Match(e => e, () => { throw new Exception(); });
             }
 
-            if (group.getAvatar().HasValue)
+            if (group.Avatar != null)
             {
                 GroupDetails.Types.Avatar avatarBuilder = new GroupDetails.Types.Avatar { };
-                SignalServiceAttachmentStream avatar = group.getAvatar().Match(e => e, () => { throw new Exception(); });
-                avatarBuilder.ContentType = avatar.getContentType();
-                avatarBuilder.Length = (uint)avatar.Length;
+                //SignalServiceAttachmentStream avatar = group.getAvatar().Match(e => e, () => { throw new Exception(); });
+                //avatarBuilder.ContentType = avatar.C;
+                //avatarBuilder.Length = (uint)avatar.Length;
                 groupDetails.Avatar = avatarBuilder;
             }
 
-            groupDetails.Members.AddRange(group.getMembers());
-            groupDetails.Active = group.isActive();
+            //if (group.ExpirationTimer
+
+            groupDetails.Members.AddRange(group.Members);
+            groupDetails.Active = group.Active;
 
             byte[] serializedContactDetails = groupDetails.ToByteArray();
 

@@ -206,6 +206,8 @@ message ContactDetails {
   oneof color_oneof					{ string color      = 4; }
   oneof verified_oneof              { Verified verified = 5; }
   oneof profileKey_oneof            { bytes profileKey  = 6; }
+  oneof blocked_oneof { bool blocked = 7; }
+  oneof expireTimer_oneof { uint32 expireTimer = 8; }
 }
 
 message GroupDetails {
@@ -219,4 +221,5 @@ message GroupDetails {
   repeated string members = 3;
   oneof avatar_oneof				{ Avatar avatar  = 4; }
   oneof active_oneof				{ bool   active  = 5; } //[default = true] ### }
+  oneof expireTimer_oneof { uint32 expireTimer = 6; }
 }

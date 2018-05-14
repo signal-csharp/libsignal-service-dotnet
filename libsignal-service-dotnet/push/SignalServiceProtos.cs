@@ -121,23 +121,26 @@ namespace libsignalservice.push {
             "UG9pbnRlckgDIkgKBFR5cGUSCwoHVU5LTk9XThAAEgoKBlVQREFURRABEgsK",
             "B0RFTElWRVIQAhIICgRRVUlUEAMSEAoMUkVRVUVTVF9JTkZPEARCCgoIaWRf",
             "b25lb2ZCDAoKdHlwZV9vbmVvZkIMCgpuYW1lX29uZW9mQg4KDGF2YXRhcl9v",
-            "bmVvZiLzAgoOQ29udGFjdERldGFpbHMSEAoGbnVtYmVyGAEgASgJSAASDgoE",
+            "bmVvZiLDAwoOQ29udGFjdERldGFpbHMSEAoGbnVtYmVyGAEgASgJSAASDgoE",
             "bmFtZRgCIAEoCUgBEjMKBmF2YXRhchgDIAEoCzIhLnRleHRzZWN1cmUuQ29u",
             "dGFjdERldGFpbHMuQXZhdGFySAISDwoFY29sb3IYBCABKAlIAxIoCgh2ZXJp",
             "ZmllZBgFIAEoCzIULnRleHRzZWN1cmUuVmVyaWZpZWRIBBIUCgpwcm9maWxl",
-            "S2V5GAYgASgMSAUaVgoGQXZhdGFyEhUKC2NvbnRlbnRUeXBlGAEgASgJSAAS",
-            "EAoGbGVuZ3RoGAIgASgNSAFCEwoRY29udGVudFR5cGVfb25lb2ZCDgoMbGVu",
-            "Z3RoX29uZW9mQg4KDG51bWJlcl9vbmVvZkIMCgpuYW1lX29uZW9mQg4KDGF2",
-            "YXRhcl9vbmVvZkINCgtjb2xvcl9vbmVvZkIQCg52ZXJpZmllZF9vbmVvZkIS",
-            "ChBwcm9maWxlS2V5X29uZW9mIpQCCgxHcm91cERldGFpbHMSDAoCaWQYASAB",
-            "KAxIABIOCgRuYW1lGAIgASgJSAESDwoHbWVtYmVycxgDIAMoCRIxCgZhdmF0",
-            "YXIYBCABKAsyHy50ZXh0c2VjdXJlLkdyb3VwRGV0YWlscy5BdmF0YXJIAhIQ",
-            "CgZhY3RpdmUYBSABKAhIAxpWCgZBdmF0YXISFQoLY29udGVudFR5cGUYASAB",
-            "KAlIABIQCgZsZW5ndGgYAiABKA1IAUITChFjb250ZW50VHlwZV9vbmVvZkIO",
-            "CgxsZW5ndGhfb25lb2ZCCgoIaWRfb25lb2ZCDAoKbmFtZV9vbmVvZkIOCgxh",
-            "dmF0YXJfb25lb2ZCDgoMYWN0aXZlX29uZW9mQloKK29yZy53aGlzcGVyc3lz",
-            "dGVtcy50ZXh0c2VjdXJlLmludGVybmFsLnB1c2hCE1NpZ25hbFNlcnZpY2VQ",
-            "cm90b3OqAhVsaWJzaWduYWxzZXJ2aWNlLnB1c2hiBnByb3RvMw=="));
+            "S2V5GAYgASgMSAUSEQoHYmxvY2tlZBgHIAEoCEgGEhUKC2V4cGlyZVRpbWVy",
+            "GAggASgNSAcaVgoGQXZhdGFyEhUKC2NvbnRlbnRUeXBlGAEgASgJSAASEAoG",
+            "bGVuZ3RoGAIgASgNSAFCEwoRY29udGVudFR5cGVfb25lb2ZCDgoMbGVuZ3Ro",
+            "X29uZW9mQg4KDG51bWJlcl9vbmVvZkIMCgpuYW1lX29uZW9mQg4KDGF2YXRh",
+            "cl9vbmVvZkINCgtjb2xvcl9vbmVvZkIQCg52ZXJpZmllZF9vbmVvZkISChBw",
+            "cm9maWxlS2V5X29uZW9mQg8KDWJsb2NrZWRfb25lb2ZCEwoRZXhwaXJlVGlt",
+            "ZXJfb25lb2YiwAIKDEdyb3VwRGV0YWlscxIMCgJpZBgBIAEoDEgAEg4KBG5h",
+            "bWUYAiABKAlIARIPCgdtZW1iZXJzGAMgAygJEjEKBmF2YXRhchgEIAEoCzIf",
+            "LnRleHRzZWN1cmUuR3JvdXBEZXRhaWxzLkF2YXRhckgCEhAKBmFjdGl2ZRgF",
+            "IAEoCEgDEhUKC2V4cGlyZVRpbWVyGAYgASgNSAQaVgoGQXZhdGFyEhUKC2Nv",
+            "bnRlbnRUeXBlGAEgASgJSAASEAoGbGVuZ3RoGAIgASgNSAFCEwoRY29udGVu",
+            "dFR5cGVfb25lb2ZCDgoMbGVuZ3RoX29uZW9mQgoKCGlkX29uZW9mQgwKCm5h",
+            "bWVfb25lb2ZCDgoMYXZhdGFyX29uZW9mQg4KDGFjdGl2ZV9vbmVvZkITChFl",
+            "eHBpcmVUaW1lcl9vbmVvZkJaCitvcmcud2hpc3BlcnN5c3RlbXMudGV4dHNl",
+            "Y3VyZS5pbnRlcm5hbC5wdXNoQhNTaWduYWxTZXJ2aWNlUHJvdG9zqgIVbGli",
+            "c2lnbmFsc2VydmljZS5wdXNoYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -161,8 +164,8 @@ namespace libsignalservice.push {
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Configuration), global::libsignalservice.push.SyncMessage.Types.Configuration.Parser, new[]{ "ReadReceipts" }, new[]{ "ReadReceiptsOneof" }, null, null)}),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.AttachmentPointer), global::libsignalservice.push.AttachmentPointer.Parser, new[]{ "Id", "ContentType", "Key", "Size", "Thumbnail", "Digest", "FileName", "Flags", "Width", "Height" }, new[]{ "IdOneof", "ContentTypeOneof", "KeyOneof", "SizeOneof", "ThumbnailOneof", "DigestOneof", "FileNameOneof", "FlagsOneof", "WidthOneof", "HeightOneof" }, new[]{ typeof(global::libsignalservice.push.AttachmentPointer.Types.Flags) }, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.GroupContext), global::libsignalservice.push.GroupContext.Parser, new[]{ "Id", "Type", "Name", "Members", "Avatar" }, new[]{ "IdOneof", "TypeOneof", "NameOneof", "AvatarOneof" }, new[]{ typeof(global::libsignalservice.push.GroupContext.Types.Type) }, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.ContactDetails), global::libsignalservice.push.ContactDetails.Parser, new[]{ "Number", "Name", "Avatar", "Color", "Verified", "ProfileKey" }, new[]{ "NumberOneof", "NameOneof", "AvatarOneof", "ColorOneof", "VerifiedOneof", "ProfileKeyOneof" }, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.ContactDetails.Types.Avatar), global::libsignalservice.push.ContactDetails.Types.Avatar.Parser, new[]{ "ContentType", "Length" }, new[]{ "ContentTypeOneof", "LengthOneof" }, null, null)}),
-            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.GroupDetails), global::libsignalservice.push.GroupDetails.Parser, new[]{ "Id", "Name", "Members", "Avatar", "Active" }, new[]{ "IdOneof", "NameOneof", "AvatarOneof", "ActiveOneof" }, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.GroupDetails.Types.Avatar), global::libsignalservice.push.GroupDetails.Types.Avatar.Parser, new[]{ "ContentType", "Length" }, new[]{ "ContentTypeOneof", "LengthOneof" }, null, null)})
+            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.ContactDetails), global::libsignalservice.push.ContactDetails.Parser, new[]{ "Number", "Name", "Avatar", "Color", "Verified", "ProfileKey", "Blocked", "ExpireTimer" }, new[]{ "NumberOneof", "NameOneof", "AvatarOneof", "ColorOneof", "VerifiedOneof", "ProfileKeyOneof", "BlockedOneof", "ExpireTimerOneof" }, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.ContactDetails.Types.Avatar), global::libsignalservice.push.ContactDetails.Types.Avatar.Parser, new[]{ "ContentType", "Length" }, new[]{ "ContentTypeOneof", "LengthOneof" }, null, null)}),
+            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.GroupDetails), global::libsignalservice.push.GroupDetails.Parser, new[]{ "Id", "Name", "Members", "Avatar", "Active", "ExpireTimer" }, new[]{ "IdOneof", "NameOneof", "AvatarOneof", "ActiveOneof", "ExpireTimerOneof" }, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.GroupDetails.Types.Avatar), global::libsignalservice.push.GroupDetails.Types.Avatar.Parser, new[]{ "ContentType", "Length" }, new[]{ "ContentTypeOneof", "LengthOneof" }, null, null)})
           }));
     }
     #endregion
@@ -6832,6 +6835,18 @@ namespace libsignalservice.push {
           break;
       }
 
+      switch (other.BlockedOneofCase) {
+        case BlockedOneofOneofCase.Blocked:
+          Blocked = other.Blocked;
+          break;
+      }
+
+      switch (other.ExpireTimerOneofCase) {
+        case ExpireTimerOneofOneofCase.ExpireTimer:
+          ExpireTimer = other.ExpireTimer;
+          break;
+      }
+
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -6903,6 +6918,28 @@ namespace libsignalservice.push {
       set {
         profileKeyOneof_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
         profileKeyOneofCase_ = ProfileKeyOneofOneofCase.ProfileKey;
+      }
+    }
+
+    /// <summary>Field number for the "blocked" field.</summary>
+    public const int BlockedFieldNumber = 7;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Blocked {
+      get { return blockedOneofCase_ == BlockedOneofOneofCase.Blocked ? (bool) blockedOneof_ : false; }
+      set {
+        blockedOneof_ = value;
+        blockedOneofCase_ = BlockedOneofOneofCase.Blocked;
+      }
+    }
+
+    /// <summary>Field number for the "expireTimer" field.</summary>
+    public const int ExpireTimerFieldNumber = 8;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public uint ExpireTimer {
+      get { return expireTimerOneofCase_ == ExpireTimerOneofOneofCase.ExpireTimer ? (uint) expireTimerOneof_ : 0; }
+      set {
+        expireTimerOneof_ = value;
+        expireTimerOneofCase_ = ExpireTimerOneofOneofCase.ExpireTimer;
       }
     }
 
@@ -7014,6 +7051,42 @@ namespace libsignalservice.push {
       profileKeyOneof_ = null;
     }
 
+    private object blockedOneof_;
+    /// <summary>Enum of possible cases for the "blocked_oneof" oneof.</summary>
+    public enum BlockedOneofOneofCase {
+      None = 0,
+      Blocked = 7,
+    }
+    private BlockedOneofOneofCase blockedOneofCase_ = BlockedOneofOneofCase.None;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public BlockedOneofOneofCase BlockedOneofCase {
+      get { return blockedOneofCase_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearBlockedOneof() {
+      blockedOneofCase_ = BlockedOneofOneofCase.None;
+      blockedOneof_ = null;
+    }
+
+    private object expireTimerOneof_;
+    /// <summary>Enum of possible cases for the "expireTimer_oneof" oneof.</summary>
+    public enum ExpireTimerOneofOneofCase {
+      None = 0,
+      ExpireTimer = 8,
+    }
+    private ExpireTimerOneofOneofCase expireTimerOneofCase_ = ExpireTimerOneofOneofCase.None;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ExpireTimerOneofOneofCase ExpireTimerOneofCase {
+      get { return expireTimerOneofCase_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearExpireTimerOneof() {
+      expireTimerOneofCase_ = ExpireTimerOneofOneofCase.None;
+      expireTimerOneof_ = null;
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as ContactDetails);
@@ -7033,12 +7106,16 @@ namespace libsignalservice.push {
       if (Color != other.Color) return false;
       if (!object.Equals(Verified, other.Verified)) return false;
       if (ProfileKey != other.ProfileKey) return false;
+      if (Blocked != other.Blocked) return false;
+      if (ExpireTimer != other.ExpireTimer) return false;
       if (NumberOneofCase != other.NumberOneofCase) return false;
       if (NameOneofCase != other.NameOneofCase) return false;
       if (AvatarOneofCase != other.AvatarOneofCase) return false;
       if (ColorOneofCase != other.ColorOneofCase) return false;
       if (VerifiedOneofCase != other.VerifiedOneofCase) return false;
       if (ProfileKeyOneofCase != other.ProfileKeyOneofCase) return false;
+      if (BlockedOneofCase != other.BlockedOneofCase) return false;
+      if (ExpireTimerOneofCase != other.ExpireTimerOneofCase) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -7051,12 +7128,16 @@ namespace libsignalservice.push {
       if (colorOneofCase_ == ColorOneofOneofCase.Color) hash ^= Color.GetHashCode();
       if (verifiedOneofCase_ == VerifiedOneofOneofCase.Verified) hash ^= Verified.GetHashCode();
       if (profileKeyOneofCase_ == ProfileKeyOneofOneofCase.ProfileKey) hash ^= ProfileKey.GetHashCode();
+      if (blockedOneofCase_ == BlockedOneofOneofCase.Blocked) hash ^= Blocked.GetHashCode();
+      if (expireTimerOneofCase_ == ExpireTimerOneofOneofCase.ExpireTimer) hash ^= ExpireTimer.GetHashCode();
       hash ^= (int) numberOneofCase_;
       hash ^= (int) nameOneofCase_;
       hash ^= (int) avatarOneofCase_;
       hash ^= (int) colorOneofCase_;
       hash ^= (int) verifiedOneofCase_;
       hash ^= (int) profileKeyOneofCase_;
+      hash ^= (int) blockedOneofCase_;
+      hash ^= (int) expireTimerOneofCase_;
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -7094,6 +7175,14 @@ namespace libsignalservice.push {
         output.WriteRawTag(50);
         output.WriteBytes(ProfileKey);
       }
+      if (blockedOneofCase_ == BlockedOneofOneofCase.Blocked) {
+        output.WriteRawTag(56);
+        output.WriteBool(Blocked);
+      }
+      if (expireTimerOneofCase_ == ExpireTimerOneofOneofCase.ExpireTimer) {
+        output.WriteRawTag(64);
+        output.WriteUInt32(ExpireTimer);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -7119,6 +7208,12 @@ namespace libsignalservice.push {
       }
       if (profileKeyOneofCase_ == ProfileKeyOneofOneofCase.ProfileKey) {
         size += 1 + pb::CodedOutputStream.ComputeBytesSize(ProfileKey);
+      }
+      if (blockedOneofCase_ == BlockedOneofOneofCase.Blocked) {
+        size += 1 + 1;
+      }
+      if (expireTimerOneofCase_ == ExpireTimerOneofOneofCase.ExpireTimer) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(ExpireTimer);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -7173,6 +7268,18 @@ namespace libsignalservice.push {
           break;
       }
 
+      switch (other.BlockedOneofCase) {
+        case BlockedOneofOneofCase.Blocked:
+          Blocked = other.Blocked;
+          break;
+      }
+
+      switch (other.ExpireTimerOneofCase) {
+        case ExpireTimerOneofOneofCase.ExpireTimer:
+          ExpireTimer = other.ExpireTimer;
+          break;
+      }
+
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -7216,6 +7323,14 @@ namespace libsignalservice.push {
           }
           case 50: {
             ProfileKey = input.ReadBytes();
+            break;
+          }
+          case 56: {
+            Blocked = input.ReadBool();
+            break;
+          }
+          case 64: {
+            ExpireTimer = input.ReadUInt32();
             break;
           }
         }
@@ -7494,6 +7609,12 @@ namespace libsignalservice.push {
           break;
       }
 
+      switch (other.ExpireTimerOneofCase) {
+        case ExpireTimerOneofOneofCase.ExpireTimer:
+          ExpireTimer = other.ExpireTimer;
+          break;
+      }
+
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -7553,6 +7674,17 @@ namespace libsignalservice.push {
       set {
         activeOneof_ = value;
         activeOneofCase_ = ActiveOneofOneofCase.Active;
+      }
+    }
+
+    /// <summary>Field number for the "expireTimer" field.</summary>
+    public const int ExpireTimerFieldNumber = 6;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public uint ExpireTimer {
+      get { return expireTimerOneofCase_ == ExpireTimerOneofOneofCase.ExpireTimer ? (uint) expireTimerOneof_ : 0; }
+      set {
+        expireTimerOneof_ = value;
+        expireTimerOneofCase_ = ExpireTimerOneofOneofCase.ExpireTimer;
       }
     }
 
@@ -7628,6 +7760,24 @@ namespace libsignalservice.push {
       activeOneof_ = null;
     }
 
+    private object expireTimerOneof_;
+    /// <summary>Enum of possible cases for the "expireTimer_oneof" oneof.</summary>
+    public enum ExpireTimerOneofOneofCase {
+      None = 0,
+      ExpireTimer = 6,
+    }
+    private ExpireTimerOneofOneofCase expireTimerOneofCase_ = ExpireTimerOneofOneofCase.None;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ExpireTimerOneofOneofCase ExpireTimerOneofCase {
+      get { return expireTimerOneofCase_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearExpireTimerOneof() {
+      expireTimerOneofCase_ = ExpireTimerOneofOneofCase.None;
+      expireTimerOneof_ = null;
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as GroupDetails);
@@ -7646,10 +7796,12 @@ namespace libsignalservice.push {
       if(!members_.Equals(other.members_)) return false;
       if (!object.Equals(Avatar, other.Avatar)) return false;
       if (Active != other.Active) return false;
+      if (ExpireTimer != other.ExpireTimer) return false;
       if (IdOneofCase != other.IdOneofCase) return false;
       if (NameOneofCase != other.NameOneofCase) return false;
       if (AvatarOneofCase != other.AvatarOneofCase) return false;
       if (ActiveOneofCase != other.ActiveOneofCase) return false;
+      if (ExpireTimerOneofCase != other.ExpireTimerOneofCase) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -7661,10 +7813,12 @@ namespace libsignalservice.push {
       hash ^= members_.GetHashCode();
       if (avatarOneofCase_ == AvatarOneofOneofCase.Avatar) hash ^= Avatar.GetHashCode();
       if (activeOneofCase_ == ActiveOneofOneofCase.Active) hash ^= Active.GetHashCode();
+      if (expireTimerOneofCase_ == ExpireTimerOneofOneofCase.ExpireTimer) hash ^= ExpireTimer.GetHashCode();
       hash ^= (int) idOneofCase_;
       hash ^= (int) nameOneofCase_;
       hash ^= (int) avatarOneofCase_;
       hash ^= (int) activeOneofCase_;
+      hash ^= (int) expireTimerOneofCase_;
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -7695,6 +7849,10 @@ namespace libsignalservice.push {
         output.WriteRawTag(40);
         output.WriteBool(Active);
       }
+      if (expireTimerOneofCase_ == ExpireTimerOneofOneofCase.ExpireTimer) {
+        output.WriteRawTag(48);
+        output.WriteUInt32(ExpireTimer);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -7715,6 +7873,9 @@ namespace libsignalservice.push {
       }
       if (activeOneofCase_ == ActiveOneofOneofCase.Active) {
         size += 1 + 1;
+      }
+      if (expireTimerOneofCase_ == ExpireTimerOneofOneofCase.ExpireTimer) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(ExpireTimer);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -7755,6 +7916,12 @@ namespace libsignalservice.push {
           break;
       }
 
+      switch (other.ExpireTimerOneofCase) {
+        case ExpireTimerOneofOneofCase.ExpireTimer:
+          ExpireTimer = other.ExpireTimer;
+          break;
+      }
+
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -7789,6 +7956,10 @@ namespace libsignalservice.push {
           }
           case 40: {
             Active = input.ReadBool();
+            break;
+          }
+          case 48: {
+            ExpireTimer = input.ReadUInt32();
             break;
           }
         }

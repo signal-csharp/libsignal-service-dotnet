@@ -21,46 +21,25 @@ using System.Collections.Generic;
 
 namespace libsignalservice.messages.multidevice
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public class DeviceGroup
     {
-        private readonly byte[] id;
-        private readonly May<String> name;
-        private readonly IList<String> members;
-        private readonly May<SignalServiceAttachmentStream> avatar;
-        private readonly bool active;
+        public byte[] Id { get; }
+        public String Name { get; }
+        public IList<String> Members { get; }
+        public SignalServiceAttachmentStream Avatar { get; }
+        public bool Active { get; }
+        public int? ExpirationTimer { get; }
 
-        public DeviceGroup(byte[] id, May<String> name, IList<String> members, May<SignalServiceAttachmentStream> avatar, bool active)
+        public DeviceGroup(byte[] id, string name, IList<string> members, SignalServiceAttachmentStream avatar, bool active, int? expirationTimer)
         {
-            this.id = id;
-            this.name = name;
-            this.members = members;
-            this.avatar = avatar;
-            this.active = active;
-        }
-
-        public May<SignalServiceAttachmentStream> getAvatar()
-        {
-            return avatar;
-        }
-
-        public May<String> getName()
-        {
-            return name;
-        }
-
-        public byte[] getId()
-        {
-            return id;
-        }
-
-        public IList<String> getMembers()
-        {
-            return members;
-        }
-
-        public bool isActive()
-        {
-            return active;
+            Id = id;
+            Name = name;
+            Members = members;
+            Avatar = avatar;
+            Active = active;
+            ExpirationTimer = expirationTimer;
         }
     }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

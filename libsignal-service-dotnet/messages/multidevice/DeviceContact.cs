@@ -1,5 +1,3 @@
-using Strilanc.Value;
-
 namespace libsignalservice.messages.multidevice
 {
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
@@ -11,8 +9,10 @@ namespace libsignalservice.messages.multidevice
         public string Color { get; }
         public VerifiedMessage Verified { get; }
         public byte[] ProfileKey { get; }
+        public bool Blocked { get; }
+        public int? ExpirationTimer { get; }
 
-        public DeviceContact(string number, string name, SignalServiceAttachmentStream avatar, string color, VerifiedMessage verified, byte[] profileKey)
+        public DeviceContact(string number, string name, SignalServiceAttachmentStream avatar, string color, VerifiedMessage verified, byte[] profileKey, bool blocked, int? expirationTimer)
         {
             Number = number;
             Name = name;
@@ -20,6 +20,8 @@ namespace libsignalservice.messages.multidevice
             Color = color;
             Verified = verified;
             ProfileKey = profileKey;
+            Blocked = blocked;
+            ExpirationTimer = expirationTimer;
         }
     }
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member

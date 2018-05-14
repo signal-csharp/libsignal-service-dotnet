@@ -20,6 +20,7 @@ using System.IO;
 
 namespace libsignalservice.messages.multidevice
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public class DeviceContactsInputStream : ChunkedInputStream
     {
         public DeviceContactsInputStream(Stream input)
@@ -51,4 +52,5 @@ namespace libsignalservice.messages.multidevice
             throw new NotImplementedException();
         }
     }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }
