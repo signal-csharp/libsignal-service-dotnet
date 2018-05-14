@@ -27,21 +27,22 @@ namespace libsignalservice.push {
             "ChJQcm92aXNpb25pbmcucHJvdG8SCnRleHRzZWN1cmUiMAoQUHJvdmlzaW9u",
             "aW5nVXVpZBIOCgR1dWlkGAEgASgJSABCDAoKdXVpZF9vbmVvZiJZChFQcm92",
             "aXNpb25FbnZlbG9wZRITCglwdWJsaWNLZXkYASABKAxIABIOCgRib2R5GAIg",
-            "ASgMSAFCEQoPcHVibGljS2V5X29uZW9mQgwKCmJvZHlfb25lb2YihgIKEFBy",
+            "ASgMSAFCEQoPcHVibGljS2V5X29uZW9mQgwKCmJvZHlfb25lb2YirgIKEFBy",
             "b3Zpc2lvbk1lc3NhZ2USGwoRaWRlbnRpdHlLZXlQdWJsaWMYASABKAxIABIc",
             "ChJpZGVudGl0eUtleVByaXZhdGUYAiABKAxIARIQCgZudW1iZXIYAyABKAlI",
-            "AhIaChBwcm92aXNpb25pbmdDb2RlGAQgASgJSAMSFAoKcHJvZmlsZUtleRgF",
-            "IAEoDEgEQhkKF2lkZW50aXR5S2V5UHVibGljX29uZW9mQhoKGGlkZW50aXR5",
-            "S2V5UHJpdmF0ZV9vbmVvZkIOCgxudW1iZXJfb25lb2ZCGAoWcHJvdmlzaW9u",
-            "aW5nQ29kZV9vbmVvZkISChBwcm9maWxlS2V5X29uZW9mQlkKK29yZy53aGlz",
-            "cGVyc3lzdGVtcy50ZXh0c2VjdXJlLmludGVybmFsLnB1c2hCElByb3Zpc2lv",
-            "bmluZ1Byb3Rvc6oCFWxpYnNpZ25hbHNlcnZpY2UucHVzaGIGcHJvdG8z"));
+            "AhIaChBwcm92aXNpb25pbmdDb2RlGAQgASgJSAMSEwoJdXNlckFnZW50GAUg",
+            "ASgJSAQSFAoKcHJvZmlsZUtleRgGIAEoDEgFQhkKF2lkZW50aXR5S2V5UHVi",
+            "bGljX29uZW9mQhoKGGlkZW50aXR5S2V5UHJpdmF0ZV9vbmVvZkIOCgxudW1i",
+            "ZXJfb25lb2ZCGAoWcHJvdmlzaW9uaW5nQ29kZV9vbmVvZkIRCg91c2VyQWdl",
+            "bnRfb25lb2ZCEgoQcHJvZmlsZUtleV9vbmVvZkJZCitvcmcud2hpc3BlcnN5",
+            "c3RlbXMudGV4dHNlY3VyZS5pbnRlcm5hbC5wdXNoQhJQcm92aXNpb25pbmdQ",
+            "cm90b3OqAhVsaWJzaWduYWxzZXJ2aWNlLnB1c2hiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.ProvisioningUuid), global::libsignalservice.push.ProvisioningUuid.Parser, new[]{ "Uuid" }, new[]{ "UuidOneof" }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.ProvisionEnvelope), global::libsignalservice.push.ProvisionEnvelope.Parser, new[]{ "PublicKey", "Body" }, new[]{ "PublicKeyOneof", "BodyOneof" }, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.ProvisionMessage), global::libsignalservice.push.ProvisionMessage.Parser, new[]{ "IdentityKeyPublic", "IdentityKeyPrivate", "Number", "ProvisioningCode", "ProfileKey" }, new[]{ "IdentityKeyPublicOneof", "IdentityKeyPrivateOneof", "NumberOneof", "ProvisioningCodeOneof", "ProfileKeyOneof" }, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.ProvisionMessage), global::libsignalservice.push.ProvisionMessage.Parser, new[]{ "IdentityKeyPublic", "IdentityKeyPrivate", "Number", "ProvisioningCode", "UserAgent", "ProfileKey" }, new[]{ "IdentityKeyPublicOneof", "IdentityKeyPrivateOneof", "NumberOneof", "ProvisioningCodeOneof", "UserAgentOneof", "ProfileKeyOneof" }, null, null)
           }));
     }
     #endregion
@@ -467,6 +468,12 @@ namespace libsignalservice.push {
           break;
       }
 
+      switch (other.UserAgentOneofCase) {
+        case UserAgentOneofOneofCase.UserAgent:
+          UserAgent = other.UserAgent;
+          break;
+      }
+
       switch (other.ProfileKeyOneofCase) {
         case ProfileKeyOneofOneofCase.ProfileKey:
           ProfileKey = other.ProfileKey;
@@ -525,8 +532,19 @@ namespace libsignalservice.push {
       }
     }
 
+    /// <summary>Field number for the "userAgent" field.</summary>
+    public const int UserAgentFieldNumber = 5;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string UserAgent {
+      get { return userAgentOneofCase_ == UserAgentOneofOneofCase.UserAgent ? (string) userAgentOneof_ : ""; }
+      set {
+        userAgentOneof_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        userAgentOneofCase_ = UserAgentOneofOneofCase.UserAgent;
+      }
+    }
+
     /// <summary>Field number for the "profileKey" field.</summary>
-    public const int ProfileKeyFieldNumber = 5;
+    public const int ProfileKeyFieldNumber = 6;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pb::ByteString ProfileKey {
       get { return profileKeyOneofCase_ == ProfileKeyOneofOneofCase.ProfileKey ? (pb::ByteString) profileKeyOneof_ : pb::ByteString.Empty; }
@@ -608,11 +626,29 @@ namespace libsignalservice.push {
       provisioningCodeOneof_ = null;
     }
 
+    private object userAgentOneof_;
+    /// <summary>Enum of possible cases for the "userAgent_oneof" oneof.</summary>
+    public enum UserAgentOneofOneofCase {
+      None = 0,
+      UserAgent = 5,
+    }
+    private UserAgentOneofOneofCase userAgentOneofCase_ = UserAgentOneofOneofCase.None;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public UserAgentOneofOneofCase UserAgentOneofCase {
+      get { return userAgentOneofCase_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearUserAgentOneof() {
+      userAgentOneofCase_ = UserAgentOneofOneofCase.None;
+      userAgentOneof_ = null;
+    }
+
     private object profileKeyOneof_;
     /// <summary>Enum of possible cases for the "profileKey_oneof" oneof.</summary>
     public enum ProfileKeyOneofOneofCase {
       None = 0,
-      ProfileKey = 5,
+      ProfileKey = 6,
     }
     private ProfileKeyOneofOneofCase profileKeyOneofCase_ = ProfileKeyOneofOneofCase.None;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -643,11 +679,13 @@ namespace libsignalservice.push {
       if (IdentityKeyPrivate != other.IdentityKeyPrivate) return false;
       if (Number != other.Number) return false;
       if (ProvisioningCode != other.ProvisioningCode) return false;
+      if (UserAgent != other.UserAgent) return false;
       if (ProfileKey != other.ProfileKey) return false;
       if (IdentityKeyPublicOneofCase != other.IdentityKeyPublicOneofCase) return false;
       if (IdentityKeyPrivateOneofCase != other.IdentityKeyPrivateOneofCase) return false;
       if (NumberOneofCase != other.NumberOneofCase) return false;
       if (ProvisioningCodeOneofCase != other.ProvisioningCodeOneofCase) return false;
+      if (UserAgentOneofCase != other.UserAgentOneofCase) return false;
       if (ProfileKeyOneofCase != other.ProfileKeyOneofCase) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -659,11 +697,13 @@ namespace libsignalservice.push {
       if (identityKeyPrivateOneofCase_ == IdentityKeyPrivateOneofOneofCase.IdentityKeyPrivate) hash ^= IdentityKeyPrivate.GetHashCode();
       if (numberOneofCase_ == NumberOneofOneofCase.Number) hash ^= Number.GetHashCode();
       if (provisioningCodeOneofCase_ == ProvisioningCodeOneofOneofCase.ProvisioningCode) hash ^= ProvisioningCode.GetHashCode();
+      if (userAgentOneofCase_ == UserAgentOneofOneofCase.UserAgent) hash ^= UserAgent.GetHashCode();
       if (profileKeyOneofCase_ == ProfileKeyOneofOneofCase.ProfileKey) hash ^= ProfileKey.GetHashCode();
       hash ^= (int) identityKeyPublicOneofCase_;
       hash ^= (int) identityKeyPrivateOneofCase_;
       hash ^= (int) numberOneofCase_;
       hash ^= (int) provisioningCodeOneofCase_;
+      hash ^= (int) userAgentOneofCase_;
       hash ^= (int) profileKeyOneofCase_;
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -694,8 +734,12 @@ namespace libsignalservice.push {
         output.WriteRawTag(34);
         output.WriteString(ProvisioningCode);
       }
-      if (profileKeyOneofCase_ == ProfileKeyOneofOneofCase.ProfileKey) {
+      if (userAgentOneofCase_ == UserAgentOneofOneofCase.UserAgent) {
         output.WriteRawTag(42);
+        output.WriteString(UserAgent);
+      }
+      if (profileKeyOneofCase_ == ProfileKeyOneofOneofCase.ProfileKey) {
+        output.WriteRawTag(50);
         output.WriteBytes(ProfileKey);
       }
       if (_unknownFields != null) {
@@ -717,6 +761,9 @@ namespace libsignalservice.push {
       }
       if (provisioningCodeOneofCase_ == ProvisioningCodeOneofOneofCase.ProvisioningCode) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(ProvisioningCode);
+      }
+      if (userAgentOneofCase_ == UserAgentOneofOneofCase.UserAgent) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(UserAgent);
       }
       if (profileKeyOneofCase_ == ProfileKeyOneofOneofCase.ProfileKey) {
         size += 1 + pb::CodedOutputStream.ComputeBytesSize(ProfileKey);
@@ -756,6 +803,12 @@ namespace libsignalservice.push {
           break;
       }
 
+      switch (other.UserAgentOneofCase) {
+        case UserAgentOneofOneofCase.UserAgent:
+          UserAgent = other.UserAgent;
+          break;
+      }
+
       switch (other.ProfileKeyOneofCase) {
         case ProfileKeyOneofOneofCase.ProfileKey:
           ProfileKey = other.ProfileKey;
@@ -790,6 +843,10 @@ namespace libsignalservice.push {
             break;
           }
           case 42: {
+            UserAgent = input.ReadString();
+            break;
+          }
+          case 50: {
             ProfileKey = input.ReadBytes();
             break;
           }
