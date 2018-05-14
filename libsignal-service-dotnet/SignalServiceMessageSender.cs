@@ -24,23 +24,26 @@ namespace libsignalservice
     /// </summary>
     public class SignalServiceMessageSender
     {
-        private static string TAG = "SignalServiceMessageSender";
+        private static readonly string TAG = "SignalServiceMessageSender";
 
         private readonly PushServiceSocket socket;
         private readonly SignalProtocolStore store;
         private readonly SignalServiceAddress localAddress;
         private readonly SignalServiceMessagePipe pipe;
-        private readonly EventListener eventListener;
+        private readonly IEventListener eventListener;
         private readonly CancellationToken Token;
         private readonly StaticCredentialsProvider CredentialsProvider;
 
         /// <summary>
         /// Construct a SignalServiceMessageSender
         /// </summary>
+        /// <param name="token">A CancellationToken to cancel the sender's operations</param>
         /// <param name="urls">The URL of the Signal Service.</param>
         /// <param name="user">The Signal Service username (eg phone number).</param>
         /// <param name="password">The Signal Service user password</param>
+        /// <param name="deviceId">Tbe Signal Service device id</param>
         /// <param name="store">The SignalProtocolStore.</param>
+        /// <param name="pipe">An optional SignalServiceMessagePipe</param>
         /// <param name="eventListener">An optional event listener, which fires whenever sessions are
         /// setup or torn down for a recipient.</param>
         /// <param name="userAgent"></param>
@@ -48,7 +51,7 @@ namespace libsignalservice
                                        string user, string password, int deviceId,
                                        SignalProtocolStore store,
                                        SignalServiceMessagePipe pipe,
-                                       EventListener eventListener, string userAgent)
+                                       IEventListener eventListener, string userAgent)
         {
             Token = token;
             CredentialsProvider = new StaticCredentialsProvider(user, password, null, deviceId);
@@ -65,9 +68,9 @@ namespace libsignalservice
         /// </summary>
         /// <param name="recipient">The sender of the received message you're acknowledging.</param>
         /// <param name="messageId">The message id of the received message you're acknowledging.</param>
-        public void sendDeliveryReceipt(SignalServiceAddress recipient, ulong messageId)
+        public void SendDeliveryReceipt(SignalServiceAddress recipient, ulong messageId)
         {
-            this.socket.sendReceipt(recipient.E164number, messageId, recipient.Relay);
+            this.socket.RendReceipt(recipient.E164number, messageId, recipient.Relay);
         }
 
         /// <summary>
@@ -75,10 +78,10 @@ namespace libsignalservice
         /// </summary>
         /// <param name="recipient">The message's destination.</param>
         /// <param name="message">The call message.</param>
-        public void sendCallMessage(SignalServiceAddress recipient, SignalServiceCallMessage message)
+        public void SendCallMessage(SignalServiceAddress recipient, SignalServiceCallMessage message)
         {
-            byte[] content = createCallContent(message);
-            sendMessage(recipient, Util.CurrentTimeMillis(), content, true);
+            byte[] content = CreateCallContent(message);
+            SendMessage(recipient, Util.CurrentTimeMillis(), content, true);
         }
 
         /// <summary>
@@ -86,17 +89,17 @@ namespace libsignalservice
         /// </summary>
         /// <param name="recipient">The message's destination.</param>
         /// <param name="message">The message.</param>
-        public void sendMessage(SignalServiceAddress recipient, SignalServiceDataMessage message)
+        public void SendMessage(SignalServiceAddress recipient, SignalServiceDataMessage message)
         {
-            byte[] content = createMessageContent(message);
+            byte[] content = CreateMessageContent(message);
             long timestamp = message.Timestamp;
             bool silent = message.Group != null && message.Group.Type == SignalServiceGroup.GroupType.REQUEST_INFO;
-            var resp = sendMessage(recipient, timestamp, content, silent);
+            var resp = SendMessage(recipient, timestamp, content, silent);
 
             if (resp.needsSync)
             {
-                byte[] syncMessage = createMultiDeviceSentTranscriptContent(content, new May<SignalServiceAddress>(recipient), (ulong)timestamp);
-                sendMessage(localAddress, timestamp, syncMessage, false);
+                byte[] syncMessage = CreateMultiDeviceSentTranscriptContent(content, new May<SignalServiceAddress>(recipient), (ulong)timestamp);
+                SendMessage(localAddress, timestamp, syncMessage, false);
             }
 
             if (message.EndSession)
@@ -105,7 +108,7 @@ namespace libsignalservice
 
                 if (eventListener != null)
                 {
-                    eventListener.onSecurityEvent(recipient);
+                    eventListener.OnSecurityEvent(recipient);
                 }
             }
         }
@@ -115,17 +118,17 @@ namespace libsignalservice
         /// </summary>
         /// <param name="recipients">The group members.</param>
         /// <param name="message">The group message.</param>
-        public void sendMessage(List<SignalServiceAddress> recipients, SignalServiceDataMessage message)
+        public void SendMessage(List<SignalServiceAddress> recipients, SignalServiceDataMessage message)
         {
-            byte[] content = createMessageContent(message);
+            byte[] content = CreateMessageContent(message);
             long timestamp = message.Timestamp;
-            SendMessageResponseList response = sendMessage(recipients, timestamp, content);
+            SendMessageResponseList response = SendMessage(recipients, timestamp, content);
             try
             {
                 if (response != null && response.NeedsSync)
                 {
-                    byte[] syncMessage = createMultiDeviceSentTranscriptContent(content, May<SignalServiceAddress>.NoValue, (ulong)timestamp);
-                    sendMessage(localAddress, timestamp, syncMessage, false);
+                    byte[] syncMessage = CreateMultiDeviceSentTranscriptContent(content, May<SignalServiceAddress>.NoValue, (ulong)timestamp);
+                    SendMessage(localAddress, timestamp, syncMessage, false);
                 }
             }
             catch (UntrustedIdentityException e)
@@ -139,30 +142,34 @@ namespace libsignalservice
             }
         }
 
-        public void sendMessage(SignalServiceSyncMessage message)
+        /// <summary>
+        /// TODO
+        /// </summary>
+        /// <param name="message"></param>
+        public void SendMessage(SignalServiceSyncMessage message)
         {
             byte[] content;
 
             if (message.getContacts().HasValue)
             {
-                content = createMultiDeviceContactsContent(message.getContacts().ForceGetValue().Contacts.asStream(),
+                content = CreateMultiDeviceContactsContent(message.getContacts().ForceGetValue().Contacts.asStream(),
                     message.getContacts().ForceGetValue().Complete);
             }
             else if (message.getGroups().HasValue)
             {
-                content = createMultiDeviceGroupsContent(message.getGroups().ForceGetValue().asStream());
+                content = CreateMultiDeviceGroupsContent(message.getGroups().ForceGetValue().asStream());
             }
             else if (message.getRead().HasValue)
             {
-                content = createMultiDeviceReadContent(message.getRead().ForceGetValue());
+                content = CreateMultiDeviceReadContent(message.getRead().ForceGetValue());
             }
             else if (message.getBlockedList().HasValue)
             {
-                content = createMultiDeviceBlockedContent(message.getBlockedList().ForceGetValue());
+                content = CreateMultiDeviceBlockedContent(message.getBlockedList().ForceGetValue());
             }
             else if (message.getVerified().HasValue)
             {
-                sendMessage(message.getVerified().ForceGetValue());
+                SendMessage(message.getVerified().ForceGetValue());
                 return;
             }
             else
@@ -170,24 +177,35 @@ namespace libsignalservice
                 throw new Exception("Unsupported sync message!");
             }
 
-            sendMessage(localAddress, Util.CurrentTimeMillis(), content, false);
+            SendMessage(localAddress, Util.CurrentTimeMillis(), content, false);
         }
 
-        public void setSoTimeoutMillis(long soTimeoutMillis)
+        /// <summary>
+        /// TODO
+        /// </summary>
+        /// <param name="soTimeoutMillis"></param>
+        public void SetSoTimeoutMillis(long soTimeoutMillis)
         {
-            socket.setSoTimeoutMillis(soTimeoutMillis);
+            socket.SetSoTimeoutMillis(soTimeoutMillis);
         }
 
-        public void cancelInFlightRequests()
+        /// <summary>
+        /// TODO
+        /// </summary>
+        public void CancelInFlightRequests()
         {
-            socket.cancelInFlightRequests();
+            socket.CancelInFlightRequests();
         }
 
-        private void sendMessage(VerifiedMessage message)
+        /// <summary>
+        /// TODO
+        /// </summary>
+        /// <param name="message"></param>
+        private void SendMessage(VerifiedMessage message)
         {
             byte[] nullMessageBody = new DataMessage()
             {
-                Body = Base64.encodeBytes(Util.getRandomLengthBytes(140))
+                Body = Base64.EncodeBytes(Util.getRandomLengthBytes(140))
             }.ToByteArray();
 
             NullMessage nullMessage = new NullMessage()
@@ -200,16 +218,16 @@ namespace libsignalservice
                 NullMessage = nullMessage
             }.ToByteArray();
 
-            SendMessageResponse response = sendMessage(new SignalServiceAddress(message.Destination), message.Timestamp, content, false);
+            SendMessageResponse response = SendMessage(new SignalServiceAddress(message.Destination), message.Timestamp, content, false);
 
             if (response != null && response.needsSync)
             {
-                byte[] syncMessage = createMultiDeviceVerifiedContent(message, nullMessage.ToByteArray());
-                sendMessage(localAddress, message.Timestamp, syncMessage, false);
+                byte[] syncMessage = CreateMultiDeviceVerifiedContent(message, nullMessage.ToByteArray());
+                SendMessage(localAddress, message.Timestamp, syncMessage, false);
             }
         }
 
-        private byte[] createMessageContent(SignalServiceDataMessage message)// throws IOException
+        private byte[] CreateMessageContent(SignalServiceDataMessage message)// throws IOException
         {
             Content content = new Content();
             DataMessage dataMessage = new DataMessage { };
@@ -227,7 +245,7 @@ namespace libsignalservice
 
             if (message.Group != null)
             {
-                dataMessage.Group = createGroupContent(message.Group);
+                dataMessage.Group = CreateGroupContent(message.Group);
             }
 
             if (message.EndSession)
@@ -245,11 +263,16 @@ namespace libsignalservice
                 dataMessage.ExpireTimer = (uint)message.ExpiresInSeconds;
             }
 
+            if (message.ProfileKey != null)
+            {
+                dataMessage.ProfileKey = ByteString.CopyFrom(message.ProfileKey);
+            }
+
             content.DataMessage = dataMessage;
             return content.ToByteArray();
         }
 
-        private byte[] createCallContent(SignalServiceCallMessage callMessage)
+        private byte[] CreateCallContent(SignalServiceCallMessage callMessage)
         {
             Content content = new Content();
             CallMessage pushCallMessage = new CallMessage();
@@ -302,10 +325,10 @@ namespace libsignalservice
             return content.ToByteArray();
         }
 
-        private byte[] createMultiDeviceContactsContent(SignalServiceAttachmentStream contacts, bool complete)
+        private byte[] CreateMultiDeviceContactsContent(SignalServiceAttachmentStream contacts, bool complete)
         {
             Content content = new Content { };
-            SyncMessage syncMessage = createSyncMessage();
+            SyncMessage syncMessage = CreateSyncMessage();
             syncMessage.Contacts = new SyncMessage.Types.Contacts
             {
                 Blob = CreateAttachmentPointer(contacts),
@@ -315,10 +338,10 @@ namespace libsignalservice
             return content.ToByteArray();
         }
 
-        private byte[] createMultiDeviceGroupsContent(SignalServiceAttachmentStream groups)
+        private byte[] CreateMultiDeviceGroupsContent(SignalServiceAttachmentStream groups)
         {
             Content content = new Content { };
-            SyncMessage syncMessage = createSyncMessage();
+            SyncMessage syncMessage = CreateSyncMessage();
             syncMessage.Groups = new SyncMessage.Types.Groups
             {
                 Blob = CreateAttachmentPointer(groups)
@@ -327,12 +350,12 @@ namespace libsignalservice
             return content.ToByteArray();
         }
 
-        private byte[] createMultiDeviceSentTranscriptContent(byte[] rawContent, May<SignalServiceAddress> recipient, ulong timestamp)
+        private byte[] CreateMultiDeviceSentTranscriptContent(byte[] rawContent, May<SignalServiceAddress> recipient, ulong timestamp)
         {
             try
             {
                 Content content = new Content { };
-                SyncMessage syncMessage = createSyncMessage();
+                SyncMessage syncMessage = CreateSyncMessage();
                 SyncMessage.Types.Sent sentMessage = new SyncMessage.Types.Sent { };
                 DataMessage dataMessage = Content.Parser.ParseFrom(rawContent).DataMessage;
 
@@ -358,10 +381,10 @@ namespace libsignalservice
             }
         }
 
-        private byte[] createMultiDeviceReadContent(List<ReadMessage> readMessages)
+        private byte[] CreateMultiDeviceReadContent(List<ReadMessage> readMessages)
         {
             Content content = new Content { };
-            SyncMessage syncMessage = createSyncMessage();
+            SyncMessage syncMessage = CreateSyncMessage();
 
             foreach (ReadMessage readMessage in readMessages)
             {
@@ -375,7 +398,7 @@ namespace libsignalservice
             return content.ToByteArray();
         }
 
-        private byte[] createMultiDeviceBlockedContent(BlockedListMessage blocked)
+        private byte[] CreateMultiDeviceBlockedContent(BlockedListMessage blocked)
         {
             Content content = new Content { };
             SyncMessage syncMessage = new SyncMessage { };
@@ -387,15 +410,16 @@ namespace libsignalservice
             return content.ToByteArray();
         }
 
-        private byte[] createMultiDeviceVerifiedContent(VerifiedMessage verifiedMessage, byte[] nullMessage)
+        private byte[] CreateMultiDeviceVerifiedContent(VerifiedMessage verifiedMessage, byte[] nullMessage)
         {
             Content content = new Content { };
-            SyncMessage syncMessage = createSyncMessage();
-            Verified verifiedMessageBuilder = new Verified();
-
-            verifiedMessageBuilder.NullMessage = ByteString.CopyFrom(nullMessage);
-            verifiedMessageBuilder.Destination = verifiedMessage.Destination;
-            verifiedMessageBuilder.IdentityKey = ByteString.CopyFrom(verifiedMessage.IdentityKey.serialize());
+            SyncMessage syncMessage = CreateSyncMessage();
+            Verified verifiedMessageBuilder = new Verified
+            {
+                NullMessage = ByteString.CopyFrom(nullMessage),
+                Destination = verifiedMessage.Destination,
+                IdentityKey = ByteString.CopyFrom(verifiedMessage.IdentityKey.serialize())
+            };
 
             switch (verifiedMessage.Verified)
             {
@@ -417,14 +441,14 @@ namespace libsignalservice
             return content.ToByteArray();
         }
 
-        private SyncMessage createSyncMessage()
+        private SyncMessage CreateSyncMessage()
         {
             SyncMessage syncMessage = new SyncMessage { };
             syncMessage.Padding = ByteString.CopyFrom(Util.getRandomLengthBytes(512));
             return syncMessage;
         }
 
-        private GroupContext createGroupContent(SignalServiceGroup group)
+        private GroupContext CreateGroupContent(SignalServiceGroup group)
         {
             GroupContext groupContext = new GroupContext { };
             groupContext.Id = ByteString.CopyFrom(group.GroupId);
@@ -453,14 +477,14 @@ namespace libsignalservice
             return groupContext;
         }
 
-        private SendMessageResponseList sendMessage(List<SignalServiceAddress> recipients, long timestamp, byte[] content)
+        private SendMessageResponseList SendMessage(List<SignalServiceAddress> recipients, long timestamp, byte[] content)
         {
             SendMessageResponseList responseList = new SendMessageResponseList();
             foreach (SignalServiceAddress recipient in recipients)
             {
                 try
                 {
-                    var response = sendMessage(recipient, timestamp, content, false);
+                    var response = SendMessage(recipient, timestamp, content, false);
                     responseList.AddResponse(response);
                 }
                 catch (UntrustedIdentityException e)
@@ -482,13 +506,13 @@ namespace libsignalservice
             return responseList;
         }
 
-        private SendMessageResponse sendMessage(SignalServiceAddress recipient, long timestamp, byte[] content, bool silent)
+        private SendMessageResponse SendMessage(SignalServiceAddress recipient, long timestamp, byte[] content, bool silent)
         {
             for (int i = 0; i < 3; i++)
             {
                 try
                 {
-                    OutgoingPushMessageList messages = getEncryptedMessages(socket, recipient, timestamp, content, silent);
+                    OutgoingPushMessageList messages = GetEncryptedMessages(socket, recipient, timestamp, content, silent);
                     if (pipe != null)
                     {
                         try
@@ -503,21 +527,21 @@ namespace libsignalservice
                     }
 
                     Debug.WriteLine("Not transmitting over pipe...");
-                    return socket.sendMessage(messages);
+                    return socket.SendMessage(messages);
                 }
                 catch (MismatchedDevicesException mde)
                 {
                     Debug.WriteLine("MismatchedDevicesException");
                     Debug.WriteLine(mde.Message);
                     Debug.WriteLine(mde.StackTrace);
-                    handleMismatchedDevices(socket, recipient, mde.getMismatchedDevices());
+                    HandleMismatchedDevices(socket, recipient, mde.getMismatchedDevices());
                 }
                 catch (StaleDevicesException ste)
                 {
                     Debug.WriteLine("MismatchedDevicesException");
                     Debug.WriteLine(ste.Message);
                     Debug.WriteLine(ste.StackTrace);
-                    handleStaleDevices(recipient, ste.getStaleDevices());
+                    HandleStaleDevices(recipient, ste.getStaleDevices());
                 }
             }
             Debug.WriteLine("Failed to resolve conflicts after 3 attempts!");
@@ -543,7 +567,7 @@ namespace libsignalservice
                 }
                 else if (attachment.isPointer())
                 {
-                    pointers.Add(createAttachmentPointerFromPointer(attachment.asPointer()));
+                    pointers.Add(CreateAttachmentPointerFromPointer(attachment.asPointer()));
                 }
             }
 
@@ -588,7 +612,7 @@ namespace libsignalservice
             return attachmentPointer;
         }
 
-        private AttachmentPointer createAttachmentPointerFromPointer(SignalServiceAttachmentPointer attachment)
+        private AttachmentPointer CreateAttachmentPointerFromPointer(SignalServiceAttachmentPointer attachment)
         {
             var attachmentPointer = new AttachmentPointer()
             {
@@ -637,7 +661,7 @@ namespace libsignalservice
             return socket.EncryptAttachment(data, key);
         }
 
-        private OutgoingPushMessageList getEncryptedMessages(PushServiceSocket socket,
+        private OutgoingPushMessageList GetEncryptedMessages(PushServiceSocket socket,
                                                    SignalServiceAddress recipient,
                                                    long timestamp,
                                                    byte[] plaintext,
@@ -648,7 +672,7 @@ namespace libsignalservice
             bool myself = recipient.Equals(localAddress);
             if (!myself || CredentialsProvider.GetDeviceId() != SignalServiceAddress.DEFAULT_DEVICE_ID)
             {
-                messages.Add(getEncryptedMessage(socket, recipient, SignalServiceAddress.DEFAULT_DEVICE_ID, plaintext, silent));
+                messages.Add(GetEncryptedMessage(socket, recipient, SignalServiceAddress.DEFAULT_DEVICE_ID, plaintext, silent));
             }
 
             foreach (uint deviceId in store.GetSubDeviceSessions(recipient.E164number))
@@ -657,7 +681,7 @@ namespace libsignalservice
                 {
                     if (store.ContainsSession(new SignalProtocolAddress(recipient.E164number, deviceId)))
                     {
-                        messages.Add(getEncryptedMessage(socket, recipient, deviceId, plaintext, silent));
+                        messages.Add(GetEncryptedMessage(socket, recipient, deviceId, plaintext, silent));
                     }
                 }
             }
@@ -665,7 +689,7 @@ namespace libsignalservice
             return new OutgoingPushMessageList(recipient.E164number, (ulong)timestamp, recipient.Relay, messages);
         }
 
-        private OutgoingPushMessage getEncryptedMessage(PushServiceSocket socket, SignalServiceAddress recipient, uint deviceId, byte[] plaintext, bool silent)
+        private OutgoingPushMessage GetEncryptedMessage(PushServiceSocket socket, SignalServiceAddress recipient, uint deviceId, byte[] plaintext, bool silent)
         {
             SignalProtocolAddress signalProtocolAddress = new SignalProtocolAddress(recipient.E164number, deviceId);
             SignalServiceCipher cipher = new SignalServiceCipher(localAddress, store);
@@ -674,7 +698,7 @@ namespace libsignalservice
             {
                 try
                 {
-                    List<PreKeyBundle> preKeys = socket.getPreKeys(recipient, deviceId);
+                    List<PreKeyBundle> preKeys = socket.GetPreKeys(recipient, deviceId);
 
                     foreach (PreKeyBundle preKey in preKeys)
                     {
@@ -688,7 +712,7 @@ namespace libsignalservice
                             SessionBuilder sessionBuilder = new SessionBuilder(store, preKeyAddress);
                             sessionBuilder.process(preKey);
                         }
-                        catch (libsignal.exceptions.UntrustedIdentityException e)
+                        catch (libsignal.exceptions.UntrustedIdentityException)
                         {
                             throw new UntrustedIdentityException("Untrusted identity key!", recipient.E164number, preKey.getIdentityKey());
                         }
@@ -696,7 +720,7 @@ namespace libsignalservice
 
                     if (eventListener != null)
                     {
-                        eventListener.onSecurityEvent(recipient);
+                        eventListener.OnSecurityEvent(recipient);
                     }
                 }
                 catch (InvalidKeyException e)
@@ -705,10 +729,10 @@ namespace libsignalservice
                 }
             }
 
-            return cipher.encrypt(signalProtocolAddress, plaintext, silent);
+            return cipher.Encrypt(signalProtocolAddress, plaintext, silent);
         }
 
-        private void handleMismatchedDevices(PushServiceSocket socket, SignalServiceAddress recipient, MismatchedDevices mismatchedDevices)
+        private void HandleMismatchedDevices(PushServiceSocket socket, SignalServiceAddress recipient, MismatchedDevices mismatchedDevices)
         {
             try
             {
@@ -719,14 +743,14 @@ namespace libsignalservice
 
                 foreach (uint missingDeviceId in mismatchedDevices.getMissingDevices())
                 {
-                    PreKeyBundle preKey = socket.getPreKey(recipient, missingDeviceId);
+                    PreKeyBundle preKey = socket.GetPreKey(recipient, missingDeviceId);
 
                     try
                     {
                         SessionBuilder sessionBuilder = new SessionBuilder(store, new SignalProtocolAddress(recipient.E164number, missingDeviceId));
                         sessionBuilder.process(preKey);
                     }
-                    catch (libsignal.exceptions.UntrustedIdentityException e)
+                    catch (libsignal.exceptions.UntrustedIdentityException)
                     {
                         throw new UntrustedIdentityException("Untrusted identity key!", recipient.E164number, preKey.getIdentityKey());
                     }
@@ -738,7 +762,7 @@ namespace libsignalservice
             }
         }
 
-        private void handleStaleDevices(SignalServiceAddress recipient, StaleDevices staleDevices)
+        private void HandleStaleDevices(SignalServiceAddress recipient, StaleDevices staleDevices)
         {
             foreach (uint staleDeviceId in staleDevices.getStaleDevices())
             {
@@ -746,7 +770,7 @@ namespace libsignalservice
             }
         }
 
-        private byte[] createSentTranscriptMessage(byte[] rawContent, May<SignalServiceAddress> recipient, ulong timestamp)
+        private byte[] CreateSentTranscriptMessage(byte[] rawContent, May<SignalServiceAddress> recipient, ulong timestamp)
         {
             {
                 try
@@ -773,9 +797,11 @@ namespace libsignalservice
             }
         }
 
-        public interface EventListener
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        public interface IEventListener
         {
-            void onSecurityEvent(SignalServiceAddress address);
+            void OnSecurityEvent(SignalServiceAddress address);
         }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
     }
 }

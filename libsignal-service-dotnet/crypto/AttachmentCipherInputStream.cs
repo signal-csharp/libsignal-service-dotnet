@@ -9,6 +9,7 @@ using System.Text;
 
 namespace libsignalservice.crypto
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public class AttachmentCipherInputStream : Stream
     {
         private static readonly int BLOCK_SIZE = 16;
@@ -136,4 +137,5 @@ namespace libsignalservice.crypto
             }
         }
     }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

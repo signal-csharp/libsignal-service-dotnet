@@ -2,6 +2,7 @@ using System.Collections.Generic;
 
 namespace libsignalservice.messages
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     /// <summary>
     /// Represents a decrypted Signal Service data message.
     /// </summary>
@@ -11,6 +12,7 @@ namespace libsignalservice.messages
         public List<SignalServiceAttachment> Attachments { get; set; }
         public string Body { get; set; }
         public SignalServiceGroup Group { get; set; }
+        public byte[] ProfileKey { get; set; }
         public bool EndSession { get; set; }
         public bool ExpirationUpdate { get; set; }
         public int ExpiresInSeconds { get; set; }
@@ -20,4 +22,5 @@ namespace libsignalservice.messages
             return Group != null && Group.Type != SignalServiceGroup.GroupType.DELIVER;
         }
     }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

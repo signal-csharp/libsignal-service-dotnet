@@ -55,76 +55,77 @@ namespace libsignalservice.push {
             "aW5lSW5kZXhfb25lb2ZCCwoJc2RwX29uZW9mGiAKBEJ1c3kSDAoCaWQYASAB",
             "KARIAEIKCghpZF9vbmVvZhoiCgZIYW5ndXASDAoCaWQYASABKARIAEIKCghp",
             "ZF9vbmVvZkINCgtvZmZlcl9vbmVvZkIOCgxhbnN3ZXJfb25lb2ZCDgoMaGFu",
-            "Z3VwX29uZW9mQgwKCmJ1c3lfb25lb2YisgIKC0RhdGFNZXNzYWdlEg4KBGJv",
+            "Z3VwX29uZW9mQgwKCmJ1c3lfb25lb2Yi3AIKC0RhdGFNZXNzYWdlEg4KBGJv",
             "ZHkYASABKAlIABIyCgthdHRhY2htZW50cxgCIAMoCzIdLnRleHRzZWN1cmUu",
             "QXR0YWNobWVudFBvaW50ZXISKQoFZ3JvdXAYAyABKAsyGC50ZXh0c2VjdXJl",
             "Lkdyb3VwQ29udGV4dEgBEg8KBWZsYWdzGAQgASgNSAISFQoLZXhwaXJlVGlt",
-            "ZXIYBSABKA1IAyJLCgVGbGFncxIUChBaRVJPX1BMQUNFSE9MREVSEAASDwoL",
-            "RU5EX1NFU1NJT04QARIbChdFWFBJUkFUSU9OX1RJTUVSX1VQREFURRACQgwK",
-            "CmJvZHlfb25lb2ZCDQoLZ3JvdXBfb25lb2ZCDQoLZmxhZ3Nfb25lb2ZCEwoR",
-            "ZXhwaXJlVGltZXJfb25lb2YiMQoLTnVsbE1lc3NhZ2USEQoHcGFkZGluZxgB",
-            "IAEoDEgAQg8KDXBhZGRpbmdfb25lb2Yi/gEKCFZlcmlmaWVkEhUKC2Rlc3Rp",
-            "bmF0aW9uGAEgASgJSAASFQoLaWRlbnRpdHlLZXkYAiABKAxIARIrCgVzdGF0",
-            "ZRgDIAEoDjIaLnRleHRzZWN1cmUuVmVyaWZpZWQuU3RhdGVIAhIVCgtudWxs",
-            "TWVzc2FnZRgEIAEoDEgDIjIKBVN0YXRlEgsKB0RFRkFVTFQQABIMCghWRVJJ",
-            "RklFRBABEg4KClVOVkVSSUZJRUQQAkITChFkZXN0aW5hdGlvbl9vbmVvZkIT",
-            "ChFpZGVudGl0eUtleV9vbmVvZkINCgtzdGF0ZV9vbmVvZkITChFudWxsTWVz",
-            "c2FnZV9vbmVvZiL5CAoLU3luY01lc3NhZ2USLAoEc2VudBgBIAEoCzIcLnRl",
-            "eHRzZWN1cmUuU3luY01lc3NhZ2UuU2VudEgAEjQKCGNvbnRhY3RzGAIgASgL",
-            "MiAudGV4dHNlY3VyZS5TeW5jTWVzc2FnZS5Db250YWN0c0gBEjAKBmdyb3Vw",
-            "cxgDIAEoCzIeLnRleHRzZWN1cmUuU3luY01lc3NhZ2UuR3JvdXBzSAISMgoH",
-            "cmVxdWVzdBgEIAEoCzIfLnRleHRzZWN1cmUuU3luY01lc3NhZ2UuUmVxdWVz",
-            "dEgDEioKBHJlYWQYBSADKAsyHC50ZXh0c2VjdXJlLlN5bmNNZXNzYWdlLlJl",
-            "YWQSMgoHYmxvY2tlZBgGIAEoCzIfLnRleHRzZWN1cmUuU3luY01lc3NhZ2Uu",
-            "QmxvY2tlZEgEEigKCHZlcmlmaWVkGAcgASgLMhQudGV4dHNlY3VyZS5WZXJp",
-            "ZmllZEgFEhEKB3BhZGRpbmcYCCABKAxIBhrdAQoEU2VudBIVCgtkZXN0aW5h",
-            "dGlvbhgBIAEoCUgAEhMKCXRpbWVzdGFtcBgCIAEoBEgBEioKB21lc3NhZ2UY",
-            "AyABKAsyFy50ZXh0c2VjdXJlLkRhdGFNZXNzYWdlSAISIgoYZXhwaXJhdGlv",
-            "blN0YXJ0VGltZXN0YW1wGAQgASgESANCEwoRZGVzdGluYXRpb25fb25lb2ZC",
-            "EQoPdGltZXN0YW1wX29uZW9mQg8KDW1lc3NhZ2Vfb25lb2ZCIAoeZXhwaXJh",
-            "dGlvblN0YXJ0VGltZXN0YW1wX29uZW9mGm0KCENvbnRhY3RzEi0KBGJsb2IY",
-            "ASABKAsyHS50ZXh0c2VjdXJlLkF0dGFjaG1lbnRQb2ludGVySAASEgoIY29t",
-            "cGxldGUYAiABKAhIAUIMCgpibG9iX29uZW9mQhAKDmNvbXBsZXRlX29uZW9m",
-            "GkUKBkdyb3VwcxItCgRibG9iGAEgASgLMh0udGV4dHNlY3VyZS5BdHRhY2ht",
-            "ZW50UG9pbnRlckgAQgwKCmJsb2Jfb25lb2YaGgoHQmxvY2tlZBIPCgdudW1i",
-            "ZXJzGAEgAygJGokBCgdSZXF1ZXN0EjQKBHR5cGUYASABKA4yJC50ZXh0c2Vj",
-            "dXJlLlN5bmNNZXNzYWdlLlJlcXVlc3QuVHlwZUgAIjoKBFR5cGUSCwoHVU5L",
-            "Tk9XThAAEgwKCENPTlRBQ1RTEAESCgoGR1JPVVBTEAISCwoHQkxPQ0tFRBAD",
-            "QgwKCnR5cGVfb25lb2YaUAoEUmVhZBIQCgZzZW5kZXIYASABKAlIABITCgl0",
-            "aW1lc3RhbXAYAiABKARIAUIOCgxzZW5kZXJfb25lb2ZCEQoPdGltZXN0YW1w",
-            "X29uZW9mQgwKCnNlbnRfb25lb2ZCEAoOY29udGFjdHNfb25lb2ZCDgoMZ3Jv",
-            "dXBzX29uZW9mQg8KDXJlcXVlc3Rfb25lb2ZCDwoNYmxvY2tlZF9vbmVvZkIQ",
-            "Cg52ZXJpZmllZF9vbmVvZkIPCg1wYWRkaW5nX29uZW9mItUCChFBdHRhY2ht",
-            "ZW50UG9pbnRlchIMCgJpZBgBIAEoBkgAEhUKC2NvbnRlbnRUeXBlGAIgASgJ",
-            "SAESDQoDa2V5GAMgASgMSAISDgoEc2l6ZRgEIAEoDUgDEhMKCXRodW1ibmFp",
-            "bBgFIAEoDEgEEhAKBmRpZ2VzdBgGIAEoDEgFEhIKCGZpbGVOYW1lGAcgASgJ",
-            "SAYSDwoFZmxhZ3MYCCABKA1IByIwCgVGbGFncxIUChBaRVJPX1BMQUNFSE9M",
-            "REVSEAASEQoNVk9JQ0VfTUVTU0FHRRABQgoKCGlkX29uZW9mQhMKEWNvbnRl",
-            "bnRUeXBlX29uZW9mQgsKCWtleV9vbmVvZkIMCgpzaXplX29uZW9mQhEKD3Ro",
-            "dW1ibmFpbF9vbmVvZkIOCgxkaWdlc3Rfb25lb2ZCEAoOZmlsZU5hbWVfb25l",
-            "b2ZCDQoLZmxhZ3Nfb25lb2YinwIKDEdyb3VwQ29udGV4dBIMCgJpZBgBIAEo",
-            "DEgAEi0KBHR5cGUYAiABKA4yHS50ZXh0c2VjdXJlLkdyb3VwQ29udGV4dC5U",
-            "eXBlSAESDgoEbmFtZRgDIAEoCUgCEg8KB21lbWJlcnMYBCADKAkSLwoGYXZh",
-            "dGFyGAUgASgLMh0udGV4dHNlY3VyZS5BdHRhY2htZW50UG9pbnRlckgDIkgK",
-            "BFR5cGUSCwoHVU5LTk9XThAAEgoKBlVQREFURRABEgsKB0RFTElWRVIQAhII",
-            "CgRRVUlUEAMSEAoMUkVRVUVTVF9JTkZPEARCCgoIaWRfb25lb2ZCDAoKdHlw",
-            "ZV9vbmVvZkIMCgpuYW1lX29uZW9mQg4KDGF2YXRhcl9vbmVvZiLJAgoOQ29u",
-            "dGFjdERldGFpbHMSEAoGbnVtYmVyGAEgASgJSAASDgoEbmFtZRgCIAEoCUgB",
-            "EjMKBmF2YXRhchgDIAEoCzIhLnRleHRzZWN1cmUuQ29udGFjdERldGFpbHMu",
-            "QXZhdGFySAISDwoFY29sb3IYBCABKAlIAxIoCgh2ZXJpZmllZBgFIAEoCzIU",
-            "LnRleHRzZWN1cmUuVmVyaWZpZWRIBBpWCgZBdmF0YXISFQoLY29udGVudFR5",
-            "cGUYASABKAlIABIQCgZsZW5ndGgYAiABKA1IAUITChFjb250ZW50VHlwZV9v",
-            "bmVvZkIOCgxsZW5ndGhfb25lb2ZCDgoMbnVtYmVyX29uZW9mQgwKCm5hbWVf",
-            "b25lb2ZCDgoMYXZhdGFyX29uZW9mQg0KC2NvbG9yX29uZW9mQhAKDnZlcmlm",
-            "aWVkX29uZW9mIpQCCgxHcm91cERldGFpbHMSDAoCaWQYASABKAxIABIOCgRu",
-            "YW1lGAIgASgJSAESDwoHbWVtYmVycxgDIAMoCRIxCgZhdmF0YXIYBCABKAsy",
-            "Hy50ZXh0c2VjdXJlLkdyb3VwRGV0YWlscy5BdmF0YXJIAhIQCgZhY3RpdmUY",
-            "BSABKAhIAxpWCgZBdmF0YXISFQoLY29udGVudFR5cGUYASABKAlIABIQCgZs",
-            "ZW5ndGgYAiABKA1IAUITChFjb250ZW50VHlwZV9vbmVvZkIOCgxsZW5ndGhf",
-            "b25lb2ZCCgoIaWRfb25lb2ZCDAoKbmFtZV9vbmVvZkIOCgxhdmF0YXJfb25l",
-            "b2ZCDgoMYWN0aXZlX29uZW9mQloKK29yZy53aGlzcGVyc3lzdGVtcy50ZXh0",
-            "c2VjdXJlLmludGVybmFsLnB1c2hCE1NpZ25hbFNlcnZpY2VQcm90b3OqAhVs",
-            "aWJzaWduYWxzZXJ2aWNlLnB1c2hiBnByb3RvMw=="));
+            "ZXIYBSABKA1IAxIUCgpwcm9maWxlS2V5GAYgASgMSAQiSwoFRmxhZ3MSFAoQ",
+            "WkVST19QTEFDRUhPTERFUhAAEg8KC0VORF9TRVNTSU9OEAESGwoXRVhQSVJB",
+            "VElPTl9USU1FUl9VUERBVEUQAkIMCgpib2R5X29uZW9mQg0KC2dyb3VwX29u",
+            "ZW9mQg0KC2ZsYWdzX29uZW9mQhMKEWV4cGlyZVRpbWVyX29uZW9mQhIKEHBy",
+            "b2ZpbGVLZXlfb25lb2YiMQoLTnVsbE1lc3NhZ2USEQoHcGFkZGluZxgBIAEo",
+            "DEgAQg8KDXBhZGRpbmdfb25lb2Yi/gEKCFZlcmlmaWVkEhUKC2Rlc3RpbmF0",
+            "aW9uGAEgASgJSAASFQoLaWRlbnRpdHlLZXkYAiABKAxIARIrCgVzdGF0ZRgD",
+            "IAEoDjIaLnRleHRzZWN1cmUuVmVyaWZpZWQuU3RhdGVIAhIVCgtudWxsTWVz",
+            "c2FnZRgEIAEoDEgDIjIKBVN0YXRlEgsKB0RFRkFVTFQQABIMCghWRVJJRklF",
+            "RBABEg4KClVOVkVSSUZJRUQQAkITChFkZXN0aW5hdGlvbl9vbmVvZkITChFp",
+            "ZGVudGl0eUtleV9vbmVvZkINCgtzdGF0ZV9vbmVvZkITChFudWxsTWVzc2Fn",
+            "ZV9vbmVvZiL5CAoLU3luY01lc3NhZ2USLAoEc2VudBgBIAEoCzIcLnRleHRz",
+            "ZWN1cmUuU3luY01lc3NhZ2UuU2VudEgAEjQKCGNvbnRhY3RzGAIgASgLMiAu",
+            "dGV4dHNlY3VyZS5TeW5jTWVzc2FnZS5Db250YWN0c0gBEjAKBmdyb3VwcxgD",
+            "IAEoCzIeLnRleHRzZWN1cmUuU3luY01lc3NhZ2UuR3JvdXBzSAISMgoHcmVx",
+            "dWVzdBgEIAEoCzIfLnRleHRzZWN1cmUuU3luY01lc3NhZ2UuUmVxdWVzdEgD",
+            "EioKBHJlYWQYBSADKAsyHC50ZXh0c2VjdXJlLlN5bmNNZXNzYWdlLlJlYWQS",
+            "MgoHYmxvY2tlZBgGIAEoCzIfLnRleHRzZWN1cmUuU3luY01lc3NhZ2UuQmxv",
+            "Y2tlZEgEEigKCHZlcmlmaWVkGAcgASgLMhQudGV4dHNlY3VyZS5WZXJpZmll",
+            "ZEgFEhEKB3BhZGRpbmcYCCABKAxIBhrdAQoEU2VudBIVCgtkZXN0aW5hdGlv",
+            "bhgBIAEoCUgAEhMKCXRpbWVzdGFtcBgCIAEoBEgBEioKB21lc3NhZ2UYAyAB",
+            "KAsyFy50ZXh0c2VjdXJlLkRhdGFNZXNzYWdlSAISIgoYZXhwaXJhdGlvblN0",
+            "YXJ0VGltZXN0YW1wGAQgASgESANCEwoRZGVzdGluYXRpb25fb25lb2ZCEQoP",
+            "dGltZXN0YW1wX29uZW9mQg8KDW1lc3NhZ2Vfb25lb2ZCIAoeZXhwaXJhdGlv",
+            "blN0YXJ0VGltZXN0YW1wX29uZW9mGm0KCENvbnRhY3RzEi0KBGJsb2IYASAB",
+            "KAsyHS50ZXh0c2VjdXJlLkF0dGFjaG1lbnRQb2ludGVySAASEgoIY29tcGxl",
+            "dGUYAiABKAhIAUIMCgpibG9iX29uZW9mQhAKDmNvbXBsZXRlX29uZW9mGkUK",
+            "Bkdyb3VwcxItCgRibG9iGAEgASgLMh0udGV4dHNlY3VyZS5BdHRhY2htZW50",
+            "UG9pbnRlckgAQgwKCmJsb2Jfb25lb2YaGgoHQmxvY2tlZBIPCgdudW1iZXJz",
+            "GAEgAygJGokBCgdSZXF1ZXN0EjQKBHR5cGUYASABKA4yJC50ZXh0c2VjdXJl",
+            "LlN5bmNNZXNzYWdlLlJlcXVlc3QuVHlwZUgAIjoKBFR5cGUSCwoHVU5LTk9X",
+            "ThAAEgwKCENPTlRBQ1RTEAESCgoGR1JPVVBTEAISCwoHQkxPQ0tFRBADQgwK",
+            "CnR5cGVfb25lb2YaUAoEUmVhZBIQCgZzZW5kZXIYASABKAlIABITCgl0aW1l",
+            "c3RhbXAYAiABKARIAUIOCgxzZW5kZXJfb25lb2ZCEQoPdGltZXN0YW1wX29u",
+            "ZW9mQgwKCnNlbnRfb25lb2ZCEAoOY29udGFjdHNfb25lb2ZCDgoMZ3JvdXBz",
+            "X29uZW9mQg8KDXJlcXVlc3Rfb25lb2ZCDwoNYmxvY2tlZF9vbmVvZkIQCg52",
+            "ZXJpZmllZF9vbmVvZkIPCg1wYWRkaW5nX29uZW9mItUCChFBdHRhY2htZW50",
+            "UG9pbnRlchIMCgJpZBgBIAEoBkgAEhUKC2NvbnRlbnRUeXBlGAIgASgJSAES",
+            "DQoDa2V5GAMgASgMSAISDgoEc2l6ZRgEIAEoDUgDEhMKCXRodW1ibmFpbBgF",
+            "IAEoDEgEEhAKBmRpZ2VzdBgGIAEoDEgFEhIKCGZpbGVOYW1lGAcgASgJSAYS",
+            "DwoFZmxhZ3MYCCABKA1IByIwCgVGbGFncxIUChBaRVJPX1BMQUNFSE9MREVS",
+            "EAASEQoNVk9JQ0VfTUVTU0FHRRABQgoKCGlkX29uZW9mQhMKEWNvbnRlbnRU",
+            "eXBlX29uZW9mQgsKCWtleV9vbmVvZkIMCgpzaXplX29uZW9mQhEKD3RodW1i",
+            "bmFpbF9vbmVvZkIOCgxkaWdlc3Rfb25lb2ZCEAoOZmlsZU5hbWVfb25lb2ZC",
+            "DQoLZmxhZ3Nfb25lb2YinwIKDEdyb3VwQ29udGV4dBIMCgJpZBgBIAEoDEgA",
+            "Ei0KBHR5cGUYAiABKA4yHS50ZXh0c2VjdXJlLkdyb3VwQ29udGV4dC5UeXBl",
+            "SAESDgoEbmFtZRgDIAEoCUgCEg8KB21lbWJlcnMYBCADKAkSLwoGYXZhdGFy",
+            "GAUgASgLMh0udGV4dHNlY3VyZS5BdHRhY2htZW50UG9pbnRlckgDIkgKBFR5",
+            "cGUSCwoHVU5LTk9XThAAEgoKBlVQREFURRABEgsKB0RFTElWRVIQAhIICgRR",
+            "VUlUEAMSEAoMUkVRVUVTVF9JTkZPEARCCgoIaWRfb25lb2ZCDAoKdHlwZV9v",
+            "bmVvZkIMCgpuYW1lX29uZW9mQg4KDGF2YXRhcl9vbmVvZiLJAgoOQ29udGFj",
+            "dERldGFpbHMSEAoGbnVtYmVyGAEgASgJSAASDgoEbmFtZRgCIAEoCUgBEjMK",
+            "BmF2YXRhchgDIAEoCzIhLnRleHRzZWN1cmUuQ29udGFjdERldGFpbHMuQXZh",
+            "dGFySAISDwoFY29sb3IYBCABKAlIAxIoCgh2ZXJpZmllZBgFIAEoCzIULnRl",
+            "eHRzZWN1cmUuVmVyaWZpZWRIBBpWCgZBdmF0YXISFQoLY29udGVudFR5cGUY",
+            "ASABKAlIABIQCgZsZW5ndGgYAiABKA1IAUITChFjb250ZW50VHlwZV9vbmVv",
+            "ZkIOCgxsZW5ndGhfb25lb2ZCDgoMbnVtYmVyX29uZW9mQgwKCm5hbWVfb25l",
+            "b2ZCDgoMYXZhdGFyX29uZW9mQg0KC2NvbG9yX29uZW9mQhAKDnZlcmlmaWVk",
+            "X29uZW9mIpQCCgxHcm91cERldGFpbHMSDAoCaWQYASABKAxIABIOCgRuYW1l",
+            "GAIgASgJSAESDwoHbWVtYmVycxgDIAMoCRIxCgZhdmF0YXIYBCABKAsyHy50",
+            "ZXh0c2VjdXJlLkdyb3VwRGV0YWlscy5BdmF0YXJIAhIQCgZhY3RpdmUYBSAB",
+            "KAhIAxpWCgZBdmF0YXISFQoLY29udGVudFR5cGUYASABKAlIABIQCgZsZW5n",
+            "dGgYAiABKA1IAUITChFjb250ZW50VHlwZV9vbmVvZkIOCgxsZW5ndGhfb25l",
+            "b2ZCCgoIaWRfb25lb2ZCDAoKbmFtZV9vbmVvZkIOCgxhdmF0YXJfb25lb2ZC",
+            "DgoMYWN0aXZlX29uZW9mQloKK29yZy53aGlzcGVyc3lzdGVtcy50ZXh0c2Vj",
+            "dXJlLmludGVybmFsLnB1c2hCE1NpZ25hbFNlcnZpY2VQcm90b3OqAhVsaWJz",
+            "aWduYWxzZXJ2aWNlLnB1c2hiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -135,7 +136,7 @@ namespace libsignalservice.push {
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.CallMessage.Types.IceUpdate), global::libsignalservice.push.CallMessage.Types.IceUpdate.Parser, new[]{ "Id", "SdpMid", "SdpMLineIndex", "Sdp" }, new[]{ "IdOneof", "SdpMidOneof", "SdpMLineIndexOneof", "SdpOneof" }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.CallMessage.Types.Busy), global::libsignalservice.push.CallMessage.Types.Busy.Parser, new[]{ "Id" }, new[]{ "IdOneof" }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.CallMessage.Types.Hangup), global::libsignalservice.push.CallMessage.Types.Hangup.Parser, new[]{ "Id" }, new[]{ "IdOneof" }, null, null)}),
-            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.DataMessage), global::libsignalservice.push.DataMessage.Parser, new[]{ "Body", "Attachments", "Group", "Flags", "ExpireTimer" }, new[]{ "BodyOneof", "GroupOneof", "FlagsOneof", "ExpireTimerOneof" }, new[]{ typeof(global::libsignalservice.push.DataMessage.Types.Flags) }, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.DataMessage), global::libsignalservice.push.DataMessage.Parser, new[]{ "Body", "Attachments", "Group", "Flags", "ExpireTimer", "ProfileKey" }, new[]{ "BodyOneof", "GroupOneof", "FlagsOneof", "ExpireTimerOneof", "ProfileKeyOneof" }, new[]{ typeof(global::libsignalservice.push.DataMessage.Types.Flags) }, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.NullMessage), global::libsignalservice.push.NullMessage.Parser, new[]{ "Padding" }, new[]{ "PaddingOneof" }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.Verified), global::libsignalservice.push.Verified.Parser, new[]{ "Destination", "IdentityKey", "State", "NullMessage" }, new[]{ "DestinationOneof", "IdentityKeyOneof", "StateOneof", "NullMessageOneof" }, new[]{ typeof(global::libsignalservice.push.Verified.Types.State) }, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage), global::libsignalservice.push.SyncMessage.Parser, new[]{ "Sent", "Contacts", "Groups", "Request", "Read", "Blocked", "Verified", "Padding" }, new[]{ "SentOneof", "ContactsOneof", "GroupsOneof", "RequestOneof", "BlockedOneof", "VerifiedOneof", "PaddingOneof" }, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Sent), global::libsignalservice.push.SyncMessage.Types.Sent.Parser, new[]{ "Destination", "Timestamp", "Message", "ExpirationStartTimestamp" }, new[]{ "DestinationOneof", "TimestampOneof", "MessageOneof", "ExpirationStartTimestampOneof" }, null, null),
@@ -2519,6 +2520,12 @@ namespace libsignalservice.push {
           break;
       }
 
+      switch (other.ProfileKeyOneofCase) {
+        case ProfileKeyOneofOneofCase.ProfileKey:
+          ProfileKey = other.ProfileKey;
+          break;
+      }
+
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -2578,6 +2585,17 @@ namespace libsignalservice.push {
       set {
         expireTimerOneof_ = value;
         expireTimerOneofCase_ = ExpireTimerOneofOneofCase.ExpireTimer;
+      }
+    }
+
+    /// <summary>Field number for the "profileKey" field.</summary>
+    public const int ProfileKeyFieldNumber = 6;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pb::ByteString ProfileKey {
+      get { return profileKeyOneofCase_ == ProfileKeyOneofOneofCase.ProfileKey ? (pb::ByteString) profileKeyOneof_ : pb::ByteString.Empty; }
+      set {
+        profileKeyOneof_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        profileKeyOneofCase_ = ProfileKeyOneofOneofCase.ProfileKey;
       }
     }
 
@@ -2653,6 +2671,24 @@ namespace libsignalservice.push {
       expireTimerOneof_ = null;
     }
 
+    private object profileKeyOneof_;
+    /// <summary>Enum of possible cases for the "profileKey_oneof" oneof.</summary>
+    public enum ProfileKeyOneofOneofCase {
+      None = 0,
+      ProfileKey = 6,
+    }
+    private ProfileKeyOneofOneofCase profileKeyOneofCase_ = ProfileKeyOneofOneofCase.None;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ProfileKeyOneofOneofCase ProfileKeyOneofCase {
+      get { return profileKeyOneofCase_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearProfileKeyOneof() {
+      profileKeyOneofCase_ = ProfileKeyOneofOneofCase.None;
+      profileKeyOneof_ = null;
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as DataMessage);
@@ -2671,10 +2707,12 @@ namespace libsignalservice.push {
       if (!object.Equals(Group, other.Group)) return false;
       if (Flags != other.Flags) return false;
       if (ExpireTimer != other.ExpireTimer) return false;
+      if (ProfileKey != other.ProfileKey) return false;
       if (BodyOneofCase != other.BodyOneofCase) return false;
       if (GroupOneofCase != other.GroupOneofCase) return false;
       if (FlagsOneofCase != other.FlagsOneofCase) return false;
       if (ExpireTimerOneofCase != other.ExpireTimerOneofCase) return false;
+      if (ProfileKeyOneofCase != other.ProfileKeyOneofCase) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -2686,10 +2724,12 @@ namespace libsignalservice.push {
       if (groupOneofCase_ == GroupOneofOneofCase.Group) hash ^= Group.GetHashCode();
       if (flagsOneofCase_ == FlagsOneofOneofCase.Flags) hash ^= Flags.GetHashCode();
       if (expireTimerOneofCase_ == ExpireTimerOneofOneofCase.ExpireTimer) hash ^= ExpireTimer.GetHashCode();
+      if (profileKeyOneofCase_ == ProfileKeyOneofOneofCase.ProfileKey) hash ^= ProfileKey.GetHashCode();
       hash ^= (int) bodyOneofCase_;
       hash ^= (int) groupOneofCase_;
       hash ^= (int) flagsOneofCase_;
       hash ^= (int) expireTimerOneofCase_;
+      hash ^= (int) profileKeyOneofCase_;
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -2720,6 +2760,10 @@ namespace libsignalservice.push {
         output.WriteRawTag(40);
         output.WriteUInt32(ExpireTimer);
       }
+      if (profileKeyOneofCase_ == ProfileKeyOneofOneofCase.ProfileKey) {
+        output.WriteRawTag(50);
+        output.WriteBytes(ProfileKey);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -2740,6 +2784,9 @@ namespace libsignalservice.push {
       }
       if (expireTimerOneofCase_ == ExpireTimerOneofOneofCase.ExpireTimer) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(ExpireTimer);
+      }
+      if (profileKeyOneofCase_ == ProfileKeyOneofOneofCase.ProfileKey) {
+        size += 1 + pb::CodedOutputStream.ComputeBytesSize(ProfileKey);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -2780,6 +2827,12 @@ namespace libsignalservice.push {
           break;
       }
 
+      switch (other.ProfileKeyOneofCase) {
+        case ProfileKeyOneofOneofCase.ProfileKey:
+          ProfileKey = other.ProfileKey;
+          break;
+      }
+
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -2814,6 +2867,10 @@ namespace libsignalservice.push {
           }
           case 40: {
             ExpireTimer = input.ReadUInt32();
+            break;
+          }
+          case 50: {
+            ProfileKey = input.ReadBytes();
             break;
           }
         }

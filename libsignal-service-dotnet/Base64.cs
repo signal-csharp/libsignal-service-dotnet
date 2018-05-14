@@ -28,7 +28,7 @@ namespace libsignalservice.util
             return Convert.ToBase64String(input);
         }*/
 
-        public static string encodeBytes(byte[] input)
+        public static string EncodeBytes(byte[] input)
         {
             return Convert.ToBase64String(input);
         }
@@ -37,7 +37,7 @@ namespace libsignalservice.util
         {
             String encoded = null;
 
-            encoded = encodeBytes(input);
+            encoded = EncodeBytes(input);
 
             if (encoded[encoded.Length - 2] == '=') return encoded.Substring(0, encoded.Length - 2);
             else if (encoded[encoded.Length - 1] == '=') return encoded.Substring(0, encoded.Length - 1);

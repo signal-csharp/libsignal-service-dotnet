@@ -34,6 +34,7 @@ namespace libsignalservice
         /// <summary>
         /// Construct a SignalServiceMessageReceiver.
         /// </summary>
+        /// <param name="token">A CancellationToken to cancel the receiver's operations</param>
         /// <param name="urls">The URL of the Signal Service.</param>
         /// <param name="credentials">The Signal Service user's credentials</param>
         /// <param name="userAgent"></param>
@@ -46,21 +47,29 @@ namespace libsignalservice
             this.UserAgent = userAgent;
         }
 
+        /// <summary>
+        /// TODO
+        /// </summary>
+        /// <param name="address"></param>
+        /// <returns></returns>
         public SignalServiceProfile RetrieveProfile(SignalServiceAddress address)
         {
             return Socket.RetrieveProfile(address);
         }
 
         /// <summary>
-        /// Retrieves a SignalServiceAttachment
+        /// TODO
         /// </summary>
-        /// <param name="pointer">The <see cref="SignalServiceAttachmentPointer"/>
-        /// received in a <see cref="SignalServiceDataMessage"/></param>
-        /// <param name="plaintextDestination">The download destination for this attachment.</param>
-        /// <param name="tmpCipherDestination">The temporary destination for this attachment before decryption</param>
-        public Stream RetrieveAttachment(SignalServiceAttachmentPointer pointer, Stream tmpCipherDestination, int maxSizeBytes)
+        /// <param name="path"></param>
+        /// <param name="destination"></param>
+        /// <param name="profileKey"></param>
+        /// <param name="maxSizeBytes"></param>
+        /// <returns></returns>
+        public Stream RetrieveProfileAvatar(string path, FileStream destination, byte[] profileKey, int maxSizeBytes)
         {
-            return RetrieveAttachment(pointer, tmpCipherDestination, maxSizeBytes, null);
+            Socket.RetrieveProfileAvatar(path, destination, maxSizeBytes);
+            destination.Seek(0, SeekOrigin.Begin);
+            return new ProfileCipherInputStream(destination, profileKey);
         }
 
         /// <summary>
@@ -102,7 +111,7 @@ namespace libsignalservice
         public List<SignalServiceEnvelope> RetrieveMessages(MessageReceivedCallback callback)
         {
             List<SignalServiceEnvelope> results = new List<SignalServiceEnvelope>();
-            List<SignalServiceEnvelopeEntity> entities = Socket.getMessages();
+            List<SignalServiceEnvelopeEntity> entities = Socket.GetMessages();
 
             foreach (SignalServiceEnvelopeEntity entity in entities)
             {
@@ -114,7 +123,7 @@ namespace libsignalservice
                 callback.onMessage(envelope);
                 results.Add(envelope);
 
-                Socket.acknowledgeMessage(entity.getSource(), entity.getTimestamp());
+                Socket.AcknowledgeMessage(entity.getSource(), entity.getTimestamp());
             }
             return results;
         }

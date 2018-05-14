@@ -15,7 +15,7 @@ namespace libsignalservice.crypto
             Key = key;
         }
 
-        internal byte[] Encrypt(byte[] input, int paddedLength)
+        internal byte[] EncryptName(byte[] input, int paddedLength)
         {
             byte[] inputPadded = new byte[paddedLength];
 
@@ -37,7 +37,7 @@ namespace libsignalservice.crypto
             }
         }
 
-        internal byte[] Decrypt(byte[] input)
+        internal byte[] DecryptName(byte[] input)
         {
             using (MemoryStream bais = new MemoryStream(input))
             {

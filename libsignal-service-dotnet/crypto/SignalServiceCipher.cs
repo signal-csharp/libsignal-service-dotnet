@@ -8,23 +8,6 @@ using libsignalservice.messages.multidevice;
 using libsignalservice.push;
 using libsignalservice.util;
 
-/**
- * Copyright (C) 2015-2017 smndtrl, golf1052
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 using System;
 using System.Collections.Generic;
 
@@ -33,10 +16,8 @@ namespace libsignalservice.crypto
     /// <summary>
     /// This is used to decrypt received <see cref="SignalServiceEnvelope"/>s
     /// </summary>
-    public class SignalServiceCipher
+    internal class SignalServiceCipher
     {
-        private static readonly string TAG = "SignalServiceCipher";
-
         private readonly SignalProtocolStore signalProtocolStore;
         private readonly SignalServiceAddress localAddress;
 
@@ -46,13 +27,13 @@ namespace libsignalservice.crypto
             this.localAddress = localAddress;
         }
 
-        public OutgoingPushMessage encrypt(SignalProtocolAddress destination, byte[] unpaddedMessage, bool silent)
+        public OutgoingPushMessage Encrypt(SignalProtocolAddress destination, byte[] unpaddedMessage, bool silent)
         {
             SessionCipher sessionCipher = new SessionCipher(signalProtocolStore, destination);
             PushTransportDetails transportDetails = new PushTransportDetails(sessionCipher.getSessionVersion());
             CiphertextMessage message = sessionCipher.encrypt(transportDetails.getPaddedMessageBody(unpaddedMessage));
             uint remoteRegistrationId = sessionCipher.getRemoteRegistrationId();
-            String body = Base64.encodeBytes(message.serialize());
+            String body = Base64.EncodeBytes(message.serialize());
 
             uint type;
 
@@ -71,7 +52,7 @@ namespace libsignalservice.crypto
         /// </summary>
         /// <param name="envelope">The received SignalServiceEnvelope</param>
         /// <returns>a decrypted SignalServiceContent</returns>
-        public SignalServiceContent decrypt(SignalServiceEnvelope envelope)
+        public SignalServiceContent Decrypt(SignalServiceEnvelope envelope)
         {
             try
             {
@@ -79,35 +60,35 @@ namespace libsignalservice.crypto
 
                 if (envelope.hasLegacyMessage())
                 {
-                    DataMessage message = DataMessage.Parser.ParseFrom(decrypt(envelope, envelope.getLegacyMessage()));
+                    DataMessage message = DataMessage.Parser.ParseFrom(Decrypt(envelope, envelope.getLegacyMessage()));
                     content = new SignalServiceContent()
                     {
-                        Message = createSignalServiceMessage(envelope, message)
+                        Message = CreateSignalServiceMessage(envelope, message)
                     };
                 }
                 else if (envelope.hasContent())
                 {
-                    Content message = Content.Parser.ParseFrom(decrypt(envelope, envelope.getContent()));
+                    Content message = Content.Parser.ParseFrom(Decrypt(envelope, envelope.getContent()));
 
                     if (message.DataMessageOneofCase == Content.DataMessageOneofOneofCase.DataMessage)
                     {
                         content = new SignalServiceContent()
                         {
-                            Message = createSignalServiceMessage(envelope, message.DataMessage)
+                            Message = CreateSignalServiceMessage(envelope, message.DataMessage)
                         };
                     }
                     else if (message.SyncMessageOneofCase == Content.SyncMessageOneofOneofCase.SyncMessage && localAddress.E164number == envelope.getSource())
                     {
                         content = new SignalServiceContent()
                         {
-                            SynchronizeMessage = createSynchronizeMessage(envelope, message.SyncMessage)
+                            SynchronizeMessage = CreateSynchronizeMessage(envelope, message.SyncMessage)
                         };
                     }
                     else if (message.CallMessageOneofCase == Content.CallMessageOneofOneofCase.CallMessage)
                     {
                         content = new SignalServiceContent()
                         {
-                            CallMessage = createCallMessage(message.CallMessage)
+                            CallMessage = CreateCallMessage(message.CallMessage)
                         };
                     }
                 }
@@ -120,7 +101,7 @@ namespace libsignalservice.crypto
             }
         }
 
-        private byte[] decrypt(SignalServiceEnvelope envelope, byte[] ciphertext)
+        private byte[] Decrypt(SignalServiceEnvelope envelope, byte[] ciphertext)
 
         {
             SignalProtocolAddress sourceAddress = new SignalProtocolAddress(envelope.getSource(), (uint)envelope.getSourceDevice());
@@ -145,9 +126,9 @@ namespace libsignalservice.crypto
             return transportDetails.getStrippedPaddingMessageBody(paddedMessage);
         }
 
-        private SignalServiceDataMessage createSignalServiceMessage(SignalServiceEnvelope envelope, DataMessage content)
+        private SignalServiceDataMessage CreateSignalServiceMessage(SignalServiceEnvelope envelope, DataMessage content)
         {
-            SignalServiceGroup groupInfo = createGroupInfo(envelope, content);
+            SignalServiceGroup groupInfo = CreateGroupInfo(envelope, content);
             List<SignalServiceAttachment> attachments = new List<SignalServiceAttachment>();
             bool endSession = ((content.Flags & (uint)DataMessage.Types.Flags.EndSession) != 0);
             bool expirationUpdate = ((content.Flags & (uint)DataMessage.Types.Flags.ExpirationTimerUpdate) != 0);
@@ -173,18 +154,19 @@ namespace libsignalservice.crypto
                 Body = content.Body,
                 EndSession = endSession,
                 ExpiresInSeconds = (int)content.ExpireTimer,
-                ExpirationUpdate = expirationUpdate
+                ExpirationUpdate = expirationUpdate,
+                ProfileKey = content.ProfileKeyOneofCase == DataMessage.ProfileKeyOneofOneofCase.ProfileKey? content.ProfileKey.ToByteArray() : null
             };
         }
 
-        private SignalServiceSyncMessage createSynchronizeMessage(SignalServiceEnvelope envelope, SyncMessage content)
+        private SignalServiceSyncMessage CreateSynchronizeMessage(SignalServiceEnvelope envelope, SyncMessage content)
         {
             if (content.SentOneofCase == SyncMessage.SentOneofOneofCase.Sent)
             {
                 SyncMessage.Types.Sent sentContent = content.Sent;
                 return SignalServiceSyncMessage.forSentTranscript(new SentTranscriptMessage(sentContent.Destination,
                                                                            (long)sentContent.Timestamp,
-                                                                           createSignalServiceMessage(envelope, sentContent.Message),
+                                                                           CreateSignalServiceMessage(envelope, sentContent.Message),
                                                                            (long)sentContent.ExpirationStartTimestamp));
             }
 
@@ -243,7 +225,7 @@ namespace libsignalservice.crypto
             return SignalServiceSyncMessage.empty();
         }
 
-        private SignalServiceCallMessage createCallMessage(CallMessage content)
+        private SignalServiceCallMessage CreateCallMessage(CallMessage content)
         {
             if (content.OfferOneofCase == CallMessage.OfferOneofOneofCase.Offer)
             {
@@ -307,7 +289,7 @@ namespace libsignalservice.crypto
             return new SignalServiceCallMessage();
         }
 
-        private SignalServiceGroup createGroupInfo(SignalServiceEnvelope envelope, DataMessage content)
+        private SignalServiceGroup CreateGroupInfo(SignalServiceEnvelope envelope, DataMessage content)
         {
             if (content.GroupOneofCase == DataMessage.GroupOneofOneofCase.None) return null;
 

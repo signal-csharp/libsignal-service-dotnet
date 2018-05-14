@@ -70,11 +70,11 @@ namespace libsignalservice
         {
             if (gcmRegistrationId.HasValue)
             {
-                this.PushServiceSocket.registerGcmId(gcmRegistrationId.ForceGetValue());
+                this.PushServiceSocket.RegisterGcmId(gcmRegistrationId.ForceGetValue());
             }
             else
             {
-                this.PushServiceSocket.unregisterGcmId();
+                this.PushServiceSocket.UnregisterGcmId();
             }
         }
 
@@ -142,7 +142,7 @@ namespace libsignalservice
         /// <returns></returns>
         public bool SetPreKeys(IdentityKey identityKey, SignedPreKeyRecord signedPreKey, IList<PreKeyRecord> oneTimePreKeys)//throws IOException
         {
-            this.PushServiceSocket.registerPreKeys(identityKey, signedPreKey, oneTimePreKeys);
+            this.PushServiceSocket.RegisterPreKeys(identityKey, signedPreKey, oneTimePreKeys);
             return true;
         }
 
@@ -152,7 +152,7 @@ namespace libsignalservice
         /// <returns>The server's count of currently available (eg. unused) prekeys for this user.</returns>
         public int GetPreKeysCount()// throws IOException
         {
-            return this.PushServiceSocket.getAvailablePreKeys();
+            return this.PushServiceSocket.GetAvailablePreKeys();
         }
 
         /// <summary>
@@ -161,7 +161,7 @@ namespace libsignalservice
         /// <param name="signedPreKey">The client's new signed prekey.</param>
         public void SetSignedPreKey(SignedPreKeyRecord signedPreKey)// throws IOException
         {
-            this.PushServiceSocket.setCurrentSignedPreKey(signedPreKey);
+            this.PushServiceSocket.SetCurrentSignedPreKey(signedPreKey);
         }
 
         /// <summary>
@@ -170,7 +170,7 @@ namespace libsignalservice
         /// <returns>The server's view of the client's current signed prekey.</returns>
         public SignedPreKeyEntity GetSignedPreKey()// throws IOException
         {
-            return this.PushServiceSocket.getCurrentSignedPreKey();
+            return this.PushServiceSocket.GetCurrentSignedPreKey();
         }
 
         /// <summary>
@@ -181,7 +181,7 @@ namespace libsignalservice
         public May<ContactTokenDetails> GetContact(string e164number)// throws IOException
         {
             string contactToken = CreateDirectoryServerToken(e164number, true);
-            ContactTokenDetails contactTokenDetails = this.PushServiceSocket.getContactTokenDetails(contactToken);
+            ContactTokenDetails contactTokenDetails = this.PushServiceSocket.GetContactTokenDetails(contactToken);
 
             if (contactTokenDetails != null)
             {
@@ -199,7 +199,7 @@ namespace libsignalservice
         public List<ContactTokenDetails> GetContacts(IList<string> e164numbers)
         {
             IDictionary<string, string> contactTokensMap = CreateDirectoryServerTokenMap(e164numbers);
-            List<ContactTokenDetails> activeTokens = this.PushServiceSocket.retrieveDirectory(contactTokensMap.Keys);
+            List<ContactTokenDetails> activeTokens = this.PushServiceSocket.RetrieveDirectory(contactTokensMap.Keys);
 
             foreach (ContactTokenDetails activeToken in activeTokens)
             {
@@ -239,7 +239,7 @@ namespace libsignalservice
         /// <returns>A verification code (String of 6 digits)</returns>
         public string GetNewDeviceVerificationCode()// throws IOException
         {
-            return this.PushServiceSocket.getNewDeviceVerificationCode();
+            return this.PushServiceSocket.GetNewDeviceVerificationCode();
         }
 
         /// <summary>
@@ -269,7 +269,7 @@ namespace libsignalservice
             ECPrivateKey privateKey = Curve.decodePrivatePoint(privateKeyBytes);
             IdentityKeyPair identity = new IdentityKeyPair(new IdentityKey(publicKey), privateKey);
             PushServiceSocket = new PushServiceSocket(Configuration, new StaticCredentialsProvider(pm.Number, password, null, -1), UserAgent);
-            int deviceId = PushServiceSocket.finishNewDeviceRegistration(provisioningCode, signalingKey, sms, fetches, regid, name);
+            int deviceId = PushServiceSocket.FinishNewDeviceRegistration(provisioningCode, signalingKey, sms, fetches, regid, name);
             return new NewDeviceLinkResult()
             {
                 DeviceId = deviceId,
@@ -300,7 +300,7 @@ namespace libsignalservice
             };
 
             byte[] ciphertext = cipher.encrypt(message);
-            this.PushServiceSocket.sendProvisioningMessage(deviceIdentifier, ciphertext);
+            this.PushServiceSocket.SendProvisioningMessage(deviceIdentifier, ciphertext);
         }
 
         /// <summary>
@@ -309,7 +309,7 @@ namespace libsignalservice
         /// <returns></returns>
         public List<DeviceInfo> GetDevices()
         {
-            return this.PushServiceSocket.getDevices();
+            return this.PushServiceSocket.GetDevices();
         }
 
         /// <summary>
@@ -318,7 +318,7 @@ namespace libsignalservice
         /// <param name="deviceId"></param>
         public void RemoveDevice(long deviceId)
         {
-            this.PushServiceSocket.removeDevice(deviceId);
+            this.PushServiceSocket.RemoveDevice(deviceId);
         }
 
         /// <summary>
@@ -327,7 +327,7 @@ namespace libsignalservice
         /// <returns></returns>
         public TurnServerInfo GetTurnServerInfo()
         {
-            return this.PushServiceSocket.getTurnServerInfo();
+            return this.PushServiceSocket.GetTurnServerInfo();
         }
 
         /// <summary>
@@ -340,7 +340,7 @@ namespace libsignalservice
             String ciphertextName = null;
             if (name != null)
             {
-                ciphertextName = Base64.encodeBytesWithoutPadding(new ProfileCipher(key).Encrypt(Encoding.Unicode.GetBytes(name), ProfileCipher.NAME_PADDED_LENGTH));
+                ciphertextName = Base64.encodeBytesWithoutPadding(new ProfileCipher(key).EncryptName(Encoding.Unicode.GetBytes(name), ProfileCipher.NAME_PADDED_LENGTH));
             }
             PushServiceSocket.SetProfileName(ciphertextName);
         }
@@ -366,7 +366,7 @@ namespace libsignalservice
         /// <param name="soTimeoutMillis"></param>
         public void SetSoTimeoutMillis(long soTimeoutMillis)
         {
-            this.PushServiceSocket.setSoTimeoutMillis(soTimeoutMillis);
+            this.PushServiceSocket.SetSoTimeoutMillis(soTimeoutMillis);
         }
 
         /// <summary>
@@ -374,7 +374,7 @@ namespace libsignalservice
         /// </summary>
         public void CancelInFlightRequests()
         {
-            this.PushServiceSocket.cancelInFlightRequests();
+            this.PushServiceSocket.CancelInFlightRequests();
         }
 
         private string CreateDirectoryServerToken(string e164number, bool urlSafe)

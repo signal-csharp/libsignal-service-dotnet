@@ -75,6 +75,7 @@ message DataMessage {
   oneof group_oneof						{ GroupContext       group       = 3; }
   oneof flags_oneof						{ uint32             flags       = 4; }
   oneof expireTimer_oneof				{ uint32             expireTimer = 5; }
+  oneof profileKey_oneof                { bytes              profileKey  = 6; }
 }
 
 message NullMessage {
