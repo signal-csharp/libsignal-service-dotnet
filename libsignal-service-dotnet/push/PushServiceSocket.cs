@@ -36,11 +36,11 @@ namespace libsignalservice.push
         private static readonly string CREATE_ACCOUNT_SMS_PATH = "/v1/accounts/sms/code/{0}";
         private static readonly string CREATE_ACCOUNT_VOICE_PATH = "/v1/accounts/voice/code/{0}";
         private static readonly string VERIFY_ACCOUNT_CODE_PATH = "/v1/accounts/code/{0}";
-        private static readonly string VERIFY_ACCOUNT_TOKEN_PATH = "/v1/accounts/token/{0}";
         private static readonly string REGISTER_GCM_PATH = "/v1/accounts/gcm/";
         private static readonly string REQUEST_TOKEN_PATH = "/v1/accounts/token";
         private static readonly string TURN_SERVER_INFO = "/v1/accounts/turn";
         private static readonly string SET_ACCOUNT_ATTRIBUTES = "/v1/accounts/attributes";
+        private static readonly String PIN_PATH = "/v1/accounts/pin/";
 
         private static readonly string PREKEY_METADATA_PATH = "/v2/keys/";
         private static readonly string PREKEY_PATH = "/v2/keys/{0}";
@@ -77,24 +77,18 @@ namespace libsignalservice.push
             return true;
         }
 
-        public bool VerifyAccountCode(string verificationCode, string signalingKey, uint registrationId, bool fetchesMessages)
+        public bool VerifyAccountCode(string verificationCode, string signalingKey, uint registrationId, bool fetchesMessages, string pin)
         {
-            AccountAttributes signalingKeyEntity = new AccountAttributes(signalingKey, registrationId, fetchesMessages);
+            AccountAttributes signalingKeyEntity = new AccountAttributes(signalingKey, registrationId, fetchesMessages, pin);
             MakeServiceRequest(string.Format(VERIFY_ACCOUNT_CODE_PATH, verificationCode), "PUT", JsonUtil.toJson(signalingKeyEntity));
             return true;
         }
 
-        public bool SetAccountAttributes(string signalingKey, uint registrationId, bool fetchesMessages)
+        public bool SetAccountAttributes(string signalingKey, uint registrationId, bool fetchesMessages, string pin)
         {
-            AccountAttributes accountAttributesEntity = new AccountAttributes(signalingKey, registrationId, fetchesMessages);
+            AccountAttributes accountAttributesEntity = new AccountAttributes(signalingKey, registrationId, fetchesMessages, pin);
             MakeServiceRequest(SET_ACCOUNT_ATTRIBUTES, "PUT", JsonUtil.toJson(accountAttributesEntity));
             return true;
-        }
-
-        public string GetAccountVerificationToken()// throws IOException
-        {
-            string responseText = MakeServiceRequest(REQUEST_TOKEN_PATH, "GET", null);
-            return JsonUtil.fromJson<AuthorizationToken>(responseText).Token;
         }
 
         public int FinishNewDeviceRegistration(String code, String signalingKey, bool supportsSms, bool fetchesMessages, int registrationId, String deviceName)
@@ -140,6 +134,17 @@ namespace libsignalservice.push
         public void UnregisterGcmId()
         {
             MakeServiceRequest(REGISTER_GCM_PATH, "DELETE", null);
+        }
+
+        public void SetPin(string pin)
+        {
+            RegistrationLock accountLock = new RegistrationLock(pin);
+            MakeServiceRequest(PIN_PATH, "PUT", JsonUtil.toJson(accountLock));
+        }
+
+        public void RemovePin()
+        {
+            MakeServiceRequest(PIN_PATH, "PUT", null);
         }
 
         public SendMessageResponse SendMessage(OutgoingPushMessageList bundle)
@@ -350,13 +355,13 @@ namespace libsignalservice.push
             string response = MakeServiceRequest(string.Format(ATTACHMENT_PATH, ""), "GET", null);
             AttachmentDescriptor attachmentKey = JsonUtil.fromJson<AttachmentDescriptor>(response);
 
-            if (attachmentKey == null || attachmentKey.getLocation() == null)
+            if (attachmentKey == null || attachmentKey.Location == null)
             {
                 throw new Exception("Server failed to allocate an attachment key!");
             }
 
-            Debug.WriteLine("Got attachment content location: " + attachmentKey.getLocation(), TAG);
-            return (attachmentKey.getId(), attachmentKey.getLocation());
+            Debug.WriteLine("Got attachment content location: " + attachmentKey.Location, TAG);
+            return (attachmentKey.Id, attachmentKey.Location);
         }
 
         public void RetrieveAttachment(string relay, ulong attachmentId, Stream tmpDestination, int maxSizeBytes)
@@ -383,8 +388,8 @@ namespace libsignalservice.push
             string response = MakeServiceRequest(path, "GET", null);
             Debug.WriteLine("PushServiceSocket: Received resp " + response);
             AttachmentDescriptor descriptor = JsonUtil.fromJson<AttachmentDescriptor>(response);
-            Debug.WriteLine("PushServiceSocket: Attachment: " + attachmentId + " is at: " + descriptor.getLocation());
-            return descriptor.getLocation();
+            Debug.WriteLine("PushServiceSocket: Attachment: " + attachmentId + " is at: " + descriptor.Location);
+            return descriptor.Location;
         }
 
         public SignalServiceProfile RetrieveProfile(SignalServiceAddress target)
@@ -627,16 +632,16 @@ namespace libsignalservice.push
                 throw new PushNetworkException(ioe);
             }
 
-            switch (responseCode)
+            switch ((uint)responseCode)
             {
-                case HttpStatusCode.RequestEntityTooLarge: // 413
+                case 413: // HttpStatusCode.RequestEntityTooLarge
                     throw new RateLimitException("Rate limit exceeded: " + responseCode);
-                case HttpStatusCode.Unauthorized: // 401
-                case HttpStatusCode.Forbidden: // 403
+                case 401: // HttpStatusCode.Unauthorized
+                case 403: // HttpStatusCode.Forbidden
                     throw new AuthorizationFailedException("Authorization failed!");
-                case HttpStatusCode.NotFound: // 404
+                case 404: // HttpStatusCode.NotFound
                     throw new NotFoundException("Not found");
-                case HttpStatusCode.Conflict: // 409
+                case 409: // HttpStatusCode.Conflict
                     MismatchedDevices mismatchedDevices = null;
                     try
                     {
@@ -649,7 +654,7 @@ namespace libsignalservice.push
                         throw new PushNetworkException(e);
                     }
                     throw new MismatchedDevicesException(mismatchedDevices);
-                case HttpStatusCode.Gone: // 410
+                case 410: // HttpStatusCode.Gone
                     StaleDevices staleDevices = null;
                     try
                     {
@@ -662,7 +667,7 @@ namespace libsignalservice.push
                         throw new PushNetworkException(e);
                     }
                     throw new StaleDevicesException(staleDevices);
-                case HttpStatusCode.LengthRequired://411:
+                case 411: //HttpStatusCode.LengthRequired
                     DeviceLimit deviceLimit = null;
                     try
                     {
@@ -670,13 +675,22 @@ namespace libsignalservice.push
                     }
                     catch (Exception e)
                     {
-                        Debug.WriteLine(e);
-                        Debug.WriteLine(e.StackTrace);
                         throw new PushNetworkException(e);
                     }
                     throw new DeviceLimitExceededException(deviceLimit);
-                case HttpStatusCode.ExpectationFailed: // 417
+                case 417: // HttpStatusCode.ExpectationFailed
                     throw new ExpectationFailedException();
+                case 423:
+                    RegistrationLockFailure accountLockFailure;
+                    try
+                    {
+                        accountLockFailure = JsonUtil.fromJson<RegistrationLockFailure>(responseBody);
+                    }
+                    catch (Exception e)
+                    {
+                        throw new PushNetworkException(e);
+                    }
+                    throw new LockedException(accountLockFailure.Length, accountLockFailure.TimeRemaining);
             }
 
             if (responseCode != HttpStatusCode.OK && responseCode != HttpStatusCode.NoContent) // 200 & 204
@@ -780,39 +794,44 @@ namespace libsignalservice.push
 
     internal class GcmRegistrationId
     {
-        [JsonProperty]
-        private string wnsRegistrationId;
+        [JsonProperty("wnsRegistrationId")]
+        public string WnsRegistrationId { get; }
 
-        [JsonProperty]
-        private bool webSocketChannel;
-
-        public GcmRegistrationId()
-        {
-        }
+        [JsonProperty("webSocketChannel")]
+        public bool WebSocketChannel { get; }
 
         public GcmRegistrationId(string wnsRegistrationId, bool webSocketChannel)
         {
-            this.wnsRegistrationId = wnsRegistrationId;
-            this.webSocketChannel = webSocketChannel;
+            WnsRegistrationId = wnsRegistrationId;
+            WebSocketChannel = webSocketChannel;
         }
+    }
+
+    internal class RegistrationLock
+    {
+        [JsonProperty("pin")]
+        public string Pin { get; }
+
+        public RegistrationLock(string pin)
+        {
+            Pin = pin;
+        }
+    }
+
+    internal class RegistrationLockFailure
+    {
+        [JsonProperty("length")]
+        public int Length { get; }
+        [JsonProperty("timeRemaining")]
+        public long TimeRemaining { get; }
     }
 
     internal class AttachmentDescriptor
     {
-        [JsonProperty]
-        private ulong id;
+        [JsonProperty("id")]
+        public ulong Id { get; }
 
-        [JsonProperty]
-        private string location;
-
-        public ulong getId()
-        {
-            return id;
-        }
-
-        public string getLocation()
-        {
-            return location;
-        }
+        [JsonProperty("location")]
+        public string Location { get; }
     }
 }

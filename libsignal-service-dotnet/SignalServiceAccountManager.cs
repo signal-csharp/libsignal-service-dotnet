@@ -61,6 +61,14 @@ namespace libsignalservice
             PushServiceSocket = new PushServiceSocket(configuration, new StaticCredentialsProvider(null, null, null, (int)SignalServiceAddress.DEFAULT_DEVICE_ID), userAgent);
         }
 
+        public void SetPin(string pin)
+        {
+            if (pin != null)
+                PushServiceSocket.SetPin(pin);
+            else
+                PushServiceSocket.RemovePin();
+        }
+
         /// <summary>
         /// Register/Unregister a Google Cloud Messaging registration ID.
         /// </summary>
@@ -111,10 +119,10 @@ namespace libsignalservice
         /// <param name="fetchesMessages">True if the client does not support GCM</param>
         /// <returns></returns>
         public void VerifyAccountWithCode(string verificationCode, string signalingKey,
-                                   uint signalProtocolRegistrationId, bool fetchesMessages)
+                                   uint signalProtocolRegistrationId, bool fetchesMessages, string pin)
         {
             this.PushServiceSocket.VerifyAccountCode(verificationCode, signalingKey,
-                                                 signalProtocolRegistrationId, fetchesMessages);
+                                                 signalProtocolRegistrationId, fetchesMessages, pin);
         }
 
         /// <summary>
@@ -127,9 +135,9 @@ namespace libsignalservice
         /// separate installs.</param>
         /// <param name="fetchesMessages">True if the client does not support GCM</param>
         /// <returns></returns>
-        public void SetAccountAttributes(string signalingKey, uint signalProtocolRegistrationId, bool fetchesMessages)
+        public void SetAccountAttributes(string signalingKey, uint signalProtocolRegistrationId, bool fetchesMessages, string pin)
         {
-            this.PushServiceSocket.SetAccountAttributes(signalingKey, signalProtocolRegistrationId, fetchesMessages);
+            this.PushServiceSocket.SetAccountAttributes(signalingKey, signalProtocolRegistrationId, fetchesMessages, pin);
         }
 
         /// <summary>
@@ -208,15 +216,6 @@ namespace libsignalservice
             }
 
             return activeTokens;
-        }
-
-        /// <summary>
-        /// Soon to be deprecated
-        /// </summary>
-        /// <returns></returns>
-        public string GetAccountVerificationToken()
-        {
-            return PushServiceSocket.GetAccountVerificationToken();
         }
 
         /// <summary>
