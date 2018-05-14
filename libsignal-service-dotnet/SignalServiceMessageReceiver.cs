@@ -27,8 +27,9 @@ namespace libsignalservice
         private const int MAC_KEY_SIZE = 32;
         private readonly PushServiceSocket Socket;
         private readonly SignalServiceConfiguration Urls;
-        private readonly CredentialsProvider credentialsProvider;
+        private readonly CredentialsProvider CredentialsProvider;
         private readonly string UserAgent;
+        private readonly ConnectivityListener ConnectivityListener;
         private readonly CancellationToken Token;
 
         /// <summary>
@@ -38,13 +39,15 @@ namespace libsignalservice
         /// <param name="urls">The URL of the Signal Service.</param>
         /// <param name="credentials">The Signal Service user's credentials</param>
         /// <param name="userAgent"></param>
-        public SignalServiceMessageReceiver(CancellationToken token, SignalServiceConfiguration urls, CredentialsProvider credentials, string userAgent)
+        /// <param name="connectivityListener"></param>
+        public SignalServiceMessageReceiver(CancellationToken token, SignalServiceConfiguration urls, CredentialsProvider credentials, string userAgent, ConnectivityListener connectivityListener)
         {
-            this.Token = token;
-            this.Urls = urls;
-            this.credentialsProvider = credentials;
-            this.Socket = new PushServiceSocket(urls, credentials, userAgent);
-            this.UserAgent = userAgent;
+            Token = token;
+            Urls = urls;
+            CredentialsProvider = credentials;
+            Socket = new PushServiceSocket(urls, credentials, userAgent);
+            UserAgent = userAgent;
+            ConnectivityListener = connectivityListener;
         }
 
         /// <summary>
@@ -104,8 +107,8 @@ namespace libsignalservice
         /// <returns>A SignalServiceMessagePipe for receiving Signal Service messages.</returns>
         public SignalServiceMessagePipe CreateMessagePipe()
         {
-            SignalWebSocketConnection webSocket = new SignalWebSocketConnection(Token, Urls.SignalServiceUrls[0].Url, credentialsProvider, UserAgent);
-            return new SignalServiceMessagePipe(Token, webSocket, credentialsProvider);
+            SignalWebSocketConnection webSocket = new SignalWebSocketConnection(Token, Urls.SignalServiceUrls[0].Url, CredentialsProvider, UserAgent, ConnectivityListener);
+            return new SignalServiceMessagePipe(Token, webSocket, CredentialsProvider);
         }
 
         public List<SignalServiceEnvelope> RetrieveMessages(MessageReceivedCallback callback)

@@ -25,13 +25,15 @@ namespace libsignalservice.websocket
         private readonly CredentialsProvider CredentialsProvider;
         private readonly string UserAgent;
         private WebSocketWrapper WebSocket;
-        private CancellationToken Token;
+        private readonly CancellationToken Token;
+        private readonly ConnectivityListener Listener;
 
-        internal SignalWebSocketConnection(CancellationToken token, string httpUri, CredentialsProvider credentialsProvider, string userAgent)
+        internal SignalWebSocketConnection(CancellationToken token, string httpUri, CredentialsProvider credentialsProvider, string userAgent, ConnectivityListener listener)
         {
             Token = token;
             CredentialsProvider = credentialsProvider;
             UserAgent = userAgent;
+            Listener = listener;
             if (credentialsProvider.GetDeviceId() == SignalServiceAddress.DEFAULT_DEVICE_ID)
             {
                 WsUri = httpUri.Replace("https://", "wss://")
@@ -50,11 +52,13 @@ namespace libsignalservice.websocket
 
         public void Connect()
         {
+            Listener?.OnConnecting();
             WebSocket.Connect();
         }
 
         private void Connection_OnOpened()
         {
+            Listener?.OnConnecting();
         }
 
         private void Connection_OnMessage(byte[] obj)
