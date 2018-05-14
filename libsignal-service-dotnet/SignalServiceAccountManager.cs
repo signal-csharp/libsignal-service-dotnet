@@ -343,11 +343,8 @@ namespace libsignalservice
         /// <param name="name"></param>
         public void SetProfileName(byte[] key, string name)
         {
-            String ciphertextName = null;
-            if (name != null)
-            {
-                ciphertextName = Base64.encodeBytesWithoutPadding(new ProfileCipher(key).EncryptName(Encoding.Unicode.GetBytes(name), ProfileCipher.NAME_PADDED_LENGTH));
-            }
+            if (name == null) name = "";
+            string ciphertextName = Base64.encodeBytesWithoutPadding(new ProfileCipher(key).EncryptName(Encoding.Unicode.GetBytes(name), ProfileCipher.NAME_PADDED_LENGTH));
             PushServiceSocket.SetProfileName(ciphertextName);
         }
 
