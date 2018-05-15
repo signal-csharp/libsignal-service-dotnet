@@ -25,6 +25,7 @@ using System.Net.Security;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using static libsignalservice.messages.SignalServiceAttachment;
 
@@ -91,11 +92,11 @@ namespace libsignalservice.push
             return true;
         }
 
-        public int FinishNewDeviceRegistration(String code, String signalingKey, bool supportsSms, bool fetchesMessages, int registrationId, String deviceName)
+        public async Task<int> FinishNewDeviceRegistration(CancellationToken token, String code, String signalingKey, bool supportsSms, bool fetchesMessages, int registrationId, String deviceName)
         {
             ConfirmCodeMessage javaJson = new ConfirmCodeMessage(signalingKey, supportsSms, fetchesMessages, registrationId, deviceName);
             string json = JsonUtil.toJson(javaJson);
-            string responseText = MakeServiceRequest(string.Format(DEVICE_PATH, code), "PUT", json);
+            string responseText = await MakeServiceRequestAsync(string.Format(DEVICE_PATH, code), "PUT", json);
             DeviceId response = JsonUtil.FromJson<DeviceId>(responseText);
             return response.NewDeviceId;
         }
@@ -612,6 +613,10 @@ namespace libsignalservice.push
         }
 
         private string MakeServiceRequest(string urlFragment, string method, string body)
+        {
+            return MakeServiceRequestAsync(urlFragment, method, body).Result;
+        }
+        private async Task<string> MakeServiceRequestAsync(string urlFragment, string method, string body)
         //throws NonSuccessfulResponseCodeException, PushNetworkException
         {
             HttpResponseMessage connection = GetServiceConnection(urlFragment, method, body);
@@ -623,7 +628,8 @@ namespace libsignalservice.push
             {
                 responseCode = connection.StatusCode;
                 responseMessage = connection.ReasonPhrase;
-                responseBody = connection.Content.ReadAsStringAsync().Result;
+                Debug.WriteLine(SynchronizationContext.Current);
+                responseBody = await connection.Content.ReadAsStringAsync();
             }
             catch (Exception ioe)
             {

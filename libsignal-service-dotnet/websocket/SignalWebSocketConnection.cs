@@ -45,15 +45,15 @@ namespace libsignalservice.websocket
                     .Replace("http://", "ws://") + $"/v1/websocket/?login={credentialsProvider.GetUser()}.{credentialsProvider.GetDeviceId()}&password={credentialsProvider.GetPassword()}";
             }
             UserAgent = userAgent;
-            WebSocket = new WebSocketWrapper(WsUri, token);
+            WebSocket = new WebSocketWrapper(WsUri);
             WebSocket.OnConnect(Connection_OnOpened);
             WebSocket.OnMessage(Connection_OnMessage);
         }
 
-        public void Connect()
+        public async Task Connect(CancellationToken token)
         {
             Listener?.OnConnecting();
-            WebSocket.Connect();
+            await WebSocket.Connect(token);
         }
 
         private void Connection_OnOpened()

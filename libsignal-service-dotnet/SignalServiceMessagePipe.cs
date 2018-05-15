@@ -32,7 +32,7 @@ namespace libsignalservice
             this.Token = token;
             this.Websocket = websocket;
             this.CredentialsProvider = credentialsProvider;
-            this.Websocket.Connect();
+            this.Websocket.Connect(token).Wait();
         }
 
         /// <summary>

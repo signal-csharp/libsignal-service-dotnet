@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace libsignalservice
 {
@@ -57,7 +58,7 @@ namespace libsignalservice
         {
             Configuration = configuration;
             UserAgent = userAgent;
-            ProvisioningSocket = new ProvisioningSocket(configuration.SignalServiceUrls[0].Url, token);
+            ProvisioningSocket = new ProvisioningSocket(configuration.SignalServiceUrls[0].Url);
             PushServiceSocket = new PushServiceSocket(configuration, new StaticCredentialsProvider(null, null, null, (int)SignalServiceAddress.DEFAULT_DEVICE_ID), userAgent);
         }
 
@@ -224,10 +225,10 @@ namespace libsignalservice
         /// </summary>
         /// <param name="token">The UUID, Base64 encoded</param>
         /// <returns></returns>
-        public string GetNewDeviceUuid(CancellationToken token)
+        public async Task<string> GetNewDeviceUuid(CancellationToken token)
         {
-            ProvisioningSocket = new ProvisioningSocket(Configuration.SignalServiceUrls[0].Url, token);
-            return ProvisioningSocket.GetProvisioningUuid().Uuid;
+            ProvisioningSocket = new ProvisioningSocket(Configuration.SignalServiceUrls[0].Url);
+            return (await ProvisioningSocket.GetProvisioningUuid(token)).Uuid;
         }
 
         /// <summary>
@@ -241,10 +242,39 @@ namespace libsignalservice
         }
 
         /// <summary>
+        /// Fetch a ProvisionMessage from the server.
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="tempIdentity"></param>
+        /// <returns></returns>
+        public async Task<SignalServiceProvisionMessage> GetProvisioningMessage(CancellationToken token, IdentityKeyPair tempIdentity)
+        {
+            ProvisionMessage protoPm = await ProvisioningSocket.GetProvisioningMessage(token, tempIdentity);
+            string provisioningCode = protoPm.ProvisioningCode;
+            byte[] publicKeyBytes = protoPm.IdentityKeyPublic.ToByteArray();
+            if (publicKeyBytes.Length == 32)
+            {
+                byte[] type = { Curve.DJB_TYPE };
+                publicKeyBytes = ByteUtil.combine(type, publicKeyBytes);
+            }
+            ECPublicKey publicKey = Curve.decodePoint(publicKeyBytes, 0);
+            byte[] privateKeyBytes = protoPm.IdentityKeyPrivate.ToByteArray();
+            ECPrivateKey privateKey = Curve.decodePrivatePoint(privateKeyBytes);
+            IdentityKeyPair identity = new IdentityKeyPair(new IdentityKey(publicKey), privateKey);
+            return new SignalServiceProvisionMessage()
+            {
+                Number = protoPm.Number,
+                Identity = identity,
+                Code = protoPm.ProvisioningCode
+            };
+        }
+
+        /// <summary>
         /// Finishes a registration as a new device.
         /// Called by the new device. This method blocks until the already verified device has verified this device.
         /// </summary>
-        /// <param name="tempIdentity"></param>
+        /// <param name="token"></param>
+        /// <param name="provisionMessage"></param>
         /// <param name="signalingKey"></param>
         /// <param name="password"></param>
         /// <param name="sms"></param>
@@ -252,28 +282,10 @@ namespace libsignalservice
         /// <param name="regid"></param>
         /// <param name="name"></param>
         /// <returns></returns>
-        public NewDeviceLinkResult FinishNewDeviceRegistration(IdentityKeyPair tempIdentity, string signalingKey, string password, bool sms, bool fetches, int regid, string name)
+        public async Task<int> FinishNewDeviceRegistration(CancellationToken token, SignalServiceProvisionMessage provisionMessage, string signalingKey, string password, bool sms, bool fetches, int regid, string name)
         {
-            ProvisionMessage pm = ProvisioningSocket.GetProvisioningMessage(tempIdentity);
-            string provisioningCode = pm.ProvisioningCode;
-            byte[] publicKeyBytes = pm.IdentityKeyPublic.ToByteArray();
-            if (publicKeyBytes.Length == 32)
-            {
-                byte[] type = { Curve.DJB_TYPE };
-                publicKeyBytes = ByteUtil.combine(type, publicKeyBytes);
-            }
-            ECPublicKey publicKey = Curve.decodePoint(publicKeyBytes, 0);
-            byte[] privateKeyBytes = pm.IdentityKeyPrivate.ToByteArray();
-            ECPrivateKey privateKey = Curve.decodePrivatePoint(privateKeyBytes);
-            IdentityKeyPair identity = new IdentityKeyPair(new IdentityKey(publicKey), privateKey);
-            PushServiceSocket = new PushServiceSocket(Configuration, new StaticCredentialsProvider(pm.Number, password, null, -1), UserAgent);
-            int deviceId = PushServiceSocket.FinishNewDeviceRegistration(provisioningCode, signalingKey, sms, fetches, regid, name);
-            return new NewDeviceLinkResult()
-            {
-                DeviceId = deviceId,
-                Identity = identity,
-                Number = pm.Number
-            };
+            PushServiceSocket = new PushServiceSocket(Configuration, new StaticCredentialsProvider(provisionMessage.Number, password, null, -1), UserAgent);
+            return await PushServiceSocket.FinishNewDeviceRegistration(token, provisionMessage.Code, signalingKey, sms, fetches, regid, name);
         }
 
         /// <summary>
@@ -414,11 +426,11 @@ namespace libsignalservice
 
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-    public class NewDeviceLinkResult
+    public class SignalServiceProvisionMessage
     {
-        public IdentityKeyPair Identity { get; set; }
-        public int DeviceId { get; set; }
-        public string Number { get; set; }
+        public IdentityKeyPair Identity { get; internal set; }
+        public string Number { get; internal set; }
+        public string Code { get; internal set; }
     }
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

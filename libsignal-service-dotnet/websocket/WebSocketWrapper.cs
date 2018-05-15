@@ -20,16 +20,14 @@ namespace Coe.WebSocketWrapper
         private const int ReceiveChunkSize = 1024;
         private volatile ClientWebSocket WebSocket;
         private readonly Uri _uri;
-        private readonly CancellationToken Token;
-        private object ReconnectLock = new object();
-        private Action _onConnected;
-        private Action<byte[]> _onMessage;
+        private readonly object ReconnectLock = new object();
+        private Action OnConnectedAction;
+        private Action<byte[]> OnMessageAction;
 
-        internal WebSocketWrapper(string uri, CancellationToken token)
+        internal WebSocketWrapper(string uri)
         {
             CreateSocket();
             _uri = new Uri(uri);
-            Token = token;
         }
 
         private void CreateSocket()
@@ -38,17 +36,17 @@ namespace Coe.WebSocketWrapper
             WebSocket.Options.KeepAliveInterval = TimeSpan.FromSeconds(30);
         }
 
-        public void HandleOutgoingWS()
+        public void HandleOutgoingWS(CancellationToken token)
         {
             Logger.LogTrace("HandleOutgoingWS()");
             byte[] buf = null;
-            while (!Token.IsCancellationRequested)
+            while (!token.IsCancellationRequested)
             {
                 try
                 {
                     if (buf == null)
-                        buf = OutgoingQueue.Take(Token);
-                    WebSocket.SendAsync(new ArraySegment<byte>(buf, 0, buf.Length), WebSocketMessageType.Binary, true, Token).Wait();
+                        buf = OutgoingQueue.Take(token);
+                    WebSocket.SendAsync(new ArraySegment<byte>(buf, 0, buf.Length), WebSocketMessageType.Binary, true, token).Wait();
                     buf = null; //set to null so we do not retry the same block
                 }
                 catch (TaskCanceledException)
@@ -57,11 +55,11 @@ namespace Coe.WebSocketWrapper
                 }
                 catch (Exception e)
                 {
-                    if (!Token.IsCancellationRequested)
+                    if (!token.IsCancellationRequested)
                     {
                         Logger.LogWarning("HandleOutgoingWS send failed ({0})", e.Message);
                         Logger.LogInformation("HandleOutgoingWS reconnecting");
-                        Reconnect();
+                        Reconnect(token);
                     }
                 }
             }
@@ -69,7 +67,7 @@ namespace Coe.WebSocketWrapper
             Logger.LogTrace("HandleOutgoingWS task finished");
         }
 
-        public void Reconnect()
+        public void Reconnect(CancellationToken token)
         {
             lock (ReconnectLock)
             {
@@ -79,7 +77,7 @@ namespace Coe.WebSocketWrapper
                 var tries = 0;
                 try
                 {
-                    WebSocket.CloseOutputAsync(WebSocketCloseStatus.NormalClosure, "goodbye", Token).Wait();
+                    WebSocket.CloseOutputAsync(WebSocketCloseStatus.NormalClosure, "goodbye", token).Wait();
                 }
                 catch (Exception)
                 {
@@ -89,11 +87,11 @@ namespace Coe.WebSocketWrapper
                 {
                     try
                     {
-                        if (Token.IsCancellationRequested)
+                        if (token.IsCancellationRequested)
                             return;
                         tries++;
                         CreateSocket();
-                        WebSocket.ConnectAsync(_uri, Token).Wait();
+                        WebSocket.ConnectAsync(_uri, token).Wait();
                         break;
                     }
                     catch (Exception e)
@@ -106,18 +104,18 @@ namespace Coe.WebSocketWrapper
                         else if (tries > 5)
                             delay_length = 30;
                         Logger.LogWarning("Failed to reconnect ({0}). Retrying in {1} seconds", e.Message, delay_length);
-                        Task.Delay(1000 * delay_length, Token).Wait();
+                        Task.Delay(1000 * delay_length, token).Wait();
                     }
                 }
             }
             Logger.LogInformation("Successfully reconnected to the server");
         }
 
-        public void HandleIncomingWS()
+        public void HandleIncomingWS(CancellationToken token)
         {
             Logger.LogTrace("HandleIncomingWS()");
             var buffer = new byte[ReceiveChunkSize];
-            while (!Token.IsCancellationRequested)
+            while (!token.IsCancellationRequested)
             {
                 var message = new MemoryStream();
                 WebSocketReceiveResult result;
@@ -125,7 +123,7 @@ namespace Coe.WebSocketWrapper
                 {
                     do
                     {
-                        result = WebSocket.ReceiveAsync(new ArraySegment<byte>(buffer), Token).Result;
+                        result = WebSocket.ReceiveAsync(new ArraySegment<byte>(buffer), token).Result;
                         if (result.MessageType == WebSocketMessageType.Close)
                         {
                             WebSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, CancellationToken.None).Wait();
@@ -144,11 +142,11 @@ namespace Coe.WebSocketWrapper
                 }
                 catch (Exception e)
                 {
-                    if (!Token.IsCancellationRequested)
+                    if (!token.IsCancellationRequested)
                     {
                         Logger.LogWarning("HandleIncomingWS recv failed ({0})", e.Message);
                         Logger.LogInformation("HandleIncomingWS reconnecting");
-                        Reconnect();
+                        Reconnect(token);
                     }
                 }
             }
@@ -163,7 +161,7 @@ namespace Coe.WebSocketWrapper
         /// <returns></returns>
         public WebSocketWrapper OnConnect(Action onConnect)
         {
-            _onConnected = onConnect;
+            OnConnectedAction = onConnect;
             return this;
         }
 
@@ -174,41 +172,44 @@ namespace Coe.WebSocketWrapper
         /// <returns></returns>
         public void OnMessage(Action<byte[]> onMessage)
         {
-            _onMessage = onMessage;
+            OnMessageAction = onMessage;
         }
 
-        public void Connect()
+        public async Task Connect(CancellationToken token)
         {
             Logger.LogTrace("Connect()");
             try
             {
-                lock (ReconnectLock)
+                await Task.Run(() =>
                 {
-                    WebSocket.ConnectAsync(_uri, Token).Wait();
-                    CallOnConnected();
-                }
+                    lock (ReconnectLock) //TODO async lock
+                    {
+                        WebSocket.ConnectAsync(_uri, token).Wait();
+                        CallOnConnected();
+                    }
+                });
             }
             catch (Exception e)
             {
                 if(e.InnerException?.InnerException?.Message == "Forbidden")
                 {
-                    Logger.LogCritical("Server rejected authentication attempt");
+                    Logger.LogError("Server rejected authentication attempt");
                     throw new AuthorizationFailedException("OWS server rejected authorization.");
                 }
                 Logger.LogWarning("Connect could not connect to the server");
             }
-            HandleOutgoing = Task.Factory.StartNew(HandleOutgoingWS, TaskCreationOptions.LongRunning);
-            HandleIncoming = Task.Factory.StartNew(HandleIncomingWS, TaskCreationOptions.LongRunning);
+            HandleOutgoing = Task.Factory.StartNew(() => HandleOutgoingWS(token), TaskCreationOptions.LongRunning);
+            HandleIncoming = Task.Factory.StartNew(() => HandleIncomingWS(token), TaskCreationOptions.LongRunning);
         }
 
         private void CallOnMessage(byte[] result)
         {
-            _onMessage?.Invoke(result);
+            OnMessageAction?.Invoke(result);
         }
 
         private void CallOnConnected()
         {
-            _onConnected?.Invoke();
+            OnConnectedAction?.Invoke();
         }
     }
 }
