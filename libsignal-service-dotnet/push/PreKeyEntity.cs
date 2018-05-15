@@ -3,55 +3,25 @@ using libsignalservice.util;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-/**
- * Copyright (C) 2017 smndtrl, golf1052
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 using System;
 
 namespace libsignalservice.push
 {
     [JsonObject(MemberSerialization.OptIn)]
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public class PreKeyEntity
     {
         [JsonProperty("keyId")]
-        private uint keyId;
+        public uint KeyId { get; set; }
 
         [JsonProperty("publicKey")]
         [JsonConverter(typeof(ECPublicKeySerializer))]
-        private ECPublicKey publicKey;
-
-        public PreKeyEntity()
-        {
-        }
+        public ECPublicKey PublicKey { get; set; }
 
         internal PreKeyEntity(uint keyId, ECPublicKey publicKey)
         {
-            this.keyId = keyId;
-            this.publicKey = publicKey;
-        }
-
-        public uint getKeyId()
-        {
-            return keyId;
-        }
-
-        public ECPublicKey getPublicKey()
-        {
-            return publicKey;
+            KeyId = keyId;
+            PublicKey = publicKey;
         }
 
         private class ECPublicKeySerializer : JsonConverter
@@ -68,8 +38,7 @@ namespace libsignalservice.push
                     var token = JToken.Load(reader);
 
                     string key = token.Value<string>();
-                    //ECPublicKey pubKey = (ECPublicKey)existingValue;
-                    return Curve.decodePoint(Base64.decodeWithoutPadding(key), 0);
+                    return Curve.decodePoint(Base64.DecodeWithoutPadding(key), 0);
                 }
                 catch (Exception e)
                 {
@@ -81,8 +50,9 @@ namespace libsignalservice.push
             {
                 ECPublicKey pubKey = (ECPublicKey)value;
 
-                writer.WriteValue(Base64.encodeBytesWithoutPadding(pubKey.serialize()));
+                writer.WriteValue(Base64.EncodeBytesWithoutPadding(pubKey.serialize()));
             }
         }
     }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

@@ -1,85 +1,31 @@
-/**
- * Copyright (C) 2017 smndtrl, golf1052
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 using Newtonsoft.Json;
 using System;
 
 namespace libsignalservice.push
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public class SignalServiceEnvelopeEntity
     {
-        [JsonProperty]
-        private uint type;
+        [JsonProperty("type")]
+        public uint Type { get; set; }
 
-        [JsonProperty]
-        private String relay;
+        [JsonProperty("relay")]
+        public String Relay { get; set; }
 
-        [JsonProperty]
-        private ulong timestamp;
+        [JsonProperty("timestamp")]
+        public ulong Timestamp { get; set; }
 
-        [JsonProperty]
-        private String source;
+        [JsonProperty("source")]
+        public String Source { get; set; }
 
-        [JsonProperty]
-        private uint sourceDevice;
+        [JsonProperty("sourceDevice")]
+        public uint SourceDevice { get; set; }
 
-        [JsonProperty]
-        private byte[] message;
+        [JsonProperty("message")]
+        public byte[] Message { get; set; }
 
-        [JsonProperty]
-        private byte[] content;
-
-        public SignalServiceEnvelopeEntity()
-        {
-        }
-
-        public uint getType()
-        {
-            return type;
-        }
-
-        public String getRelay()
-        {
-            return relay;
-        }
-
-        public ulong getTimestamp()
-        {
-            return timestamp;
-        }
-
-        public String getSource()
-        {
-            return source;
-        }
-
-        public uint getSourceDevice()
-        {
-            return sourceDevice;
-        }
-
-        public byte[] getMessage()
-        {
-            return message;
-        }
-
-        public byte[] getContent()
-        {
-            return content;
-        }
+        [JsonProperty("content")]
+        public byte[] Content { get; set; }
     }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

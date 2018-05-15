@@ -1,26 +1,10 @@
-/**
- * Copyright (C) 2015-2017 smndtrl, golf1052
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 using PhoneNumbers;
 using System;
 using System.Text.RegularExpressions;
 
 namespace CustomExtensions
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public static class StringExtension
     {
         public static string ReplaceAll(this string str, string regex, string replacement)
@@ -33,12 +17,14 @@ namespace CustomExtensions
 namespace libsignalservice.util
 {
     using CustomExtensions;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>
     /// Phone number formats are a pain.
     /// </summary>
     public class PhoneNumberFormatter
     {
+        private static readonly ILogger Logger = LibsignalLogging.CreateLogger<PhoneNumberFormatter>();
         public static bool IsValidNumber(string number)
         {
             return (new Regex("^\\+[0-9]{10,}").Match(number)).Success ||
@@ -81,7 +67,7 @@ namespace libsignalservice.util
             }
             catch (NumberParseException e)
             {
-                //Log.w(TAG, e);
+                Logger.LogError("FormatNumberInternational() failed: {0}\n{1}", e.Message, e.StackTrace);
                 return number;
             }
         }
@@ -121,7 +107,7 @@ namespace libsignalservice.util
             }
             catch (NumberParseException e)
             {
-                //Log.w(TAG, e);
+                Logger.LogError("FormatNumber() failed: {0}\n{1}", e.Message, e.StackTrace);
                 return ImpreciseFormatNumber(number, localNumber);
             }
         }
@@ -144,13 +130,9 @@ namespace libsignalservice.util
 
                 return util.Format(parsedNumber, PhoneNumberFormat.E164);
             }
-            catch (NumberParseException npe)
+            catch (Exception e)
             {
-                return string.Empty;
-            }
-            catch (Exception npe)
-            {
-                return string.Empty;
+                Logger.LogError("FormatNumber() failed: {0}\n{1}", e.Message, e.StackTrace);
             }
 
             return "+" +
@@ -168,9 +150,10 @@ namespace libsignalservice.util
             }
             catch (NumberParseException e)
             {
-                //Log.w(TAG, e);
+                Logger.LogError("GetInternationalFormatFromE164() failed: {0}\n{1}", e.Message, e.StackTrace);
                 return e164number;
             }
         }
     }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

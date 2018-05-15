@@ -62,6 +62,10 @@ namespace libsignalservice
             PushServiceSocket = new PushServiceSocket(configuration, new StaticCredentialsProvider(null, null, null, (int)SignalServiceAddress.DEFAULT_DEVICE_ID), userAgent);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pin"></param>
         public void SetPin(string pin)
         {
             if (pin != null)
@@ -118,6 +122,7 @@ namespace libsignalservice
         /// same install, but probabilistically differ across registrations
         /// for separate installs.</param>
         /// <param name="fetchesMessages">True if the client does not support GCM</param>
+        /// <param name="pin"></param>
         /// <returns></returns>
         public void VerifyAccountWithCode(string verificationCode, string signalingKey,
                                    uint signalProtocolRegistrationId, bool fetchesMessages, string pin)
@@ -135,6 +140,7 @@ namespace libsignalservice
         /// install, but probabilistically differ across registrations for
         /// separate installs.</param>
         /// <param name="fetchesMessages">True if the client does not support GCM</param>
+        /// <param name="pin"></param>
         /// <returns></returns>
         public void SetAccountAttributes(string signalingKey, uint signalProtocolRegistrationId, bool fetchesMessages, string pin)
         {
@@ -355,7 +361,7 @@ namespace libsignalservice
         public void SetProfileName(byte[] key, string name)
         {
             if (name == null) name = "";
-            string ciphertextName = Base64.encodeBytesWithoutPadding(new ProfileCipher(key).EncryptName(Encoding.Unicode.GetBytes(name), ProfileCipher.NAME_PADDED_LENGTH));
+            string ciphertextName = Base64.EncodeBytesWithoutPadding(new ProfileCipher(key).EncryptName(Encoding.Unicode.GetBytes(name), ProfileCipher.NAME_PADDED_LENGTH));
             PushServiceSocket.SetProfileName(ciphertextName);
         }
 
@@ -395,8 +401,8 @@ namespace libsignalservice
         {
             try
             {
-                byte[] token = Util.trim(Hash.sha1(Encoding.UTF8.GetBytes(e164number)), 10);
-                string encoded = Base64.encodeBytesWithoutPadding(token);
+                byte[] token = Util.Trim(Hash.Sha1(Encoding.UTF8.GetBytes(e164number)), 10);
+                string encoded = Base64.EncodeBytesWithoutPadding(token);
 
                 if (urlSafe) return encoded.Replace('+', '-').Replace('/', '_');
                 else return encoded;

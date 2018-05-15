@@ -213,7 +213,7 @@ namespace libsignalservice
         {
             byte[] nullMessageBody = new DataMessage()
             {
-                Body = Base64.EncodeBytes(Util.getRandomLengthBytes(140))
+                Body = Base64.EncodeBytes(Util.GetRandomLengthBytes(140))
             }.ToByteArray();
 
             NullMessage nullMessage = new NullMessage()
@@ -446,8 +446,8 @@ namespace libsignalservice
             {
                 syncMessage.Read.Add(new SyncMessage.Types.Read
                 {
-                    Timestamp = (ulong)readMessage.getTimestamp(),
-                    Sender = readMessage.getSender()
+                    Timestamp = (ulong)readMessage.Timestamp,
+                    Sender = readMessage.Sender
                 });
             }
             content.SyncMessage = syncMessage;
@@ -460,7 +460,7 @@ namespace libsignalservice
             SyncMessage syncMessage = new SyncMessage { };
             Blocked blockedMessage = new Blocked { };
 
-            blockedMessage.Numbers.AddRange(blocked.getNumbers());
+            blockedMessage.Numbers.AddRange(blocked.Numbers);
             syncMessage.Blocked = blockedMessage;
             content.SyncMessage = syncMessage;
             return content.ToByteArray();
@@ -516,7 +516,7 @@ namespace libsignalservice
         private SyncMessage CreateSyncMessage()
         {
             SyncMessage syncMessage = new SyncMessage { };
-            syncMessage.Padding = ByteString.CopyFrom(Util.getRandomLengthBytes(512));
+            syncMessage.Padding = ByteString.CopyFrom(Util.GetRandomLengthBytes(512));
             return syncMessage;
         }
 
@@ -603,17 +603,11 @@ namespace libsignalservice
                 }
                 catch (MismatchedDevicesException mde)
                 {
-                    Debug.WriteLine("MismatchedDevicesException");
-                    Debug.WriteLine(mde.Message);
-                    Debug.WriteLine(mde.StackTrace);
                     HandleMismatchedDevices(socket, recipient, mde.MismatchedDevices);
                 }
                 catch (StaleDevicesException ste)
                 {
-                    Debug.WriteLine("MismatchedDevicesException");
-                    Debug.WriteLine(ste.Message);
-                    Debug.WriteLine(ste.StackTrace);
-                    HandleStaleDevices(recipient, ste.getStaleDevices());
+                    HandleStaleDevices(recipient, ste.StaleDevices);
                 }
             }
             Debug.WriteLine("Failed to resolve conflicts after 3 attempts!");
@@ -648,7 +642,7 @@ namespace libsignalservice
 
         private AttachmentPointer CreateAttachmentPointer(SignalServiceAttachmentStream attachment)
         {
-            byte[] attachmentKey = Util.getSecretBytes(64);
+            byte[] attachmentKey = Util.GetSecretBytes(64);
             long paddedLength = PaddingInputStream.GetPaddedSize(attachment.Length);
             long ciphertextLength = AttachmentCipherInputStream.GetCiphertextLength(paddedLength);
             PushAttachmentData attachmentData = new PushAttachmentData(attachment.getContentType(),
@@ -749,14 +743,14 @@ namespace libsignalservice
             List<OutgoingPushMessage> messages = new List<OutgoingPushMessage>();
 
             bool myself = recipient.Equals(localAddress);
-            if (!myself || CredentialsProvider.GetDeviceId() != SignalServiceAddress.DEFAULT_DEVICE_ID)
+            if (!myself || CredentialsProvider.DeviceId != SignalServiceAddress.DEFAULT_DEVICE_ID)
             {
                 messages.Add(GetEncryptedMessage(socket, recipient, SignalServiceAddress.DEFAULT_DEVICE_ID, plaintext, silent));
             }
 
             foreach (uint deviceId in store.GetSubDeviceSessions(recipient.E164number))
             {
-                if (!myself || deviceId != CredentialsProvider.GetDeviceId())
+                if (!myself || deviceId != CredentialsProvider.DeviceId)
                 {
                     if (store.ContainsSession(new SignalProtocolAddress(recipient.E164number, deviceId)))
                     {
@@ -781,7 +775,7 @@ namespace libsignalservice
 
                     foreach (PreKeyBundle preKey in preKeys)
                     {
-                        if (CredentialsProvider.GetUser().Equals(recipient.E164number) && CredentialsProvider.GetDeviceId() == preKey.getDeviceId())
+                        if (CredentialsProvider.User.Equals(recipient.E164number) && CredentialsProvider.DeviceId == preKey.getDeviceId())
                         {
                             continue;
                         }

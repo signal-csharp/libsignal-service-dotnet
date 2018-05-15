@@ -32,7 +32,7 @@ namespace libsignalservice.push
                 var token = JToken.Load(reader); // skip devices token
 
                 var str = token.Value<string>();
-                byte[] test = Base64.decodeWithoutPadding(str);
+                byte[] test = Base64.DecodeWithoutPadding(str);
                 return new IdentityKey(test, 0);
             }
             catch (Exception e)
@@ -46,7 +46,7 @@ namespace libsignalservice.push
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             IdentityKey pubKey = (IdentityKey)value;
-            writer.WriteValue(Base64.encodeBytesWithoutPadding(pubKey.serialize()));
+            writer.WriteValue(Base64.EncodeBytesWithoutPadding(pubKey.serialize()));
         }
     }
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member

@@ -14,9 +14,11 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Threading;
 using static libsignalservice.messages.SignalServiceAttachment;
+using static libsignalservice.SignalServiceMessagePipe;
 
 namespace libsignalservice
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     /// <summary>
     /// The primary interface for receiving Signal Service messages.
     /// </summary>
@@ -111,29 +113,25 @@ namespace libsignalservice
             return new SignalServiceMessagePipe(Token, webSocket, CredentialsProvider);
         }
 
-        public List<SignalServiceEnvelope> RetrieveMessages(MessageReceivedCallback callback)
+        public List<SignalServiceEnvelope> RetrieveMessages(IMessagePipeCallback callback)
         {
             List<SignalServiceEnvelope> results = new List<SignalServiceEnvelope>();
             List<SignalServiceEnvelopeEntity> entities = Socket.GetMessages();
 
             foreach (SignalServiceEnvelopeEntity entity in entities)
             {
-                SignalServiceEnvelope envelope = new SignalServiceEnvelope((int)entity.getType(), entity.getSource(),
-                                                                      (int)entity.getSourceDevice(), entity.getRelay(),
-                                                                      (int)entity.getTimestamp(), entity.getMessage(),
-                                                                      entity.getContent());
+                SignalServiceEnvelope envelope = new SignalServiceEnvelope((int)entity.Type, entity.Source,
+                                                                      (int)entity.SourceDevice, entity.Relay,
+                                                                      (int)entity.Timestamp, entity.Message,
+                                                                      entity.Content);
 
-                callback.onMessage(envelope);
+                callback.OnMessage(envelope);
                 results.Add(envelope);
 
-                Socket.AcknowledgeMessage(entity.getSource(), entity.getTimestamp());
+                Socket.AcknowledgeMessage(entity.Source, entity.Timestamp);
             }
             return results;
         }
-
-        public interface MessageReceivedCallback
-        {
-            void onMessage(SignalServiceEnvelope envelope);
-        }
     }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

@@ -34,15 +34,15 @@ namespace libsignalservice.websocket
             CredentialsProvider = credentialsProvider;
             UserAgent = userAgent;
             Listener = listener;
-            if (credentialsProvider.GetDeviceId() == SignalServiceAddress.DEFAULT_DEVICE_ID)
+            if (credentialsProvider.DeviceId == SignalServiceAddress.DEFAULT_DEVICE_ID)
             {
                 WsUri = httpUri.Replace("https://", "wss://")
-                    .Replace("http://", "ws://") + $"/v1/websocket/?login={credentialsProvider.GetUser()}&password={credentialsProvider.GetPassword()}";
+                    .Replace("http://", "ws://") + $"/v1/websocket/?login={credentialsProvider.User}&password={credentialsProvider.Password}";
             }
             else
             {
                 WsUri = httpUri.Replace("https://", "wss://")
-                    .Replace("http://", "ws://") + $"/v1/websocket/?login={credentialsProvider.GetUser()}.{credentialsProvider.GetDeviceId()}&password={credentialsProvider.GetPassword()}";
+                    .Replace("http://", "ws://") + $"/v1/websocket/?login={credentialsProvider.User}.{credentialsProvider.DeviceId}&password={credentialsProvider.Password}";
             }
             UserAgent = userAgent;
             WebSocket = new WebSocketWrapper(WsUri);

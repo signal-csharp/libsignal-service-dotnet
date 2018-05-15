@@ -6,6 +6,7 @@ using System.Text;
 
 namespace libsignalservice.crypto
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public class DigestingOutputStream : Stream
     {
         private IncrementalHash RunningDigest = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
@@ -52,4 +53,5 @@ namespace libsignalservice.crypto
             return RunningDigest.GetHashAndReset();
         }
     }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

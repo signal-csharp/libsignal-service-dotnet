@@ -3,24 +3,6 @@ using libsignal;
 using libsignal.util;
 using libsignalservice.push;
 using libsignalservice.util;
-using Strilanc.Value;
-
-/**
- * Copyright (C) 2017 smndtrl, golf1052
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
 
 using System;
 using System.Linq;
@@ -28,6 +10,7 @@ using static libsignalservice.SignalServiceMessagePipe;
 
 namespace libsignalservice.messages
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     /// <summary>
     /// This class represents an encrypted Signal Service envelope.
     ///
@@ -36,8 +19,6 @@ namespace libsignalservice.messages
     /// </summary>
     public class SignalServiceEnvelope: SignalServiceMessagePipeMessage
     {
-        private static readonly string TAG = "SignalServiceEnvelope";
-
         private static readonly int SUPPORTED_VERSION = 1;
         private static readonly int CIPHER_KEY_SIZE = 32;
         private static readonly int MAC_KEY_SIZE = 20;
@@ -51,18 +32,9 @@ namespace libsignalservice.messages
 
         private readonly Envelope envelope;
 
-        /**
-         * Construct an envelope from a serialized, Base64 encoded TextSecureEnvelope, encrypted
-         * with a signaling key.
-         *
-         * @param message The serialized TextSecureEnvelope, base64 encoded and encrypted.
-         * @param signalingKey The signaling key.
-         * @throws IOException
-         * @throws InvalidVersionException
-         */
 
         public SignalServiceEnvelope(String message, String signalingKey)
-            : this(Base64.decode(message), signalingKey)
+            : this(Base64.Decode(message), signalingKey)
         {
         }
 
@@ -76,12 +48,12 @@ namespace libsignalservice.messages
             if (ciphertext.Length < VERSION_LENGTH || ciphertext[VERSION_OFFSET] != SUPPORTED_VERSION)
                 throw new InvalidVersionException("Unsupported version!");
 
-            byte[] cipherKey = getCipherKey(signalingKey);
-            byte[] macKey = getMacKey(signalingKey);
+            byte[] cipherKey = GetCipherKey(signalingKey);
+            byte[] macKey = GetMacKey(signalingKey);
 
-            verifyMac(ciphertext, macKey);
+            VerifyMac(ciphertext, macKey);
 
-            envelope = Envelope.Parser.ParseFrom(getPlaintext(ciphertext, cipherKey));
+            envelope = Envelope.Parser.ParseFrom(GetPlaintext(ciphertext, cipherKey));
         }
 
         public SignalServiceEnvelope(int type, string source, int sourceDevice,
@@ -106,7 +78,7 @@ namespace libsignalservice.messages
         /// The envelope's sender.
         /// </summary>
         /// <returns>The envelope's sender.</returns>
-        public string getSource()
+        public string GetSource()
         {
             return envelope.Source;
         }
@@ -115,7 +87,7 @@ namespace libsignalservice.messages
         /// The envelope's sender device ID.
         /// </summary>
         /// <returns>The envelope's sender device ID.</returns>
-        public int getSourceDevice()
+        public int GetSourceDevice()
         {
             return (int)envelope.SourceDevice;
         }
@@ -124,7 +96,7 @@ namespace libsignalservice.messages
         /// The envelope's sender as a SignalServiceAddress.
         /// </summary>
         /// <returns>The envelope's sender as a SignalServiceAddress.</returns>
-        public SignalServiceAddress getSourceAddress()
+        public SignalServiceAddress GetSourceAddress()
         {
             return new SignalServiceAddress(envelope.Source, envelope.RelayOneofCase == Envelope.RelayOneofOneofCase.Relay ? envelope.Relay : null);
         }
@@ -133,7 +105,7 @@ namespace libsignalservice.messages
         /// The envelope content type.
         /// </summary>
         /// <returns>The envelope content type.</returns>
-        public int getType()
+        public int GetEnvelopeType()
         {
             return (int)envelope.Type;
         }
@@ -142,7 +114,7 @@ namespace libsignalservice.messages
         /// The federated server this envelope came from.
         /// </summary>
         /// <returns>The federated server this envelope came from.</returns>
-        public string getRelay()
+        public string GetRelay()
         {
             return envelope.Relay;
         }
@@ -151,7 +123,7 @@ namespace libsignalservice.messages
         /// The timestamp this envelope was sent.
         /// </summary>
         /// <returns>The timestamp this envelope was sent.</returns>
-        public long getTimestamp()
+        public long GetTimestamp()
         {
             return (long)envelope.Timestamp;
         }
@@ -160,7 +132,7 @@ namespace libsignalservice.messages
         /// Whether the envelope contains a SignalServiceDataMessage
         /// </summary>
         /// <returns>Whether the envelope contains a SignalServiceDataMessage</returns>
-        public bool hasLegacyMessage()
+        public bool HasLegacyMessage()
         {
             return envelope.LegacyMessageOneofCase == Envelope.LegacyMessageOneofOneofCase.LegacyMessage;
         }
@@ -169,7 +141,7 @@ namespace libsignalservice.messages
         /// The envelope's containing SignalService message.
         /// </summary>
         /// <returns>The envelope's containing SignalService message.</returns>
-        public byte[] getLegacyMessage()
+        public byte[] GetLegacyMessage()
         {
             return envelope.LegacyMessage.ToByteArray();
         }
@@ -178,7 +150,7 @@ namespace libsignalservice.messages
         /// Whether the envelope contains an encrypted SignalServiceContent
         /// </summary>
         /// <returns>Whether the envelope contains an encrypted SignalServiceContent</returns>
-        public bool hasContent()
+        public bool HasContent()
         {
             return envelope.ContentOneofCase == Envelope.ContentOneofOneofCase.Content;
         }
@@ -187,7 +159,7 @@ namespace libsignalservice.messages
         /// The envelope's containing message.
         /// </summary>
         /// <returns>The envelope's containing message.</returns>
-        public byte[] getContent()
+        public byte[] GetContent()
         {
             return envelope.Content.ToByteArray();
         }
@@ -196,7 +168,7 @@ namespace libsignalservice.messages
         /// True if the containing message is a <see cref="libsignal.protocol.SignalMessage"/>
         /// </summary>
         /// <returns>True if the containing message is a <see cref="libsignal.protocol.SignalMessage"/></returns>
-        public bool isSignalMessage()
+        public bool IsSignalMessage()
         {
             return envelope.Type == Envelope.Types.Type.Ciphertext;
         }
@@ -205,7 +177,7 @@ namespace libsignalservice.messages
         /// True if the containing message is a <see cref="libsignal.protocol.PreKeySignalMessage"/>
         /// </summary>
         /// <returns>True if the containing message is a <see cref="libsignal.protocol.PreKeySignalMessage"/></returns>
-        public bool isPreKeySignalMessage()
+        public bool IsPreKeySignalMessage()
         {
             return envelope.Type == Envelope.Types.Type.PrekeyBundle;
         }
@@ -214,12 +186,12 @@ namespace libsignalservice.messages
         /// True if the containing message is a delivery receipt.
         /// </summary>
         /// <returns>True if the containing message is a delivery receipt.</returns>
-        public bool isReceipt()
+        public bool IsReceipt()
         {
             return envelope.Type == Envelope.Types.Type.Receipt;
         }
 
-        private byte[] getPlaintext(byte[] ciphertext, byte[] cipherKey) //throws IOException
+        private byte[] GetPlaintext(byte[] ciphertext, byte[] cipherKey) //throws IOException
         {
             byte[] ivBytes = new byte[IV_LENGTH];
             System.Buffer.BlockCopy(ciphertext, IV_OFFSET, ivBytes, 0, ivBytes.Length);
@@ -230,50 +202,47 @@ namespace libsignalservice.messages
             return Decrypt.aesCbcPkcs5(message, cipherKey, ivBytes);
         }
 
-        private void verifyMac(byte[] ciphertext, byte[] macKey)// throws IOException
+        private void VerifyMac(byte[] ciphertext, byte[] macKey)// throws IOException
         {
-            try
+            if (ciphertext.Length < MAC_SIZE + 1)
+                throw new Exception("Invalid MAC!");
+
+            byte[] sign = new byte[ciphertext.Length - MAC_SIZE];
+            Array.Copy(ciphertext, 0, sign, 0, ciphertext.Length - MAC_SIZE);
+
+            byte[] ourMacFull = Sign.sha256sum(macKey, sign);
+            byte[] ourMacBytes = new byte[MAC_SIZE];
+            System.Buffer.BlockCopy(ourMacFull, 0, ourMacBytes, 0, ourMacBytes.Length);
+
+            byte[] theirMacBytes = new byte[MAC_SIZE];
+            System.Buffer.BlockCopy(ciphertext, ciphertext.Length - MAC_SIZE, theirMacBytes, 0, theirMacBytes.Length);
+
+            /*Log.w(TAG, "Our MAC: " + Hex.toString(ourMacBytes));
+            Log.w(TAG, "Thr MAC: " + Hex.toString(theirMacBytes));
+            */
+            if (!(ourMacBytes.SequenceEqual(theirMacBytes)))
             {
-                if (ciphertext.Length < MAC_SIZE + 1)
-                    throw new Exception("Invalid MAC!");
-
-                byte[] sign = new byte[ciphertext.Length - MAC_SIZE];
-                Array.Copy(ciphertext, 0, sign, 0, ciphertext.Length - MAC_SIZE);
-
-                byte[] ourMacFull = Sign.sha256sum(macKey, sign);
-                byte[] ourMacBytes = new byte[MAC_SIZE];
-                System.Buffer.BlockCopy(ourMacFull, 0, ourMacBytes, 0, ourMacBytes.Length);
-
-                byte[] theirMacBytes = new byte[MAC_SIZE];
-                System.Buffer.BlockCopy(ciphertext, ciphertext.Length - MAC_SIZE, theirMacBytes, 0, theirMacBytes.Length);
-
-                /*Log.w(TAG, "Our MAC: " + Hex.toString(ourMacBytes));
-                Log.w(TAG, "Thr MAC: " + Hex.toString(theirMacBytes));
-                */
-                if (!(ourMacBytes.SequenceEqual(theirMacBytes)))
-                {
-                    throw new Exception("Invalid MAC compare!");
-                }
+                throw new Exception("Invalid MAC compare!");
             }
-            catch (InvalidKeyException e) { }
         }
 
-        private byte[] getCipherKey(String signalingKey)// throws IOException
+        private byte[] GetCipherKey(String signalingKey)// throws IOException
         {
-            byte[] signalingKeyBytes = Base64.decode(signalingKey);
+            byte[] signalingKeyBytes = Base64.Decode(signalingKey);
             byte[] cipherKey = new byte[CIPHER_KEY_SIZE];
             System.Buffer.BlockCopy(signalingKeyBytes, 0, cipherKey, 0, cipherKey.Length);
 
             return cipherKey;
         }
 
-        private byte[] getMacKey(String signalingKey)// throws IOException
+        private byte[] GetMacKey(String signalingKey)// throws IOException
         {
-            byte[] signalingKeyBytes = Base64.decode(signalingKey);
+            byte[] signalingKeyBytes = Base64.Decode(signalingKey);
             byte[] macKey = new byte[MAC_KEY_SIZE];
             System.Buffer.BlockCopy(signalingKeyBytes, CIPHER_KEY_SIZE, macKey, 0, macKey.Length);
 
             return macKey;
         }
     }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

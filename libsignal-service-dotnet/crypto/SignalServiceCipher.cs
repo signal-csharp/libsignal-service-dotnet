@@ -62,17 +62,17 @@ namespace libsignalservice.crypto
             {
                 SignalServiceContent content = new SignalServiceContent();
 
-                if (envelope.hasLegacyMessage())
+                if (envelope.HasLegacyMessage())
                 {
-                    DataMessage message = DataMessage.Parser.ParseFrom(Decrypt(envelope, envelope.getLegacyMessage()));
+                    DataMessage message = DataMessage.Parser.ParseFrom(Decrypt(envelope, envelope.GetLegacyMessage()));
                     content = new SignalServiceContent()
                     {
                         Message = CreateSignalServiceMessage(envelope, message)
                     };
                 }
-                else if (envelope.hasContent())
+                else if (envelope.HasContent())
                 {
-                    Content message = Content.Parser.ParseFrom(Decrypt(envelope, envelope.getContent()));
+                    Content message = Content.Parser.ParseFrom(Decrypt(envelope, envelope.GetContent()));
 
                     if (message.DataMessageOneofCase == Content.DataMessageOneofOneofCase.DataMessage)
                     {
@@ -81,7 +81,7 @@ namespace libsignalservice.crypto
                             Message = CreateSignalServiceMessage(envelope, message.DataMessage)
                         };
                     }
-                    else if (message.SyncMessageOneofCase == Content.SyncMessageOneofOneofCase.SyncMessage && LocalAddress.E164number == envelope.getSource())
+                    else if (message.SyncMessageOneofCase == Content.SyncMessageOneofOneofCase.SyncMessage && LocalAddress.E164number == envelope.GetSource())
                     {
                         content = new SignalServiceContent()
                         {
@@ -115,26 +115,26 @@ namespace libsignalservice.crypto
         private byte[] Decrypt(SignalServiceEnvelope envelope, byte[] ciphertext)
 
         {
-            SignalProtocolAddress sourceAddress = new SignalProtocolAddress(envelope.getSource(), (uint)envelope.getSourceDevice());
+            SignalProtocolAddress sourceAddress = new SignalProtocolAddress(envelope.GetSource(), (uint)envelope.GetSourceDevice());
             SessionCipher sessionCipher = new SessionCipher(SignalProtocolStore, sourceAddress);
 
             byte[] paddedMessage;
 
-            if (envelope.isPreKeySignalMessage())
+            if (envelope.IsPreKeySignalMessage())
             {
                 paddedMessage = sessionCipher.decrypt(new PreKeySignalMessage(ciphertext));
             }
-            else if (envelope.isSignalMessage())
+            else if (envelope.IsSignalMessage())
             {
                 paddedMessage = sessionCipher.decrypt(new SignalMessage(ciphertext));
             }
             else
             {
-                throw new InvalidMessageException("Unknown type: " + envelope.getType() + " from " + envelope.getSource());
+                throw new InvalidMessageException("Unknown type: " + envelope.GetEnvelopeType() + " from " + envelope.GetSource());
             }
 
             PushTransportDetails transportDetails = new PushTransportDetails(sessionCipher.getSessionVersion());
-            return transportDetails.getStrippedPaddingMessageBody(paddedMessage);
+            return transportDetails.GetStrippedPaddingMessageBody(paddedMessage);
         }
 
         private SignalServiceDataMessage CreateSignalServiceMessage(SignalServiceEnvelope envelope, DataMessage content)
@@ -151,14 +151,14 @@ namespace libsignalservice.crypto
                 attachments.Add(CreateAttachmentPointer(envelope, pointer));
             }
 
-            if (content.TimestampOneofCase == DataMessage.TimestampOneofOneofCase.Timestamp && (long) content.Timestamp != envelope.getTimestamp())
+            if (content.TimestampOneofCase == DataMessage.TimestampOneofOneofCase.Timestamp && (long) content.Timestamp != envelope.GetTimestamp())
             {
-                throw new InvalidMessageException("Timestamps don't match: " + content.Timestamp + " vs " + envelope.getTimestamp());
+                throw new InvalidMessageException("Timestamps don't match: " + content.Timestamp + " vs " + envelope.GetTimestamp());
             }
 
             return new SignalServiceDataMessage()
             {
-                Timestamp = envelope.getTimestamp(),
+                Timestamp = envelope.GetTimestamp(),
                 Group = groupInfo,
                 Attachments = attachments,
                 Body = content.Body,
@@ -333,7 +333,7 @@ namespace libsignalservice.crypto
             {
                 ReceiptType = type,
                 Timestamps = timestamps,
-                When = envelope.getTimestamp()
+                When = envelope.GetTimestamp()
             };
         }
 
@@ -367,7 +367,7 @@ namespace libsignalservice.crypto
             return new SignalServiceAttachmentPointer(pointer.Id,
                 pointer.ContentType,
                 pointer.Key.ToByteArray(),
-                envelope.getRelay(),
+                envelope.GetRelay(),
                 size,
                 pointer.ThumbnailOneofCase == AttachmentPointer.ThumbnailOneofOneofCase.Thumbnail ? pointer.Thumbnail.ToByteArray() : null,
                 (int) pointer.Width,
@@ -415,7 +415,7 @@ namespace libsignalservice.crypto
                     avatar = new SignalServiceAttachmentPointer(pointer.Id,
                         pointer.ContentType,
                         pointer.Key.ToByteArray(),
-                        envelope.getRelay(),
+                        envelope.GetRelay(),
                         pointer.SizeOneofCase == AttachmentPointer.SizeOneofOneofCase.Size ? pointer.Size : 0,
                         null,
                         0, 0,

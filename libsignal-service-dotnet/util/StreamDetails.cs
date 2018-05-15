@@ -5,6 +5,7 @@ using System.Text;
 
 namespace libsignalservice.util
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public class StreamDetails
     {
         public Stream InputStream { get; }
@@ -18,4 +19,5 @@ namespace libsignalservice.util
             Length = length;
         }
     }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

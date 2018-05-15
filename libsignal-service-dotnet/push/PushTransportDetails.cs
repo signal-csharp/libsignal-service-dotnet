@@ -1,28 +1,9 @@
-/**
- * Copyright (C) 2015 smndtrl
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 using System;
 
 namespace libsignalservice.push
 {
     internal class PushTransportDetails
     {
-        private static readonly String TAG = "PushTransportDetails";
-
         private readonly uint messageVersion;
 
         public PushTransportDetails(uint messageVersion)
@@ -30,7 +11,7 @@ namespace libsignalservice.push
             this.messageVersion = messageVersion;
         }
 
-        public byte[] getStrippedPaddingMessageBody(byte[] messageWithPadding)
+        public byte[] GetStrippedPaddingMessageBody(byte[] messageWithPadding)
         {
             if (messageVersion < 2) throw new Exception("Unknown version: " + messageVersion);
             else if (messageVersion == 2) return messageWithPadding;

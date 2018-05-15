@@ -11,7 +11,6 @@ using libsignalservice.profiles;
 using libsignalservice.push.exceptions;
 using libsignalservice.util;
 using Newtonsoft.Json;
-using Strilanc.Value;
 
 using System;
 using System.Collections.Generic;
@@ -74,28 +73,28 @@ namespace libsignalservice.push
         public bool CreateAccount(bool voice)
         {
             string path = voice ? CREATE_ACCOUNT_VOICE_PATH : CREATE_ACCOUNT_SMS_PATH;
-            MakeServiceRequest(string.Format(path, CredentialsProvider.GetUser()), "GET", null);
+            MakeServiceRequest(string.Format(path, CredentialsProvider.User), "GET", null);
             return true;
         }
 
         public bool VerifyAccountCode(string verificationCode, string signalingKey, uint registrationId, bool fetchesMessages, string pin)
         {
             AccountAttributes signalingKeyEntity = new AccountAttributes(signalingKey, registrationId, fetchesMessages, pin);
-            MakeServiceRequest(string.Format(VERIFY_ACCOUNT_CODE_PATH, verificationCode), "PUT", JsonUtil.toJson(signalingKeyEntity));
+            MakeServiceRequest(string.Format(VERIFY_ACCOUNT_CODE_PATH, verificationCode), "PUT", JsonUtil.ToJson(signalingKeyEntity));
             return true;
         }
 
         public bool SetAccountAttributes(string signalingKey, uint registrationId, bool fetchesMessages, string pin)
         {
             AccountAttributes accountAttributesEntity = new AccountAttributes(signalingKey, registrationId, fetchesMessages, pin);
-            MakeServiceRequest(SET_ACCOUNT_ATTRIBUTES, "PUT", JsonUtil.toJson(accountAttributesEntity));
+            MakeServiceRequest(SET_ACCOUNT_ATTRIBUTES, "PUT", JsonUtil.ToJson(accountAttributesEntity));
             return true;
         }
 
         public async Task<int> FinishNewDeviceRegistration(CancellationToken token, String code, String signalingKey, bool supportsSms, bool fetchesMessages, int registrationId, String deviceName)
         {
             ConfirmCodeMessage javaJson = new ConfirmCodeMessage(signalingKey, supportsSms, fetchesMessages, registrationId, deviceName);
-            string json = JsonUtil.toJson(javaJson);
+            string json = JsonUtil.ToJson(javaJson);
             string responseText = await MakeServiceRequestAsync(string.Format(DEVICE_PATH, code), "PUT", json);
             DeviceId response = JsonUtil.FromJson<DeviceId>(responseText);
             return response.NewDeviceId;
@@ -110,7 +109,7 @@ namespace libsignalservice.push
         public bool SendProvisioningMessage(string destination, byte[] body)// throws IOException
         {
             MakeServiceRequest(string.Format(PROVISIONING_MESSAGE_PATH, destination), "PUT",
-                    JsonUtil.toJson(new ProvisioningMessage(Base64.EncodeBytes(body))));
+                    JsonUtil.ToJson(new ProvisioningMessage(Base64.EncodeBytes(body))));
             return true;
         }
 
@@ -129,7 +128,7 @@ namespace libsignalservice.push
         public void RegisterGcmId(String gcmRegistrationId)
         {
             GcmRegistrationId registration = new GcmRegistrationId(gcmRegistrationId, true);
-            MakeServiceRequest(REGISTER_GCM_PATH, "PUT", JsonUtil.toJson(registration));
+            MakeServiceRequest(REGISTER_GCM_PATH, "PUT", JsonUtil.ToJson(registration));
         }
 
         public void UnregisterGcmId()
@@ -140,7 +139,7 @@ namespace libsignalservice.push
         public void SetPin(string pin)
         {
             RegistrationLock accountLock = new RegistrationLock(pin);
-            MakeServiceRequest(PIN_PATH, "PUT", JsonUtil.toJson(accountLock));
+            MakeServiceRequest(PIN_PATH, "PUT", JsonUtil.ToJson(accountLock));
         }
 
         public void RemovePin()
@@ -152,12 +151,12 @@ namespace libsignalservice.push
         {
             try
             {
-                string responseText = MakeServiceRequest(string.Format(MESSAGE_PATH, bundle.getDestination()), "PUT", JsonUtil.toJson(bundle));
+                string responseText = MakeServiceRequest(string.Format(MESSAGE_PATH, bundle.Destination), "PUT", JsonUtil.ToJson(bundle));
                 return JsonUtil.FromJson<SendMessageResponse>(responseText);
             }
             catch (NotFoundException nfe)
             {
-                throw new UnregisteredUserException(bundle.getDestination(), nfe);
+                throw new UnregisteredUserException(bundle.Destination, nfe);
             }
         }
 
@@ -193,7 +192,7 @@ namespace libsignalservice.push
                                                                    signedPreKey.getSignature());
 
             MakeServiceRequest(string.Format(PREKEY_PATH, ""), "PUT",
-                JsonUtil.toJson(new PreKeyState(entities, signedPreKeyEntity, identityKey)));
+                JsonUtil.ToJson(new PreKeyState(entities, signedPreKeyEntity, identityKey)));
             return true;
         }
 
@@ -233,22 +232,22 @@ namespace libsignalservice.push
                     int preKeyId = -1;
                     int signedPreKeyId = -1;
 
-                    if (device.getSignedPreKey() != null)
+                    if (device.SignedPreKey != null)
                     {
-                        signedPreKey = device.getSignedPreKey().getPublicKey();
-                        signedPreKeyId = (int)device.getSignedPreKey().getKeyId(); // TODO: whacky
-                        signedPreKeySignature = device.getSignedPreKey().Signature;
+                        signedPreKey = device.SignedPreKey.PublicKey;
+                        signedPreKeyId = (int)device.SignedPreKey.KeyId;
+                        signedPreKeySignature = device.SignedPreKey.Signature;
                     }
 
-                    if (device.getPreKey() != null)
+                    if (device.PreKey != null)
                     {
-                        preKeyId = (int)device.getPreKey().getKeyId();// TODO: whacky
-                        preKey = device.getPreKey().getPublicKey();
+                        preKeyId = (int)device.PreKey.KeyId;
+                        preKey = device.PreKey.PublicKey;
                     }
 
-                    bundles.Add(new PreKeyBundle(device.getRegistrationId(), device.getDeviceId(), (uint)preKeyId,
+                    bundles.Add(new PreKeyBundle(device.RegistrationId, device.DeviceId, (uint)preKeyId,
                                                          preKey, (uint)signedPreKeyId, signedPreKey, signedPreKeySignature,
-                                                         response.IdentityKey));// TODO: whacky
+                                                         response.IdentityKey));
                 }
 
                 return bundles;
@@ -288,20 +287,20 @@ namespace libsignalservice.push
                 int preKeyId = -1;
                 int signedPreKeyId = -1;
 
-                if (device.getPreKey() != null)
+                if (device.PreKey != null)
                 {
-                    preKeyId = (int)device.getPreKey().getKeyId();// TODO: whacky
-                    preKey = device.getPreKey().getPublicKey();
+                    preKeyId = (int)device.PreKey.KeyId;
+                    preKey = device.PreKey.PublicKey;
                 }
 
-                if (device.getSignedPreKey() != null)
+                if (device.SignedPreKey != null)
                 {
-                    signedPreKeyId = (int)device.getSignedPreKey().getKeyId();// TODO: whacky
-                    signedPreKey = device.getSignedPreKey().getPublicKey();
-                    signedPreKeySignature = device.getSignedPreKey().Signature;
+                    signedPreKeyId = (int)device.SignedPreKey.KeyId;
+                    signedPreKey = device.SignedPreKey.PublicKey;
+                    signedPreKeySignature = device.SignedPreKey.Signature;
                 }
 
-                return new PreKeyBundle(device.getRegistrationId(), device.getDeviceId(), (uint)preKeyId, preKey,
+                return new PreKeyBundle(device.RegistrationId, device.DeviceId, (uint)preKeyId, preKey,
                                         (uint)signedPreKeyId, signedPreKey, signedPreKeySignature, response.IdentityKey);
             }
             /*catch (JsonUtil.JsonParseException e)
@@ -333,7 +332,7 @@ namespace libsignalservice.push
             SignedPreKeyEntity signedPreKeyEntity = new SignedPreKeyEntity(signedPreKey.getId(),
                                                                            signedPreKey.getKeyPair().getPublicKey(),
                                                                            signedPreKey.getSignature());
-            MakeServiceRequest(SIGNED_PREKEY_PATH, "PUT", JsonUtil.toJson(signedPreKeyEntity));
+            MakeServiceRequest(SIGNED_PREKEY_PATH, "PUT", JsonUtil.ToJson(signedPreKeyEntity));
             return true;
         }
 
@@ -381,7 +380,7 @@ namespace libsignalservice.push
         {
             string path = string.Format(ATTACHMENT_PATH, attachmentId.ToString());
 
-            if (!Util.isEmpty(relay))
+            if (!Util.IsEmpty(relay))
             {
                 path = path + "?relay=" + relay;
             }
@@ -462,7 +461,7 @@ namespace libsignalservice.push
         {
             LinkedList<HashSet<string>> temp = new LinkedList<HashSet<string>>();
             ContactTokenList contactTokenList = new ContactTokenList(contactTokens.ToList());
-            string response = MakeServiceRequest(DIRECTORY_TOKENS_PATH, "PUT", JsonUtil.toJson(contactTokenList));
+            string response = MakeServiceRequest(DIRECTORY_TOKENS_PATH, "PUT", JsonUtil.ToJson(contactTokenList));
             ContactTokenDetailsList activeTokens = JsonUtil.FromJson<ContactTokenDetailsList>(response);
 
             return activeTokens.Contacts;
@@ -733,7 +732,7 @@ namespace libsignalservice.push
 
                 var headers = connection.DefaultRequestHeaders;
 
-                if (CredentialsProvider.GetPassword() != null)
+                if (CredentialsProvider.Password != null)
                 {
                     string authHeader = GetAuthorizationHeader(CredentialsProvider);
                     Debug.WriteLine(String.Format("Authorization: {0}", authHeader), TAG);
@@ -789,13 +788,13 @@ namespace libsignalservice.push
 
         private string GetAuthorizationHeader(CredentialsProvider provider)
         {
-            if (provider.GetDeviceId() == SignalServiceAddress.DEFAULT_DEVICE_ID)
+            if (provider.DeviceId == SignalServiceAddress.DEFAULT_DEVICE_ID)
             {
-                return "Basic " + Base64.EncodeBytes(Encoding.UTF8.GetBytes((provider.GetUser() + ":" + provider.GetPassword())));
+                return "Basic " + Base64.EncodeBytes(Encoding.UTF8.GetBytes((provider.User + ":" + provider.Password)));
             }
             else
             {
-                return "Basic " + Base64.EncodeBytes(Encoding.UTF8.GetBytes((provider.GetUser() + "." + provider.GetDeviceId() + ":" + provider.GetPassword())));
+                return "Basic " + Base64.EncodeBytes(Encoding.UTF8.GetBytes((provider.User + "." + provider.DeviceId + ":" + provider.Password)));
             }
         }
 

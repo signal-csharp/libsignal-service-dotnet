@@ -46,7 +46,7 @@ namespace libsignalservice
 
             if (IsSignalServiceEnvelope(request))
             {
-                SignalServiceMessagePipeMessage message = new SignalServiceEnvelope(request.Body.ToByteArray(), CredentialsProvider.GetSignalingKey());
+                SignalServiceMessagePipeMessage message = new SignalServiceEnvelope(request.Body.ToByteArray(), CredentialsProvider.SignalingKey);
                 WebSocketResponseMessage response = CreateWebSocketResponse(request);
                 try
                 {
@@ -83,10 +83,10 @@ namespace libsignalservice
             Logger.LogTrace("Send()");
             WebSocketRequestMessage requestmessage = new WebSocketRequestMessage()
             {
-                Id = BitConverter.ToUInt64(Util.getSecretBytes(sizeof(long)), 0),
+                Id = BitConverter.ToUInt64(Util.GetSecretBytes(sizeof(long)), 0),
                 Verb = "PUT",
-                Path = $"/v1/messages/{list.getDestination()}",
-                Body = ByteString.CopyFrom(Encoding.UTF8.GetBytes(JsonUtil.toJson(list)))
+                Path = $"/v1/messages/{list.Destination}",
+                Body = ByteString.CopyFrom(Encoding.UTF8.GetBytes(JsonUtil.ToJson(list)))
             };
             requestmessage.Headers.Add("content-type:application/json");
             Logger.LogDebug("Sending message {0}", requestmessage.Id);
@@ -119,7 +119,7 @@ namespace libsignalservice
             Logger.LogTrace("GetProfile()");
             WebSocketRequestMessage requestMessage = new WebSocketRequestMessage()
             {
-                Id = BitConverter.ToUInt64(Util.getSecretBytes(sizeof(long)), 0),
+                Id = BitConverter.ToUInt64(Util.GetSecretBytes(sizeof(long)), 0),
                 Verb = "GET",
                 Path = $"/v1/profile/{address.E164number}"
             };

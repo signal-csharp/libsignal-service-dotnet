@@ -33,8 +33,8 @@ namespace libsignalservice.push
                 {
                     var token = JToken.Load(reader);
                     var keyId = (uint)token.SelectToken("keyId");
-                    var publicKey = Curve.decodePoint(Base64.decodeWithoutPadding((string)token.SelectToken("publicKey")), 0);
-                    var signature = Base64.decodeWithoutPadding((string)token.SelectToken("signature"));
+                    var publicKey = Curve.decodePoint(Base64.DecodeWithoutPadding((string)token.SelectToken("publicKey")), 0);
+                    var signature = Base64.DecodeWithoutPadding((string)token.SelectToken("signature"));
 
                     return new SignedPreKeyEntity(keyId, publicKey, signature);
                 }
@@ -49,11 +49,11 @@ namespace libsignalservice.push
                 var signedPreKey = (SignedPreKeyEntity)value;
                 writer.WriteStartObject();
                 writer.WritePropertyName("keyId");
-                writer.WriteValue(signedPreKey.getKeyId());
+                writer.WriteValue(signedPreKey.KeyId);
                 writer.WritePropertyName("publicKey");
-                writer.WriteValue(Base64.encodeBytesWithoutPadding(signedPreKey.getPublicKey().serialize()));
+                writer.WriteValue(Base64.EncodeBytesWithoutPadding(signedPreKey.PublicKey.serialize()));
                 writer.WritePropertyName("signature");
-                writer.WriteValue(Base64.encodeBytesWithoutPadding(signedPreKey.Signature));
+                writer.WriteValue(Base64.EncodeBytesWithoutPadding(signedPreKey.Signature));
                 writer.WriteEndObject();
             }
         }

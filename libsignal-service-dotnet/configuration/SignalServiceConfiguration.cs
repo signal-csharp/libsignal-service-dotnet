@@ -1,10 +1,6 @@
-﻿using libsignalservice.push;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace libsignalservice.configuration
+﻿namespace libsignalservice.configuration
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public class SignalServiceConfiguration
     {
         public SignalServiceUrl[] SignalServiceUrls { get; }
@@ -16,4 +12,5 @@ namespace libsignalservice.configuration
             SignalCdnUrls = signalCdnUrls;
         }
     }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }
