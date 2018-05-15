@@ -614,8 +614,16 @@ namespace libsignalservice.push
 
         private string MakeServiceRequest(string urlFragment, string method, string body)
         {
-            return MakeServiceRequestAsync(urlFragment, method, body).Result;
+            try
+            {
+                return MakeServiceRequestAsync(urlFragment, method, body).Result;
+            }
+            catch (AggregateException e)
+            {
+                throw e.InnerException;
+            }
         }
+
         private async Task<string> MakeServiceRequestAsync(string urlFragment, string method, string body)
         //throws NonSuccessfulResponseCodeException, PushNetworkException
         {
@@ -628,7 +636,6 @@ namespace libsignalservice.push
             {
                 responseCode = connection.StatusCode;
                 responseMessage = connection.ReasonPhrase;
-                Debug.WriteLine(SynchronizationContext.Current);
                 responseBody = await connection.Content.ReadAsStringAsync();
             }
             catch (Exception ioe)
