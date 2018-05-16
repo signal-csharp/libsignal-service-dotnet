@@ -11,9 +11,9 @@ namespace libsignalservice.messages.multidevice
         public IList<String> Members { get; }
         public SignalServiceAttachmentStream Avatar { get; }
         public bool Active { get; }
-        public int? ExpirationTimer { get; }
+        public uint? ExpirationTimer { get; }
 
-        public DeviceGroup(byte[] id, string name, IList<string> members, SignalServiceAttachmentStream avatar, bool active, int? expirationTimer)
+        public DeviceGroup(byte[] id, string name, IList<string> members, SignalServiceAttachmentStream avatar, bool active, uint? expirationTimer)
         {
             Id = id;
             Name = name;

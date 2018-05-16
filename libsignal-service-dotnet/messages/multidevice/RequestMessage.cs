@@ -5,7 +5,7 @@ namespace libsignalservice.messages.multidevice
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public class RequestMessage
     {
-        private readonly Request Request;
+        public Request Request { get; }
 
         public RequestMessage(Request request)
         {

@@ -13,11 +13,6 @@ namespace libsignalservice.messages
             this.ContentType = contentType;
         }
 
-        public String getContentType()
-        {
-            return ContentType;
-        }
-
         public abstract bool IsStream();
 
         public abstract bool IsPointer();

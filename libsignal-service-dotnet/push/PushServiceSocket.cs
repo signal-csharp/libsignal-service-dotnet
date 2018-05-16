@@ -37,7 +37,6 @@ namespace libsignalservice.push
         private static readonly string CREATE_ACCOUNT_VOICE_PATH = "/v1/accounts/voice/code/{0}";
         private static readonly string VERIFY_ACCOUNT_CODE_PATH = "/v1/accounts/code/{0}";
         private static readonly string REGISTER_GCM_PATH = "/v1/accounts/gcm/";
-        private static readonly string REQUEST_TOKEN_PATH = "/v1/accounts/token";
         private static readonly string TURN_SERVER_INFO = "/v1/accounts/turn";
         private static readonly string SET_ACCOUNT_ATTRIBUTES = "/v1/accounts/attributes";
         private static readonly String PIN_PATH = "/v1/accounts/pin/";
@@ -516,6 +515,7 @@ namespace libsignalservice.push
                         if (read == 0)
                         {
                             Debug.WriteLine("PushServiceSocket Downloaded: " + url + " to: " + localDestination);
+                            localDestination.Flush();
                             return;
                         }
                         localDestination.Write(buffer, 0, read);

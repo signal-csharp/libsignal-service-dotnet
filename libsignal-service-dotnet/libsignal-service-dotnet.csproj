@@ -31,7 +31,7 @@
     <PackageReference Include="libphonenumber-csharp" Version="8.8.6" />
     <PackageReference Include="libsignal-protocol-dotnet" Version="2.6.2" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="1.1.2" />
-    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
     <PackageReference Include="Portable.BouncyCastle" Version="1.8.2" />
     <PackageReference Include="System.Net.WebSockets.Client" Version="4.3.2" />
     <PackageReference Include="System.ValueTuple" Version="4.4.0" />

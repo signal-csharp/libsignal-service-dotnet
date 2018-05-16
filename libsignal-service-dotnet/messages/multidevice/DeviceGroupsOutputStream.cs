@@ -45,17 +45,17 @@ namespace libsignalservice.messages.multidevice
 
             if (group.Avatar != null)
             {
-                GroupDetails.Types.Avatar avatarBuilder = new GroupDetails.Types.Avatar { };
+                //GroupDetails.Types.GroupAvatar avatarBuilder = new GroupDetails.Types.GroupAvatar { };
                 //SignalServiceAttachmentStream avatar = group.getAvatar().Match(e => e, () => { throw new Exception(); });
                 //avatarBuilder.ContentType = avatar.C;
                 //avatarBuilder.Length = (uint)avatar.Length;
-                groupDetails.Avatar = avatarBuilder;
+                //groupDetails.Avatar = avatarBuilder;
             }
 
             //if (group.ExpirationTimer
 
             groupDetails.Members.AddRange(group.Members);
-            groupDetails.Active = group.Active;
+            //groupDetails.Active = group.Active;
 
             byte[] serializedContactDetails = groupDetails.ToByteArray();
 

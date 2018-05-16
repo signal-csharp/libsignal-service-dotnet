@@ -2,6 +2,7 @@
 using libsignalservice.util;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -21,7 +22,7 @@ namespace libsignalservice.crypto
         private readonly CryptoStream Cipher;
         private readonly ICryptoTransform Decryptor;
         private readonly MemoryStream TmpStream = new MemoryStream();
-        private long TotalDataSize;
+        private readonly long TotalDataSize;
         private long TotalRead = 0;
 
         public override bool CanRead => true;
@@ -33,7 +34,7 @@ namespace libsignalservice.crypto
         public static Stream CreateFor(Stream inputStream, long plaintextLength, byte[] combinedKeyMaterial, byte[] digest)
         {
             long fileSize = inputStream.Length;
-            byte[][] keyParts = Util.Split(combinedKeyMaterial, 32, 32);
+            byte[][] keyParts = Util.Split(combinedKeyMaterial, CIPHER_KEY_SIZE, MAC_KEY_SIZE);
             IncrementalHash mac = IncrementalHash.CreateHMAC(HashAlgorithmName.SHA256, keyParts[1]);
             VerifyMac(inputStream, mac, digest);
             inputStream.Seek(0, SeekOrigin.Begin);
@@ -79,6 +80,7 @@ namespace libsignalservice.crypto
             {
                 int read = Cipher.Read(buffer, offset, (int)Math.Min(count, TotalDataSize - TotalRead));
                 TotalRead += read;
+
                 return read;
             }
             return 0;

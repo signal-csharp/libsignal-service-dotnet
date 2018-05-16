@@ -1,5 +1,6 @@
 using Google.Protobuf;
 using libsignal;
+using libsignal.messages.multidevice;
 using libsignal.protocol;
 using libsignal.state;
 using libsignal_service_dotnet.messages.calls;
@@ -148,7 +149,7 @@ namespace libsignalservice.crypto
 
             foreach (AttachmentPointer pointer in content.Attachments)
             {
-                attachments.Add(CreateAttachmentPointer(envelope, pointer));
+                attachments.Add(CreateAttachmentPointer(envelope.GetRelay(), pointer));
             }
 
             if (content.TimestampOneofCase == DataMessage.TimestampOneofOneofCase.Timestamp && (long) content.Timestamp != envelope.GetTimestamp())
@@ -197,6 +198,18 @@ namespace libsignalservice.crypto
                 }
 
                 return SignalServiceSyncMessage.ForRead(readMessages);
+            }
+
+            if (content.ContactsOneofCase == SyncMessage.ContactsOneofOneofCase.Contacts)
+            {
+                AttachmentPointer pointer = content.Contacts.Blob;
+                return SignalServiceSyncMessage.ForContacts(new ContactsMessage(CreateAttachmentPointer(envelope.GetRelay(), pointer), content.Contacts.Complete));
+            }
+
+            if (content.GroupsOneofCase == SyncMessage.GroupsOneofOneofCase.Groups)
+            {
+                AttachmentPointer pointer = content.Groups.Blob;
+                return SignalServiceSyncMessage.ForGroups(CreateAttachmentPointer(envelope.GetRelay(), pointer));
             }
 
             if (content.VerifiedOneofCase == SyncMessage.VerifiedOneofOneofCase.Verified)
@@ -348,7 +361,7 @@ namespace libsignalservice.crypto
             {
                 attachments.Add(new SignalServiceQuotedAttachment(pointer.ContentType,
                     pointer.FileName,
-                    pointer.ThumbnailOneofCase == Types.Quote.Types.QuotedAttachment.ThumbnailOneofOneofCase.Thumbnail ? CreateAttachmentPointer(envelope, pointer.Thumbnail) : null));
+                    pointer.ThumbnailOneofCase == Types.Quote.Types.QuotedAttachment.ThumbnailOneofOneofCase.Thumbnail ? CreateAttachmentPointer(envelope.GetRelay(), pointer.Thumbnail) : null));
             }
 
             return new SignalServiceDataMessage.SignalServiceQuote((long) content.Quote.Id,
@@ -357,7 +370,7 @@ namespace libsignalservice.crypto
                 attachments);
         }
 
-        private SignalServiceAttachmentPointer CreateAttachmentPointer(SignalServiceEnvelope envelope, AttachmentPointer pointer)
+        private SignalServiceAttachmentPointer CreateAttachmentPointer(string relay, AttachmentPointer pointer)
         {
             uint? size = null;
             if (pointer.SizeOneofCase == AttachmentPointer.SizeOneofOneofCase.Size)
@@ -367,7 +380,7 @@ namespace libsignalservice.crypto
             return new SignalServiceAttachmentPointer(pointer.Id,
                 pointer.ContentType,
                 pointer.Key.ToByteArray(),
-                envelope.GetRelay(),
+                relay,
                 size,
                 pointer.ThumbnailOneofCase == AttachmentPointer.ThumbnailOneofOneofCase.Thumbnail ? pointer.Thumbnail.ToByteArray() : null,
                 (int) pointer.Width,

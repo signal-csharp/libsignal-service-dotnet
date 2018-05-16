@@ -122,7 +122,7 @@ namespace libsignalservice.util
             return GetSecretBytes((uint)(NextInt(maxSize) + 1));
         }
 
-        public static void ReadFully(Stream input, byte[] buffer)
+        public static void ReadFully(Stream input, byte[] buffer) //TODO check for stream empty
         {
             int offset = 0;
 

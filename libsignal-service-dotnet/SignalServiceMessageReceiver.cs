@@ -10,8 +10,10 @@ using libsignalservice.util;
 using libsignalservice.websocket;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Security.Cryptography;
+using System.Text;
 using System.Threading;
 using static libsignalservice.messages.SignalServiceAttachment;
 using static libsignalservice.SignalServiceMessagePipe;
@@ -88,6 +90,7 @@ namespace libsignalservice
         public Stream RetrieveAttachment(SignalServiceAttachmentPointer pointer, Stream tmpCipherDestination, int maxSizeBytes, IProgressListener listener)
         {
             Socket.RetrieveAttachment(pointer.Relay, pointer.Id, tmpCipherDestination, maxSizeBytes);
+            tmpCipherDestination.Position = 0;
             return AttachmentCipherInputStream.CreateFor(tmpCipherDestination, pointer.Size != null ? pointer.Size.Value : 0, pointer.Key, pointer.Digest);
         }
 

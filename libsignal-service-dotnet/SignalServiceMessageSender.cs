@@ -180,6 +180,10 @@ namespace libsignalservice
                 SendMessage(message.Verified);
                 return;
             }
+            else if (message.Request != null)
+            {
+                content = CreateRequestContent(message.Request);
+            }
             else
             {
                 throw new Exception("Unsupported sync message!");
@@ -454,6 +458,16 @@ namespace libsignalservice
             return content.ToByteArray();
         }
 
+        private byte[] CreateRequestContent(RequestMessage request)
+        {
+            Content content = new Content { };
+            SyncMessage syncMessage = CreateSyncMessage();
+
+            syncMessage.Request = request.Request;
+            content.SyncMessage = syncMessage;
+            return content.ToByteArray();
+        }
+
         private byte[] CreateMultiDeviceBlockedContent(BlockedListMessage blocked)
         {
             Content content = new Content { };
@@ -645,7 +659,7 @@ namespace libsignalservice
             byte[] attachmentKey = Util.GetSecretBytes(64);
             long paddedLength = PaddingInputStream.GetPaddedSize(attachment.Length);
             long ciphertextLength = AttachmentCipherInputStream.GetCiphertextLength(paddedLength);
-            PushAttachmentData attachmentData = new PushAttachmentData(attachment.getContentType(),
+            PushAttachmentData attachmentData = new PushAttachmentData(attachment.ContentType,
                                                                        new PaddingInputStream(attachment.InputStream, attachment.Length),
                                                                        ciphertextLength,
                                                                        new AttachmentCipherOutputStreamFactory(attachmentKey),
@@ -655,7 +669,7 @@ namespace libsignalservice
 
             var attachmentPointer = new AttachmentPointer
             {
-                ContentType = attachment.getContentType(),
+                ContentType = attachment.ContentType,
                 Id = id,
                 Key = ByteString.CopyFrom(attachmentKey),
                 Digest = ByteString.CopyFrom(digest),
@@ -694,7 +708,7 @@ namespace libsignalservice
         {
             var attachmentPointer = new AttachmentPointer()
             {
-                ContentType = attachment.getContentType(),
+                ContentType = attachment.ContentType,
                 Id = attachment.Id,
                 Key = ByteString.CopyFrom(attachment.Key),
                 Digest = ByteString.CopyFrom(attachment.Digest),
