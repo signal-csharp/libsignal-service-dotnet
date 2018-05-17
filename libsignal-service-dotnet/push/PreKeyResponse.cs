@@ -11,11 +11,13 @@ namespace libsignalservice.push
     internal class PreKeyResponse
     {
         [JsonProperty("devices", Order = 1)]
-        public List<PreKeyResponseItem> Devices { get; set; }
+        public List<PreKeyResponseItem> Devices { get; private set; }
 
         [JsonProperty("identityKey", Order = 2)]
         [JsonConverter(typeof(IdentityKeySerializer))]
-        public IdentityKey IdentityKey { get; set; }
+        public IdentityKey IdentityKey { get; private set; }
+
+        public PreKeyResponse() { }
     }
 
     internal class IdentityKeySerializer : JsonConverter

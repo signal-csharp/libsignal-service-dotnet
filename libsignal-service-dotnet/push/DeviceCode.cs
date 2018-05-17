@@ -6,6 +6,8 @@ namespace libsignalservice.push
     internal class DeviceCode
     {
         [JsonProperty("verificationCode")]
-        public String VerificationCode { get; set; }
+        public String VerificationCode { get; private set; }
+
+        public DeviceCode() { }
     }
 }

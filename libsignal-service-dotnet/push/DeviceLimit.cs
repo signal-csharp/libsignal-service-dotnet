@@ -6,10 +6,12 @@ namespace libsignalservice.push
     public class DeviceLimit
     {
         [JsonProperty("current")]
-        public int Current { get; set; }
+        public int Current { get; private set; }
 
         [JsonProperty("max")]
-        public int Max { get; set; }
+        public int Max { get; private set; }
+
+        public DeviceLimit() { }
     }
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 }

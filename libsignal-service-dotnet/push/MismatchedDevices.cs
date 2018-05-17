@@ -8,10 +8,12 @@ namespace libsignalservice.push
     public class MismatchedDevices
     {
         [JsonProperty("missingDevices")]
-        public List<int> MissingDevices { get; set; }
+        public List<int> MissingDevices { get; private set; }
 
         [JsonProperty("extraDevices")]
-        public List<int> ExtraDevices { get; set; }
+        public List<int> ExtraDevices { get; private set; }
+
+        public MismatchedDevices() { }
     }
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

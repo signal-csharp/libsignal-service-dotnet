@@ -7,7 +7,9 @@ namespace libsignalservice.push
     public class StaleDevices
     {
         [JsonProperty("staleDevices")]
-        public List<int> Devices { get; set; }
+        public List<int> Devices { get; private set; }
+
+        public StaleDevices() { }
     }
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 }

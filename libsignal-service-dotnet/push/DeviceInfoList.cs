@@ -7,6 +7,7 @@ namespace libsignalservice.push
     internal class DeviceInfoList
     {
         [JsonProperty("devices")]
-        public List<DeviceInfo> Devices { get; set; }
+        public List<DeviceInfo> Devices { get; private set; }
+        public DeviceInfoList() { }
     }
 }

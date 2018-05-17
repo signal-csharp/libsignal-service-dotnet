@@ -12,7 +12,7 @@ namespace libsignalservice.push
     [JsonConverter(typeof(SignedPreKeySerializer))]
     public class SignedPreKeyEntity : PreKeyEntity
     {
-        public byte[] Signature { get; set; }
+        public byte[] Signature { get; private set; }
 
         public SignedPreKeyEntity(uint keyId, ECPublicKey publicKey, byte[] signature)
             : base(keyId, publicKey)

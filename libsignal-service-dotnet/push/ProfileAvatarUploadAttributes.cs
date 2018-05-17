@@ -6,13 +6,15 @@ namespace libsignalservice.push
 {
     internal class ProfileAvatarUploadAttributes
     {
-        public string Url { get; set; }
-        public string Key { get; set; }
-        public string Credential { get; set; }
-        public string Acl { get; set; }
-        public string Algorithm { get; set; }
-        public string Date { get; set; }
-        public string Policy { get; set; }
-        public string Signature { get; set; }
+        public string Url { get; private set; }
+        public string Key { get; private set; }
+        public string Credential { get; private set; }
+        public string Acl { get; private set; }
+        public string Algorithm { get; private set; }
+        public string Date { get; private set; }
+        public string Policy { get; private set; }
+        public string Signature { get; private set; }
+
+        public ProfileAvatarUploadAttributes() { }
     }
 }

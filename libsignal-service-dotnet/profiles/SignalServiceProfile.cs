@@ -9,11 +9,13 @@ namespace libsignalservice.profiles
     public class SignalServiceProfile
     {
         [JsonProperty("identityKey")]
-        public string IdentityKey { get; set; }
+        public string IdentityKey { get; private set; }
         [JsonProperty("name")]
-        public string Name { get; set; }
+        public string Name { get; private set; }
         [JsonProperty("avatar")]
-        public string Avatar { get; set; }
+        public string Avatar { get; private set; }
+
+        public SignalServiceProfile() { }
     }
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

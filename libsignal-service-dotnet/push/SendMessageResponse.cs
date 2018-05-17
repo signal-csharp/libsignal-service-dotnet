@@ -6,7 +6,9 @@ namespace libsignalservice.push
     public class SendMessageResponse
     {
         [JsonProperty("needsSync")]
-        public bool NeedsSync { get; set; }
+        public bool NeedsSync { get; private set; }
+
+        public SendMessageResponse() { }
     }
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

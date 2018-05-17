@@ -7,6 +7,8 @@ namespace libsignalservice.push
     internal class ContactTokenDetailsList
     {
         [JsonProperty("contacts")]
-        public List<ContactTokenDetails> Contacts { get; set; }
+        public List<ContactTokenDetails> Contacts { get; private set; }
+
+        public ContactTokenDetailsList() { }
     }
 }

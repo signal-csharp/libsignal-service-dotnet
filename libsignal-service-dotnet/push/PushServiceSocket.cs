@@ -833,9 +833,11 @@ namespace libsignalservice.push
     internal class RegistrationLockFailure
     {
         [JsonProperty("length")]
-        public int Length { get; }
+        public int Length { get; private set; }
         [JsonProperty("timeRemaining")]
-        public long TimeRemaining { get; }
+        public long TimeRemaining { get; private set; }
+
+        public RegistrationLockFailure() { }
     }
 
     internal class AttachmentDescriptor
@@ -845,5 +847,7 @@ namespace libsignalservice.push
 
         [JsonProperty("location")]
         public string Location { get; set; }
+
+        public AttachmentDescriptor() { }
     }
 }
