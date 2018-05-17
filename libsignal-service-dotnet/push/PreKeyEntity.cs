@@ -18,6 +18,8 @@ namespace libsignalservice.push
         [JsonConverter(typeof(ECPublicKeySerializer))]
         public ECPublicKey PublicKey { get; set; }
 
+        internal PreKeyEntity() { }
+
         internal PreKeyEntity(uint keyId, ECPublicKey publicKey)
         {
             KeyId = keyId;
