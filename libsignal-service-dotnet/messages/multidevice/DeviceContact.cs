@@ -10,9 +10,9 @@ namespace libsignalservice.messages.multidevice
         public VerifiedMessage Verified { get; }
         public byte[] ProfileKey { get; }
         public bool Blocked { get; }
-        public int? ExpirationTimer { get; }
+        public uint? ExpirationTimer { get; }
 
-        public DeviceContact(string number, string name, SignalServiceAttachmentStream avatar, string color, VerifiedMessage verified, byte[] profileKey, bool blocked, int? expirationTimer)
+        public DeviceContact(string number, string name, SignalServiceAttachmentStream avatar, string color, VerifiedMessage verified, byte[] profileKey, bool blocked, uint? expirationTimer)
         {
             Number = number;
             Name = name;
