@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26403.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libsignal-service-dotnet", "libsignal-service-dotnet\libsignal-service-dotnet.csproj", "{088F38F5-EFA5-4264-BAC0-E745F9170222}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "libsignal-service-dotnet", "libsignal-service-dotnet\libsignal-service-dotnet.csproj", "{088F38F5-EFA5-4264-BAC0-E745F9170222}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libsignal-service-dotnet-tests", "libsignal-service-dotnet-tests\libsignal-service-dotnet-tests.csproj", "{BD335150-6F1F-42A7-9221-5D3FFF75CD99}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,8 +17,15 @@ Global
 		{088F38F5-EFA5-4264-BAC0-E745F9170222}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{088F38F5-EFA5-4264-BAC0-E745F9170222}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{088F38F5-EFA5-4264-BAC0-E745F9170222}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD335150-6F1F-42A7-9221-5D3FFF75CD99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD335150-6F1F-42A7-9221-5D3FFF75CD99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD335150-6F1F-42A7-9221-5D3FFF75CD99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD335150-6F1F-42A7-9221-5D3FFF75CD99}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B63990B0-8D7F-4CCF-A0E8-CD7C80CB951D}
 	EndGlobalSection
 EndGlobal
