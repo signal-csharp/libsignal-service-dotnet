@@ -94,7 +94,7 @@ namespace libsignalservice.push
         {
             ConfirmCodeMessage javaJson = new ConfirmCodeMessage(signalingKey, supportsSms, fetchesMessages, registrationId, deviceName);
             string json = JsonUtil.ToJson(javaJson);
-            string responseText = await MakeServiceRequestAsync(string.Format(DEVICE_PATH, code), "PUT", json);
+            string responseText = await MakeServiceRequestAsync(token, string.Format(DEVICE_PATH, code), "PUT", json);
             DeviceId response = JsonUtil.FromJson<DeviceId>(responseText);
             return response.NewDeviceId;
         }
@@ -479,9 +479,10 @@ namespace libsignalservice.push
             }
         }
 
-        public TurnServerInfo GetTurnServerInfo()
+        public async Task<TurnServerInfo> GetTurnServerInfo(CancellationToken token)
         {
-            throw new NotImplementedException();
+            string response = await MakeServiceRequestAsync(token, TURN_SERVER_INFO, "GET", null);
+            return JsonUtil.FromJson<TurnServerInfo>(response);
         }
 
         public void SetSoTimeoutMillis(long soTimeoutMillis)
@@ -615,7 +616,8 @@ namespace libsignalservice.push
         {
             try
             {
-                return MakeServiceRequestAsync(urlFragment, method, body).Result;
+                var dummy = new CancellationTokenSource();
+                return MakeServiceRequestAsync(dummy.Token, urlFragment, method, body).Result;
             }
             catch (AggregateException e)
             {
@@ -623,10 +625,10 @@ namespace libsignalservice.push
             }
         }
 
-        private async Task<string> MakeServiceRequestAsync(string urlFragment, string method, string body)
+        private async Task<string> MakeServiceRequestAsync(CancellationToken token, string urlFragment, string method, string body)
         //throws NonSuccessfulResponseCodeException, PushNetworkException
         {
-            HttpResponseMessage connection = GetServiceConnection(urlFragment, method, body);
+            HttpResponseMessage connection = await GetServiceConnectionAsync(token, urlFragment, method, body);
             HttpStatusCode responseCode;
             string responseMessage;
             string responseBody;
@@ -719,7 +721,7 @@ namespace libsignalservice.push
             return true;
         }
 
-        private HttpResponseMessage GetServiceConnection(string urlFragment, string method, string body)
+        private async Task<HttpResponseMessage> GetServiceConnectionAsync(CancellationToken token, string urlFragment, string method, string body)
         {
             try
             {
@@ -753,7 +755,6 @@ namespace libsignalservice.push
                 if (body != null)
                 {
                     content = new StringContent(body, Encoding.UTF8, "application/json");
-                    Debug.WriteLine(body);
                 }
                 else
                 {
@@ -762,16 +763,16 @@ namespace libsignalservice.push
                 switch (method)
                 {
                     case "POST":
-                        return connection.PostAsync(uri, content).Result;
+                        return await connection.PostAsync(uri, content, token);
 
                     case "PUT":
-                        return connection.PutAsync(uri, content).Result;
+                        return await connection.PutAsync(uri, content, token);
 
                     case "DELETE":
-                        return connection.DeleteAsync(uri).Result;
+                        return await connection.DeleteAsync(uri, token);
 
                     case "GET":
-                        return connection.GetAsync(uri).Result;
+                        return await connection.GetAsync(uri, token);
 
                     default:
                         throw new Exception("Unknown method: " + method);

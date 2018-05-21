@@ -54,7 +54,7 @@ namespace libsignalservice
         /// <param name="configuration">The URL configuration for the Signal Service</param>
         /// <param name="token">The cancellation token for the ProvisioningSocket</param>
         /// <param name="userAgent">A string which identifies the client software</param>
-        public SignalServiceAccountManager(SignalServiceConfiguration configuration, CancellationToken token, string userAgent)
+        public SignalServiceAccountManager(SignalServiceConfiguration configuration, string userAgent)
         {
             Configuration = configuration;
             UserAgent = userAgent;
@@ -348,9 +348,9 @@ namespace libsignalservice
         /// TODO
         /// </summary>
         /// <returns></returns>
-        public TurnServerInfo GetTurnServerInfo()
+        public async Task<TurnServerInfo> GetTurnServerInfo(CancellationToken token)
         {
-            return this.PushServiceSocket.GetTurnServerInfo();
+            return await this.PushServiceSocket.GetTurnServerInfo(token);
         }
 
         /// <summary>
