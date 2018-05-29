@@ -62,8 +62,12 @@ namespace libsignalservice.push
         private readonly CredentialsProvider CredentialsProvider;
         private readonly string UserAgent;
 
-        public PushServiceSocket(SignalServiceConfiguration serviceUrls, CredentialsProvider credentialsProvider, string userAgent)
+        public PushServiceSocket(SignalServiceConfiguration serviceUrls, CredentialsProvider credentialsProvider, string userAgent, X509Certificate2 server_cert=null)
         {
+#if NETCOREAPP2_1
+            if (server_cert != null)
+                server_cert_raw = server_cert.GetRawCertData();
+#endif
             CredentialsProvider = credentialsProvider;
             UserAgent = userAgent;
             SignalConnectionInformation = serviceUrls;
@@ -716,10 +720,13 @@ namespace libsignalservice.push
             return responseBody;
         }
 
-        private bool Func(HttpRequestMessage a, X509Certificate2 b, X509Chain c, SslPolicyErrors d)
+#if NETCOREAPP2_1
+        private byte[] server_cert_raw;
+        private bool ServerCertificateCustomValidationCallback(HttpRequestMessage message, X509Certificate2 cert, X509Chain chain, SslPolicyErrors policy)
         {
-            return true;
+            return cert.GetRawCertData().SequenceEqual(server_cert_raw);
         }
+#endif
 
         private async Task<HttpResponseMessage> GetServiceConnectionAsync(CancellationToken token, string urlFragment, string method, string body)
         {
@@ -730,7 +737,15 @@ namespace libsignalservice.push
                 string hostHeader = signalUrl.HostHeader;
                 Uri uri = new Uri(string.Format("{0}{1}", url, urlFragment));
                 Debug.WriteLine("{0}: Uri {1}", TAG, uri);
-                HttpClient connection = new HttpClient();
+                HttpClient connection;
+#if NETCOREAPP2_1
+                HttpClientHandler handler = new HttpClientHandler();
+                if (server_cert_raw != null)
+                    handler.ServerCertificateCustomValidationCallback = ServerCertificateCustomValidationCallback;
+                connection = new HttpClient(handler);
+#else
+                connection = new HttpClient();
+#endif
 
                 var headers = connection.DefaultRequestHeaders;
 

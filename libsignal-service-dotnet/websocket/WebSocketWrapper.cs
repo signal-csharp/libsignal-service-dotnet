@@ -4,7 +4,10 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Concurrent;
 using System.IO;
+using System.Linq;
+using System.Net.Security;
 using System.Net.WebSockets;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -24,8 +27,12 @@ namespace Coe.WebSocketWrapper
         private Action OnConnectedAction;
         private Action<byte[]> OnMessageAction;
 
-        internal WebSocketWrapper(string uri)
+        internal WebSocketWrapper(string uri, X509Certificate2 server_cert)
         {
+#if NETCOREAPP2_1
+            if (server_cert != null)
+                server_cert_raw = server_cert.GetRawCertData();
+#endif
             CreateSocket();
             _uri = new Uri(uri);
         }
@@ -34,7 +41,18 @@ namespace Coe.WebSocketWrapper
         {
             WebSocket = new ClientWebSocket();
             WebSocket.Options.KeepAliveInterval = TimeSpan.FromSeconds(30);
+#if NETCOREAPP2_1
+            if (server_cert_raw != null)
+                WebSocket.Options.RemoteCertificateValidationCallback = RemoteCertificateValidationCallback;
+#endif
+
         }
+#if NETCOREAPP2_1
+        private byte[] server_cert_raw;
+        private bool RemoteCertificateValidationCallback(object sender, X509Certificate cert, X509Chain chain, SslPolicyErrors sslPolicyErrors) {
+            return cert.GetRawCertData().SequenceEqual(server_cert_raw);
+        }
+#endif
 
         public void HandleOutgoingWS(CancellationToken token)
         {
