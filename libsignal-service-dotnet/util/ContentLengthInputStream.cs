@@ -9,17 +9,17 @@ namespace libsignalservice.util
     {
         private readonly Stream InputStream;
         private long BytesRemaining;
-
+        private readonly long TotalDataSize;
         public override bool CanRead => true;
         public override bool CanSeek => false;
         public override bool CanWrite => false;
-        public override long Length => throw new NotImplementedException();
+        public override long Length => TotalDataSize;
         public override long Position { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public ContentLengthInputStream(Stream inputStream, long contentLength)
         {
             InputStream = inputStream;
-            BytesRemaining = contentLength;
+            TotalDataSize=BytesRemaining = contentLength;
         }
 
         public override void Flush()

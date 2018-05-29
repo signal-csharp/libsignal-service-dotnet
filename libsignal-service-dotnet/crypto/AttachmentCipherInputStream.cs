@@ -28,7 +28,7 @@ namespace libsignalservice.crypto
         public override bool CanRead => true;
         public override bool CanSeek => false;
         public override bool CanWrite => false;
-        public override long Length => throw new NotImplementedException();
+        public override long Length => TotalDataSize;
         public override long Position { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public static Stream CreateFor(Stream inputStream, long plaintextLength, byte[] combinedKeyMaterial, byte[] digest)
