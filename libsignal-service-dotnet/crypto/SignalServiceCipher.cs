@@ -247,6 +247,16 @@ namespace libsignalservice.crypto
                 }
             }
 
+            if (content.BlockedOneofCase == SyncMessage.BlockedOneofOneofCase.Blocked)
+            {
+                List<string> blockedNumbers = new List<string>(content.Blocked.Numbers.Count);
+                foreach (var blocked in content.Blocked.Numbers)
+                {
+                    blockedNumbers.Add(blocked);
+                }
+                return SignalServiceSyncMessage.ForBlocked(new BlockedListMessage(blockedNumbers));
+            }
+
             return SignalServiceSyncMessage.Empty();
         }
 
