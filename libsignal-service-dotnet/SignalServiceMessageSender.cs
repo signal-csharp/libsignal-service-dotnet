@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using static libsignalservice.messages.SignalServiceDataMessage;
 using static libsignalservice.push.DataMessage.Types.Quote.Types;
@@ -54,11 +55,11 @@ namespace libsignalservice
                                        string user, string password, int deviceId,
                                        SignalProtocolStore store,
                                        SignalServiceMessagePipe pipe,
-                                       IEventListener eventListener, string userAgent)
+                                       IEventListener eventListener, string userAgent, X509Certificate2 server_cert=null)
         {
             Token = token;
             CredentialsProvider = new StaticCredentialsProvider(user, password, null, deviceId);
-            this.socket = new PushServiceSocket(urls, CredentialsProvider, userAgent);
+            this.socket = new PushServiceSocket(urls, CredentialsProvider, userAgent, server_cert);
             this.store = store;
             this.localAddress = new SignalServiceAddress(user);
             this.pipe = pipe;

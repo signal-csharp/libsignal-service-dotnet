@@ -3,6 +3,7 @@ using libsignalservice.crypto;
 using libsignalservice.push;
 using libsignalservice.websocket;
 using System.Collections.Concurrent;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,11 +15,11 @@ namespace libsignal.push
         private string WsUri;
         private readonly BlockingCollection<byte[]> IncomingRequests = new BlockingCollection<byte[]>(new ConcurrentQueue<byte[]>());
 
-        public ProvisioningSocket(string httpUri)
+        public ProvisioningSocket(string httpUri, X509Certificate2 server_cert=null)
         {
             WsUri = httpUri.Replace("https://", "wss://")
                 .Replace("http://", "ws://") + "/v1/websocket/provisioning/";
-            WebSocket = new WebSocketWrapper(WsUri);
+            WebSocket = new WebSocketWrapper(WsUri, server_cert);
             WebSocket.OnMessage(Connection_OnMessage);
         }
 

@@ -14,6 +14,7 @@ using libsignalservice.util;
 using Strilanc.Value;
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -31,6 +32,7 @@ namespace libsignalservice
         private SignalServiceConfiguration Configuration;
         private readonly string User;
         private readonly string UserAgent;
+		private readonly X509Certificate2 server_cert;
 
         /// <summary>
         /// Construct a SignalServivceAccountManager
@@ -41,9 +43,10 @@ namespace libsignalservice
         /// <param name="deviceId">A Signal Service device id</param>
         /// <param name="userAgent">A string which identifies the client software</param>
         public SignalServiceAccountManager(SignalServiceConfiguration configuration,
-                                        string user, string password, int deviceId, string userAgent)
+                                        string user, string password, int deviceId, string userAgent, X509Certificate2 server_cert=null)
         {
-            PushServiceSocket = new PushServiceSocket(configuration, new StaticCredentialsProvider(user, password, null, deviceId), userAgent);
+            this.server_cert = server_cert;
+            PushServiceSocket = new PushServiceSocket(configuration, new StaticCredentialsProvider(user, password, null, deviceId), userAgent, server_cert);
             User = user;
             UserAgent = userAgent;
         }
@@ -54,12 +57,12 @@ namespace libsignalservice
         /// <param name="configuration">The URL configuration for the Signal Service</param>
         /// <param name="token">The cancellation token for the ProvisioningSocket</param>
         /// <param name="userAgent">A string which identifies the client software</param>
-        public SignalServiceAccountManager(SignalServiceConfiguration configuration, string userAgent)
+        public SignalServiceAccountManager(SignalServiceConfiguration configuration, string userAgent, X509Certificate2 server_cert=null)
         {
             Configuration = configuration;
             UserAgent = userAgent;
-            ProvisioningSocket = new ProvisioningSocket(configuration.SignalServiceUrls[0].Url);
-            PushServiceSocket = new PushServiceSocket(configuration, new StaticCredentialsProvider(null, null, null, (int)SignalServiceAddress.DEFAULT_DEVICE_ID), userAgent);
+            ProvisioningSocket = new ProvisioningSocket(configuration.SignalServiceUrls[0].Url, server_cert);
+            PushServiceSocket = new PushServiceSocket(configuration, new StaticCredentialsProvider(null, null, null, (int)SignalServiceAddress.DEFAULT_DEVICE_ID), userAgent, server_cert);
         }
 
         /// <summary>
@@ -233,7 +236,7 @@ namespace libsignalservice
         /// <returns></returns>
         public async Task<string> GetNewDeviceUuid(CancellationToken token)
         {
-            ProvisioningSocket = new ProvisioningSocket(Configuration.SignalServiceUrls[0].Url);
+            ProvisioningSocket = new ProvisioningSocket(Configuration.SignalServiceUrls[0].Url, server_cert);
             return (await ProvisioningSocket.GetProvisioningUuid(token)).Uuid;
         }
 

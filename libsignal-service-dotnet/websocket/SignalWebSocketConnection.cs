@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Concurrent;
 using System.IO;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -28,7 +29,7 @@ namespace libsignalservice.websocket
         private readonly CancellationToken Token;
         private readonly ConnectivityListener Listener;
 
-        internal SignalWebSocketConnection(CancellationToken token, string httpUri, CredentialsProvider credentialsProvider, string userAgent, ConnectivityListener listener)
+        internal SignalWebSocketConnection(CancellationToken token, string httpUri, CredentialsProvider credentialsProvider, string userAgent, ConnectivityListener listener, X509Certificate2 server_cert)
         {
             Token = token;
             CredentialsProvider = credentialsProvider;
@@ -45,7 +46,7 @@ namespace libsignalservice.websocket
                     .Replace("http://", "ws://") + $"/v1/websocket/?login={credentialsProvider.User}.{credentialsProvider.DeviceId}&password={credentialsProvider.Password}";
             }
             UserAgent = userAgent;
-            WebSocket = new WebSocketWrapper(WsUri);
+            WebSocket = new WebSocketWrapper(WsUri, server_cert);
             WebSocket.OnConnect(Connection_OnOpened);
             WebSocket.OnMessage(Connection_OnMessage);
         }
