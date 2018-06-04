@@ -15,6 +15,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using static libsignalservice.messages.SignalServiceAttachment;
 using static libsignalservice.SignalServiceMessagePipe;
 
@@ -116,7 +117,7 @@ namespace libsignalservice
             return new SignalServiceMessagePipe(Token, webSocket, CredentialsProvider);
         }
 
-        public List<SignalServiceEnvelope> RetrieveMessages(IMessagePipeCallback callback)
+        public async Task<List<SignalServiceEnvelope>> RetrieveMessages(IMessagePipeCallback callback)
         {
             List<SignalServiceEnvelope> results = new List<SignalServiceEnvelope>();
             List<SignalServiceEnvelopeEntity> entities = Socket.GetMessages();
@@ -128,7 +129,7 @@ namespace libsignalservice
                                                                       (int)entity.Timestamp, entity.Message,
                                                                       entity.Content);
 
-                callback.OnMessage(envelope);
+                await callback.OnMessage(envelope);
                 results.Add(envelope);
 
                 Socket.AcknowledgeMessage(entity.Source, entity.Timestamp);

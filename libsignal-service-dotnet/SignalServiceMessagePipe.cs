@@ -11,6 +11,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace libsignalservice
 {
@@ -39,7 +40,7 @@ namespace libsignalservice
         /// Blocks until a message was received, calls the IMessagePipeCallback and confirms the message to the server, unless the pipe's token is cancelled.
         /// </summary>
         /// <param name="callback"></param>
-        public void ReadBlocking(IMessagePipeCallback callback)
+        public async Task ReadBlocking(IMessagePipeCallback callback)
         {
             Logger.LogTrace("ReadBlocking()");
             WebSocketRequestMessage request = Websocket.ReadRequestBlocking();
@@ -51,7 +52,7 @@ namespace libsignalservice
                 try
                 {
                     Logger.LogDebug("Calling callback with message {0}", request.Id);
-                    callback.OnMessage(message);
+                    await callback.OnMessage(message);
                 }
                 finally
                 {
@@ -65,7 +66,7 @@ namespace libsignalservice
             else if (IsPipeEmptyMessage(request))
             {
                 Logger.LogInformation("Calling callback with SignalServiceMessagePipeEmptyMessage");
-                callback.OnMessage(new SignalServiceMessagePipeEmptyMessage());
+                await callback.OnMessage(new SignalServiceMessagePipeEmptyMessage());
             }
             else
             {
@@ -205,7 +206,7 @@ namespace libsignalservice
             /// This message is called for every message received via the pipe.
             /// </summary>
             /// <param name="message">The received message</param>
-            void OnMessage(SignalServiceMessagePipeMessage message);
+            Task OnMessage(SignalServiceMessagePipeMessage message);
         }
     }
 }
