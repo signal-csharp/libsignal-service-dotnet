@@ -20,7 +20,6 @@ namespace Coe.WebSocketWrapper
         private const int ReceiveChunkSize = 1024;
         private volatile ClientWebSocket WebSocket;
         private readonly Uri _uri;
-        private readonly object ReconnectLock = new object();
         private Action OnConnectedAction;
         private Action<byte[]> OnMessageAction;
 
@@ -59,7 +58,7 @@ namespace Coe.WebSocketWrapper
                     {
                         Logger.LogWarning("HandleOutgoingWS send failed ({0})", e.Message);
                         Logger.LogInformation("HandleOutgoingWS reconnecting");
-                        Reconnect(token);
+                        await Reconnect(token);
                     }
                 }
             }
@@ -67,45 +66,44 @@ namespace Coe.WebSocketWrapper
             Logger.LogTrace("HandleOutgoingWS task finished");
         }
 
-        public void Reconnect(CancellationToken token)
+        public async Task Reconnect(CancellationToken token)
         {
-            lock (ReconnectLock)
+            if (WebSocket.State == WebSocketState.Open)
             {
-                if (WebSocket.State == WebSocketState.Open)
-                    return;
+                return;
+            }
 
-                var tries = 0;
+            var tries = 0;
+            try
+            {
+                await WebSocket.CloseOutputAsync(WebSocketCloseStatus.NormalClosure, "goodbye", token);
+            }
+            catch (Exception)
+            {
+                Logger.LogTrace("could not close old websocket gracefully");
+            }
+            while (true)
+            {
                 try
                 {
-                    WebSocket.CloseOutputAsync(WebSocketCloseStatus.NormalClosure, "goodbye", token).Wait();
+                    if (token.IsCancellationRequested)
+                        return;
+                    tries++;
+                    CreateSocket();
+                    await WebSocket.ConnectAsync(_uri, token);
+                    break;
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    Logger.LogTrace("could not close old websocket gracefully");
-                }
-                while (true)
-                {
-                    try
-                    {
-                        if (token.IsCancellationRequested)
-                            return;
-                        tries++;
-                        CreateSocket();
-                        WebSocket.ConnectAsync(_uri, token).Wait();
-                        break;
-                    }
-                    catch (Exception e)
-                    {
-                        var delay_length = 15;
-                        if (tries > 20)
-                            delay_length = 60 * 5;
-                        else if (tries > 10)
-                            delay_length = 60;
-                        else if (tries > 5)
-                            delay_length = 30;
-                        Logger.LogWarning("Failed to reconnect ({0}). Retrying in {1} seconds", e.Message, delay_length);
-                        Task.Delay(1000 * delay_length, token).Wait();
-                    }
+                    var delay_length = 15;
+                    if (tries > 20)
+                        delay_length = 60 * 5;
+                    else if (tries > 10)
+                        delay_length = 60;
+                    else if (tries > 5)
+                        delay_length = 30;
+                    Logger.LogWarning("Failed to reconnect ({0}). Retrying in {1} seconds", e.Message, delay_length);
+                    await Task.Delay(1000 * delay_length, token);
                 }
             }
             Logger.LogInformation("Successfully reconnected to the server");
@@ -146,7 +144,7 @@ namespace Coe.WebSocketWrapper
                     {
                         Logger.LogWarning("HandleIncomingWS recv failed ({0})", e.Message);
                         Logger.LogInformation("HandleIncomingWS reconnecting");
-                        Reconnect(token);
+                        await Reconnect(token);
                     }
                 }
             }
@@ -180,14 +178,8 @@ namespace Coe.WebSocketWrapper
             Logger.LogTrace("Connect()");
             try
             {
-                await Task.Run(() =>
-                {
-                    lock (ReconnectLock) //TODO async lock
-                    {
-                        WebSocket.ConnectAsync(_uri, token).Wait();
-                        CallOnConnected();
-                    }
-                });
+                await WebSocket.ConnectAsync(_uri, token);
+                CallOnConnected();
             }
             catch (Exception e)
             {
