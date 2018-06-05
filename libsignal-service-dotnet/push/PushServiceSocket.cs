@@ -69,24 +69,24 @@ namespace libsignalservice.push
             SignalConnectionInformation = serviceUrls;
         }
 
-        public bool CreateAccount(bool voice)
+        public async Task<bool> CreateAccount(bool voice)
         {
             string path = voice ? CREATE_ACCOUNT_VOICE_PATH : CREATE_ACCOUNT_SMS_PATH;
-            MakeServiceRequest(string.Format(path, CredentialsProvider.User), "GET", null);
+            await MakeServiceRequest(string.Format(path, CredentialsProvider.User), "GET", null);
             return true;
         }
 
-        public bool VerifyAccountCode(string verificationCode, string signalingKey, uint registrationId, bool fetchesMessages, string pin)
+        public async Task<bool> VerifyAccountCode(string verificationCode, string signalingKey, uint registrationId, bool fetchesMessages, string pin)
         {
             AccountAttributes signalingKeyEntity = new AccountAttributes(signalingKey, registrationId, fetchesMessages, pin);
-            MakeServiceRequest(string.Format(VERIFY_ACCOUNT_CODE_PATH, verificationCode), "PUT", JsonUtil.ToJson(signalingKeyEntity));
+            await MakeServiceRequest(string.Format(VERIFY_ACCOUNT_CODE_PATH, verificationCode), "PUT", JsonUtil.ToJson(signalingKeyEntity));
             return true;
         }
 
-        public bool SetAccountAttributes(string signalingKey, uint registrationId, bool fetchesMessages, string pin)
+        public async Task<bool> SetAccountAttributes(string signalingKey, uint registrationId, bool fetchesMessages, string pin)
         {
             AccountAttributes accountAttributesEntity = new AccountAttributes(signalingKey, registrationId, fetchesMessages, pin);
-            MakeServiceRequest(SET_ACCOUNT_ATTRIBUTES, "PUT", JsonUtil.ToJson(accountAttributesEntity));
+            await MakeServiceRequest(SET_ACCOUNT_ATTRIBUTES, "PUT", JsonUtil.ToJson(accountAttributesEntity));
             return true;
         }
 
@@ -99,58 +99,58 @@ namespace libsignalservice.push
             return response.NewDeviceId;
         }
 
-        public string GetNewDeviceVerificationCode()// throws IOException
+        public async Task<string> GetNewDeviceVerificationCode()// throws IOException
         {
-            string responseText = MakeServiceRequest(PROVISIONING_CODE_PATH, "GET", null);
+            string responseText = await MakeServiceRequest(PROVISIONING_CODE_PATH, "GET", null);
             return JsonUtil.FromJson<DeviceCode>(responseText).VerificationCode;
         }
 
-        public bool SendProvisioningMessage(string destination, byte[] body)// throws IOException
+        public async Task<bool> SendProvisioningMessage(string destination, byte[] body)// throws IOException
         {
-            MakeServiceRequest(string.Format(PROVISIONING_MESSAGE_PATH, destination), "PUT",
+            await MakeServiceRequest(string.Format(PROVISIONING_MESSAGE_PATH, destination), "PUT",
                     JsonUtil.ToJson(new ProvisioningMessage(Base64.EncodeBytes(body))));
             return true;
         }
 
-        public List<DeviceInfo> GetDevices()// throws IOException
+        public async Task<List<DeviceInfo>> GetDevices()// throws IOException
         {
-            string responseText = MakeServiceRequest(string.Format(DEVICE_PATH, ""), "GET", null);
+            string responseText = await MakeServiceRequest(string.Format(DEVICE_PATH, ""), "GET", null);
             return JsonUtil.FromJson<DeviceInfoList>(responseText).Devices;
         }
 
-        public bool RemoveDevice(long deviceId)// throws IOException
+        public async Task<bool> RemoveDevice(long deviceId)// throws IOException
         {
-            MakeServiceRequest(string.Format(DEVICE_PATH, deviceId), "DELETE", null);
+            await MakeServiceRequest(string.Format(DEVICE_PATH, deviceId), "DELETE", null);
             return true;
         }
 
-        public void RegisterGcmId(String gcmRegistrationId)
+        public async Task RegisterGcmId(String gcmRegistrationId)
         {
             GcmRegistrationId registration = new GcmRegistrationId(gcmRegistrationId, true);
-            MakeServiceRequest(REGISTER_GCM_PATH, "PUT", JsonUtil.ToJson(registration));
+            await MakeServiceRequest(REGISTER_GCM_PATH, "PUT", JsonUtil.ToJson(registration));
         }
 
-        public void UnregisterGcmId()
+        public async Task UnregisterGcmId()
         {
-            MakeServiceRequest(REGISTER_GCM_PATH, "DELETE", null);
+            await MakeServiceRequest(REGISTER_GCM_PATH, "DELETE", null);
         }
 
-        public void SetPin(string pin)
+        public async Task SetPin(string pin)
         {
             RegistrationLock accountLock = new RegistrationLock(pin);
-            MakeServiceRequest(PIN_PATH, "PUT", JsonUtil.ToJson(accountLock));
+            await MakeServiceRequest(PIN_PATH, "PUT", JsonUtil.ToJson(accountLock));
         }
 
-        public void RemovePin()
+        public async Task RemovePin()
         {
-            MakeServiceRequest(PIN_PATH, "PUT", null);
+            await MakeServiceRequest(PIN_PATH, "PUT", null);
         }
 
-        public SendMessageResponse SendMessage(OutgoingPushMessageList bundle)
+        public async Task<SendMessageResponse> SendMessage(OutgoingPushMessageList bundle)
         {
             try
             {
-                string responseText = MakeServiceRequest(string.Format(MESSAGE_PATH, bundle.Destination), "PUT", JsonUtil.ToJson(bundle));
+                string responseText = await MakeServiceRequest(string.Format(MESSAGE_PATH, bundle.Destination), "PUT", JsonUtil.ToJson(bundle));
                 return JsonUtil.FromJson<SendMessageResponse>(responseText);
             }
             catch (NotFoundException nfe)
@@ -159,19 +159,19 @@ namespace libsignalservice.push
             }
         }
 
-        public List<SignalServiceEnvelopeEntity> GetMessages()// throws IOException
+        public async Task<List<SignalServiceEnvelopeEntity>> GetMessages()// throws IOException
         {
-            string responseText = MakeServiceRequest(string.Format(MESSAGE_PATH, ""), "GET", null);
+            string responseText = await MakeServiceRequest(string.Format(MESSAGE_PATH, ""), "GET", null);
             return JsonUtil.FromJson<SignalServiceEnvelopeEntityList>(responseText).Messages;
         }
 
-        public bool AcknowledgeMessage(string sender, ulong timestamp)// throws IOException
+        public async Task<bool> AcknowledgeMessage(string sender, ulong timestamp)// throws IOException
         {
-            MakeServiceRequest(string.Format(ACKNOWLEDGE_MESSAGE_PATH, sender, timestamp), "DELETE", null);
+            await MakeServiceRequest(string.Format(ACKNOWLEDGE_MESSAGE_PATH, sender, timestamp), "DELETE", null);
             return true;
         }
 
-        public bool RegisterPreKeys(IdentityKey identityKey,
+        public async Task<bool> RegisterPreKeys(IdentityKey identityKey,
                                     SignedPreKeyRecord signedPreKey,
                                     IList<PreKeyRecord> records)
         //throws IOException
@@ -190,20 +190,20 @@ namespace libsignalservice.push
                                                                    signedPreKey.getKeyPair().getPublicKey(),
                                                                    signedPreKey.getSignature());
 
-            MakeServiceRequest(string.Format(PREKEY_PATH, ""), "PUT",
+            await MakeServiceRequest(string.Format(PREKEY_PATH, ""), "PUT",
                 JsonUtil.ToJson(new PreKeyState(entities, signedPreKeyEntity, identityKey)));
             return true;
         }
 
-        public int GetAvailablePreKeys()// throws IOException
+        public async Task<int> GetAvailablePreKeys()// throws IOException
         {
-            string responseText = MakeServiceRequest(PREKEY_METADATA_PATH, "GET", null);
+            string responseText = await MakeServiceRequest(PREKEY_METADATA_PATH, "GET", null);
             PreKeyStatus preKeyStatus = JsonUtil.FromJson<PreKeyStatus>(responseText);
 
             return preKeyStatus.Count;
         }
 
-        public List<PreKeyBundle> GetPreKeys(SignalServiceAddress destination, uint deviceIdInteger)// throws IOException
+        public async Task<List<PreKeyBundle>> GetPreKeys(SignalServiceAddress destination, uint deviceIdInteger)// throws IOException
         {
             try
             {
@@ -219,7 +219,7 @@ namespace libsignalservice.push
                     path = path + "?relay=" + destination.Relay;
                 }
 
-                string responseText = MakeServiceRequest(path, "GET", null);
+                string responseText = await MakeServiceRequest(path, "GET", null);
                 PreKeyResponse response = JsonUtil.FromJson<PreKeyResponse>(responseText);
                 List<PreKeyBundle> bundles = new List<PreKeyBundle>();
 
@@ -261,7 +261,7 @@ namespace libsignalservice.push
             }
         }
 
-        public PreKeyBundle GetPreKey(SignalServiceAddress destination, uint deviceId)// throws IOException
+        public async Task<PreKeyBundle> GetPreKey(SignalServiceAddress destination, uint deviceId)// throws IOException
         {
             try
             {
@@ -273,7 +273,7 @@ namespace libsignalservice.push
                     path = path + "?relay=" + destination.Relay;
                 }
 
-                string responseText = MakeServiceRequest(path, "GET", null);
+                string responseText = await MakeServiceRequest(path, "GET", null);
                 PreKeyResponse response = JsonUtil.FromJson<PreKeyResponse>(responseText);
 
                 if (response.Devices == null || response.Devices.Count < 1)
@@ -312,11 +312,11 @@ namespace libsignalservice.push
             }
         }
 
-        public SignedPreKeyEntity GetCurrentSignedPreKey()// throws IOException
+        public async Task<SignedPreKeyEntity> GetCurrentSignedPreKey()// throws IOException
         {
             try
             {
-                string responseText = MakeServiceRequest(SIGNED_PREKEY_PATH, "GET", null);
+                string responseText = await MakeServiceRequest(SIGNED_PREKEY_PATH, "GET", null);
                 return JsonUtil.FromJson<SignedPreKeyEntity>(responseText);
             }
             catch (/*NotFound*/Exception e)
@@ -326,20 +326,20 @@ namespace libsignalservice.push
             }
         }
 
-        public bool SetCurrentSignedPreKey(SignedPreKeyRecord signedPreKey)// throws IOException
+        public async Task<bool> SetCurrentSignedPreKey(SignedPreKeyRecord signedPreKey)// throws IOException
         {
             SignedPreKeyEntity signedPreKeyEntity = new SignedPreKeyEntity(signedPreKey.getId(),
                                                                            signedPreKey.getKeyPair().getPublicKey(),
                                                                            signedPreKey.getSignature());
-            MakeServiceRequest(SIGNED_PREKEY_PATH, "PUT", JsonUtil.ToJson(signedPreKeyEntity));
+            await MakeServiceRequest(SIGNED_PREKEY_PATH, "PUT", JsonUtil.ToJson(signedPreKeyEntity));
             return true;
         }
 
-        public (ulong id, byte[] digest) SendAttachment(PushAttachmentData attachment)// throws IOException
+        public async Task<(ulong id, byte[] digest)> SendAttachment(PushAttachmentData attachment)// throws IOException
         {
-            var (id, location) = RetrieveAttachmentUploadUrl();
+            var (id, location) = await RetrieveAttachmentUploadUrl();
 
-            byte[] digest = UploadAttachment("PUT", location, attachment.Data,
+            byte[] digest = await UploadAttachment("PUT", location, attachment.Data,
                 attachment.DataSize, attachment.OutputFactory, attachment.Listener);
 
             return (id, digest);
@@ -349,9 +349,9 @@ namespace libsignalservice.push
         /// Gets a URL that can be used to upload an attachment
         /// </summary>
         /// <returns>The attachment ID and the URL</returns>
-        public (ulong id, string location) RetrieveAttachmentUploadUrl()
+        public async Task<(ulong id, string location)> RetrieveAttachmentUploadUrl()
         {
-            string response = MakeServiceRequest(string.Format(ATTACHMENT_PATH, ""), "GET", null);
+            string response = await MakeServiceRequest(string.Format(ATTACHMENT_PATH, ""), "GET", null);
             AttachmentDescriptor attachmentKey = JsonUtil.FromJson<AttachmentDescriptor>(response);
 
             if (attachmentKey == null || attachmentKey.Location == null)
@@ -363,10 +363,10 @@ namespace libsignalservice.push
             return (attachmentKey.Id, attachmentKey.Location);
         }
 
-        public void RetrieveAttachment(string relay, ulong attachmentId, Stream tmpDestination, int maxSizeBytes)
+        public async Task RetrieveAttachment(string relay, ulong attachmentId, Stream tmpDestination, int maxSizeBytes)
         {
-            string attachmentUrlLocation = RetrieveAttachmentDownloadUrl(relay, attachmentId);
-            DownloadAttachment(attachmentUrlLocation, tmpDestination);
+            string attachmentUrlLocation = await RetrieveAttachmentDownloadUrl(relay, attachmentId);
+            await DownloadAttachment(attachmentUrlLocation, tmpDestination);
         }
 
         /// <summary>
@@ -375,7 +375,7 @@ namespace libsignalservice.push
         /// <param name="relay"></param>
         /// <param name="attachmentId"></param>
         /// <returns></returns>
-        public string RetrieveAttachmentDownloadUrl(string relay, ulong attachmentId)
+        public async Task<string> RetrieveAttachmentDownloadUrl(string relay, ulong attachmentId)
         {
             string path = string.Format(ATTACHMENT_PATH, attachmentId.ToString());
 
@@ -384,18 +384,18 @@ namespace libsignalservice.push
                 path = path + "?relay=" + relay;
             }
 
-            string response = MakeServiceRequest(path, "GET", null);
+            string response = await MakeServiceRequest(path, "GET", null);
             Debug.WriteLine("PushServiceSocket: Received resp " + response);
             AttachmentDescriptor descriptor = JsonUtil.FromJson<AttachmentDescriptor>(response);
             Debug.WriteLine("PushServiceSocket: Attachment: " + attachmentId + " is at: " + descriptor.Location);
             return descriptor.Location;
         }
 
-        public SignalServiceProfile RetrieveProfile(SignalServiceAddress target)
+        public async Task<SignalServiceProfile> RetrieveProfile(SignalServiceAddress target)
         {
             try
             {
-                string response = MakeServiceRequest(string.Format(PROFILE_PATH, target.E164number), "GET", null);
+                string response = await MakeServiceRequest(string.Format(PROFILE_PATH, target.E164number), "GET", null);
                 return JsonUtil.FromJson<SignalServiceProfile>(response);
             }
             catch (Exception e)
@@ -409,14 +409,14 @@ namespace libsignalservice.push
             DownloadFromCdn(destination, path, maxSizeByzes);
         }
 
-        public void SetProfileName(string name)
+        public async Task SetProfileName(string name)
         {
-            MakeServiceRequest(string.Format(PROFILE_PATH, "name/" + (name == null ? "" : WebUtility.UrlEncode(name))), "PUT", "");
+            await MakeServiceRequest(string.Format(PROFILE_PATH, "name/" + (name == null ? "" : WebUtility.UrlEncode(name))), "PUT", "");
         }
 
-        public void SetProfileAvatar(ProfileAvatarData profileAvatar)
+        public async Task SetProfileAvatar(ProfileAvatarData profileAvatar)
         {
-            String response = MakeServiceRequest(string.Format(PROFILE_PATH, "form/avatar"), "GET", null);
+            String response = await MakeServiceRequest(string.Format(PROFILE_PATH, "form/avatar"), "GET", null);
             ProfileAvatarUploadAttributes formAttributes;
 
             try
@@ -455,22 +455,22 @@ namespace libsignalservice.push
             throw new NotImplementedException(); //TODO
         }
 
-        public List<ContactTokenDetails> RetrieveDirectory(ICollection<string> contactTokens) // TODO: whacky
+        public async Task<List<ContactTokenDetails>> RetrieveDirectory(ICollection<string> contactTokens) // TODO: whacky
                                                                                               //throws NonSuccessfulResponseCodeException, PushNetworkException
         {
             LinkedList<HashSet<string>> temp = new LinkedList<HashSet<string>>();
             ContactTokenList contactTokenList = new ContactTokenList(contactTokens.ToList());
-            string response = MakeServiceRequest(DIRECTORY_TOKENS_PATH, "PUT", JsonUtil.ToJson(contactTokenList));
+            string response = await MakeServiceRequest(DIRECTORY_TOKENS_PATH, "PUT", JsonUtil.ToJson(contactTokenList));
             ContactTokenDetailsList activeTokens = JsonUtil.FromJson<ContactTokenDetailsList>(response);
 
             return activeTokens.Contacts;
         }
 
-        public ContactTokenDetails GetContactTokenDetails(string contactToken)// throws IOException
+        public async Task<ContactTokenDetails> GetContactTokenDetails(string contactToken)// throws IOException
         {
             try
             {
-                string response = MakeServiceRequest(string.Format(DIRECTORY_VERIFY_PATH, contactToken), "GET", null);
+                string response = await MakeServiceRequest(string.Format(DIRECTORY_VERIFY_PATH, contactToken), "GET", null);
                 return JsonUtil.FromJson<ContactTokenDetails>(response);
             }
             catch (Exception)
@@ -495,7 +495,7 @@ namespace libsignalservice.push
             throw new NotImplementedException();
         }
 
-        private void DownloadAttachment(string url, Stream localDestination)
+        private async Task DownloadAttachment(string url, Stream localDestination)
         {
             try
             {
@@ -505,9 +505,9 @@ namespace libsignalservice.push
                 HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Get, url);
                 req.Content = new StringContent("");
                 req.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
-                using (var resp = connection.SendAsync(req).Result)
+                using (var resp = await connection.SendAsync(req))
                 {
-                    Stream input = resp.Content.ReadAsStreamAsync().Result;
+                    Stream input = await resp.Content.ReadAsStreamAsync();
                     byte[] buffer = new byte[4096];
                     int read = 0;
                     while (true)
@@ -531,7 +531,7 @@ namespace libsignalservice.push
             }
         }
 
-        private byte[] UploadAttachment(string method, string url, Stream data, long dataSize,
+        private async Task<byte[]> UploadAttachment(string method, string url, Stream data, long dataSize,
             OutputStreamFactory outputStreamFactory, IProgressListener listener)
         {
             MemoryStream tmpStream = new MemoryStream();
@@ -543,10 +543,10 @@ namespace libsignalservice.push
             request.Headers.ConnectionClose = true;
 
             HttpClient client = new HttpClient();
-            HttpResponseMessage response = client.SendAsync(request).Result;
+            HttpResponseMessage response = await client.SendAsync(request);
             if (response.StatusCode != HttpStatusCode.OK)
             {
-                throw new IOException($"Bad response: {response.StatusCode} {response.Content.ReadAsStringAsync().Result}");
+                throw new IOException($"Bad response: {response.StatusCode} {await response.Content.ReadAsStringAsync()}");
             }
 
             return outputStream.GetTransmittedDigest();
@@ -612,12 +612,12 @@ namespace libsignalservice.push
             return (digest, encryptedData);
         }
 
-        private string MakeServiceRequest(string urlFragment, string method, string body)
+        private async Task<string> MakeServiceRequest(string urlFragment, string method, string body)
         {
             try
             {
                 var dummy = new CancellationTokenSource();
-                return MakeServiceRequestAsync(dummy.Token, urlFragment, method, body).Result;
+                return await MakeServiceRequestAsync(dummy.Token, urlFragment, method, body);
             }
             catch (AggregateException e)
             {

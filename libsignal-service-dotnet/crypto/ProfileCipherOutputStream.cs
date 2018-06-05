@@ -14,7 +14,7 @@ namespace libsignalservice.crypto
 
         internal ProfileCipherOutputStream(Stream outputStream, byte[] key) : base(outputStream)
         {
-            var Cipher = new GcmBlockCipher(new AesEngine());
+            Cipher = new GcmBlockCipher(new AesEngine());
             byte[] nonce = GenerateNonce();
             base.Write(nonce, 0, nonce.Length);
         }
