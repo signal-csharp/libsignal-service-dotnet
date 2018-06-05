@@ -35,7 +35,6 @@ namespace libsignalservice
         private readonly CredentialsProvider CredentialsProvider;
         private readonly string UserAgent;
         private readonly ConnectivityListener ConnectivityListener;
-        private readonly CancellationToken Token;
 
         /// <summary>
         /// Construct a SignalServiceMessageReceiver.
@@ -45,9 +44,8 @@ namespace libsignalservice
         /// <param name="credentials">The Signal Service user's credentials</param>
         /// <param name="userAgent"></param>
         /// <param name="connectivityListener"></param>
-        public SignalServiceMessageReceiver(CancellationToken token, SignalServiceConfiguration urls, CredentialsProvider credentials, string userAgent, ConnectivityListener connectivityListener)
+        public SignalServiceMessageReceiver(SignalServiceConfiguration urls, CredentialsProvider credentials, string userAgent, ConnectivityListener connectivityListener)
         {
-            Token = token;
             Urls = urls;
             CredentialsProvider = credentials;
             Socket = new PushServiceSocket(urls, credentials, userAgent);
@@ -58,11 +56,12 @@ namespace libsignalservice
         /// <summary>
         /// TODO
         /// </summary>
+        /// <param name="token"></param>
         /// <param name="address"></param>
         /// <returns></returns>
-        public async Task<SignalServiceProfile> RetrieveProfile(SignalServiceAddress address)
+        public async Task<SignalServiceProfile> RetrieveProfile(CancellationToken token, SignalServiceAddress address)
         {
-            return await Socket.RetrieveProfile(address);
+            return await Socket.RetrieveProfile(token, address);
         }
 
         /// <summary>
@@ -83,14 +82,15 @@ namespace libsignalservice
         /// <summary>
         /// Retrieves a SignalServiceAttachment
         /// </summary>
+        /// <param name="token"></param>
         /// <param name="pointer">The <see cref="SignalServiceAttachmentPointer"/>
         /// received in a <see cref="SignalServiceDataMessage"/></param>
         /// <param name="tmpCipherDestination">The temporary destination for this attachment before decryption</param>
         /// <param name="maxSizeBytes">The maximum size for this attachment (not yet implemented)</param>
         /// <param name="listener">An optional listener (may be null) to receive callbacks on download progress.</param>
-        public async Task<Stream> RetrieveAttachment(SignalServiceAttachmentPointer pointer, Stream tmpCipherDestination, int maxSizeBytes, IProgressListener listener)
+        public async Task<Stream> RetrieveAttachment(CancellationToken token, SignalServiceAttachmentPointer pointer, Stream tmpCipherDestination, int maxSizeBytes, IProgressListener listener)
         {
-            await Socket.RetrieveAttachment(pointer.Relay, pointer.Id, tmpCipherDestination, maxSizeBytes);
+            await Socket.RetrieveAttachment(token, pointer.Relay, pointer.Id, tmpCipherDestination, maxSizeBytes);
             tmpCipherDestination.Position = 0;
             return AttachmentCipherInputStream.CreateFor(tmpCipherDestination, pointer.Size != null ? pointer.Size.Value : 0, pointer.Key, pointer.Digest);
         }
@@ -98,11 +98,12 @@ namespace libsignalservice
         /// <summary>
         /// Retrieves an attachment URL location
         /// </summary>
+        /// <param name="token"></param>
         /// <param name="pointer">The pointer to the attachment</param>
         /// <returns></returns>
-        public async Task<string> RetrieveAttachmentDownloadUrl(SignalServiceAttachmentPointer pointer)
+        public async Task<string> RetrieveAttachmentDownloadUrl(CancellationToken token, SignalServiceAttachmentPointer pointer)
         {
-            return await Socket.RetrieveAttachmentDownloadUrl(pointer.Relay, pointer.Id);
+            return await Socket.RetrieveAttachmentDownloadUrl(token, pointer.Relay, pointer.Id);
         }
 
         /// <summary>
@@ -111,18 +112,18 @@ namespace libsignalservice
         /// Callers must call <see cref="SignalServiceMessagePipe.Shutdown()"/> when finished with the pipe.
         /// </summary>
         /// <returns>A SignalServiceMessagePipe for receiving Signal Service messages.</returns>
-        public async Task<SignalServiceMessagePipe> CreateMessagePipe()
+        public async Task<SignalServiceMessagePipe> CreateMessagePipe(CancellationToken token)
         {
-            SignalWebSocketConnection webSocket = new SignalWebSocketConnection(Token, Urls.SignalServiceUrls[0].Url, CredentialsProvider, UserAgent, ConnectivityListener);
-            var messagePipe = new SignalServiceMessagePipe(Token, webSocket, CredentialsProvider);
+            SignalWebSocketConnection webSocket = new SignalWebSocketConnection(token, Urls.SignalServiceUrls[0].Url, CredentialsProvider, UserAgent, ConnectivityListener);
+            var messagePipe = new SignalServiceMessagePipe(token, webSocket, CredentialsProvider);
             await messagePipe.Connect();
             return messagePipe;
         }
 
-        public async Task<List<SignalServiceEnvelope>> RetrieveMessages(IMessagePipeCallback callback)
+        public async Task<List<SignalServiceEnvelope>> RetrieveMessages(CancellationToken token, IMessagePipeCallback callback)
         {
             List<SignalServiceEnvelope> results = new List<SignalServiceEnvelope>();
-            List<SignalServiceEnvelopeEntity> entities = await Socket.GetMessages();
+            List<SignalServiceEnvelopeEntity> entities = await Socket.GetMessages(token);
 
             foreach (SignalServiceEnvelopeEntity entity in entities)
             {
@@ -134,7 +135,7 @@ namespace libsignalservice
                 await callback.OnMessage(envelope);
                 results.Add(envelope);
 
-                await Socket.AcknowledgeMessage(entity.Source, entity.Timestamp);
+                await Socket.AcknowledgeMessage(token, entity.Source, entity.Timestamp);
             }
             return results;
         }

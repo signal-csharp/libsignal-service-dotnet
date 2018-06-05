@@ -70,41 +70,44 @@ namespace libsignalservice
         /// Send a delivery receipt for a received message.  It is not necessary to call this
         /// when receiving messages through <see cref="SignalServiceMessagePipe"/>
         /// </summary>
+        /// <param name="token">The cancellation token</param>
         /// <param name="recipient">The sender of the received message you're acknowledging</param>
         /// <param name="message">The receipt message</param>
-        public async Task SendDeliveryReceipt(SignalServiceAddress recipient, SignalServiceReceiptMessage message)
+        public async Task SendDeliveryReceipt(CancellationToken token, SignalServiceAddress recipient, SignalServiceReceiptMessage message)
         {
             byte[] content = CreateReceiptContent(message);
-            await SendMessage(recipient, message.When, content, true);
+            await SendMessage(token, recipient, message.When, content, true);
         }
 
         /// <summary>
         /// Send a call setup message to a single recipient
         /// </summary>
+        /// <param name="token">The cancellation token</param>
         /// <param name="recipient">The message's destination</param>
         /// <param name="message">The call message</param>
-        public async Task SendCallMessage(SignalServiceAddress recipient, SignalServiceCallMessage message)
+        public async Task SendCallMessage(CancellationToken token, SignalServiceAddress recipient, SignalServiceCallMessage message)
         {
             byte[] content = CreateCallContent(message);
-            await SendMessage(recipient, Util.CurrentTimeMillis(), content, true);
+            await SendMessage(token, recipient, Util.CurrentTimeMillis(), content, true);
         }
 
         /// <summary>
         /// Send a message to a single recipient.
         /// </summary>
+        /// <param name="token">The cancellation token</param>
         /// <param name="recipient">The message's destination.</param>
         /// <param name="message">The message.</param>
-        public async Task SendMessage(SignalServiceAddress recipient, SignalServiceDataMessage message)
+        public async Task SendMessage(CancellationToken token, SignalServiceAddress recipient, SignalServiceDataMessage message)
         {
-            byte[] content = await CreateMessageContent(message);
+            byte[] content = await CreateMessageContent(token, message);
             long timestamp = message.Timestamp;
             bool silent = message.Group != null && message.Group.Type == SignalServiceGroup.GroupType.REQUEST_INFO;
-            var resp = await SendMessage(recipient, timestamp, content, silent);
+            var resp = await SendMessage(token, recipient, timestamp, content, silent);
 
             if (resp.NeedsSync)
             {
                 byte[] syncMessage = CreateMultiDeviceSentTranscriptContent(content, new May<SignalServiceAddress>(recipient), (ulong)timestamp);
-                await SendMessage(localAddress, timestamp, syncMessage, false);
+                await SendMessage(token, localAddress, timestamp, syncMessage, false);
             }
 
             if (message.EndSession)
@@ -121,19 +124,20 @@ namespace libsignalservice
         /// <summary>
         /// Send a message to a group.
         /// </summary>
+        /// <param name="token">The cancellation token</param>
         /// <param name="recipients">The group members.</param>
         /// <param name="message">The group message.</param>
-        public async Task SendMessage(List<SignalServiceAddress> recipients, SignalServiceDataMessage message)
+        public async Task SendMessage(CancellationToken token, List<SignalServiceAddress> recipients, SignalServiceDataMessage message)
         {
-            byte[] content = await CreateMessageContent(message);
+            byte[] content = await CreateMessageContent(token, message);
             long timestamp = message.Timestamp;
-            SendMessageResponseList response = await SendMessage(recipients, timestamp, content);
+            SendMessageResponseList response = await SendMessage(token, recipients, timestamp, content);
             try
             {
                 if (response != null && response.NeedsSync)
                 {
                     byte[] syncMessage = CreateMultiDeviceSentTranscriptContent(content, May<SignalServiceAddress>.NoValue, (ulong)timestamp);
-                    await SendMessage(localAddress, timestamp, syncMessage, false);
+                    await SendMessage(token, localAddress, timestamp, syncMessage, false);
                 }
             }
             catch (UntrustedIdentityException e)
@@ -150,19 +154,20 @@ namespace libsignalservice
         /// <summary>
         /// TODO
         /// </summary>
+        /// <param name="token"></param>
         /// <param name="message"></param>
-        public async Task SendMessage(SignalServiceSyncMessage message)
+        public async Task SendMessage(CancellationToken token, SignalServiceSyncMessage message)
         {
             byte[] content;
 
             if (message.Contacts != null)
             {
-                content = await CreateMultiDeviceContactsContent(message.Contacts.Contacts.AsStream(),
+                content = await CreateMultiDeviceContactsContent(token, message.Contacts.Contacts.AsStream(),
                     message.Contacts.Complete);
             }
             else if (message.Groups != null)
             {
-                content = await CreateMultiDeviceGroupsContent(message.Groups.AsStream());
+                content = await CreateMultiDeviceGroupsContent(token, message.Groups.AsStream());
             }
             else if (message.Reads != null)
             {
@@ -178,7 +183,7 @@ namespace libsignalservice
             }
             else if (message.Verified != null)
             {
-                await SendMessage(message.Verified);
+                await SendMessage(token, message.Verified);
                 return;
             }
             else if (message.Request != null)
@@ -190,7 +195,7 @@ namespace libsignalservice
                 throw new Exception("Unsupported sync message!");
             }
 
-            await SendMessage(localAddress, Util.CurrentTimeMillis(), content, false);
+            await SendMessage(token, localAddress, Util.CurrentTimeMillis(), content, false);
         }
 
         /// <summary>
@@ -210,11 +215,7 @@ namespace libsignalservice
             socket.CancelInFlightRequests();
         }
 
-        /// <summary>
-        /// TODO
-        /// </summary>
-        /// <param name="message"></param>
-        private async Task SendMessage(VerifiedMessage message)
+        private async Task SendMessage(CancellationToken token, VerifiedMessage message)
         {
             byte[] nullMessageBody = new DataMessage()
             {
@@ -231,12 +232,12 @@ namespace libsignalservice
                 NullMessage = nullMessage
             }.ToByteArray();
 
-            SendMessageResponse response = await SendMessage(new SignalServiceAddress(message.Destination), message.Timestamp, content, false);
+            SendMessageResponse response = await SendMessage(token, new SignalServiceAddress(message.Destination), message.Timestamp, content, false);
 
             if (response != null && response.NeedsSync)
             {
                 byte[] syncMessage = CreateMultiDeviceVerifiedContent(message, nullMessage.ToByteArray());
-                await SendMessage(localAddress, message.Timestamp, syncMessage, false);
+                await SendMessage(token, localAddress, message.Timestamp, syncMessage, false);
             }
         }
 
@@ -258,11 +259,11 @@ namespace libsignalservice
             return receiptMessage.ToByteArray();
         }
 
-        private async Task<byte[]> CreateMessageContent(SignalServiceDataMessage message)// throws IOException
+        private async Task<byte[]> CreateMessageContent(CancellationToken token, SignalServiceDataMessage message)// throws IOException
         {
             Content content = new Content();
             DataMessage dataMessage = new DataMessage { };
-            IList<AttachmentPointer> pointers = await CreateAttachmentPointers(message.Attachments);
+            IList<AttachmentPointer> pointers = await CreateAttachmentPointers(token, message.Attachments);
 
             if (pointers.Count != 0)
             {
@@ -276,7 +277,7 @@ namespace libsignalservice
 
             if (message.Group != null)
             {
-                dataMessage.Group = await CreateGroupContent(message.Group);
+                dataMessage.Group = await CreateGroupContent(token, message.Group);
             }
 
             if (message.EndSession)
@@ -320,7 +321,7 @@ namespace libsignalservice
 
                     if (attachment.Thumbnail != null)
                     {
-                        protoAttachment.Thumbnail = await CreateAttachmentPointer(attachment.Thumbnail.AsStream());
+                        protoAttachment.Thumbnail = await CreateAttachmentPointer(token, attachment.Thumbnail.AsStream());
                     }
                     quote.Attachments.Add(protoAttachment);
                 }
@@ -386,26 +387,26 @@ namespace libsignalservice
             return content.ToByteArray();
         }
 
-        private async Task<byte[]> CreateMultiDeviceContactsContent(SignalServiceAttachmentStream contacts, bool complete)
+        private async Task<byte[]> CreateMultiDeviceContactsContent(CancellationToken token, SignalServiceAttachmentStream contacts, bool complete)
         {
             Content content = new Content { };
             SyncMessage syncMessage = CreateSyncMessage();
             syncMessage.Contacts = new SyncMessage.Types.Contacts
             {
-                Blob = await CreateAttachmentPointer(contacts),
+                Blob = await CreateAttachmentPointer(token, contacts),
                 Complete = complete
             };
             content.SyncMessage = syncMessage;
             return content.ToByteArray();
         }
 
-        private async Task<byte[]> CreateMultiDeviceGroupsContent(SignalServiceAttachmentStream groups)
+        private async Task<byte[]> CreateMultiDeviceGroupsContent(CancellationToken token, SignalServiceAttachmentStream groups)
         {
             Content content = new Content { };
             SyncMessage syncMessage = CreateSyncMessage();
             syncMessage.Groups = new SyncMessage.Types.Groups
             {
-                Blob = await CreateAttachmentPointer(groups)
+                Blob = await CreateAttachmentPointer(token, groups)
             };
             content.SyncMessage = syncMessage;
             return content.ToByteArray();
@@ -535,7 +536,7 @@ namespace libsignalservice
             return syncMessage;
         }
 
-        private async Task<GroupContext> CreateGroupContent(SignalServiceGroup group)
+        private async Task<GroupContext> CreateGroupContent(CancellationToken token, SignalServiceGroup group)
         {
             GroupContext groupContext = new GroupContext { };
             groupContext.Id = ByteString.CopyFrom(group.GroupId);
@@ -552,7 +553,7 @@ namespace libsignalservice
 
                 if (group.Avatar != null && group.Avatar.IsStream())
                 {
-                    AttachmentPointer pointer = await CreateAttachmentPointer(group.Avatar.AsStream());
+                    AttachmentPointer pointer = await CreateAttachmentPointer(token, group.Avatar.AsStream());
                     groupContext.Avatar = pointer;
                 }
             }
@@ -564,14 +565,14 @@ namespace libsignalservice
             return groupContext;
         }
 
-        private async Task<SendMessageResponseList> SendMessage(List<SignalServiceAddress> recipients, long timestamp, byte[] content)
+        private async Task<SendMessageResponseList> SendMessage(CancellationToken token, List<SignalServiceAddress> recipients, long timestamp, byte[] content)
         {
             SendMessageResponseList responseList = new SendMessageResponseList();
             foreach (SignalServiceAddress recipient in recipients)
             {
                 try
                 {
-                    var response = await SendMessage(recipient, timestamp, content, false);
+                    var response = await SendMessage(token, recipient, timestamp, content, false);
                     responseList.AddResponse(response);
                 }
                 catch (UntrustedIdentityException e)
@@ -593,13 +594,13 @@ namespace libsignalservice
             return responseList;
         }
 
-        private async Task<SendMessageResponse> SendMessage(SignalServiceAddress recipient, long timestamp, byte[] content, bool silent)
+        private async Task<SendMessageResponse> SendMessage(CancellationToken token, SignalServiceAddress recipient, long timestamp, byte[] content, bool silent)
         {
             for (int i = 0; i < 3; i++)
             {
                 try
                 {
-                    OutgoingPushMessageList messages = await GetEncryptedMessages(socket, recipient, timestamp, content, silent);
+                    OutgoingPushMessageList messages = await GetEncryptedMessages(token, socket, recipient, timestamp, content, silent);
                     if (pipe != null)
                     {
                         try
@@ -614,11 +615,11 @@ namespace libsignalservice
                     }
 
                     Debug.WriteLine("Not transmitting over pipe...");
-                    return await socket.SendMessage(messages);
+                    return await socket.SendMessage(token, messages);
                 }
                 catch (MismatchedDevicesException mde)
                 {
-                    await HandleMismatchedDevices(socket, recipient, mde.MismatchedDevices);
+                    await HandleMismatchedDevices(token, socket, recipient, mde.MismatchedDevices);
                 }
                 catch (StaleDevicesException ste)
                 {
@@ -629,7 +630,7 @@ namespace libsignalservice
             throw new Exception("Failed to resolve conflicts after 3 attempts!");
         }
 
-        private async Task<IList<AttachmentPointer>> CreateAttachmentPointers(List<SignalServiceAttachment> attachments)
+        private async Task<IList<AttachmentPointer>> CreateAttachmentPointers(CancellationToken token, List<SignalServiceAttachment> attachments)
         {
             IList<AttachmentPointer> pointers = new List<AttachmentPointer>();
 
@@ -644,7 +645,7 @@ namespace libsignalservice
                 if (attachment.IsStream())
                 {
                     Debug.WriteLine("Found attachment, creating pointer...", TAG);
-                    pointers.Add(await CreateAttachmentPointer(attachment.AsStream()));
+                    pointers.Add(await CreateAttachmentPointer(token, attachment.AsStream()));
                 }
                 else if (attachment.IsPointer())
                 {
@@ -655,7 +656,7 @@ namespace libsignalservice
             return pointers;
         }
 
-        private async Task<AttachmentPointer> CreateAttachmentPointer(SignalServiceAttachmentStream attachment)
+        private async Task<AttachmentPointer> CreateAttachmentPointer(CancellationToken token, SignalServiceAttachmentStream attachment)
         {
             byte[] attachmentKey = Util.GetSecretBytes(64);
             long paddedLength = PaddingInputStream.GetPaddedSize(attachment.Length);
@@ -666,7 +667,7 @@ namespace libsignalservice
                                                                        new AttachmentCipherOutputStreamFactory(attachmentKey),
                                                                        attachment.Listener);
 
-            (ulong id, byte[] digest) = await socket.SendAttachment(attachmentData);
+            (ulong id, byte[] digest) = await socket.SendAttachment(token, attachmentData);
 
             var attachmentPointer = new AttachmentPointer
             {
@@ -733,9 +734,9 @@ namespace libsignalservice
         /// Gets a URL that can be used to upload an attachment
         /// </summary>
         /// <returns>The attachment ID and the URL</returns>
-        public async Task<(ulong id, string location)> RetrieveAttachmentUploadUrl()
+        public async Task<(ulong id, string location)> RetrieveAttachmentUploadUrl(CancellationToken token)
         {
-            return await socket.RetrieveAttachmentUploadUrl();
+            return await socket.RetrieveAttachmentUploadUrl(token);
         }
 
         /// <summary>
@@ -749,18 +750,19 @@ namespace libsignalservice
             return socket.EncryptAttachment(data, key);
         }
 
-        private async Task<OutgoingPushMessageList> GetEncryptedMessages(PushServiceSocket socket,
-                                                   SignalServiceAddress recipient,
-                                                   long timestamp,
-                                                   byte[] plaintext,
-                                                   bool silent)
+        private async Task<OutgoingPushMessageList> GetEncryptedMessages(CancellationToken token,
+            PushServiceSocket socket,
+            SignalServiceAddress recipient,
+            long timestamp,
+            byte[] plaintext,
+            bool silent)
         {
             List<OutgoingPushMessage> messages = new List<OutgoingPushMessage>();
 
             bool myself = recipient.Equals(localAddress);
             if (!myself || CredentialsProvider.DeviceId != SignalServiceAddress.DEFAULT_DEVICE_ID)
             {
-                messages.Add(await GetEncryptedMessage(socket, recipient, SignalServiceAddress.DEFAULT_DEVICE_ID, plaintext, silent));
+                messages.Add(await GetEncryptedMessage(token, socket, recipient, SignalServiceAddress.DEFAULT_DEVICE_ID, plaintext, silent));
             }
 
             foreach (uint deviceId in store.GetSubDeviceSessions(recipient.E164number))
@@ -769,7 +771,7 @@ namespace libsignalservice
                 {
                     if (store.ContainsSession(new SignalProtocolAddress(recipient.E164number, deviceId)))
                     {
-                        messages.Add(await GetEncryptedMessage(socket, recipient, deviceId, plaintext, silent));
+                        messages.Add(await GetEncryptedMessage(token, socket, recipient, deviceId, plaintext, silent));
                     }
                 }
             }
@@ -777,7 +779,7 @@ namespace libsignalservice
             return new OutgoingPushMessageList(recipient.E164number, (ulong)timestamp, recipient.Relay, messages);
         }
 
-        private async Task<OutgoingPushMessage> GetEncryptedMessage(PushServiceSocket socket, SignalServiceAddress recipient, uint deviceId, byte[] plaintext, bool silent)
+        private async Task<OutgoingPushMessage> GetEncryptedMessage(CancellationToken token, PushServiceSocket socket, SignalServiceAddress recipient, uint deviceId, byte[] plaintext, bool silent)
         {
             SignalProtocolAddress signalProtocolAddress = new SignalProtocolAddress(recipient.E164number, deviceId);
             SignalServiceCipher cipher = new SignalServiceCipher(localAddress, store);
@@ -786,7 +788,7 @@ namespace libsignalservice
             {
                 try
                 {
-                    List<PreKeyBundle> preKeys = await socket.GetPreKeys(recipient, deviceId);
+                    List<PreKeyBundle> preKeys = await socket.GetPreKeys(token, recipient, deviceId);
 
                     foreach (PreKeyBundle preKey in preKeys)
                     {
@@ -820,7 +822,7 @@ namespace libsignalservice
             return cipher.Encrypt(signalProtocolAddress, plaintext, silent);
         }
 
-        private async Task HandleMismatchedDevices(PushServiceSocket socket, SignalServiceAddress recipient, MismatchedDevices mismatchedDevices)
+        private async Task HandleMismatchedDevices(CancellationToken token, PushServiceSocket socket, SignalServiceAddress recipient, MismatchedDevices mismatchedDevices)
         {
             try
             {
@@ -831,7 +833,7 @@ namespace libsignalservice
 
                 foreach (uint missingDeviceId in mismatchedDevices.MissingDevices)
                 {
-                    PreKeyBundle preKey = await socket.GetPreKey(recipient, missingDeviceId);
+                    PreKeyBundle preKey = await socket.GetPreKey(token, recipient, missingDeviceId);
 
                     try
                     {
