@@ -33,7 +33,16 @@ namespace libsignalservice
             this.Token = token;
             this.Websocket = websocket;
             this.CredentialsProvider = credentialsProvider;
-            this.Websocket.Connect(token).Wait();
+        }
+
+        /// <summary>
+        /// Connect message pipe.
+        /// </summary>
+        /// <returns>Task</returns>
+        public async Task Connect()
+        {
+            Logger.LogTrace("Connecting to message pipe");
+            await Websocket.Connect(Token);
         }
 
         /// <summary>
@@ -79,7 +88,7 @@ namespace libsignalservice
         /// </summary>
         /// <param name="list"></param>
         /// <returns></returns>
-        public SendMessageResponse Send(OutgoingPushMessageList list)
+        public async Task<SendMessageResponse> Send(OutgoingPushMessageList list)
         {
             Logger.LogTrace("Send()");
             WebSocketRequestMessage requestmessage = new WebSocketRequestMessage()
@@ -92,7 +101,7 @@ namespace libsignalservice
             requestmessage.Headers.Add("content-type:application/json");
             Logger.LogDebug("Sending message {0}", requestmessage.Id);
             var t = Websocket.SendRequest(requestmessage);
-            t.Wait();
+            await t;
             if (t.IsCompleted)
             {
                 var response = t.Result;
@@ -115,7 +124,7 @@ namespace libsignalservice
         /// </summary>
         /// <param name="address"></param>
         /// <returns></returns>
-        public SignalServiceProfile GetProfile(SignalServiceAddress address)
+        public async Task<SignalServiceProfile> GetProfile(SignalServiceAddress address)
         {
             Logger.LogTrace("GetProfile()");
             WebSocketRequestMessage requestMessage = new WebSocketRequestMessage()
@@ -126,7 +135,7 @@ namespace libsignalservice
             };
 
             var t = Websocket.SendRequest(requestMessage);
-            t.Wait();
+            await t;
             if (t.IsCompleted)
             {
                 var response = t.Result;

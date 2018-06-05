@@ -36,7 +36,7 @@ namespace Coe.WebSocketWrapper
             WebSocket.Options.KeepAliveInterval = TimeSpan.FromSeconds(30);
         }
 
-        public void HandleOutgoingWS(CancellationToken token)
+        public async Task HandleOutgoingWS(CancellationToken token)
         {
             Logger.LogTrace("HandleOutgoingWS()");
             byte[] buf = null;
@@ -46,7 +46,7 @@ namespace Coe.WebSocketWrapper
                 {
                     if (buf == null)
                         buf = OutgoingQueue.Take(token);
-                    WebSocket.SendAsync(new ArraySegment<byte>(buf, 0, buf.Length), WebSocketMessageType.Binary, true, token).Wait();
+                    await WebSocket.SendAsync(new ArraySegment<byte>(buf, 0, buf.Length), WebSocketMessageType.Binary, true, token);
                     buf = null; //set to null so we do not retry the same block
                 }
                 catch (TaskCanceledException)
@@ -111,7 +111,7 @@ namespace Coe.WebSocketWrapper
             Logger.LogInformation("Successfully reconnected to the server");
         }
 
-        public void HandleIncomingWS(CancellationToken token)
+        public async Task HandleIncomingWS(CancellationToken token)
         {
             Logger.LogTrace("HandleIncomingWS()");
             var buffer = new byte[ReceiveChunkSize];
@@ -123,10 +123,10 @@ namespace Coe.WebSocketWrapper
                 {
                     do
                     {
-                        result = WebSocket.ReceiveAsync(new ArraySegment<byte>(buffer), token).Result;
+                        result = await WebSocket.ReceiveAsync(new ArraySegment<byte>(buffer), token);
                         if (result.MessageType == WebSocketMessageType.Close)
                         {
-                            WebSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, CancellationToken.None).Wait();
+                            await WebSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, CancellationToken.None);
                             throw new Exception("Got a close message requesting reconnect");
                         }
                         else
@@ -198,8 +198,8 @@ namespace Coe.WebSocketWrapper
                 }
                 Logger.LogWarning("Connect could not connect to the server");
             }
-            HandleOutgoing = Task.Factory.StartNew(() => HandleOutgoingWS(token), TaskCreationOptions.LongRunning);
-            HandleIncoming = Task.Factory.StartNew(() => HandleIncomingWS(token), TaskCreationOptions.LongRunning);
+            HandleOutgoing = Task.Factory.StartNew(async () => await HandleOutgoingWS(token), TaskCreationOptions.LongRunning);
+            HandleIncoming = Task.Factory.StartNew(async () => await HandleIncomingWS(token), TaskCreationOptions.LongRunning);
         }
 
         private void CallOnMessage(byte[] result)

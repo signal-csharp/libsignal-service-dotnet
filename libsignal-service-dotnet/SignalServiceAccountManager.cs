@@ -52,7 +52,6 @@ namespace libsignalservice
         /// Construct a SignalServiceAccountManager for linking as a slave device
         /// </summary>
         /// <param name="configuration">The URL configuration for the Signal Service</param>
-        /// <param name="token">The cancellation token for the ProvisioningSocket</param>
         /// <param name="userAgent">A string which identifies the client software</param>
         public SignalServiceAccountManager(SignalServiceConfiguration configuration, string userAgent)
         {
@@ -66,12 +65,16 @@ namespace libsignalservice
         /// 
         /// </summary>
         /// <param name="pin"></param>
-        public void SetPin(string pin)
+        public async Task SetPin(string pin)
         {
             if (pin != null)
-                PushServiceSocket.SetPin(pin);
+            {
+                await PushServiceSocket.SetPin(pin);
+            }
             else
-                PushServiceSocket.RemovePin();
+            {
+                await PushServiceSocket.RemovePin();
+            }
         }
 
         /// <summary>
@@ -79,15 +82,15 @@ namespace libsignalservice
         /// </summary>
         /// <param name="gcmRegistrationId">The GCM id to register.  A call with an absent value will unregister.</param>
         /// <returns></returns>
-        public void SetGcmId(May<string> gcmRegistrationId)// throws IOException
+        public async Task SetGcmId(May<string> gcmRegistrationId)// throws IOException
         {
             if (gcmRegistrationId.HasValue)
             {
-                this.PushServiceSocket.RegisterGcmId(gcmRegistrationId.ForceGetValue());
+                await PushServiceSocket.RegisterGcmId(gcmRegistrationId.ForceGetValue());
             }
             else
             {
-                this.PushServiceSocket.UnregisterGcmId();
+                await PushServiceSocket.UnregisterGcmId();
             }
         }
 
@@ -96,9 +99,9 @@ namespace libsignalservice
         /// an SMS verification code to this Signal user.
         /// </summary>
         /// <returns></returns>
-        public void RequestSmsVerificationCode()// throws IOException
+        public async Task RequestSmsVerificationCode()// throws IOException
         {
-            this.PushServiceSocket.CreateAccount(false);
+            await PushServiceSocket.CreateAccount(false);
         }
 
         /// <summary>
@@ -106,9 +109,9 @@ namespace libsignalservice
         /// make a voice call to this Signal user.
         /// </summary>
         /// <returns></returns>
-        public void RequestVoiceVerificationCode()// throws IOException
+        public async Task RequestVoiceVerificationCode()// throws IOException
         {
-            this.PushServiceSocket.CreateAccount(true);
+            await PushServiceSocket.CreateAccount(true);
         }
 
         /// <summary>
@@ -124,10 +127,10 @@ namespace libsignalservice
         /// <param name="fetchesMessages">True if the client does not support GCM</param>
         /// <param name="pin"></param>
         /// <returns></returns>
-        public void VerifyAccountWithCode(string verificationCode, string signalingKey,
+        public async Task VerifyAccountWithCode(string verificationCode, string signalingKey,
                                    uint signalProtocolRegistrationId, bool fetchesMessages, string pin)
         {
-            this.PushServiceSocket.VerifyAccountCode(verificationCode, signalingKey,
+            await PushServiceSocket.VerifyAccountCode(verificationCode, signalingKey,
                                                  signalProtocolRegistrationId, fetchesMessages, pin);
         }
 
@@ -142,9 +145,9 @@ namespace libsignalservice
         /// <param name="fetchesMessages">True if the client does not support GCM</param>
         /// <param name="pin"></param>
         /// <returns></returns>
-        public void SetAccountAttributes(string signalingKey, uint signalProtocolRegistrationId, bool fetchesMessages, string pin)
+        public async Task SetAccountAttributes(string signalingKey, uint signalProtocolRegistrationId, bool fetchesMessages, string pin)
         {
-            this.PushServiceSocket.SetAccountAttributes(signalingKey, signalProtocolRegistrationId, fetchesMessages, pin);
+            await PushServiceSocket.SetAccountAttributes(signalingKey, signalProtocolRegistrationId, fetchesMessages, pin);
         }
 
         /// <summary>
@@ -155,9 +158,9 @@ namespace libsignalservice
         /// <param name="signedPreKey">The client's signed prekey.</param>
         /// <param name="oneTimePreKeys">The client's list of one-time prekeys.</param>
         /// <returns></returns>
-        public bool SetPreKeys(IdentityKey identityKey, SignedPreKeyRecord signedPreKey, IList<PreKeyRecord> oneTimePreKeys)//throws IOException
+        public async Task<bool> SetPreKeys(IdentityKey identityKey, SignedPreKeyRecord signedPreKey, IList<PreKeyRecord> oneTimePreKeys)//throws IOException
         {
-            this.PushServiceSocket.RegisterPreKeys(identityKey, signedPreKey, oneTimePreKeys);
+            await PushServiceSocket.RegisterPreKeys(identityKey, signedPreKey, oneTimePreKeys);
             return true;
         }
 
@@ -165,27 +168,27 @@ namespace libsignalservice
         ///
         /// </summary>
         /// <returns>The server's count of currently available (eg. unused) prekeys for this user.</returns>
-        public int GetPreKeysCount()// throws IOException
+        public async Task<int> GetPreKeysCount()// throws IOException
         {
-            return this.PushServiceSocket.GetAvailablePreKeys();
+            return await PushServiceSocket.GetAvailablePreKeys();
         }
 
         /// <summary>
         /// Set the client's signed prekey.
         /// </summary>
         /// <param name="signedPreKey">The client's new signed prekey.</param>
-        public void SetSignedPreKey(SignedPreKeyRecord signedPreKey)// throws IOException
+        public async Task SetSignedPreKey(SignedPreKeyRecord signedPreKey)// throws IOException
         {
-            this.PushServiceSocket.SetCurrentSignedPreKey(signedPreKey);
+            await PushServiceSocket.SetCurrentSignedPreKey(signedPreKey);
         }
 
         /// <summary>
         ///
         /// </summary>
         /// <returns>The server's view of the client's current signed prekey.</returns>
-        public SignedPreKeyEntity GetSignedPreKey()// throws IOException
+        public async Task<SignedPreKeyEntity> GetSignedPreKey()// throws IOException
         {
-            return this.PushServiceSocket.GetCurrentSignedPreKey();
+            return await PushServiceSocket.GetCurrentSignedPreKey();
         }
 
         /// <summary>
@@ -193,10 +196,10 @@ namespace libsignalservice
         /// </summary>
         /// <param name="e164number">The contact to check.</param>
         /// <returns>An optional ContactTokenDetails, present if registered, absent if not.</returns>
-        public May<ContactTokenDetails> GetContact(string e164number)// throws IOException
+        public async Task<May<ContactTokenDetails>> GetContact(string e164number)// throws IOException
         {
             string contactToken = CreateDirectoryServerToken(e164number, true);
-            ContactTokenDetails contactTokenDetails = this.PushServiceSocket.GetContactTokenDetails(contactToken);
+            ContactTokenDetails contactTokenDetails = await PushServiceSocket.GetContactTokenDetails(contactToken);
 
             if (contactTokenDetails != null)
             {
@@ -211,10 +214,10 @@ namespace libsignalservice
         /// </summary>
         /// <param name="e164numbers">The contacts to check.</param>
         /// <returns>A list of ContactTokenDetails for the registered users.</returns>
-        public List<ContactTokenDetails> GetContacts(IList<string> e164numbers)
+        public async Task<List<ContactTokenDetails>> GetContacts(IList<string> e164numbers)
         {
             IDictionary<string, string> contactTokensMap = CreateDirectoryServerTokenMap(e164numbers);
-            List<ContactTokenDetails> activeTokens = this.PushServiceSocket.RetrieveDirectory(contactTokensMap.Keys);
+            List<ContactTokenDetails> activeTokens = await PushServiceSocket.RetrieveDirectory(contactTokensMap.Keys);
 
             foreach (ContactTokenDetails activeToken in activeTokens)
             {
@@ -242,9 +245,9 @@ namespace libsignalservice
         /// Called by an already verified device.
         /// </summary>
         /// <returns>A verification code (String of 6 digits)</returns>
-        public string GetNewDeviceVerificationCode()// throws IOException
+        public async Task<string> GetNewDeviceVerificationCode()// throws IOException
         {
-            return this.PushServiceSocket.GetNewDeviceVerificationCode();
+            return await PushServiceSocket.GetNewDeviceVerificationCode();
         }
 
         /// <summary>
@@ -302,7 +305,7 @@ namespace libsignalservice
         /// <param name="identityKeyPair"></param>
         /// <param name="profileKey"></param>
         /// <param name="code"></param>
-        public void AddDevice(string deviceIdentifier,
+        public async Task AddDevice(string deviceIdentifier,
                               ECPublicKey deviceKey,
                               IdentityKeyPair identityKeyPair,
                               byte[] profileKey,
@@ -323,25 +326,25 @@ namespace libsignalservice
             }
 
             byte[] ciphertext = cipher.encrypt(message);
-            this.PushServiceSocket.SendProvisioningMessage(deviceIdentifier, ciphertext);
+            await PushServiceSocket.SendProvisioningMessage(deviceIdentifier, ciphertext);
         }
 
         /// <summary>
         /// TODO
         /// </summary>
         /// <returns></returns>
-        public List<DeviceInfo> GetDevices()
+        public async Task<List<DeviceInfo>> GetDevices()
         {
-            return this.PushServiceSocket.GetDevices();
+            return await PushServiceSocket.GetDevices();
         }
 
         /// <summary>
         /// TODO
         /// </summary>
         /// <param name="deviceId"></param>
-        public void RemoveDevice(long deviceId)
+        public async Task RemoveDevice(long deviceId)
         {
-            this.PushServiceSocket.RemoveDevice(deviceId);
+            await PushServiceSocket.RemoveDevice(deviceId);
         }
 
         /// <summary>
@@ -358,11 +361,11 @@ namespace libsignalservice
         /// </summary>
         /// <param name="key"></param>
         /// <param name="name"></param>
-        public void SetProfileName(byte[] key, string name)
+        public async Task SetProfileName(byte[] key, string name)
         {
             if (name == null) name = "";
             string ciphertextName = Base64.EncodeBytesWithoutPadding(new ProfileCipher(key).EncryptName(Encoding.Unicode.GetBytes(name), ProfileCipher.NAME_PADDED_LENGTH));
-            PushServiceSocket.SetProfileName(ciphertextName);
+            await PushServiceSocket.SetProfileName(ciphertextName);
         }
 
         /// <summary>
@@ -370,14 +373,14 @@ namespace libsignalservice
         /// </summary>
         /// <param name="key"></param>
         /// <param name="avatar"></param>
-        public void SetProfileAvatar(byte[] key, StreamDetails avatar)
+        public async Task SetProfileAvatar(byte[] key, StreamDetails avatar)
         {
             ProfileAvatarData profileAvatarData = null;
             if (avatar != null)
             {
                 profileAvatarData = new ProfileAvatarData(avatar.InputStream, avatar.Length, avatar.ContentType, new ProfileCipherOutputStreamFactory(key));
             }
-            PushServiceSocket.SetProfileAvatar(profileAvatarData);
+            await PushServiceSocket.SetProfileAvatar(profileAvatarData);
         }
 
         /// <summary>
