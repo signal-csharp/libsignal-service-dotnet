@@ -39,7 +39,6 @@ namespace libsignalservice
         /// <summary>
         /// Construct a SignalServiceMessageReceiver.
         /// </summary>
-        /// <param name="token">A CancellationToken to cancel the receiver's operations</param>
         /// <param name="urls">The URL of the Signal Service.</param>
         /// <param name="credentials">The Signal Service user's credentials</param>
         /// <param name="userAgent"></param>
