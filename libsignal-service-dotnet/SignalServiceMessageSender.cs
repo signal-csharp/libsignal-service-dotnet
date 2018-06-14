@@ -819,7 +819,14 @@ namespace libsignalservice
                 }
             }
 
-            return cipher.Encrypt(signalProtocolAddress, plaintext, silent);
+            try
+            {
+                return cipher.Encrypt(signalProtocolAddress, plaintext, silent);
+            }
+            catch(libsignal.exceptions.UntrustedIdentityException e)
+            {
+                throw new UntrustedIdentityException("Untrusted on send", e.getName(), e.getUntrustedIdentity());
+            }
         }
 
         private async Task HandleMismatchedDevices(CancellationToken token, PushServiceSocket socket, SignalServiceAddress recipient, MismatchedDevices mismatchedDevices)
