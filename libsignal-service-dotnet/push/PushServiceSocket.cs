@@ -59,10 +59,10 @@ namespace libsignalservice.push
         private static readonly string PROFILE_PATH = "/v1/profile/%s";
 
         private readonly SignalServiceConfiguration SignalConnectionInformation;
-        private readonly CredentialsProvider CredentialsProvider;
+        private readonly ICredentialsProvider CredentialsProvider;
         private readonly string UserAgent;
 
-        public PushServiceSocket(SignalServiceConfiguration serviceUrls, CredentialsProvider credentialsProvider, string userAgent)
+        public PushServiceSocket(SignalServiceConfiguration serviceUrls, ICredentialsProvider credentialsProvider, string userAgent)
         {
             CredentialsProvider = credentialsProvider;
             UserAgent = userAgent;
@@ -769,7 +769,7 @@ namespace libsignalservice.push
             }
         }
 
-        private string GetAuthorizationHeader(CredentialsProvider provider)
+        private string GetAuthorizationHeader(ICredentialsProvider provider)
         {
             if (provider.DeviceId == SignalServiceAddress.DEFAULT_DEVICE_ID)
             {

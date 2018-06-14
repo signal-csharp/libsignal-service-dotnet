@@ -11,6 +11,7 @@ using libsignalservice.messages.multidevice;
 using libsignalservice.push;
 using libsignalservice.push.http;
 using libsignalservice.util;
+using libsignalservice.websocket;
 using Strilanc.Value;
 using System;
 using System.Collections.Generic;
@@ -53,11 +54,11 @@ namespace libsignalservice
         /// </summary>
         /// <param name="configuration">The URL configuration for the Signal Service</param>
         /// <param name="userAgent">A string which identifies the client software</param>
-        public SignalServiceAccountManager(SignalServiceConfiguration configuration, string userAgent)
+        /// <param name="webSocketFactory">A factory which creates websocket connection objects</param>
+        public SignalServiceAccountManager(SignalServiceConfiguration configuration, string userAgent, ISignalWebSocketFactory webSocketFactory)
         {
             Configuration = configuration;
             UserAgent = userAgent;
-            ProvisioningSocket = new ProvisioningSocket(configuration.SignalServiceUrls[0].Url);
             PushServiceSocket = new PushServiceSocket(configuration, new StaticCredentialsProvider(null, null, null, (int)SignalServiceAddress.DEFAULT_DEVICE_ID), userAgent);
         }
 
@@ -238,11 +239,12 @@ namespace libsignalservice
         /// Request a UUID from the server for linking as a new device.
         /// Called by the new device.
         /// </summary>
-        /// <param name="token">The UUID, Base64 encoded</param>
+        /// <param name="token">A CancellationToken for the PrivisioningSocket's websocket connection</param>
+        /// /// <param name="webSocketFactory">A factory which creates websocket connection objects</param>
         /// <returns></returns>
-        public async Task<string> GetNewDeviceUuid(CancellationToken token)
+        public async Task<string> GetNewDeviceUuid(CancellationToken token, ISignalWebSocketFactory webSocketFactory)
         {
-            ProvisioningSocket = new ProvisioningSocket(Configuration.SignalServiceUrls[0].Url);
+            ProvisioningSocket = new ProvisioningSocket(Configuration.SignalServiceUrls[0].Url, webSocketFactory, token);
             return (await ProvisioningSocket.GetProvisioningUuid(token)).Uuid;
         }
 

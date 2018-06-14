@@ -1,11 +1,12 @@
 using System.IO;
+using System.Threading;
 
 namespace libsignalservice.messages
 {
     /// <summary>
     /// Represents a received SignalServiceAttachment "handle."  This
     /// is a pointer to the actual attachment content, which needs to be
-    /// retrieved using <see cref="SignalServiceMessageReceiver.RetrieveAttachment(SignalServiceAttachmentPointer, Stream, int, IProgressListener)"/>
+    /// retrieved using <see cref="SignalServiceMessageReceiver.RetrieveAttachment(CancellationToken, SignalServiceAttachmentPointer, Stream, int, IProgressListener)"/>
     /// </summary>
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public class SignalServiceAttachmentPointer : SignalServiceAttachment

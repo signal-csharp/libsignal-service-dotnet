@@ -1,7 +1,7 @@
 namespace libsignalservice.util
 {
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-    public class StaticCredentialsProvider : CredentialsProvider
+    public class StaticCredentialsProvider : ICredentialsProvider
     {
         public string User { get; }
         public string Password { get; }
