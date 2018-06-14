@@ -23,16 +23,19 @@ namespace libsignalservice
     public class SignalServiceMessagePipe
     {
         private readonly ILogger Logger = LibsignalLogging.CreateLogger<SignalServiceMessagePipe>();
+        private readonly ISignalWebSocketFactory SignalWebSocketFactory;
         private readonly SignalWebSocketConnection Websocket;
-        private readonly CredentialsProvider CredentialsProvider;
+        private readonly ICredentialsProvider CredentialsProvider;
         private CancellationToken Token;
 
-        internal SignalServiceMessagePipe(CancellationToken token, SignalWebSocketConnection websocket, CredentialsProvider credentialsProvider)
+        internal SignalServiceMessagePipe(CancellationToken token, SignalWebSocketConnection websocket,
+            ICredentialsProvider credentialsProvider, ISignalWebSocketFactory webSocketFactory)
         {
             Logger.LogTrace("SignalServiceMessagePipe()");
-            this.Token = token;
-            this.Websocket = websocket;
-            this.CredentialsProvider = credentialsProvider;
+            Token = token;
+            Websocket = websocket;
+            CredentialsProvider = credentialsProvider;
+            SignalWebSocketFactory = webSocketFactory;
         }
 
         /// <summary>
@@ -42,7 +45,7 @@ namespace libsignalservice
         public async Task Connect()
         {
             Logger.LogTrace("Connecting to message pipe");
-            await Websocket.Connect(Token);
+            await Websocket.Connect();
         }
 
         /// <summary>
@@ -99,18 +102,19 @@ namespace libsignalservice
                 Body = ByteString.CopyFrom(Encoding.UTF8.GetBytes(JsonUtil.ToJson(list)))
             };
             requestmessage.Headers.Add("content-type:application/json");
-            Logger.LogDebug("Sending message {0}", requestmessage.Id);
-            var t = Websocket.SendRequest(requestmessage);
-            await t;
-            if (t.IsCompleted)
+            var sendTask = (await Websocket.SendRequest(requestmessage)).Task;
+            var timerCancelSource = new CancellationTokenSource();
+            if (await Task.WhenAny(sendTask, Task.Delay(10*1000, timerCancelSource.Token)) == sendTask)
             {
-                var response = t.Result;
-                if (response.Item1 < 200 || response.Item1 >= 300)
+                timerCancelSource.Cancel();
+                var (Status, Body) = sendTask.Result;
+                if (Status < 200 || Status >= 300)
                 {
-                    Logger.LogError("Sending message {0} failed: {1}", requestmessage.Id, response.Item2);
-                    throw new IOException("non-successfull response: " + response.Item1 + " " + response.Item2);
+                    throw new IOException("non-successfull response: " + Status);
                 }
-                return JsonUtil.FromJson<SendMessageResponse>(response.Item2);
+                if (Util.IsEmpty(Body))
+                    return new SendMessageResponse(false);
+                return JsonUtil.FromJson<SendMessageResponse>(Body);
             }
             else
             {
@@ -134,16 +138,17 @@ namespace libsignalservice
                 Path = $"/v1/profile/{address.E164number}"
             };
 
-            var t = Websocket.SendRequest(requestMessage);
-            await t;
-            if (t.IsCompleted)
+            var sendTask = (await Websocket.SendRequest(requestMessage)).Task;
+            var timerCancelSource = new CancellationTokenSource();
+            if (await Task.WhenAny(sendTask, Task.Delay(10 * 1000, timerCancelSource.Token)) == sendTask)
             {
-                var response = t.Result;
-                if (response.Item1 < 200 || response.Item1 >= 300)
+                timerCancelSource.Cancel();
+                var (Status, Body) = sendTask.Result;
+                if (Status < 200 || Status >= 300)
                 {
-                    throw new IOException("non-successfull response: " + response.Item1 + " " + response.Item2);
+                    throw new IOException("non-successfull response: " + Status);
                 }
-                return JsonUtil.FromJson<SignalServiceProfile>(response.Item2);
+                return JsonUtil.FromJson<SignalServiceProfile>(Body);
             }
             else
             {

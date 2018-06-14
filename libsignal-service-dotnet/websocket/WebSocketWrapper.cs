@@ -4,12 +4,12 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Concurrent;
 using System.IO;
-using System.Net.WebSockets;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Coe.WebSocketWrapper
 {
+    /*
     internal class WebSocketWrapper
     {
         //https://gist.github.com/xamlmonkey/4737291
@@ -204,4 +204,5 @@ namespace Coe.WebSocketWrapper
             OnConnectedAction?.Invoke();
         }
     }
+    */
 }
