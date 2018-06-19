@@ -37,34 +37,45 @@ namespace libsignalservice.crypto
 
         public override void Write(byte[] buffer, int offset, int count)
         {
-            Cipher.Write(buffer, offset, count);
-            byte[] cipherBuffer = new byte[Aes.BlockSize];
-            int read = TmpStream.Read(cipherBuffer, 0, cipherBuffer.Length);
-            while (read > 0)
-            {
-                Mac.AppendData(buffer);
-                base.Write(cipherBuffer, 0, read);
-            }
-        }
-
-        public override void Flush()
-        {
-            Cipher.FlushFinalBlock();
+            WriteToCipherStream(buffer, offset, count);
             byte[] cipherBuffer = new byte[Aes.BlockSize];
             int read = TmpStream.Read(cipherBuffer, 0, cipherBuffer.Length);
             while (read > 0)
             {
                 Mac.AppendData(cipherBuffer, 0, read);
                 base.Write(cipherBuffer, 0, read);
+                read = TmpStream.Read(cipherBuffer, 0, cipherBuffer.Length);
+            }
+        }
+
+        public override void Flush()
+        {
+            FlushFinalBlock();
+            byte[] cipherBuffer = new byte[Aes.BlockSize];
+            int read = TmpStream.Read(cipherBuffer, 0, cipherBuffer.Length);
+            while (read > 0)
+            {
+                Mac.AppendData(cipherBuffer, 0, read);
+                base.Write(cipherBuffer, 0, read);
+                read = TmpStream.Read(cipherBuffer, 0, cipherBuffer.Length);
             }
             byte[] auth = Mac.GetHashAndReset();
             base.Write(auth, 0, auth.Length);
             base.Flush();
         }
 
-        public static void ReadIntoBuffer(Stream s)
+        private void WriteToCipherStream(byte[] buffer, int offset, int count)
         {
+            var oldPos = TmpStream.Position;
+            Cipher.Write(buffer, offset, count);
+            TmpStream.Position = oldPos;
+        }
 
+        private void FlushFinalBlock()
+        {
+            var oldPos = TmpStream.Position;
+            Cipher.FlushFinalBlock();
+            TmpStream.Position = oldPos;
         }
     }
 }

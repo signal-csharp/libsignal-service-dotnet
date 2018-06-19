@@ -10,6 +10,7 @@ using libsignalservice.messages.multidevice;
 using libsignalservice.profiles;
 using libsignalservice.push.exceptions;
 using libsignalservice.util;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
 using System;
@@ -58,6 +59,7 @@ namespace libsignalservice.push
 
         private static readonly string PROFILE_PATH = "/v1/profile/%s";
 
+        private readonly ILogger Logger = LibsignalLogging.CreateLogger<PushServiceSocket>();
         private readonly SignalServiceConfiguration SignalConnectionInformation;
         private readonly ICredentialsProvider CredentialsProvider;
         private readonly string UserAgent;
@@ -337,7 +339,7 @@ namespace libsignalservice.push
         {
             var (id, location) = await RetrieveAttachmentUploadUrl(token);
 
-            byte[] digest = await UploadAttachment("PUT", location, attachment.Data,
+            byte[] digest = await UploadAttachment(token, "PUT", location, attachment.Data,
                 attachment.DataSize, attachment.OutputFactory, attachment.Listener);
 
             return (id, digest);
@@ -364,7 +366,7 @@ namespace libsignalservice.push
         public async Task RetrieveAttachment(CancellationToken token, string relay, ulong attachmentId, Stream tmpDestination, int maxSizeBytes)
         {
             string attachmentUrlLocation = await RetrieveAttachmentDownloadUrl(token, relay, attachmentId);
-            await DownloadAttachment(attachmentUrlLocation, tmpDestination);
+            await DownloadAttachment(token, attachmentUrlLocation, tmpDestination);
         }
 
         /// <summary>
@@ -490,7 +492,7 @@ namespace libsignalservice.push
             throw new NotImplementedException();
         }
 
-        private async Task DownloadAttachment(string url, Stream localDestination)
+        private async Task DownloadAttachment(CancellationToken token, string url, Stream localDestination)
         {
             try
             {
@@ -500,7 +502,7 @@ namespace libsignalservice.push
                 HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Get, url);
                 req.Content = new StringContent("");
                 req.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
-                using (var resp = await connection.SendAsync(req))
+                using (var resp = await connection.SendAsync(req, token))
                 {
                     Stream input = await resp.Content.ReadAsStreamAsync();
                     byte[] buffer = new byte[4096];
@@ -526,19 +528,26 @@ namespace libsignalservice.push
             }
         }
 
-        private async Task<byte[]> UploadAttachment(string method, string url, Stream data, long dataSize,
+        private async Task<byte[]> UploadAttachment(CancellationToken token, string method, string url, Stream data, long dataSize,
             OutputStreamFactory outputStreamFactory, IProgressListener listener)
         {
+            // buffer payload in memory...
             MemoryStream tmpStream = new MemoryStream();
             DigestingOutputStream outputStream = outputStreamFactory.CreateFor(tmpStream);
             StreamContent streamContent = new StreamContent(tmpStream);
-            var request = new HttpRequestMessage(HttpMethod.Put, url);
-            request.Content = streamContent;
+            data.CopyTo(outputStream);
+            outputStream.Flush();
+            tmpStream.Position = 0;
+
+            // ... and upload it!
+            var request = new HttpRequestMessage(HttpMethod.Put, url)
+            {
+                Content = new StreamContent(tmpStream)
+            };
             request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
             request.Headers.ConnectionClose = true;
-
             HttpClient client = new HttpClient();
-            HttpResponseMessage response = await client.SendAsync(request);
+            HttpResponseMessage response = await client.SendAsync(request, token);
             if (response.StatusCode != HttpStatusCode.OK)
             {
                 throw new IOException($"Bad response: {response.StatusCode} {await response.Content.ReadAsStringAsync()}");

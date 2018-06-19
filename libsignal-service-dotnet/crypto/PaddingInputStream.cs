@@ -11,9 +11,9 @@ namespace libsignalservice.crypto
         private readonly Stream InputStream;
         private long PaddingRemaining;
 
-        public override bool CanRead => throw new NotImplementedException();
-        public override bool CanSeek => throw new NotImplementedException();
-        public override bool CanWrite => throw new NotImplementedException();
+        public override bool CanRead => true;
+        public override bool CanSeek => false;
+        public override bool CanWrite => false;
         public override long Length { get => InputStream.Length + Util.ToIntExact(PaddingRemaining); }
         public override long Position { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
