@@ -11,10 +11,10 @@ namespace libsignalservice.push
         public string ContentType { get; }
         public Stream Data { get; }
         public long DataSize { get; }
-        public OutputStreamFactory OutputFactory { get; }
+        public IOutputStreamFactory OutputFactory { get; }
         public IProgressListener Listener { get; }
 
-        public PushAttachmentData(String contentType, Stream data, long dataSize, OutputStreamFactory outputStreamFactory, IProgressListener listener)
+        public PushAttachmentData(String contentType, Stream data, long dataSize, IOutputStreamFactory outputStreamFactory, IProgressListener listener)
         {
             ContentType = contentType;
             Data = data;

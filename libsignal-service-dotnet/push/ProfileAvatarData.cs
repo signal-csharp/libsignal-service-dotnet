@@ -12,9 +12,9 @@ namespace libsignalservice.push
         public Stream InputData { get; }
         public long DataLength { get; }
         public string ContentType { get; }
-        public OutputStreamFactory OutputStreamFactory { get; }
+        public IOutputStreamFactory OutputStreamFactory { get; }
 
-        public ProfileAvatarData(Stream inputData, long dataLength, string contentType, OutputStreamFactory outputStreamFactory)
+        public ProfileAvatarData(Stream inputData, long dataLength, string contentType, IOutputStreamFactory outputStreamFactory)
         {
             InputData = inputData;
             DataLength = dataLength;

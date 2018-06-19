@@ -7,7 +7,7 @@ using System.Text;
 
 namespace libsignalservice.push.http
 {
-    internal class ProfileCipherOutputStreamFactory : OutputStreamFactory
+    internal class ProfileCipherOutputStreamFactory : IOutputStreamFactory
     {
         private readonly byte[] Key;
 

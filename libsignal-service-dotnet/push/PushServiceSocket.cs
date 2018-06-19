@@ -444,7 +444,7 @@ namespace libsignalservice.push
         }
 
         private void UploadToCdn(string acl, string key, string policy, string algorithm, string credential, string date,
-            string signature, Stream inputData, string contentType, long dataLength, OutputStreamFactory outputStreamFactory)
+            string signature, Stream inputData, string contentType, long dataLength, IOutputStreamFactory outputStreamFactory)
         {
             SignalUrl signalUrl = GetRandom(SignalConnectionInformation.SignalCdnUrls);
             string url = signalUrl.Url;
@@ -529,7 +529,7 @@ namespace libsignalservice.push
         }
 
         private async Task<byte[]> UploadAttachment(CancellationToken token, string method, string url, Stream data, long dataSize,
-            OutputStreamFactory outputStreamFactory, IProgressListener listener)
+            IOutputStreamFactory outputStreamFactory, IProgressListener listener)
         {
             // buffer payload in memory...
             MemoryStream tmpStream = new MemoryStream();
