@@ -7,7 +7,7 @@ using System.Text;
 namespace libsignaldotnet.push.http
 {
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-    public interface OutputStreamFactory
+    public interface IOutputStreamFactory
     {
         DigestingOutputStream CreateFor(Stream wrap);
     }

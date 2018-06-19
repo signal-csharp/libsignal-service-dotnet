@@ -7,7 +7,7 @@ using System.Text;
 
 namespace libsignalservice.push.http
 {
-    internal class AttachmentCipherOutputStreamFactory : OutputStreamFactory
+    internal class AttachmentCipherOutputStreamFactory : IOutputStreamFactory
     {
         private readonly byte[] Key;
 
