@@ -11,7 +11,7 @@ namespace libsignalservice.crypto
     {
         private IncrementalHash RunningDigest = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
         private Stream OutputStream { get; }
-        public override bool CanRead => throw new NotImplementedException();
+        public override bool CanRead => false;
         public override bool CanSeek => false;
         public override bool CanWrite => true;
         public override long Length => throw new NotImplementedException();

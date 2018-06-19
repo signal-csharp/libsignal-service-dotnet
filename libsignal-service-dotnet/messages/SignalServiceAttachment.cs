@@ -27,6 +27,11 @@ namespace libsignalservice.messages
             return (SignalServiceAttachmentPointer)this;
         }
 
+        public static Builder NewStreamBuilder()
+        {
+            return new Builder();
+        }
+
         public class Builder
         {
             private Stream InputStream;
@@ -38,7 +43,7 @@ namespace libsignalservice.messages
             private int Width;
             private int Height;
 
-            Builder()
+            internal Builder()
             {
             }
 
