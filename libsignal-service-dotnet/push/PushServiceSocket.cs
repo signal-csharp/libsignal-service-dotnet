@@ -496,7 +496,7 @@ namespace libsignalservice.push
         {
             try
             {
-                HttpClient connection = new HttpClient();
+                HttpClient connection = Util.CreateHttpClient();
                 var headers = connection.DefaultRequestHeaders;
                 Debug.WriteLine("downloading " + url);
                 HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Get, url);
@@ -546,7 +546,7 @@ namespace libsignalservice.push
             };
             request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
             request.Headers.ConnectionClose = true;
-            HttpClient client = new HttpClient();
+            HttpClient client = Util.CreateHttpClient();
             HttpResponseMessage response = await client.SendAsync(request, token);
             if (response.StatusCode != HttpStatusCode.OK)
             {
@@ -707,10 +707,7 @@ namespace libsignalservice.push
             return responseBody;
         }
 
-        private bool Func(HttpRequestMessage a, X509Certificate2 b, X509Chain c, SslPolicyErrors d)
-        {
-            return true;
-        }
+
 
         private async Task<HttpResponseMessage> GetServiceConnectionAsync(CancellationToken token, string urlFragment, string method, string body)
         {
@@ -721,7 +718,7 @@ namespace libsignalservice.push
                 string hostHeader = signalUrl.HostHeader;
                 Uri uri = new Uri(string.Format("{0}{1}", url, urlFragment));
                 Debug.WriteLine("{0}: Uri {1}", TAG, uri);
-                HttpClient connection = new HttpClient();
+                HttpClient connection = Util.CreateHttpClient();
 
                 var headers = connection.DefaultRequestHeaders;
 
@@ -794,6 +791,8 @@ namespace libsignalservice.push
         {
             return connections[Util.generateRandomNumber() % connections.Length];
         }
+
+
     }
 
     internal class GcmRegistrationId
