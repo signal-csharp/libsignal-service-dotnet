@@ -33,7 +33,6 @@ namespace libsignalservice.push
 {
     internal class PushServiceSocket
     {
-        private static readonly string TAG = "PushServiceSocket";
         private static readonly string CREATE_ACCOUNT_SMS_PATH = "/v1/accounts/sms/code/{0}";
         private static readonly string CREATE_ACCOUNT_VOICE_PATH = "/v1/accounts/voice/code/{0}";
         private static readonly string VERIFY_ACCOUNT_CODE_PATH = "/v1/accounts/code/{0}";
@@ -321,7 +320,7 @@ namespace libsignalservice.push
             }
             catch (/*NotFound*/Exception e)
             {
-                Debug.WriteLine(e.Message, TAG);
+                Logger.LogError("GetCurrentSignedPreKey() failed: {0}\n{1}", e.Message, e.StackTrace);
                 return null;
             }
         }
@@ -358,8 +357,6 @@ namespace libsignalservice.push
             {
                 throw new Exception("Server failed to allocate an attachment key!");
             }
-
-            Debug.WriteLine("Got attachment content location: " + attachmentKey.Location, TAG);
             return (attachmentKey.Id, attachmentKey.Location);
         }
 
@@ -382,9 +379,7 @@ namespace libsignalservice.push
             }
 
             string response = await MakeServiceRequestAsync(token, path, "GET", null);
-            Debug.WriteLine("PushServiceSocket: Received resp " + response);
             AttachmentDescriptor descriptor = JsonUtil.FromJson<AttachmentDescriptor>(response);
-            Debug.WriteLine("PushServiceSocket: Attachment: " + attachmentId + " is at: " + descriptor.Location);
             return descriptor.Location;
         }
 
@@ -498,10 +493,9 @@ namespace libsignalservice.push
             {
                 HttpClient connection = Util.CreateHttpClient();
                 var headers = connection.DefaultRequestHeaders;
-                Debug.WriteLine("downloading " + url);
                 HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Get, url);
                 req.Content = new StringContent("");
-                req.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
+                req.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
                 using (var resp = await connection.SendAsync(req, token))
                 {
                     Stream input = await resp.Content.ReadAsStreamAsync();
@@ -512,7 +506,6 @@ namespace libsignalservice.push
                         read = input.Read(buffer, 0, 4096);
                         if (read == 0)
                         {
-                            Debug.WriteLine("PushServiceSocket Downloaded: " + url + " to: " + localDestination);
                             localDestination.Flush();
                             return;
                         }
@@ -522,8 +515,7 @@ namespace libsignalservice.push
             }
             catch (Exception ioe)
             {
-                Debug.WriteLine(ioe.Message);
-                Debug.WriteLine(ioe.StackTrace);
+                Logger.LogError("DownloadAttachment() failed: {0}\n{1}", ioe.Message, ioe.StackTrace);
                 throw new PushNetworkException(ioe);
             }
         }
@@ -632,8 +624,7 @@ namespace libsignalservice.push
             }
             catch (Exception ioe)
             {
-                Debug.WriteLine(ioe.Message);
-                Debug.WriteLine(ioe.StackTrace);
+                Logger.LogError("MakeServiceRequestAsync failed: {0}\n{1}", ioe.Message, ioe.StackTrace);
                 throw new PushNetworkException(ioe);
             }
 
@@ -654,8 +645,7 @@ namespace libsignalservice.push
                     }
                     catch (Exception e)
                     {
-                        Debug.WriteLine(e);
-                        Debug.WriteLine(e.StackTrace);
+                        Logger.LogError("MakeServiceRequestAsync() failed: {0}\n{1}", e.Message, e.StackTrace);
                         throw new PushNetworkException(e);
                     }
                     throw new MismatchedDevicesException(mismatchedDevices);
@@ -667,8 +657,7 @@ namespace libsignalservice.push
                     }
                     catch (Exception e)
                     {
-                        Debug.WriteLine(e);
-                        Debug.WriteLine(e.StackTrace);
+                        Logger.LogError("MakeServiceRequestAsync() failed: {0}\n{1}", e.Message, e.StackTrace);
                         throw new PushNetworkException(e);
                     }
                     throw new StaleDevicesException(staleDevices);
@@ -717,7 +706,6 @@ namespace libsignalservice.push
                 string url = signalUrl.Url;
                 string hostHeader = signalUrl.HostHeader;
                 Uri uri = new Uri(string.Format("{0}{1}", url, urlFragment));
-                Debug.WriteLine("{0}: Uri {1}", TAG, uri);
                 HttpClient connection = Util.CreateHttpClient();
 
                 var headers = connection.DefaultRequestHeaders;
@@ -725,7 +713,6 @@ namespace libsignalservice.push
                 if (CredentialsProvider.Password != null)
                 {
                     string authHeader = GetAuthorizationHeader(CredentialsProvider);
-                    Debug.WriteLine(String.Format("Authorization: {0}", authHeader), TAG);
                     headers.Add("Authorization", authHeader);
                 }
 
@@ -768,9 +755,7 @@ namespace libsignalservice.push
             }
             catch (Exception e)
             {
-                Debug.WriteLine("getConnection() failed:", TAG);
-                Debug.WriteLine(e.Message);
-                Debug.WriteLine(e.StackTrace);
+                Logger.LogError("GetServiceConnectionAsync() failed: {0}\n{1}", e.Message, e.StackTrace);
                 throw new PushNetworkException(e);
             }
         }

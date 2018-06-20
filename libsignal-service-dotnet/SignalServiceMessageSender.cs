@@ -10,6 +10,7 @@ using libsignalservice.push;
 using libsignalservice.push.exceptions;
 using libsignalservice.push.http;
 using libsignalservice.util;
+using Microsoft.Extensions.Logging;
 using Strilanc.Value;
 using System;
 using System.Collections.Generic;
@@ -28,7 +29,7 @@ namespace libsignalservice
     /// </summary>
     public class SignalServiceMessageSender
     {
-        private static readonly string TAG = "SignalServiceMessageSender";
+        private readonly ILogger Logger = LibsignalLogging.CreateLogger<SignalServiceMessageSender>();
 
         private readonly PushServiceSocket socket;
         private readonly SignalProtocolStore store;
@@ -577,17 +578,17 @@ namespace libsignalservice
                 }
                 catch (UntrustedIdentityException e)
                 {
-                    Debug.WriteLine("untrusted identity: " + recipient, TAG);
+                    Logger.LogError("SendMessage() untrusted identity");
                     responseList.UntrustedIdentities.Add(e);
                 }
                 catch (UnregisteredUserException e)
                 {
-                    Debug.WriteLine("unregistered user: " + recipient, TAG);
+                    Logger.LogError("SendMessage() unregistered user");
                     responseList.UnregisteredUsers.Add(e);
                 }
                 catch (PushNetworkException e)
                 {
-                    Debug.WriteLine("PushNetWorkException for:" + recipient, TAG);
+                    Logger.LogError("SendMessage() failed: {0}\n{1}", e.Message, e.StackTrace);
                     responseList.NetworkExceptions.Add(new NetworkFailureException(recipient.E164number, e));
                 }
             }
@@ -605,16 +606,16 @@ namespace libsignalservice
                     {
                         try
                         {
-                            Debug.WriteLine("Transmitting over pipe...");
+                            Logger.LogTrace("Transmitting over pipe...");
                             return await pipe.Send(messages);
                         }
                         catch (Exception e)
                         {
-                            Debug.WriteLine(e.Message + " - falling back to new connection...");
+                            Logger.LogWarning(e.Message + " - falling back to new connection...");
                         }
                     }
 
-                    Debug.WriteLine("Not transmitting over pipe...");
+                    Logger.LogTrace("Not transmitting over pipe...");
                     return await socket.SendMessage(token, messages);
                 }
                 catch (MismatchedDevicesException mde)
@@ -626,7 +627,7 @@ namespace libsignalservice
                     HandleStaleDevices(recipient, ste.StaleDevices);
                 }
             }
-            Debug.WriteLine("Failed to resolve conflicts after 3 attempts!");
+            Logger.LogError("Failed to resolve conflicts after 3 attempts!");
             throw new Exception("Failed to resolve conflicts after 3 attempts!");
         }
 
@@ -636,7 +637,7 @@ namespace libsignalservice
 
             if (attachments == null || attachments.Count == 0)
             {
-                Debug.WriteLine("No attachments present...", TAG);
+                Logger.LogTrace("No attachments present...");
                 return pointers;
             }
 
@@ -644,7 +645,7 @@ namespace libsignalservice
             {
                 if (attachment.IsStream())
                 {
-                    Debug.WriteLine("Found attachment, creating pointer...", TAG);
+                    Logger.LogTrace("Found attachment, creating pointer...");
                     pointers.Add(await CreateAttachmentPointer(token, attachment.AsStream()));
                 }
                 else if (attachment.IsPointer())
