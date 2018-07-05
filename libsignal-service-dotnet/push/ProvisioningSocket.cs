@@ -14,7 +14,7 @@ namespace libsignal.push
     {
         private ISignalWebSocket SignalWebSocket;
         private readonly string WsUri;
-        private readonly BlockingCollection<Stream> IncomingRequests = new BlockingCollection<Stream>(new ConcurrentQueue<Stream>());
+        private readonly BlockingCollection<WebSocketMessage> IncomingRequests = new BlockingCollection<WebSocketMessage>(new ConcurrentQueue<WebSocketMessage>());
 
         public ProvisioningSocket(string httpUri, ISignalWebSocketFactory webSocketFactory, CancellationToken token)
         {
@@ -26,10 +26,11 @@ namespace libsignal.push
 
         private void SignalWebSocket_MessageReceived(object sender, SignalWebSocketMessageReceivedEventArgs e)
         {
-            IncomingRequests.Add(e.Message);
+            var msg = WebSocketMessage.Parser.ParseFrom(e.Message);
+            IncomingRequests.Add(msg);
         }
 
-        private async Task<Stream> TakeAsync(CancellationToken token)
+        private async Task<WebSocketMessage> TakeAsync(CancellationToken token)
         {
             return await Task.Run(() =>
             {
@@ -40,14 +41,13 @@ namespace libsignal.push
         public async Task<ProvisioningUuid> GetProvisioningUuid(CancellationToken token)
         {
             await SignalWebSocket.ConnectAsync();
-            Stream raw = await TakeAsync(token);
-            return ProvisioningUuid.Parser.ParseFrom(WebSocketMessage.Parser.ParseFrom(raw).Request.Body);
+            var msg = await TakeAsync(token);
+            return ProvisioningUuid.Parser.ParseFrom(msg.Request.Body);
         }
 
         public async Task<ProvisionMessage> GetProvisioningMessage(CancellationToken token, IdentityKeyPair tmpIdentity)
         {
-            Stream raw = await TakeAsync(token);
-            WebSocketMessage msg = WebSocketMessage.Parser.ParseFrom(raw);
+            var msg = await TakeAsync(token);
             return new ProvisioningCipher(null).Decrypt(tmpIdentity, msg.Request.Body.ToByteArray());
         }
     }
