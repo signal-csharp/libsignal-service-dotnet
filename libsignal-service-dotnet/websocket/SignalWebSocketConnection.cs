@@ -67,7 +67,9 @@ namespace libsignalservice.websocket
                     OutgoingRequests.TryGetValue(msg.Response.Id, out TaskCompletionSource<(uint, string)> savedRequest);
                     if (savedRequest != null)
                     {
-                        savedRequest.SetResult((msg.Response.Status, Encoding.UTF8.GetString(msg.Response.Body.ToByteArray())));
+                        Task.Run(() => {
+                            savedRequest.SetResult((msg.Response.Status, Encoding.UTF8.GetString(msg.Response.Body.ToByteArray())));
+                        });
                     }
                 }
             }
