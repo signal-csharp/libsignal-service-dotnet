@@ -10,7 +10,7 @@ namespace libsignalservice.websocket
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public class SignalWebSocketMessageReceivedEventArgs
     {
-        public Stream Message { get; set; }
+        public byte[] Message { get; set; }
     }
 
     public class SignalWebSocketClosedEventArgs
