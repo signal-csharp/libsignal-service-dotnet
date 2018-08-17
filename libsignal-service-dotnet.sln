@@ -5,7 +5,12 @@ VisualStudioVersion = 15.0.26403.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "libsignal-service-dotnet", "libsignal-service-dotnet\libsignal-service-dotnet.csproj", "{088F38F5-EFA5-4264-BAC0-E745F9170222}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libsignal-service-dotnet-tests", "libsignal-service-dotnet-tests\libsignal-service-dotnet-tests.csproj", "{BD335150-6F1F-42A7-9221-5D3FFF75CD99}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "libsignal-service-dotnet-tests", "libsignal-service-dotnet-tests\libsignal-service-dotnet-tests.csproj", "{BD335150-6F1F-42A7-9221-5D3FFF75CD99}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A21D802D-2D46-4DA3-95EF-B7C851A7EA65}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
