@@ -191,10 +191,10 @@ namespace libsignalservice.util
 
         private static bool IsCorrectCertificate(HttpRequestMessage a, X509Certificate2 b, X509Chain c, SslPolicyErrors d)
         {
-            return b.RawData.SequenceEqual(Certificate);
-        }
+			return d == SslPolicyErrors.None || b.RawData.SequenceEqual(Certificate);
+		}
 
-        private static readonly byte[] Certificate = new byte[] {
+        public static readonly byte[] Certificate = new byte[] {
             48, 130, 4, 22, 48, 130, 2, 254, 160, 3, 2, 1, 2, 2, 2, 16, 3,
             48, 13, 6, 9, 42, 134, 72, 134, 247, 13, 1, 1, 5, 5, 0, 48, 129,
             141, 49, 11, 48, 9, 6, 3, 85, 4, 6, 19, 2, 85, 83, 49, 19, 48,
