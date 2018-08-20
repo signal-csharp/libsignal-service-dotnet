@@ -61,19 +61,14 @@ namespace libsignalservice
             {
                 SignalServiceMessagePipeMessage message = new SignalServiceEnvelope(request.Body.ToByteArray(), CredentialsProvider.SignalingKey);
                 WebSocketResponseMessage response = CreateWebSocketResponse(request);
-                try
+                Logger.LogDebug("Calling callback with message {0}", request.Id);
+			    await callback.OnMessage(message);
+                if (!Token.IsCancellationRequested)
                 {
-                    Logger.LogDebug("Calling callback with message {0}", request.Id);
-                    await callback.OnMessage(message);
+                    Logger.LogDebug("Confirming message {0}", request.Id);
+                    Websocket.SendResponse(response);
                 }
-                finally
-                {
-                    if (!Token.IsCancellationRequested)
-                    {
-                        Logger.LogDebug("Confirming message {0}", request.Id);
-                        Websocket.SendResponse(response);
-                    }
-                }
+                
             }
             else if (IsPipeEmptyMessage(request))
             {
