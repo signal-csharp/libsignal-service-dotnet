@@ -175,16 +175,17 @@ namespace libsignalservice.push {
             "DGxlbmd0aF9vbmVvZkIOCgxudW1iZXJfb25lb2ZCDAoKbmFtZV9vbmVvZkIO",
             "CgxhdmF0YXJfb25lb2ZCDQoLY29sb3Jfb25lb2ZCEAoOdmVyaWZpZWRfb25l",
             "b2ZCEgoQcHJvZmlsZUtleV9vbmVvZkIPCg1ibG9ja2VkX29uZW9mQhMKEWV4",
-            "cGlyZVRpbWVyX29uZW9mIsACCgxHcm91cERldGFpbHMSDAoCaWQYASABKAxI",
+            "cGlyZVRpbWVyX29uZW9mIuACCgxHcm91cERldGFpbHMSDAoCaWQYASABKAxI",
             "ABIOCgRuYW1lGAIgASgJSAESDwoHbWVtYmVycxgDIAMoCRIxCgZhdmF0YXIY",
             "BCABKAsyHy50ZXh0c2VjdXJlLkdyb3VwRGV0YWlscy5BdmF0YXJIAhIQCgZh",
-            "Y3RpdmUYBSABKAhIAxIVCgtleHBpcmVUaW1lchgGIAEoDUgEGlYKBkF2YXRh",
-            "chIVCgtjb250ZW50VHlwZRgBIAEoCUgAEhAKBmxlbmd0aBgCIAEoDUgBQhMK",
-            "EWNvbnRlbnRUeXBlX29uZW9mQg4KDGxlbmd0aF9vbmVvZkIKCghpZF9vbmVv",
-            "ZkIMCgpuYW1lX29uZW9mQg4KDGF2YXRhcl9vbmVvZkIOCgxhY3RpdmVfb25l",
-            "b2ZCEwoRZXhwaXJlVGltZXJfb25lb2ZCWgorb3JnLndoaXNwZXJzeXN0ZW1z",
-            "LnRleHRzZWN1cmUuaW50ZXJuYWwucHVzaEITU2lnbmFsU2VydmljZVByb3Rv",
-            "c6oCFWxpYnNpZ25hbHNlcnZpY2UucHVzaGIGcHJvdG8z"));
+            "Y3RpdmUYBSABKAhIAxIVCgtleHBpcmVUaW1lchgGIAEoDUgEEg8KBWNvbG9y",
+            "GAcgASgJSAUaVgoGQXZhdGFyEhUKC2NvbnRlbnRUeXBlGAEgASgJSAASEAoG",
+            "bGVuZ3RoGAIgASgNSAFCEwoRY29udGVudFR5cGVfb25lb2ZCDgoMbGVuZ3Ro",
+            "X29uZW9mQgoKCGlkX29uZW9mQgwKCm5hbWVfb25lb2ZCDgoMYXZhdGFyX29u",
+            "ZW9mQg4KDGFjdGl2ZV9vbmVvZkITChFleHBpcmVUaW1lcl9vbmVvZkINCgtj",
+            "b2xvcl9vbmVvZkJaCitvcmcud2hpc3BlcnN5c3RlbXMudGV4dHNlY3VyZS5p",
+            "bnRlcm5hbC5wdXNoQhNTaWduYWxTZXJ2aWNlUHJvdG9zqgIVbGlic2lnbmFs",
+            "c2VydmljZS5wdXNoYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -214,7 +215,7 @@ namespace libsignalservice.push {
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.AttachmentPointer), global::libsignalservice.push.AttachmentPointer.Parser, new[]{ "Id", "ContentType", "Key", "Size", "Thumbnail", "Digest", "FileName", "Flags", "Width", "Height" }, new[]{ "IdOneof", "ContentTypeOneof", "KeyOneof", "SizeOneof", "ThumbnailOneof", "DigestOneof", "FileNameOneof", "FlagsOneof", "WidthOneof", "HeightOneof" }, new[]{ typeof(global::libsignalservice.push.AttachmentPointer.Types.Flags) }, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.GroupContext), global::libsignalservice.push.GroupContext.Parser, new[]{ "Id", "Type", "Name", "Members", "Avatar" }, new[]{ "IdOneof", "TypeOneof", "NameOneof", "AvatarOneof" }, new[]{ typeof(global::libsignalservice.push.GroupContext.Types.Type) }, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.ContactDetails), global::libsignalservice.push.ContactDetails.Parser, new[]{ "Number", "Name", "Avatar", "Color", "Verified", "ProfileKey", "Blocked", "ExpireTimer" }, new[]{ "NumberOneof", "NameOneof", "AvatarOneof", "ColorOneof", "VerifiedOneof", "ProfileKeyOneof", "BlockedOneof", "ExpireTimerOneof" }, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.ContactDetails.Types.Avatar), global::libsignalservice.push.ContactDetails.Types.Avatar.Parser, new[]{ "ContentType", "Length" }, new[]{ "ContentTypeOneof", "LengthOneof" }, null, null)}),
-            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.GroupDetails), global::libsignalservice.push.GroupDetails.Parser, new[]{ "Id", "Name", "Members", "Avatar", "Active", "ExpireTimer" }, new[]{ "IdOneof", "NameOneof", "AvatarOneof", "ActiveOneof", "ExpireTimerOneof" }, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.GroupDetails.Types.Avatar), global::libsignalservice.push.GroupDetails.Types.Avatar.Parser, new[]{ "ContentType", "Length" }, new[]{ "ContentTypeOneof", "LengthOneof" }, null, null)})
+            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.GroupDetails), global::libsignalservice.push.GroupDetails.Parser, new[]{ "Id", "Name", "Members", "Avatar", "Active", "ExpireTimer", "Color" }, new[]{ "IdOneof", "NameOneof", "AvatarOneof", "ActiveOneof", "ExpireTimerOneof", "ColorOneof" }, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.GroupDetails.Types.Avatar), global::libsignalservice.push.GroupDetails.Types.Avatar.Parser, new[]{ "ContentType", "Length" }, new[]{ "ContentTypeOneof", "LengthOneof" }, null, null)})
           }));
     }
     #endregion
@@ -10052,6 +10053,12 @@ namespace libsignalservice.push {
           break;
       }
 
+      switch (other.ColorOneofCase) {
+        case ColorOneofOneofCase.Color:
+          Color = other.Color;
+          break;
+      }
+
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -10121,6 +10128,17 @@ namespace libsignalservice.push {
       set {
         expireTimerOneof_ = value;
         expireTimerOneofCase_ = ExpireTimerOneofOneofCase.ExpireTimer;
+      }
+    }
+
+    /// <summary>Field number for the "color" field.</summary>
+    public const int ColorFieldNumber = 7;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Color {
+      get { return colorOneofCase_ == ColorOneofOneofCase.Color ? (string) colorOneof_ : ""; }
+      set {
+        colorOneof_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        colorOneofCase_ = ColorOneofOneofCase.Color;
       }
     }
 
@@ -10214,6 +10232,24 @@ namespace libsignalservice.push {
       expireTimerOneof_ = null;
     }
 
+    private object colorOneof_;
+    /// <summary>Enum of possible cases for the "color_oneof" oneof.</summary>
+    public enum ColorOneofOneofCase {
+      None = 0,
+      Color = 7,
+    }
+    private ColorOneofOneofCase colorOneofCase_ = ColorOneofOneofCase.None;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ColorOneofOneofCase ColorOneofCase {
+      get { return colorOneofCase_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearColorOneof() {
+      colorOneofCase_ = ColorOneofOneofCase.None;
+      colorOneof_ = null;
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as GroupDetails);
@@ -10233,11 +10269,13 @@ namespace libsignalservice.push {
       if (!object.Equals(Avatar, other.Avatar)) return false;
       if (Active != other.Active) return false;
       if (ExpireTimer != other.ExpireTimer) return false;
+      if (Color != other.Color) return false;
       if (IdOneofCase != other.IdOneofCase) return false;
       if (NameOneofCase != other.NameOneofCase) return false;
       if (AvatarOneofCase != other.AvatarOneofCase) return false;
       if (ActiveOneofCase != other.ActiveOneofCase) return false;
       if (ExpireTimerOneofCase != other.ExpireTimerOneofCase) return false;
+      if (ColorOneofCase != other.ColorOneofCase) return false;
       return true;
     }
 
@@ -10250,11 +10288,13 @@ namespace libsignalservice.push {
       if (avatarOneofCase_ == AvatarOneofOneofCase.Avatar) hash ^= Avatar.GetHashCode();
       if (activeOneofCase_ == ActiveOneofOneofCase.Active) hash ^= Active.GetHashCode();
       if (expireTimerOneofCase_ == ExpireTimerOneofOneofCase.ExpireTimer) hash ^= ExpireTimer.GetHashCode();
+      if (colorOneofCase_ == ColorOneofOneofCase.Color) hash ^= Color.GetHashCode();
       hash ^= (int) idOneofCase_;
       hash ^= (int) nameOneofCase_;
       hash ^= (int) avatarOneofCase_;
       hash ^= (int) activeOneofCase_;
       hash ^= (int) expireTimerOneofCase_;
+      hash ^= (int) colorOneofCase_;
       return hash;
     }
 
@@ -10286,6 +10326,10 @@ namespace libsignalservice.push {
         output.WriteRawTag(48);
         output.WriteUInt32(ExpireTimer);
       }
+      if (colorOneofCase_ == ColorOneofOneofCase.Color) {
+        output.WriteRawTag(58);
+        output.WriteString(Color);
+      }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -10306,6 +10350,9 @@ namespace libsignalservice.push {
       }
       if (expireTimerOneofCase_ == ExpireTimerOneofOneofCase.ExpireTimer) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(ExpireTimer);
+      }
+      if (colorOneofCase_ == ColorOneofOneofCase.Color) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Color);
       }
       return size;
     }
@@ -10346,6 +10393,12 @@ namespace libsignalservice.push {
           break;
       }
 
+      switch (other.ColorOneofCase) {
+        case ColorOneofOneofCase.Color:
+          Color = other.Color;
+          break;
+      }
+
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -10383,6 +10436,10 @@ namespace libsignalservice.push {
           }
           case 48: {
             ExpireTimer = input.ReadUInt32();
+            break;
+          }
+          case 58: {
+            Color = input.ReadString();
             break;
           }
         }

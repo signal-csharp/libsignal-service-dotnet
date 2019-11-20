@@ -305,5 +305,6 @@ message GroupDetails {
   repeated string members = 3;
   oneof avatar_oneof				{ Avatar avatar  = 4; }
   oneof active_oneof				{ bool   active  = 5; } //[default = true] ### }
-  oneof expireTimer_oneof { uint32 expireTimer = 6; }
+  oneof expireTimer_oneof           { uint32 expireTimer = 6; }
+  oneof color_oneof                 { string color = 7; }
 }

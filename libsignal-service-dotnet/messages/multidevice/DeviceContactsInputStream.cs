@@ -26,7 +26,7 @@ namespace libsignalservice.messages.multidevice
             string number = details.Number;
             string name = details.Name;
             SignalServiceAttachmentStream avatar = null;
-            string color = details.ColorOneofCase == ContactDetails.ColorOneofOneofCase.Color ? details.Color : null;
+            string? color = details.ColorOneofCase == ContactDetails.ColorOneofOneofCase.Color ? details.Color : null;
             VerifiedMessage verified = null;
             byte[] profileKey = null;
             bool blocked = false;
