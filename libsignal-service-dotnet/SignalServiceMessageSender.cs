@@ -6,6 +6,7 @@ using libsignalservice.configuration;
 using libsignalservice.crypto;
 using libsignalservice.messages;
 using libsignalservice.messages.multidevice;
+using libsignalservice.messages.shared;
 using libsignalservice.push;
 using libsignalservice.push.exceptions;
 using libsignalservice.push.http;
@@ -19,6 +20,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using static libsignalservice.messages.SignalServiceDataMessage;
+using static libsignalservice.push.DataMessage.Types;
 using static libsignalservice.push.DataMessage.Types.Quote.Types;
 using static libsignalservice.push.SyncMessage.Types;
 
@@ -305,7 +307,7 @@ namespace libsignalservice
             {
                 var quote = new DataMessage.Types.Quote()
                 {
-                    Id = (ulong) message.Quote.Id,
+                    Id = (ulong)message.Quote.Id,
                     Author = message.Quote.Author.E164number,
                     Text = message.Quote.Text
                 };
@@ -329,7 +331,10 @@ namespace libsignalservice
                 dataMessage.Quote = quote;
             }
 
-            dataMessage.Timestamp = (ulong) message.Timestamp;
+            if (message.SharedContacts != null)
+                dataMessage.Contact.AddRange(CreateSharedContactContent(message.SharedContacts));
+
+            dataMessage.Timestamp = (ulong)message.Timestamp;
 
             content.DataMessage = dataMessage;
             return content.ToByteArray();
@@ -550,7 +555,7 @@ namespace libsignalservice
                 else throw new Exception("Unknown type: " + group.Type);
 
                 if (group.Name != null) groupContext.Name = group.Name;
-                if (group.Members != null ) groupContext.Members.AddRange(group.Members);
+                if (group.Members != null) groupContext.Members.AddRange(group.Members);
 
                 if (group.Avatar != null && group.Avatar.IsStream())
                 {
@@ -595,6 +600,115 @@ namespace libsignalservice
             return responseList;
         }
 
+        private List<Contact> CreateSharedContactContent(List<SharedContact> contacts)
+        {
+            List<Contact> results = new List<Contact>();
+
+            foreach (var contact in contacts)
+            {
+                //TODO
+                /*
+                DataMessage.Contact.Name.Builder nameBuilder = DataMessage.Contact.Name.newBuilder();
+
+                if (contact.getName().getFamily().isPresent()) nameBuilder.setFamilyName(contact.getName().getFamily().get());
+                if (contact.getName().getGiven().isPresent()) nameBuilder.setGivenName(contact.getName().getGiven().get());
+                if (contact.getName().getMiddle().isPresent()) nameBuilder.setMiddleName(contact.getName().getMiddle().get());
+                if (contact.getName().getPrefix().isPresent()) nameBuilder.setPrefix(contact.getName().getPrefix().get());
+                if (contact.getName().getSuffix().isPresent()) nameBuilder.setSuffix(contact.getName().getSuffix().get());
+                if (contact.getName().getDisplay().isPresent()) nameBuilder.setDisplayName(contact.getName().getDisplay().get());
+
+                DataMessage.Contact.Builder contactBuilder = DataMessage.Contact.newBuilder()
+                                                                                .setName(nameBuilder);
+
+                if (contact.getAddress().isPresent())
+                {
+                    for (SharedContact.PostalAddress address : contact.getAddress().get())
+                    {
+                        DataMessage.Contact.PostalAddress.Builder addressBuilder = DataMessage.Contact.PostalAddress.newBuilder();
+
+                        switch (address.getType())
+                        {
+                            case HOME: addressBuilder.setType(DataMessage.Contact.PostalAddress.Type.HOME); break;
+                            case WORK: addressBuilder.setType(DataMessage.Contact.PostalAddress.Type.WORK); break;
+                            case CUSTOM: addressBuilder.setType(DataMessage.Contact.PostalAddress.Type.CUSTOM); break;
+                            default: throw new AssertionError("Unknown type: " + address.getType());
+                        }
+
+                        if (address.getCity().isPresent()) addressBuilder.setCity(address.getCity().get());
+                        if (address.getCountry().isPresent()) addressBuilder.setCountry(address.getCountry().get());
+                        if (address.getLabel().isPresent()) addressBuilder.setLabel(address.getLabel().get());
+                        if (address.getNeighborhood().isPresent()) addressBuilder.setNeighborhood(address.getNeighborhood().get());
+                        if (address.getPobox().isPresent()) addressBuilder.setPobox(address.getPobox().get());
+                        if (address.getPostcode().isPresent()) addressBuilder.setPostcode(address.getPostcode().get());
+                        if (address.getRegion().isPresent()) addressBuilder.setRegion(address.getRegion().get());
+                        if (address.getStreet().isPresent()) addressBuilder.setStreet(address.getStreet().get());
+
+                        contactBuilder.addAddress(addressBuilder);
+                    }
+                }
+
+                if (contact.getEmail().isPresent())
+                {
+                    for (SharedContact.Email email : contact.getEmail().get())
+                    {
+                        DataMessage.Contact.Email.Builder emailBuilder = DataMessage.Contact.Email.newBuilder()
+                                                                                                  .setValue(email.getValue());
+
+                        switch (email.getType())
+                        {
+                            case HOME: emailBuilder.setType(DataMessage.Contact.Email.Type.HOME); break;
+                            case WORK: emailBuilder.setType(DataMessage.Contact.Email.Type.WORK); break;
+                            case MOBILE: emailBuilder.setType(DataMessage.Contact.Email.Type.MOBILE); break;
+                            case CUSTOM: emailBuilder.setType(DataMessage.Contact.Email.Type.CUSTOM); break;
+                            default: throw new AssertionError("Unknown type: " + email.getType());
+                        }
+
+                        if (email.getLabel().isPresent()) emailBuilder.setLabel(email.getLabel().get());
+
+                        contactBuilder.addEmail(emailBuilder);
+                    }
+                }
+
+                if (contact.getPhone().isPresent())
+                {
+                    for (SharedContact.Phone phone : contact.getPhone().get())
+                    {
+                        DataMessage.Contact.Phone.Builder phoneBuilder = DataMessage.Contact.Phone.newBuilder()
+                                                                                                  .setValue(phone.getValue());
+
+                        switch (phone.getType())
+                        {
+                            case HOME: phoneBuilder.setType(DataMessage.Contact.Phone.Type.HOME); break;
+                            case WORK: phoneBuilder.setType(DataMessage.Contact.Phone.Type.WORK); break;
+                            case MOBILE: phoneBuilder.setType(DataMessage.Contact.Phone.Type.MOBILE); break;
+                            case CUSTOM: phoneBuilder.setType(DataMessage.Contact.Phone.Type.CUSTOM); break;
+                            default: throw new AssertionError("Unknown type: " + phone.getType());
+                        }
+
+                        if (phone.getLabel().isPresent()) phoneBuilder.setLabel(phone.getLabel().get());
+
+                        contactBuilder.addNumber(phoneBuilder);
+                    }
+                }
+
+                if (contact.getAvatar().isPresent())
+                {
+                    contactBuilder.setAvatar(DataMessage.Contact.Avatar.newBuilder()
+                                                                       .setAvatar(createAttachmentPointer(contact.getAvatar().get().getAttachment().asStream()))
+                                                                       .setIsProfile(contact.getAvatar().get().isProfile()));
+                }
+
+                if (contact.getOrganization().isPresent())
+                {
+                    contactBuilder.setOrganization(contact.getOrganization().get());
+                }
+
+                results.add(contactBuilder.build());
+                */
+            }
+            return results;
+        }
+
         private async Task<SendMessageResponse> SendMessage(CancellationToken token, SignalServiceAddress recipient, long timestamp, byte[] content, bool silent)
         {
             for (int i = 0; i < 3; i++)
@@ -631,7 +745,7 @@ namespace libsignalservice
             throw new Exception("Failed to resolve conflicts after 3 attempts!");
         }
 
-        private async Task<IList<AttachmentPointer>> CreateAttachmentPointers(CancellationToken token, List<SignalServiceAttachment> attachments)
+        private async Task<IList<AttachmentPointer>> CreateAttachmentPointers(CancellationToken token, List<SignalServiceAttachment>? attachments)
         {
             IList<AttachmentPointer> pointers = new List<AttachmentPointer>();
 
@@ -691,7 +805,7 @@ namespace libsignalservice
 
             if (attachment.Width > 0)
             {
-                attachmentPointer.Width = (uint) attachment.Width;
+                attachmentPointer.Width = (uint)attachment.Width;
             }
 
             if (attachment.Height > 0)
@@ -701,7 +815,7 @@ namespace libsignalservice
 
             if (attachment.VoiceNote)
             {
-                attachmentPointer.Flags = (uint) AttachmentPointer.Types.Flags.VoiceMessage;
+                attachmentPointer.Flags = (uint)AttachmentPointer.Types.Flags.VoiceMessage;
             }
 
             return attachmentPointer;
@@ -824,7 +938,7 @@ namespace libsignalservice
             {
                 return cipher.Encrypt(signalProtocolAddress, plaintext, silent);
             }
-            catch(libsignal.exceptions.UntrustedIdentityException e)
+            catch (libsignal.exceptions.UntrustedIdentityException e)
             {
                 throw new UntrustedIdentityException("Untrusted on send", e.getName(), e.getUntrustedIdentity());
             }

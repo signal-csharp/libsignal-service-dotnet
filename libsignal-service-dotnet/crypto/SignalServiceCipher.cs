@@ -6,6 +6,7 @@ using libsignal.state;
 using libsignal_service_dotnet.messages.calls;
 using libsignalservice.messages;
 using libsignalservice.messages.multidevice;
+using libsignalservice.messages.shared;
 using libsignalservice.push;
 using libsignalservice.util;
 
@@ -146,6 +147,7 @@ namespace libsignalservice.crypto
             bool expirationUpdate = ((content.Flags & (uint)DataMessage.Types.Flags.ExpirationTimerUpdate) != 0);
             bool profileKeyUpdate = ((content.Flags & (uint)DataMessage.Types.Flags.ProfileKeyUpdate) != 0);
             SignalServiceDataMessage.SignalServiceQuote quote = CreateQuote(envelope, content);
+            List<SharedContact> sharedContacts = CreateSharedContacts(envelope, content);
 
             foreach (AttachmentPointer pointer in content.Attachments)
             {
@@ -168,7 +170,8 @@ namespace libsignalservice.crypto
                 ExpirationUpdate = expirationUpdate,
                 ProfileKey = content.ProfileKeyOneofCase == DataMessage.ProfileKeyOneofOneofCase.ProfileKey ? content.ProfileKey.ToByteArray() : null,
                 ProfileKeyUpdate = profileKeyUpdate,
-                Quote = quote
+                Quote = quote,
+                SharedContacts = sharedContacts
             };
         }
 
@@ -378,6 +381,118 @@ namespace libsignalservice.crypto
                 new SignalServiceAddress(content.Quote.Author),
                 content.Quote.Text,
                 attachments);
+        }
+
+        private List<SharedContact>? CreateSharedContacts(SignalServiceEnvelope envelope, DataMessage content)
+        {
+            if (content.Contact.Count <= 0) return null;
+
+            var results = new List<SharedContact>();
+
+            foreach (var contact in content.Contact)
+            {
+                var name = new Name(contact.Name.DisplayNameOneofCase == Types.Contact.Types.Name.DisplayNameOneofOneofCase.DisplayName ? contact.Name.DisplayName : null,
+                    contact.Name.GivenNameOneofCase == Types.Contact.Types.Name.GivenNameOneofOneofCase.GivenName ? contact.Name.GivenName : null,
+                    contact.Name.FamilyNameOneofCase == Types.Contact.Types.Name.FamilyNameOneofOneofCase.FamilyName ? contact.Name.FamilyName : null,
+                    contact.Name.PrefixOneofCase == Types.Contact.Types.Name.PrefixOneofOneofCase.Prefix ? contact.Name.Prefix : null,
+                    contact.Name.SuffixOneofCase == Types.Contact.Types.Name.SuffixOneofOneofCase.Suffix ? contact.Name.DisplayName : null,
+                    contact.Name.MiddleNameOneofCase == Types.Contact.Types.Name.MiddleNameOneofOneofCase.MiddleName ? contact.Name.MiddleName : null);
+
+                Avatar? avatar = null;
+                string? organization = null;
+                if (contact.Address.Count > 0)
+                {
+                    foreach (var address in contact.Address)
+                    {
+                        //TODO
+                        /*
+                        SharedContact.PostalAddress.Type type = SharedContact.PostalAddress.Type.HOME;
+
+                        switch (address.getType())
+                        {
+                            case WORK: type = SharedContact.PostalAddress.Type.WORK; break;
+                            case HOME: type = SharedContact.PostalAddress.Type.HOME; break;
+                            case CUSTOM: type = SharedContact.PostalAddress.Type.CUSTOM; break;
+                        }
+
+                        builder.withAddress(SharedContact.PostalAddress.newBuilder()
+                                                                       .setCity(address.getCity())
+                                                                       .setCountry(address.getCountry())
+                                                                       .setLabel(address.getLabel())
+                                                                       .setNeighborhood(address.getNeighborhood())
+                                                                       .setPobox(address.getPobox())
+                                                                       .setPostcode(address.getPostcode())
+                                                                       .setRegion(address.getRegion())
+                                                                       .setStreet(address.getStreet())
+                                                                       .setType(type)
+                                                                       .build());
+                                                                       */
+                    }
+                }
+
+                if (contact.Number.Count > 0)
+                {
+                    foreach (var phone in contact.Number)
+                    {
+                        //TODO
+                        /*
+                        SharedContact.Phone.Type type = SharedContact.Phone.Type.HOME;
+
+                        switch (phone.getType())
+                        {
+                            case HOME: type = SharedContact.Phone.Type.HOME; break;
+                            case WORK: type = SharedContact.Phone.Type.WORK; break;
+                            case MOBILE: type = SharedContact.Phone.Type.MOBILE; break;
+                            case CUSTOM: type = SharedContact.Phone.Type.CUSTOM; break;
+                        }
+
+                        builder.withPhone(SharedContact.Phone.newBuilder()
+                                                             .setLabel(phone.getLabel())
+                                                             .setType(type)
+                                                             .setValue(phone.getValue())
+                                                             .build());
+                                                             */
+                    }
+                }
+
+                if (contact.Email.Count > 0)
+                {
+                    foreach (var email in contact.Email)
+                    {
+                        //TODO
+                        /*
+                        SharedContact.Email.Type type = SharedContact.Email.Type.HOME;
+
+                        switch (email.getType())
+                        {
+                            case HOME: type = SharedContact.Email.Type.HOME; break;
+                            case WORK: type = SharedContact.Email.Type.WORK; break;
+                            case MOBILE: type = SharedContact.Email.Type.MOBILE; break;
+                            case CUSTOM: type = SharedContact.Email.Type.CUSTOM; break;
+                        }
+
+                        builder.withEmail(SharedContact.Email.newBuilder()
+                                                             .setLabel(email.getLabel())
+                                                             .setType(type)
+                                                             .setValue(email.getValue())
+                                                             .build());
+                                                             */
+                    }
+                }
+
+                if (contact.AvatarOneofCase == Types.Contact.AvatarOneofOneofCase.Avatar)
+                {
+                    avatar = new Avatar(CreateAttachmentPointer(envelope.GetRelay(), contact.Avatar.Avatar_), contact.Avatar.IsProfile);
+                }
+
+                if (contact.OrganizationOneofCase == Types.Contact.OrganizationOneofOneofCase.Organization)
+                {
+                    organization = contact.Organization;
+                }
+
+                results.Add(new SharedContact(name, avatar, null, null, null, organization)); //TODO
+            }
+            return results;
         }
 
         private SignalServiceAttachmentPointer CreateAttachmentPointer(string relay, AttachmentPointer pointer)

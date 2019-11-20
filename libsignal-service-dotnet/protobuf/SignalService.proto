@@ -84,6 +84,76 @@ message DataMessage {
 	repeated QuotedAttachment attachments = 4;
   }
 
+  message Contact {
+    message Name {
+      oneof givenName_oneof             { string givenName   = 1; }
+      oneof familyName_oneof            { string familyName  = 2; }
+      oneof prefix_oneof                { string prefix      = 3; }
+      oneof suffix_oneof                { string suffix      = 4; }
+      oneof middleName_oneof            { string middleName  = 5; }
+      oneof displayName_oneof           { string displayName = 6; }
+    }
+
+    message Phone {
+      enum Type {
+        ZERO_PLACEHOLDER = 0;
+        HOME   = 1;
+        MOBILE = 2;
+        WORK   = 3;
+        CUSTOM = 4;
+      }
+
+      oneof value_oneof                 { string value = 1; }
+      oneof type_oneof                  { Type   type  = 2; }
+      oneof label_oneof                 { string label = 3; }
+    }
+
+    message Email {
+      enum Type {
+        ZERO_PLACEHOLDER = 0;
+        HOME   = 1;
+        MOBILE = 2;
+        WORK   = 3;
+        CUSTOM = 4;
+      }
+
+      oneof value_oneof                 { string value = 1; }
+      oneof type_oneof                  { Type   type  = 2; }
+      oneof label_oneof                 { string label = 3; }
+    }
+
+    message PostalAddress {
+      enum Type {
+        ZERO_PLACEHOLDER = 0;
+        HOME   = 1;
+        WORK   = 2;
+        CUSTOM = 3;
+      }
+
+      oneof type_oneof                  { Type   type         = 1; }
+      oneof label_oneof                 { string label        = 2; }
+      oneof street_oneof                { string street       = 3; }
+      oneof pobox_oneof                 { string pobox        = 4; }
+      oneof neighborhood_oneof          { string neighborhood = 5; }
+      oneof city_oneof                  { string city         = 6; }
+      oneof region_oneof                { string region       = 7; }
+      oneof postcode_oneof              { string postcode     = 8; }
+      oneof country_oneof               { string country      = 9; }
+    }
+
+    message Avatar {
+      oneof avatar_oneof                { AttachmentPointer avatar    = 1; }
+      oneof isProfile_oneof             { bool              isProfile = 2; }
+    }
+
+    oneof name_oneof                    { Name              name            = 1; }
+    repeated Phone             number          = 3;
+    repeated Email             email           = 4;
+    repeated PostalAddress     address         = 5;
+    oneof avatar_oneof                  { Avatar            avatar          = 6; }
+    oneof organization_oneof            { string            organization    = 7; }
+  }
+
   oneof body_oneof						{ string             body        = 1; }
   repeated AttachmentPointer attachments = 2;
   oneof group_oneof						{ GroupContext       group       = 3; }
@@ -92,6 +162,7 @@ message DataMessage {
   oneof profileKey_oneof                { bytes              profileKey  = 6; }
   oneof timestamp_oneof                 { uint64             timestamp   = 7; }
   oneof quote_oneof                     { Quote              quote       = 8; }
+  repeated Contact            contact     = 9;
 }
 
 message NullMessage {

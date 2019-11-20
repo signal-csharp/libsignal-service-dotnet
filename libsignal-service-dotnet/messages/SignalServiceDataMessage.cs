@@ -1,3 +1,4 @@
+using libsignalservice.messages.shared;
 using libsignalservice.push;
 using System.Collections.Generic;
 
@@ -10,15 +11,16 @@ namespace libsignalservice.messages
     public class SignalServiceDataMessage
     {
         public long Timestamp { get; set; }
-        public List<SignalServiceAttachment> Attachments { get; set; }
-        public string Body { get; set; }
-        public SignalServiceGroup Group { get; set; }
-        public byte[] ProfileKey { get; set; }
+        public List<SignalServiceAttachment>? Attachments { get; set; }
+        public string? Body { get; set; }
+        public SignalServiceGroup? Group { get; set; }
+        public byte[]? ProfileKey { get; set; }
         public bool EndSession { get; set; }
         public bool ExpirationUpdate { get; set; }
         public int ExpiresInSeconds { get; set; }
         public bool ProfileKeyUpdate { get; set; }
-        public SignalServiceQuote Quote { get; set; }
+        public SignalServiceQuote? Quote { get; set; }
+        public List<SharedContact>? SharedContacts { get; set; }
 
         public bool IsProfileKeyUpdate()
         {
