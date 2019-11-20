@@ -499,11 +499,11 @@ namespace libsignalservice.push
                 using (var resp = await connection.SendAsync(req, token))
                 {
                     Stream input = await resp.Content.ReadAsStreamAsync();
-                    byte[] buffer = new byte[4096];
+                    byte[] buffer = new byte[32768];
                     int read = 0;
                     while (true)
                     {
-                        read = input.Read(buffer, 0, 4096);
+                        read = input.Read(buffer, 0, 32768);
                         if (read == 0)
                         {
                             localDestination.Flush();
@@ -578,7 +578,7 @@ namespace libsignalservice.push
                     using (var cryptoStream = new CryptoStream(memoryStream, encrypt, CryptoStreamMode.Write))
                     {
                         // Then read from the data stream and write it to the crypto stream
-                        byte[] buffer = new byte[4096];
+                        byte[] buffer = new byte[32768];
                         int read = data.Read(buffer, 0, buffer.Length);
                         while (read > 0)
                         {
