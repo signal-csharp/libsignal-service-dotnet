@@ -6,10 +6,12 @@ namespace libsignalservice.messages.multidevice
     public class BlockedListMessage
     {
         public List<string> Numbers { get; }
+        public List<byte[]> GroupIds { get; }
 
-        public BlockedListMessage(List<string> numbers)
+        public BlockedListMessage(List<string> numbers, List<byte[]> groupIds)
         {
             Numbers = numbers;
+            GroupIds = groupIds;
         }
     }
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member

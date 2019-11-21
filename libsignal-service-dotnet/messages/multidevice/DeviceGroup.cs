@@ -13,8 +13,9 @@ namespace libsignalservice.messages.multidevice
         public bool Active { get; }
         public uint? ExpirationTimer { get; }
         public string? Color { get; }
+        public bool Blocked { get; }
 
-        public DeviceGroup(byte[] id, string? name, IList<string> members, SignalServiceAttachmentStream? avatar, bool active, uint? expirationTimer, string? color)
+        public DeviceGroup(byte[] id, string? name, IList<string> members, SignalServiceAttachmentStream? avatar, bool active, uint? expirationTimer, string? color, bool blocked)
         {
             Id = id;
             Name = name;
@@ -23,6 +24,7 @@ namespace libsignalservice.messages.multidevice
             Active = active;
             ExpirationTimer = expirationTimer;
             Color = color;
+            Blocked = blocked;
         }
     }
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member

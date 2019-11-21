@@ -29,6 +29,7 @@ namespace libsignalservice.messages.multidevice
             bool active = details.Active;
             uint? expirationTimer = null;
             string? color = details.ColorOneofCase == GroupDetails.ColorOneofOneofCase.Color ? details.Color : null;
+            var blocked = details.Blocked;
 
             if (details.AvatarOneofCase == GroupDetails.AvatarOneofOneofCase.Avatar)
             {
@@ -43,7 +44,7 @@ namespace libsignalservice.messages.multidevice
                 expirationTimer = details.ExpireTimer;
             }
 
-            return new DeviceGroup(id, name, members, avatar, active, expirationTimer, color);
+            return new DeviceGroup(id, name, members, avatar, active, expirationTimer, color, blocked);
         }
     }
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member

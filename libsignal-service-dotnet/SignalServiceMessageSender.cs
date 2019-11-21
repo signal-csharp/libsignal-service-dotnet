@@ -483,6 +483,10 @@ namespace libsignalservice
             Blocked blockedMessage = new Blocked { };
 
             blockedMessage.Numbers.AddRange(blocked.Numbers);
+            foreach (var groupId in blocked.GroupIds)
+            {
+                blockedMessage.GroupIds.Add(ByteString.CopyFrom(groupId));
+            }
             syncMessage.Blocked = blockedMessage;
             content.SyncMessage = syncMessage;
             return content.ToByteArray();
