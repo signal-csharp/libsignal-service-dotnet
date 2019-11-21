@@ -11,6 +11,8 @@ using libsignalservice.push;
 using libsignalservice.push.exceptions;
 using libsignalservice.push.http;
 using libsignalservice.util;
+using libsignalservicedotnet.crypto;
+using libsignalservicedotnet.messages;
 using Microsoft.Extensions.Logging;
 using Strilanc.Value;
 using System;
@@ -33,13 +35,16 @@ namespace libsignalservice
     {
         private readonly ILogger Logger = LibsignalLogging.CreateLogger<SignalServiceMessageSender>();
 
-        private readonly PushServiceSocket socket;
-        private readonly SignalProtocolStore store;
-        private readonly SignalServiceAddress localAddress;
-        private readonly SignalServiceMessagePipe pipe;
-        private readonly IEventListener eventListener;
+        private readonly PushServiceSocket Socket;
+        private readonly SignalProtocolStore Store;
+        private readonly SignalServiceAddress LocalAddress;
+        private readonly IEventListener EventListener;
         private readonly CancellationToken Token;
         private readonly StaticCredentialsProvider CredentialsProvider;
+
+        private readonly SignalServiceMessagePipe? Pipe;
+        private readonly SignalServiceMessagePipe? UnidentifiedPipe;
+        private bool IsMultiDevice;
 
         /// <summary>
         /// Construct a SignalServiceMessageSender
@@ -51,35 +56,29 @@ namespace libsignalservice
         /// <param name="deviceId">Tbe Signal Service device id</param>
         /// <param name="store">The SignalProtocolStore.</param>
         /// <param name="pipe">An optional SignalServiceMessagePipe</param>
+        /// <param name="unidentifiedPipe"></param>
         /// <param name="eventListener">An optional event listener, which fires whenever sessions are
         /// setup or torn down for a recipient.</param>
         /// <param name="userAgent"></param>
+        /// <param name="isMultiDevice"></param>
         public SignalServiceMessageSender(CancellationToken token, SignalServiceConfiguration urls,
                                        string user, string password, int deviceId,
                                        SignalProtocolStore store,
-                                       SignalServiceMessagePipe pipe,
-                                       IEventListener eventListener, string userAgent)
+                                       string userAgent,
+                                       bool isMultiDevice,
+                                       SignalServiceMessagePipe? pipe,
+                                       SignalServiceMessagePipe? unidentifiedPipe,
+                                       IEventListener eventListener)
         {
             Token = token;
             CredentialsProvider = new StaticCredentialsProvider(user, password, null, deviceId);
-            this.socket = new PushServiceSocket(urls, CredentialsProvider, userAgent);
-            this.store = store;
-            this.localAddress = new SignalServiceAddress(user);
-            this.pipe = pipe;
-            this.eventListener = eventListener;
-        }
-
-        /// <summary>
-        /// Send a delivery receipt for a received message.  It is not necessary to call this
-        /// when receiving messages through <see cref="SignalServiceMessagePipe"/>
-        /// </summary>
-        /// <param name="token">The cancellation token</param>
-        /// <param name="recipient">The sender of the received message you're acknowledging</param>
-        /// <param name="message">The receipt message</param>
-        public async Task SendDeliveryReceipt(CancellationToken token, SignalServiceAddress recipient, SignalServiceReceiptMessage message)
-        {
-            byte[] content = CreateReceiptContent(message);
-            await SendMessage(token, recipient, message.When, content, true);
+            Socket = new PushServiceSocket(urls, CredentialsProvider, userAgent);
+            Store = store;
+            LocalAddress = new SignalServiceAddress(user);
+            Pipe = pipe;
+            UnidentifiedPipe = unidentifiedPipe;
+            IsMultiDevice = isMultiDevice;
+            EventListener = eventListener;
         }
 
         /// <summary>
@@ -87,11 +86,13 @@ namespace libsignalservice
         /// </summary>
         /// <param name="token">The cancellation token</param>
         /// <param name="recipient">The message's destination</param>
+        /// <param name="unidentifiedAccess"></param>
         /// <param name="message">The call message</param>
-        public async Task SendCallMessage(CancellationToken token, SignalServiceAddress recipient, SignalServiceCallMessage message)
+        public async Task SendCallMessage(CancellationToken token, SignalServiceAddress recipient,
+            UnidentifiedAccessPair? unidentifiedAccess, SignalServiceCallMessage message)
         {
             byte[] content = CreateCallContent(message);
-            await SendMessage(token, recipient, Util.CurrentTimeMillis(), content, true);
+            await SendMessage(token, recipient, unidentifiedAccess?.TargetUnidentifiedAccess, Util.CurrentTimeMillis(), content);
         }
 
         /// <summary>
@@ -99,29 +100,31 @@ namespace libsignalservice
         /// </summary>
         /// <param name="token">The cancellation token</param>
         /// <param name="recipient">The message's destination.</param>
+        /// <param name="unidentifiedAccess"></param>
         /// <param name="message">The message.</param>
-        public async Task SendMessage(CancellationToken token, SignalServiceAddress recipient, SignalServiceDataMessage message)
+        public async Task<SendMessageResult> SendMessage(CancellationToken token, SignalServiceAddress recipient,
+            UnidentifiedAccessPair? unidentifiedAccess, SignalServiceDataMessage message)
         {
             byte[] content = await CreateMessageContent(token, message);
             long timestamp = message.Timestamp;
-            bool silent = message.Group != null && message.Group.Type == SignalServiceGroup.GroupType.REQUEST_INFO;
-            var resp = await SendMessage(token, recipient, timestamp, content, silent);
+            SendMessageResult result = await SendMessage(token, recipient, unidentifiedAccess?.TargetUnidentifiedAccess, timestamp, content);
 
-            if (resp.NeedsSync)
+            if ((result.Success != null && result.Success.NeedsSync) || (unidentifiedAccess != null && IsMultiDevice))
             {
-                byte[] syncMessage = CreateMultiDeviceSentTranscriptContent(content, new May<SignalServiceAddress>(recipient), (ulong)timestamp);
-                await SendMessage(token, localAddress, timestamp, syncMessage, false);
+                byte[] syncMessage = CreateMultiDeviceSentTranscriptContent(content, recipient, (ulong)timestamp, new List<SendMessageResult>() { result });
+                await SendMessage(token, LocalAddress, unidentifiedAccess?.SelfUnidentifiedAccess, timestamp, syncMessage);
             }
 
             if (message.EndSession)
             {
-                store.DeleteAllSessions(recipient.E164number);
+                Store.DeleteAllSessions(recipient.E164number);
 
-                if (eventListener != null)
+                if (EventListener != null)
                 {
-                    eventListener.OnSecurityEvent(recipient);
+                    EventListener.OnSecurityEvent(recipient);
                 }
             }
+            return result;
         }
 
         /// <summary>
@@ -129,29 +132,30 @@ namespace libsignalservice
         /// </summary>
         /// <param name="token">The cancellation token</param>
         /// <param name="recipients">The group members.</param>
+        /// <param name="unidentifiedAccess"></param>
         /// <param name="message">The group message.</param>
-        public async Task SendMessage(CancellationToken token, List<SignalServiceAddress> recipients, SignalServiceDataMessage message)
+        public async Task<List<SendMessageResult>> SendMessage(CancellationToken token, List<SignalServiceAddress> recipients,
+            List<UnidentifiedAccessPair?> unidentifiedAccess, SignalServiceDataMessage message)
         {
             byte[] content = await CreateMessageContent(token, message);
             long timestamp = message.Timestamp;
-            SendMessageResponseList response = await SendMessage(token, recipients, timestamp, content);
-            try
+            List<SendMessageResult> results = await SendMessage(token, recipients, GetTargetUnidentifiedAccess(unidentifiedAccess), timestamp, content);
+            bool needsSyncInResults = false;
+
+            foreach (var result in results)
             {
-                if (response != null && response.NeedsSync)
+                if (result.Success != null && result.Success.NeedsSync)
                 {
-                    byte[] syncMessage = CreateMultiDeviceSentTranscriptContent(content, May<SignalServiceAddress>.NoValue, (ulong)timestamp);
-                    await SendMessage(token, localAddress, timestamp, syncMessage, false);
+                    needsSyncInResults = true;
+                    break;
                 }
             }
-            catch (UntrustedIdentityException e)
+            if (needsSyncInResults || IsMultiDevice)
             {
-                response.UntrustedIdentities.Add(e);
+                byte[] syncMessage = CreateMultiDeviceSentTranscriptContent(content, null, (ulong) timestamp, results);
+                await SendMessage(token, LocalAddress, GetSelfUnidentifiedAccess(unidentifiedAccess), timestamp, syncMessage);
             }
-
-            if (response.HasExceptions())
-            {
-                throw new EncapsulatedExceptions(response.UntrustedIdentities, response.UnregisteredUsers, response.NetworkExceptions);
-            }
+            return results;
         }
 
         /// <summary>
@@ -159,7 +163,8 @@ namespace libsignalservice
         /// </summary>
         /// <param name="token"></param>
         /// <param name="message"></param>
-        public async Task SendMessage(CancellationToken token, SignalServiceSyncMessage message)
+        /// <param name="unidenfifiedAccess"></param>
+        public async Task SendMessage(CancellationToken token, SignalServiceSyncMessage message, UnidentifiedAccessPair? unidenfifiedAccess)
         {
             byte[] content;
 
@@ -186,7 +191,7 @@ namespace libsignalservice
             }
             else if (message.Verified != null)
             {
-                await SendMessage(token, message.Verified);
+                await SendMessage(token, message.Verified, unidenfifiedAccess);
                 return;
             }
             else if (message.Request != null)
@@ -198,7 +203,7 @@ namespace libsignalservice
                 throw new Exception("Unsupported sync message!");
             }
 
-            await SendMessage(token, localAddress, Util.CurrentTimeMillis(), content, false);
+            await SendMessage(token, LocalAddress, unidenfifiedAccess?.SelfUnidentifiedAccess, Util.CurrentTimeMillis(), content);
         }
 
         /// <summary>
@@ -207,7 +212,7 @@ namespace libsignalservice
         /// <param name="soTimeoutMillis"></param>
         public void SetSoTimeoutMillis(long soTimeoutMillis)
         {
-            socket.SetSoTimeoutMillis(soTimeoutMillis);
+            Socket.SetSoTimeoutMillis(soTimeoutMillis);
         }
 
         /// <summary>
@@ -215,10 +220,10 @@ namespace libsignalservice
         /// </summary>
         public void CancelInFlightRequests()
         {
-            socket.CancelInFlightRequests();
+            Socket.CancelInFlightRequests();
         }
 
-        private async Task SendMessage(CancellationToken token, VerifiedMessage message)
+        private async Task SendMessage(CancellationToken token, VerifiedMessage message, UnidentifiedAccessPair? unidentifiedAccessPair)
         {
             byte[] nullMessageBody = new DataMessage()
             {
@@ -235,12 +240,12 @@ namespace libsignalservice
                 NullMessage = nullMessage
             }.ToByteArray();
 
-            SendMessageResponse response = await SendMessage(token, new SignalServiceAddress(message.Destination), message.Timestamp, content, false);
+            SendMessageResult result = await SendMessage(token, new SignalServiceAddress(message.Destination), unidentifiedAccessPair?.TargetUnidentifiedAccess, message.Timestamp, content);
 
-            if (response != null && response.NeedsSync)
+            if (result.Success.NeedsSync)
             {
                 byte[] syncMessage = CreateMultiDeviceVerifiedContent(message, nullMessage.ToByteArray());
-                await SendMessage(token, localAddress, message.Timestamp, syncMessage, false);
+                await SendMessage(token, LocalAddress, unidentifiedAccessPair?.SelfUnidentifiedAccess, message.Timestamp, syncMessage);
             }
         }
 
@@ -418,7 +423,7 @@ namespace libsignalservice
             return content.ToByteArray();
         }
 
-        private byte[] CreateMultiDeviceSentTranscriptContent(byte[] rawContent, May<SignalServiceAddress> recipient, ulong timestamp)
+        private byte[] CreateMultiDeviceSentTranscriptContent(byte[] rawContent, SignalServiceAddress? recipient, ulong timestamp, List<SendMessageResult> sendMessageResults)
         {
             try
             {
@@ -430,9 +435,21 @@ namespace libsignalservice
                 sentMessage.Timestamp = timestamp;
                 sentMessage.Message = dataMessage;
 
-                if (recipient.HasValue)
+                foreach (var result in sendMessageResults)
                 {
-                    sentMessage.Destination = recipient.ForceGetValue().E164number;
+                    if (result.Success != null)
+                    {
+                        sentMessage.UnidentifiedStatus.Add(new Sent.Types.UnidentifiedDeliveryStatus()
+                        {
+                            Destination = result.Address.E164number,
+                            Unidentified = result.Success.Unidentified
+                        });
+                    }
+                }
+
+                if (recipient != null)
+                {
+                    sentMessage.Destination = recipient.E164number;
                 }
 
                 if (dataMessage.ExpireTimer > 0)
@@ -492,18 +509,23 @@ namespace libsignalservice
             return content.ToByteArray();
         }
 
-        private byte[] CreateMultiDeviceConfigurationContent(ConfigurationMessage configurationMessage)
+        private byte[] CreateMultiDeviceConfigurationContent(ConfigurationMessage configuration)
         {
             Content content = new Content { };
             SyncMessage syncMessage = CreateSyncMessage();
-            Configuration configuration = new Configuration();
+            Configuration configurationMessage = new Configuration();
 
-            if (configurationMessage.ReadReceipts != null)
+            if (configuration.ReadReceipts != null)
             {
-                configuration.ReadReceipts = configurationMessage.ReadReceipts.Value;
+                configurationMessage.ReadReceipts = configuration.ReadReceipts.Value;
             }
 
-            syncMessage.Configuration = configuration;
+            if (configuration.UnidentifiedDeliveryIndicators is bool unidentifiedDeliveryIndicators)
+            {
+                configurationMessage.UnidentifiedDeliveryIndicators = unidentifiedDeliveryIndicators;
+            }
+
+            syncMessage.Configuration = configurationMessage;
             content.SyncMessage = syncMessage;
             return content.ToByteArray();
         }
@@ -575,33 +597,32 @@ namespace libsignalservice
             return groupContext;
         }
 
-        private async Task<SendMessageResponseList> SendMessage(CancellationToken token, List<SignalServiceAddress> recipients, long timestamp, byte[] content)
+        private async Task<List<SendMessageResult>> SendMessage(CancellationToken token, List<SignalServiceAddress> recipients,
+            List<UnidentifiedAccess?> unidentifiedAccess, long timestamp, byte[] content)
         {
-            SendMessageResponseList responseList = new SendMessageResponseList();
-            foreach (SignalServiceAddress recipient in recipients)
+            List<SendMessageResult> results = new List<SendMessageResult>();
+            for (int i = 0; i < recipients.Count; i++)
             {
+                var recipient = recipients[i];
                 try
                 {
-                    var response = await SendMessage(token, recipient, timestamp, content, false);
-                    responseList.AddResponse(response);
+                    var result = await SendMessage(token, recipient, unidentifiedAccess[i], timestamp, content);
+                    results.Add(result);
                 }
                 catch (UntrustedIdentityException e)
                 {
-                    Logger.LogError("SendMessage() untrusted identity");
-                    responseList.UntrustedIdentities.Add(e);
+                    results.Add(SendMessageResult.NewIdentityFailure(recipient, e.IdentityKey));
                 }
                 catch (UnregisteredUserException e)
                 {
-                    Logger.LogError("SendMessage() unregistered user");
-                    responseList.UnregisteredUsers.Add(e);
+                    results.Add(SendMessageResult.NewUnregisteredFailure(recipient));
                 }
                 catch (PushNetworkException e)
                 {
-                    Logger.LogError("SendMessage() failed: {0}\n{1}", e.Message, e.StackTrace);
-                    responseList.NetworkExceptions.Add(new NetworkFailureException(recipient.E164number, e));
+                    results.Add(SendMessageResult.NewNetworkFailure(recipient));
                 }
             }
-            return responseList;
+            return results;
         }
 
         private List<Contact> CreateSharedContactContent(List<SharedContact> contacts)
@@ -713,32 +734,45 @@ namespace libsignalservice
             return results;
         }
 
-        private async Task<SendMessageResponse> SendMessage(CancellationToken token, SignalServiceAddress recipient, long timestamp, byte[] content, bool silent)
+        private async Task<SendMessageResult> SendMessage(CancellationToken token,
+            SignalServiceAddress recipient,
+            UnidentifiedAccess? unidentifiedAccess,
+            long timestamp,
+            byte[] content)
         {
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 4; i++)
             {
                 try
                 {
-                    OutgoingPushMessageList messages = await GetEncryptedMessages(token, socket, recipient, timestamp, content, silent);
-                    if (pipe != null)
+                    OutgoingPushMessageList messages = await GetEncryptedMessages(token, Socket, recipient, unidentifiedAccess, timestamp, content);
+                    var pipe = Pipe;
+                    var unidentifiedPipe = UnidentifiedPipe;
+                    if (Pipe != null && unidentifiedAccess == null)
                     {
                         try
                         {
                             Logger.LogTrace("Transmitting over pipe...");
-                            return await pipe.Send(messages);
+                            var response = await Pipe.Send(messages, null);
+                            return SendMessageResult.NewSuccess(recipient, false, response.NeedsSync);
                         }
                         catch (Exception e)
                         {
                             Logger.LogWarning(e.Message + " - falling back to new connection...");
                         }
                     }
+                    else if (unidentifiedPipe != null && unidentifiedAccess != null)
+                    {
+                        var response = await unidentifiedPipe.Send(messages, unidentifiedAccess);
+                        return SendMessageResult.NewSuccess(recipient, true, response.NeedsSync);
+                    }
 
                     Logger.LogTrace("Not transmitting over pipe...");
-                    return await socket.SendMessage(token, messages);
+                    SendMessageResponse resp = await Socket.SendMessage(token, messages, unidentifiedAccess);
+                    return SendMessageResult.NewSuccess(recipient, unidentifiedAccess != null, resp.NeedsSync);
                 }
                 catch (MismatchedDevicesException mde)
                 {
-                    await HandleMismatchedDevices(token, socket, recipient, mde.MismatchedDevices);
+                    await HandleMismatchedDevices(token, Socket, recipient, mde.MismatchedDevices);
                 }
                 catch (StaleDevicesException ste)
                 {
@@ -786,7 +820,7 @@ namespace libsignalservice
                                                                        new AttachmentCipherOutputStreamFactory(attachmentKey),
                                                                        attachment.Listener);
 
-            (ulong id, byte[] digest) = await socket.SendAttachment(token, attachmentData);
+            (ulong id, byte[] digest) = await Socket.SendAttachment(token, attachmentData);
 
             var attachmentPointer = new AttachmentPointer
             {
@@ -855,7 +889,7 @@ namespace libsignalservice
         /// <returns>The attachment ID and the URL</returns>
         public async Task<(ulong id, string location)> RetrieveAttachmentUploadUrl(CancellationToken token)
         {
-            return await socket.RetrieveAttachmentUploadUrl(token);
+            return await Socket.RetrieveAttachmentUploadUrl(token);
         }
 
         /// <summary>
@@ -866,31 +900,31 @@ namespace libsignalservice
         /// <returns>The digest and the encrypted data</returns>
         public (byte[] digest, Stream encryptedData) EncryptAttachment(Stream data, byte[] key)
         {
-            return socket.EncryptAttachment(data, key);
+            return Socket.EncryptAttachment(data, key);
         }
 
         private async Task<OutgoingPushMessageList> GetEncryptedMessages(CancellationToken token,
             PushServiceSocket socket,
             SignalServiceAddress recipient,
+            UnidentifiedAccess? unidentifiedAccess,
             long timestamp,
-            byte[] plaintext,
-            bool silent)
+            byte[] plaintext)
         {
             List<OutgoingPushMessage> messages = new List<OutgoingPushMessage>();
 
-            bool myself = recipient.Equals(localAddress);
-            if (!myself || CredentialsProvider.DeviceId != SignalServiceAddress.DEFAULT_DEVICE_ID)
+            bool myself = recipient.Equals(LocalAddress);
+            if (!myself || CredentialsProvider.DeviceId != SignalServiceAddress.DEFAULT_DEVICE_ID || unidentifiedAccess != null)
             {
-                messages.Add(await GetEncryptedMessage(token, socket, recipient, SignalServiceAddress.DEFAULT_DEVICE_ID, plaintext, silent));
+                messages.Add(await GetEncryptedMessage(token, socket, recipient, unidentifiedAccess, SignalServiceAddress.DEFAULT_DEVICE_ID, plaintext));
             }
 
-            foreach (uint deviceId in store.GetSubDeviceSessions(recipient.E164number))
+            foreach (uint deviceId in Store.GetSubDeviceSessions(recipient.E164number))
             {
                 if (!myself || deviceId != CredentialsProvider.DeviceId)
                 {
-                    if (store.ContainsSession(new SignalProtocolAddress(recipient.E164number, deviceId)))
+                    if (Store.ContainsSession(new SignalProtocolAddress(recipient.E164number, deviceId)))
                     {
-                        messages.Add(await GetEncryptedMessage(token, socket, recipient, deviceId, plaintext, silent));
+                        messages.Add(await GetEncryptedMessage(token, socket, recipient, unidentifiedAccess, deviceId, plaintext));
                     }
                 }
             }
@@ -898,16 +932,21 @@ namespace libsignalservice
             return new OutgoingPushMessageList(recipient.E164number, (ulong)timestamp, recipient.Relay, messages);
         }
 
-        private async Task<OutgoingPushMessage> GetEncryptedMessage(CancellationToken token, PushServiceSocket socket, SignalServiceAddress recipient, uint deviceId, byte[] plaintext, bool silent)
+        private async Task<OutgoingPushMessage> GetEncryptedMessage(CancellationToken token,
+            PushServiceSocket socket,
+            SignalServiceAddress recipient,
+            UnidentifiedAccess? unidentifiedAccess,
+            uint deviceId,
+            byte[] plaintext)
         {
             SignalProtocolAddress signalProtocolAddress = new SignalProtocolAddress(recipient.E164number, deviceId);
-            SignalServiceCipher cipher = new SignalServiceCipher(localAddress, store);
+            SignalServiceCipher cipher = new SignalServiceCipher(LocalAddress, Store, null);
 
-            if (!store.ContainsSession(signalProtocolAddress))
+            if (!Store.ContainsSession(signalProtocolAddress))
             {
                 try
                 {
-                    List<PreKeyBundle> preKeys = await socket.GetPreKeys(token, recipient, deviceId);
+                    List<PreKeyBundle> preKeys = await socket.GetPreKeys(token, recipient, unidentifiedAccess, deviceId);
 
                     foreach (PreKeyBundle preKey in preKeys)
                     {
@@ -918,7 +957,7 @@ namespace libsignalservice
                         try
                         {
                             SignalProtocolAddress preKeyAddress = new SignalProtocolAddress(recipient.E164number, preKey.getDeviceId());
-                            SessionBuilder sessionBuilder = new SessionBuilder(store, preKeyAddress);
+                            SessionBuilder sessionBuilder = new SessionBuilder(Store, preKeyAddress);
                             sessionBuilder.process(preKey);
                         }
                         catch (libsignal.exceptions.UntrustedIdentityException)
@@ -927,9 +966,9 @@ namespace libsignalservice
                         }
                     }
 
-                    if (eventListener != null)
+                    if (EventListener != null)
                     {
-                        eventListener.OnSecurityEvent(recipient);
+                        EventListener.OnSecurityEvent(recipient);
                     }
                 }
                 catch (InvalidKeyException e)
@@ -940,7 +979,7 @@ namespace libsignalservice
 
             try
             {
-                return cipher.Encrypt(signalProtocolAddress, plaintext, silent);
+                return cipher.Encrypt(signalProtocolAddress, unidentifiedAccess, plaintext);
             }
             catch (libsignal.exceptions.UntrustedIdentityException e)
             {
@@ -954,7 +993,7 @@ namespace libsignalservice
             {
                 foreach (uint extraDeviceId in mismatchedDevices.ExtraDevices)
                 {
-                    store.DeleteSession(new SignalProtocolAddress(recipient.E164number, extraDeviceId));
+                    Store.DeleteSession(new SignalProtocolAddress(recipient.E164number, extraDeviceId));
                 }
 
                 foreach (uint missingDeviceId in mismatchedDevices.MissingDevices)
@@ -963,7 +1002,7 @@ namespace libsignalservice
 
                     try
                     {
-                        SessionBuilder sessionBuilder = new SessionBuilder(store, new SignalProtocolAddress(recipient.E164number, missingDeviceId));
+                        SessionBuilder sessionBuilder = new SessionBuilder(Store, new SignalProtocolAddress(recipient.E164number, missingDeviceId));
                         sessionBuilder.process(preKey);
                     }
                     catch (libsignal.exceptions.UntrustedIdentityException)
@@ -982,36 +1021,33 @@ namespace libsignalservice
         {
             foreach (uint staleDeviceId in staleDevices.Devices)
             {
-                store.DeleteSession(new SignalProtocolAddress(recipient.E164number, staleDeviceId));
+                Store.DeleteSession(new SignalProtocolAddress(recipient.E164number, staleDeviceId));
             }
         }
 
-        private byte[] CreateSentTranscriptMessage(byte[] rawContent, May<SignalServiceAddress> recipient, ulong timestamp)
+        private List<UnidentifiedAccess?> GetTargetUnidentifiedAccess(List<UnidentifiedAccessPair?> unidentifiedAccess)
         {
+            List<UnidentifiedAccess?> results = new List<UnidentifiedAccess?>();
+            foreach (UnidentifiedAccessPair? item in unidentifiedAccess)
             {
-                try
-                {
-                    Content content = new Content { };
-                    SyncMessage syncMessage = new SyncMessage { };
-                    SyncMessage.Types.Sent sentMessage = new SyncMessage.Types.Sent { };
+                if (item != null) results.Add(item.TargetUnidentifiedAccess);
+                else results.Add(null);
+            }
+            return results;
+        }
 
-                    sentMessage.Timestamp = timestamp;
-                    sentMessage.Message = DataMessage.Parser.ParseFrom(rawContent);
-
-                    if (recipient.HasValue)
-                    {
-                        sentMessage.Destination = recipient.ForceGetValue().E164number;
-                    }
-                    syncMessage.Sent = sentMessage;
-                    content.SyncMessage = syncMessage;
-                    return content.ToByteArray();
-                }
-                catch (InvalidProtocolBufferException e)
+        private UnidentifiedAccess? GetSelfUnidentifiedAccess(List<UnidentifiedAccessPair?> unidentifiedAccess)
+        {
+            foreach (UnidentifiedAccessPair? item in unidentifiedAccess)
+            {
+                if (item != null && item.SelfUnidentifiedAccess != null)
                 {
-                    throw new Exception(e.Message);
+                    return item.SelfUnidentifiedAccess;
                 }
             }
+            return null;
         }
+
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public interface IEventListener

@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using libsignalservicedotnet.crypto;
 
 namespace libsignalservice.crypto
 {
@@ -56,6 +57,24 @@ namespace libsignalservice.crypto
                     }
                 }
             }
+        }
+
+        public bool VerifyUnidentifiedAccess(byte[] theirUnidentifiedAccessVerifier)
+        {
+            if (theirUnidentifiedAccessVerifier == null || theirUnidentifiedAccessVerifier.Length == 0) return false;
+
+            byte[] unidentifiedAccessKey = UnidentifiedAccess.DeriveAccessKeyFrom(Key);
+            throw new NotImplementedException();
+
+            //TODO
+            /*
+            Mac mac = Mac.getInstance("HmacSHA256");
+            mac.init(new SecretKeySpec(unidentifiedAccessKey, "HmacSHA256"));
+
+            byte[] ourUnidentifiedAccessVerifier = mac.doFinal(new byte[32]);
+
+            return MessageDigest.isEqual(theirUnidentifiedAccessVerifier, ourUnidentifiedAccessVerifier);
+            */
         }
     }
 }

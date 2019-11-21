@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,6 +14,10 @@ namespace libsignalservice.profiles
         public string Name { get; private set; }
         [JsonProperty("avatar")]
         public string Avatar { get; private set; }
+        [JsonProperty("unidentifiedAccess")]
+        public string UnidentifiedAccess { get; private set; }
+        [JsonProperty("unrestrictedUnidentifiedAccess")]
+        public bool UnrestrictedUnidentifiedAccess { get; private set; }
 
         public SignalServiceProfile() { }
     }

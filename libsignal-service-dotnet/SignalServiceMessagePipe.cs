@@ -5,8 +5,10 @@ using libsignalservice.profiles;
 using libsignalservice.push;
 using libsignalservice.util;
 using libsignalservice.websocket;
+using libsignalservicedotnet.crypto;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
@@ -25,11 +27,11 @@ namespace libsignalservice
         private readonly ILogger Logger = LibsignalLogging.CreateLogger<SignalServiceMessagePipe>();
         private readonly ISignalWebSocketFactory SignalWebSocketFactory;
         private readonly SignalWebSocketConnection Websocket;
-        private readonly ICredentialsProvider CredentialsProvider;
+        private readonly ICredentialsProvider? CredentialsProvider;
         private CancellationToken Token;
 
         internal SignalServiceMessagePipe(CancellationToken token, SignalWebSocketConnection websocket,
-            ICredentialsProvider credentialsProvider, ISignalWebSocketFactory webSocketFactory)
+            ICredentialsProvider? credentialsProvider, ISignalWebSocketFactory webSocketFactory)
         {
             Logger.LogTrace("SignalServiceMessagePipe()");
             Token = token;
@@ -55,6 +57,10 @@ namespace libsignalservice
         public async Task ReadBlocking(IMessagePipeCallback callback)
         {
             Logger.LogTrace("ReadBlocking()");
+            if (CredentialsProvider == null)
+            {
+                throw new ArgumentException("You can't read messages if you haven't specified credentials");
+            }
             WebSocketRequestMessage request = Websocket.ReadRequestBlocking();
 
             if (IsSignalServiceEnvelope(request))
@@ -90,10 +96,19 @@ namespace libsignalservice
         /// Sends a message through the pipe. Blocks until delivery is confirmed or throws an IOException if a timeout occurs.
         /// </summary>
         /// <param name="list"></param>
+        /// <param name="unidentifiedAccess"></param>
         /// <returns></returns>
-        public async Task<SendMessageResponse> Send(OutgoingPushMessageList list)
+        public async Task<SendMessageResponse> Send(OutgoingPushMessageList list, UnidentifiedAccess? unidentifiedAccess)
         {
             Logger.LogTrace("Send()");
+            var headers = new List<string>()
+            {
+                "content-type:application/json"
+            };
+            if (unidentifiedAccess != null)
+            {
+                headers.Add("Unidentified-Access-Key:" + Base64.EncodeBytes(unidentifiedAccess.UnidentifiedAccessKey));
+            }
             WebSocketRequestMessage requestmessage = new WebSocketRequestMessage()
             {
                 Id = BitConverter.ToUInt64(Util.GetSecretBytes(sizeof(long)), 0),
@@ -101,7 +116,7 @@ namespace libsignalservice
                 Path = $"/v1/messages/{list.Destination}",
                 Body = ByteString.CopyFrom(Encoding.UTF8.GetBytes(JsonUtil.ToJson(list)))
             };
-            requestmessage.Headers.Add("content-type:application/json");
+            requestmessage.Headers.AddRange(headers);
             var sendTask = (await Websocket.SendRequest(requestmessage)).Task;
             var timerCancelSource = new CancellationTokenSource();
             if (await Task.WhenAny(sendTask, Task.Delay(10*1000, timerCancelSource.Token)) == sendTask)
@@ -127,10 +142,19 @@ namespace libsignalservice
         /// Fetches a profile from the server. Blocks until the response arrives or a timeout occurs.
         /// </summary>
         /// <param name="address"></param>
+        /// <param name="unidentifiedAccess"></param>
         /// <returns></returns>
-        public async Task<SignalServiceProfile> GetProfile(SignalServiceAddress address)
+        public async Task<SignalServiceProfile> GetProfile(SignalServiceAddress address, UnidentifiedAccess? unidentifiedAccess)
         {
             Logger.LogTrace("GetProfile()");
+            var headers = new List<string>()
+            {
+                "content-type:application/json"
+            };
+            if (unidentifiedAccess != null)
+            {
+                headers.Add("Unidentified-Access-Key:" + Base64.EncodeBytes(unidentifiedAccess.UnidentifiedAccessKey));
+            }
             WebSocketRequestMessage requestMessage = new WebSocketRequestMessage()
             {
                 Id = BitConverter.ToUInt64(Util.GetSecretBytes(sizeof(long)), 0),

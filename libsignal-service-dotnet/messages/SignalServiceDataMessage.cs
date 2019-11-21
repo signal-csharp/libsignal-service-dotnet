@@ -52,9 +52,9 @@ namespace libsignalservice.messages
         {
             public string ContentType { get; }
             public string FileName { get; }
-            public SignalServiceAttachment Thumbnail { get; }
+            public SignalServiceAttachment? Thumbnail { get; }
 
-            public SignalServiceQuotedAttachment(string contentType, string filename, SignalServiceAttachment thumbnail)
+            public SignalServiceQuotedAttachment(string contentType, string filename, SignalServiceAttachment? thumbnail)
             {
                 ContentType = contentType;
                 FileName = filename;
