@@ -62,6 +62,11 @@ namespace libsignalservice
             PushServiceSocket = new PushServiceSocket(configuration, new StaticCredentialsProvider(null, null, null, (int)SignalServiceAddress.DEFAULT_DEVICE_ID), userAgent);
         }
 
+        public async Task<byte[]> GetSenderCertificate(CancellationToken token)
+        {
+            return await PushServiceSocket.GetSenderCertificate(token);
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -128,12 +133,16 @@ namespace libsignalservice
         /// for separate installs.</param>
         /// <param name="fetchesMessages">True if the client does not support GCM</param>
         /// <param name="pin"></param>
+        /// <param name="unidentifiedAccessKey"></param>
+        /// <param name="unrestrictedUnidentifiedAccess"></param>
         /// <returns></returns>
         public async Task VerifyAccountWithCode(CancellationToken token, string verificationCode, string signalingKey,
-                                   uint signalProtocolRegistrationId, bool fetchesMessages, string pin)
+                                   uint signalProtocolRegistrationId, bool fetchesMessages, string pin,
+                                   byte[] unidentifiedAccessKey, bool unrestrictedUnidentifiedAccess)
         {
             await PushServiceSocket.VerifyAccountCode(token, verificationCode, signalingKey,
-                                                 signalProtocolRegistrationId, fetchesMessages, pin);
+                                                 signalProtocolRegistrationId, fetchesMessages, pin,
+                                                 unidentifiedAccessKey, unrestrictedUnidentifiedAccess);
         }
 
         /// <summary>
@@ -147,10 +156,14 @@ namespace libsignalservice
         /// separate installs.</param>
         /// <param name="fetchesMessages">True if the client does not support GCM</param>
         /// <param name="pin"></param>
+        /// <param name="unidentifiedAccessKey"></param>
+        /// <param name="unrestrictedUnidentifiedAccess"></param>
         /// <returns></returns>
-        public async Task SetAccountAttributes(CancellationToken token, string signalingKey, uint signalProtocolRegistrationId, bool fetchesMessages, string pin)
+        public async Task SetAccountAttributes(CancellationToken token, string signalingKey, uint signalProtocolRegistrationId, bool fetchesMessages, string pin,
+            byte[] unidentifiedAccessKey, bool unrestrictedUnidentifiedAccess)
         {
-            await PushServiceSocket.SetAccountAttributes(token, signalingKey, signalProtocolRegistrationId, fetchesMessages, pin);
+            await PushServiceSocket.SetAccountAttributes(token, signalingKey, signalProtocolRegistrationId, fetchesMessages, pin,
+                unidentifiedAccessKey, unrestrictedUnidentifiedAccess);
         }
 
         /// <summary>

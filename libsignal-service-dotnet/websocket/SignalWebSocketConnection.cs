@@ -23,26 +23,32 @@ namespace libsignalservice.websocket
         private readonly ConcurrentDictionary<ulong, TaskCompletionSource<(uint, string)>> OutgoingRequests = new ConcurrentDictionary<ulong, TaskCompletionSource<(uint, string)>>();
 
         private readonly string WsUri;
-        private readonly ICredentialsProvider CredentialsProvider;
+        private readonly ICredentialsProvider? CredentialsProvider;
         private readonly string UserAgent;
         private readonly CancellationToken Token;
         private ISignalWebSocket SignalWebSocket;
 
-        internal SignalWebSocketConnection(CancellationToken token, string httpUri, ICredentialsProvider credentialsProvider,
+        internal SignalWebSocketConnection(CancellationToken token, string httpUri, ICredentialsProvider? credentialsProvider,
             string userAgent, ISignalWebSocketFactory webSocketFactory)
         {
             Token = token;
             CredentialsProvider = credentialsProvider;
             UserAgent = userAgent;
-            if (credentialsProvider.DeviceId == SignalServiceAddress.DEFAULT_DEVICE_ID)
+            string uri = httpUri.Replace("https://", "wss://").Replace("http://", "ws://");
+            if (credentialsProvider != null)
             {
-                WsUri = httpUri.Replace("https://", "wss://")
-                    .Replace("http://", "ws://") + $"/v1/websocket/?login={credentialsProvider.User}&password={credentialsProvider.Password}";
+                if (credentialsProvider.DeviceId == SignalServiceAddress.DEFAULT_DEVICE_ID)
+                {
+                    WsUri = uri + $"/v1/websocket/?login={credentialsProvider.User}&password={credentialsProvider.Password}";
+                }
+                else
+                {
+                    WsUri = uri + $"/v1/websocket/?login={credentialsProvider.User}.{credentialsProvider.DeviceId}&password={credentialsProvider.Password}";
+                }
             }
             else
             {
-                WsUri = httpUri.Replace("https://", "wss://")
-                    .Replace("http://", "ws://") + $"/v1/websocket/?login={credentialsProvider.User}.{credentialsProvider.DeviceId}&password={credentialsProvider.Password}";
+                WsUri = uri + "/v1/websocket/";
             }
             UserAgent = userAgent;
             SignalWebSocket = webSocketFactory.CreateSignalWebSocket(token, new Uri(WsUri));

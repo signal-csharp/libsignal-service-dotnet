@@ -13,21 +13,19 @@ namespace libsignalservice.messages
     {
         public ulong Id { get; }
         public byte[] Key { get; }
-        public string Relay { get; }
         public uint? Size { get; }
-        public byte[] Preview { get; }
-        public byte[] Digest { get; }
-        public string FileName { get; }
+        public byte[]? Preview { get; }
+        public byte[]? Digest { get; }
+        public string? FileName { get; }
         public bool VoiceNote { get; }
         public int Width { get; }
         public int Height { get; }
 
-        public SignalServiceAttachmentPointer(ulong id, string contentType, byte[] key, string relay, uint? size, byte[] preview, int width, int height, byte[] digest, string fileName, bool voiceNote)
+        public SignalServiceAttachmentPointer(ulong id, string contentType, byte[] key, uint? size, byte[]? preview, int width, int height, byte[]? digest, string? fileName, bool voiceNote)
             : base(contentType)
         {
             Id = id;
             Key = key;
-            Relay = relay;
             Size = size;
             Preview = preview;
             Digest = digest;

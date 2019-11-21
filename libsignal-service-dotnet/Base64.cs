@@ -13,9 +13,7 @@ namespace libsignalservice.util
 
         public static string EncodeBytesWithoutPadding(byte[] input)
         {
-            String encoded = null;
-
-            encoded = EncodeBytes(input);
+            string encoded = EncodeBytes(input);
 
             if (encoded[encoded.Length - 2] == '=') return encoded.Substring(0, encoded.Length - 2);
             else if (encoded[encoded.Length - 1] == '=') return encoded.Substring(0, encoded.Length - 1);

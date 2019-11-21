@@ -5,10 +5,10 @@ namespace libsignalservice.util
     {
         public string User { get; }
         public string Password { get; }
-        public string SignalingKey { get; }
+        public string? SignalingKey { get; }
         public int DeviceId { get; }
 
-        public StaticCredentialsProvider(string user, string password, string signalingKey, int deviceId)
+        public StaticCredentialsProvider(string user, string password, string? signalingKey, int deviceId)
         {
             User = user;
             Password = password;

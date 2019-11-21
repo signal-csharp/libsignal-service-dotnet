@@ -6,24 +6,31 @@ namespace libsignalservice.push
     internal class AccountAttributes
     {
         [JsonProperty("signalingKey", Required = Required.Always)]
-        private string SignalingKey { get; }
+        public string SignalingKey { get; }
 
         [JsonProperty("registrationId", Required = Required.Always)]
-        private uint RegistrationId { get; }
+        public uint RegistrationId { get; }
 
         [JsonProperty("voice", Required = Required.Always)]
-        private bool Voice { get; }
+        public bool Voice { get; }
 
         [JsonProperty("video", Required = Required.Always)]
-        private bool Video { get; }
+        public bool Video { get; }
 
         [JsonProperty("fetchesMessages", Required = Required.Always)]
-        private bool FetchesMessages { get; }
+        public bool FetchesMessages { get; }
 
         [JsonProperty("pin")]
-        private string Pin { get; }
+        public string Pin { get; }
 
-        public AccountAttributes(string signalingKey, uint registrationId, bool fetchesMessages, string pin)
+        [JsonProperty("unidentifiedAccessKey")]
+        public byte[] UnidentifiedAccessKey { get; }
+
+        [JsonProperty("unrestrictedUnidentifiedAccess")]
+        public bool UnrestrictedUnidentifiedAccess { get; }
+
+        public AccountAttributes(string signalingKey, uint registrationId, bool fetchesMessages, string pin,
+             byte[] unidentifiedAccessKey, bool unrestrictedUnidentifiedAccess)
         {
             SignalingKey = signalingKey;
             RegistrationId = registrationId;
@@ -31,6 +38,8 @@ namespace libsignalservice.push
             Video = true;
             FetchesMessages = fetchesMessages;
             Pin = pin;
+            UnidentifiedAccessKey = unidentifiedAccessKey;
+            UnrestrictedUnidentifiedAccess = unrestrictedUnidentifiedAccess;
         }
     }
 }

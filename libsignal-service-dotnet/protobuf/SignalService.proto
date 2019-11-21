@@ -6,11 +6,12 @@ option java_outer_classname = "SignalServiceProtos";
 
 message Envelope {
   enum Type {
-    UNKNOWN       = 0;
-    CIPHERTEXT    = 1;
-    KEY_EXCHANGE  = 2;
-    PREKEY_BUNDLE = 3;
-    RECEIPT       = 5;
+    UNKNOWN             = 0;
+    CIPHERTEXT          = 1;
+    KEY_EXCHANGE        = 2;
+    PREKEY_BUNDLE       = 3;
+    RECEIPT             = 5;
+    UNIDENTIFIED_SENDER = 6;
   }
 
   oneof type_oneof						{ Type   type          = 1; }
@@ -20,6 +21,8 @@ message Envelope {
   oneof timestamp_oneof					{ uint64 timestamp     = 5; }
   oneof legacyMessage_oneof				{ bytes  legacyMessage = 6; } // Contains an encrypted DataMessage
   oneof content_oneof					{ bytes  content       = 8; } // Contains an encrypted Content
+  oneof serverGUid_oneof                { string serverGuid      = 9; }
+  oneof serverTimestamp_oneof           { uint64 serverTimestamp = 10; }
 }
 
 message Content {
@@ -194,10 +197,15 @@ message Verified {
 
 message SyncMessage {
   message Sent {
+    message UnidentifiedDeliveryStatus {
+      oneof destination_oneof               { string destination  = 1; }
+      oneof unidentified_oneof              { bool   unidentified = 2; }
+    }
     oneof destination_oneof					{ string      destination              = 1; }
     oneof timestamp_oneof					{ uint64      timestamp                = 2; }
     oneof message_oneof						{ DataMessage message                  = 3; }
     oneof expirationStartTimestamp_oneof	{ uint64	     expirationStartTimestamp = 4; }
+    repeated UnidentifiedDeliveryStatus unidentifiedStatus       = 5;
   }
 
   message Contacts {
@@ -233,6 +241,7 @@ message SyncMessage {
 
   message Configuration {
     oneof readReceipts_oneof { bool readReceipts = 1; }
+    oneof unidentifiedDeliveryIndicators_oneof { bool unidentifiedDeliveryIndicators = 2; }
   }
 
   oneof sent_oneof							{ Sent     sent     = 1; }

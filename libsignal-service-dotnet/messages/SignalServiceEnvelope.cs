@@ -30,7 +30,7 @@ namespace libsignalservice.messages
         private static readonly int IV_LENGTH = 16;
         private static readonly int CIPHERTEXT_OFFSET = IV_OFFSET + IV_LENGTH;
 
-        private readonly Envelope envelope;
+        public Envelope Envelope { get; }
 
 
         public SignalServiceEnvelope(String message, String signalingKey)
@@ -53,25 +53,42 @@ namespace libsignalservice.messages
 
             VerifyMac(ciphertext, macKey);
 
-            envelope = Envelope.Parser.ParseFrom(GetPlaintext(ciphertext, cipherKey));
+            Envelope = Envelope.Parser.ParseFrom(GetPlaintext(ciphertext, cipherKey));
         }
 
-        public SignalServiceEnvelope(int type, string source, int sourceDevice,
-            string relay, long timestamp, byte[] legacyMessage, byte[] content)
+        public SignalServiceEnvelope(int type, string sender, int senderDevice,
+            long timestamp, byte[] legacyMessage, byte[] content, long serverTimestamp, string? uuid)
         {
             Envelope envelope = new Envelope
             {
                 Type = (Envelope.Types.Type)type,
-                Source = source,
-                SourceDevice = (uint)sourceDevice,
-                Relay = relay,
-                Timestamp = (ulong)timestamp
+                Source = sender,
+                SourceDevice = (uint)senderDevice,
+                Timestamp = (ulong)timestamp,
+                ServerTimestamp = (ulong) serverTimestamp
             };
 
+            if (uuid != null) envelope.ServerGuid = uuid;
             if (legacyMessage != null) envelope.LegacyMessage = ByteString.CopyFrom(legacyMessage);
             if (content != null) envelope.Content = ByteString.CopyFrom(content);
 
-            this.envelope = envelope;
+            Envelope = envelope;
+        }
+
+        public SignalServiceEnvelope(int type, long timestamp, byte[] legacyMessage, byte[] content, long serverTimestamp, String uuid)
+        {
+            Envelope envelope = new Envelope
+            {
+                Type = (Envelope.Types.Type)type,
+                Timestamp = (ulong)timestamp,
+                ServerTimestamp = (ulong)serverTimestamp
+            };
+
+            if (uuid != null) envelope.ServerGuid = uuid;
+            if (legacyMessage != null) envelope.LegacyMessage = ByteString.CopyFrom(legacyMessage);
+            if (content != null) envelope.Content = ByteString.CopyFrom(content);
+
+            Envelope = envelope;
         }
 
         /// <summary>
@@ -80,7 +97,7 @@ namespace libsignalservice.messages
         /// <returns>The envelope's sender.</returns>
         public string GetSource()
         {
-            return envelope.Source;
+            return Envelope.Source;
         }
 
         /// <summary>
@@ -89,7 +106,7 @@ namespace libsignalservice.messages
         /// <returns>The envelope's sender device ID.</returns>
         public int GetSourceDevice()
         {
-            return (int)envelope.SourceDevice;
+            return (int)Envelope.SourceDevice;
         }
 
         /// <summary>
@@ -98,7 +115,7 @@ namespace libsignalservice.messages
         /// <returns>The envelope's sender as a SignalServiceAddress.</returns>
         public SignalServiceAddress GetSourceAddress()
         {
-            return new SignalServiceAddress(envelope.Source, envelope.RelayOneofCase == Envelope.RelayOneofOneofCase.Relay ? envelope.Relay : null);
+            return new SignalServiceAddress(Envelope.Source);
         }
 
         /// <summary>
@@ -107,16 +124,7 @@ namespace libsignalservice.messages
         /// <returns>The envelope content type.</returns>
         public int GetEnvelopeType()
         {
-            return (int)envelope.Type;
-        }
-
-        /// <summary>
-        /// The federated server this envelope came from.
-        /// </summary>
-        /// <returns>The federated server this envelope came from.</returns>
-        public string GetRelay()
-        {
-            return envelope.Relay;
+            return (int)Envelope.Type;
         }
 
         /// <summary>
@@ -125,7 +133,7 @@ namespace libsignalservice.messages
         /// <returns>The timestamp this envelope was sent.</returns>
         public long GetTimestamp()
         {
-            return (long)envelope.Timestamp;
+            return (long)Envelope.Timestamp;
         }
 
         /// <summary>
@@ -134,7 +142,7 @@ namespace libsignalservice.messages
         /// <returns>Whether the envelope contains a SignalServiceDataMessage</returns>
         public bool HasLegacyMessage()
         {
-            return envelope.LegacyMessageOneofCase == Envelope.LegacyMessageOneofOneofCase.LegacyMessage;
+            return Envelope.LegacyMessageOneofCase == Envelope.LegacyMessageOneofOneofCase.LegacyMessage;
         }
 
         /// <summary>
@@ -143,7 +151,7 @@ namespace libsignalservice.messages
         /// <returns>The envelope's containing SignalService message.</returns>
         public byte[] GetLegacyMessage()
         {
-            return envelope.LegacyMessage.ToByteArray();
+            return Envelope.LegacyMessage.ToByteArray();
         }
 
         /// <summary>
@@ -152,7 +160,7 @@ namespace libsignalservice.messages
         /// <returns>Whether the envelope contains an encrypted SignalServiceContent</returns>
         public bool HasContent()
         {
-            return envelope.ContentOneofCase == Envelope.ContentOneofOneofCase.Content;
+            return Envelope.ContentOneofCase == Envelope.ContentOneofOneofCase.Content;
         }
 
         /// <summary>
@@ -161,7 +169,7 @@ namespace libsignalservice.messages
         /// <returns>The envelope's containing message.</returns>
         public byte[] GetContent()
         {
-            return envelope.Content.ToByteArray();
+            return Envelope.Content.ToByteArray();
         }
 
         /// <summary>
@@ -170,7 +178,7 @@ namespace libsignalservice.messages
         /// <returns>True if the containing message is a <see cref="libsignal.protocol.SignalMessage"/></returns>
         public bool IsSignalMessage()
         {
-            return envelope.Type == Envelope.Types.Type.Ciphertext;
+            return Envelope.Type == Envelope.Types.Type.Ciphertext;
         }
 
         /// <summary>
@@ -179,7 +187,7 @@ namespace libsignalservice.messages
         /// <returns>True if the containing message is a <see cref="libsignal.protocol.PreKeySignalMessage"/></returns>
         public bool IsPreKeySignalMessage()
         {
-            return envelope.Type == Envelope.Types.Type.PrekeyBundle;
+            return Envelope.Type == Envelope.Types.Type.PrekeyBundle;
         }
 
         /// <summary>
@@ -188,7 +196,12 @@ namespace libsignalservice.messages
         /// <returns>True if the containing message is a delivery receipt.</returns>
         public bool IsReceipt()
         {
-            return envelope.Type == Envelope.Types.Type.Receipt;
+            return Envelope.Type == Envelope.Types.Type.Receipt;
+        }
+
+        public bool IsUnidentifiedSender()
+        {
+            return Envelope.Type == Envelope.Types.Type.UnidentifiedSender;
         }
 
         private byte[] GetPlaintext(byte[] ciphertext, byte[] cipherKey) //throws IOException

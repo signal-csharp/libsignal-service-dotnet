@@ -28,9 +28,9 @@ namespace libsignalservice.messages
 
         public byte[] GroupId { get; set; }
         public GroupType Type { get; set; }
-        public String Name { get; set; }
-        public IList<String> Members { get; set; }
-        public SignalServiceAttachment Avatar { get; set; }
+        public string? Name { get; set; }
+        public IList<string>? Members { get; set; }
+        public SignalServiceAttachment? Avatar { get; set; }
     }
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }
