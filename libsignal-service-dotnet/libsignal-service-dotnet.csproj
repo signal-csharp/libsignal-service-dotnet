@@ -5,7 +5,7 @@
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <IncludeSource>True</IncludeSource>
     <IncludeSymbols>True</IncludeSymbols>
-    <Version>2.8.1</Version>
+    <Version>2.10.0</Version>
     <Authors>Trolldemorted, golf1052, langboost, smndtrl</Authors>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageLicenseUrl>https://www.gnu.org/licenses/gpl-3.0.html</PackageLicenseUrl>
@@ -15,7 +15,7 @@
     <PackageTags>libsignal libsignal-service libsignal-service-dotnet signal messenger</PackageTags>
     <IncludeSymbols>true</IncludeSymbols>
     <IncludeSource>true</IncludeSource>
-      <LangVersion>8.0</LangVersion>
+    <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
