@@ -16,6 +16,9 @@ namespace libsignalservice.contacts.crypto
 {
     public class ContactDiscoveryCipher
     {
+        private const int TAG_LENGTH_BYTES = 16;
+        private const int TAG_LENGTH_BITS = TAG_LENGTH_BYTES * 8;
+
         public DiscoveryRequest CreateDiscoveryRequest(IList<string> addressBook, RemoteAttestation remoteAttestation)
         {
             try
@@ -32,16 +35,19 @@ namespace libsignalservice.contacts.crypto
                 byte[] nonce = Util.GetSecretBytes(12);
                 GcmBlockCipher cipher = new GcmBlockCipher(new AesEngine());
 
-                cipher.Init(true, new AeadParameters(new KeyParameter(remoteAttestation.Keys.ClientKey), 128, nonce));
+                cipher.Init(true, new AeadParameters(new KeyParameter(remoteAttestation.Keys.ClientKey), TAG_LENGTH_BITS, nonce));
                 cipher.ProcessAadBytes(remoteAttestation.RequestId, 0, remoteAttestation.RequestId.Length);
 
-                byte[] ciphertext = new byte[cipher.GetUpdateOutputSize(requestData.Length)];
-                cipher.ProcessBytes(requestData, 0, requestData.Length, ciphertext, 0);
+                byte[] cipherText1 = new byte[cipher.GetUpdateOutputSize(requestData.Length)];
+                cipher.ProcessBytes(requestData, 0, requestData.Length, cipherText1, 0);
 
-                byte[] tag = new byte[cipher.GetOutputSize(0)];
-                cipher.DoFinal(tag, 0);
+                byte[] cipherText2 = new byte[cipher.GetOutputSize(0)];
+                cipher.DoFinal(cipherText2, 0);
 
-                return new DiscoveryRequest(addressBook.Count, remoteAttestation.RequestId, nonce, ciphertext, tag);
+                byte[] cipherText = ByteUtil.combine(cipherText1, cipherText2);
+                byte[][] parts = ByteUtil.split(cipherText, cipherText.Length - TAG_LENGTH_BYTES, TAG_LENGTH_BYTES);
+
+                return new DiscoveryRequest(addressBook.Count, remoteAttestation.RequestId, nonce, parts[0], parts[1]);
             }
             catch (Exception ex) when (ex is IOException || ex is InvalidCipherTextException)
             {
@@ -112,6 +118,11 @@ namespace libsignalservice.contacts.crypto
 
         public void VerifyIasSignature(string certificates, string signatureBody, string signature, Quote quote)
         {
+            if (string.IsNullOrWhiteSpace(certificates))
+            {
+                throw new CryptographicException("No certificates.");
+            }
+
             try
             {
                 SigningCertificate signingCertificate = new SigningCertificate(certificates);
@@ -124,7 +135,9 @@ namespace libsignalservice.contacts.crypto
                     throw new CryptographicException($"Signed quote is not the same as RA quote: {Hex.ToStringCondensed(signatureBodyEntity.IsvEnclaveQuoteBody!)} vs {Hex.ToStringCondensed(quote.QuoteBytes)}");
                 }
 
-                if ("OK" != signatureBodyEntity.IsvEnclaveQuoteStatus)
+                // TODO: "GROUP_OUT_OF_DATE" should only be allowed during testing
+                if ("OK" != signatureBodyEntity.IsvEnclaveQuoteStatus && "GROUP_OUT_OF_DATE" != signatureBodyEntity.IsvEnclaveQuoteStatus)
+                //if ("OK" != signatureBodyEntity.IsvEnclaveQuoteStatus)
                 {
                     throw new CryptographicException($"Quote status is: {signatureBodyEntity.IsvEnclaveQuoteStatus}");
                 }

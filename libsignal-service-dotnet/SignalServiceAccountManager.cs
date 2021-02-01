@@ -14,11 +14,13 @@ using libsignalservice.push;
 using libsignalservice.push.http;
 using libsignalservice.util;
 using libsignalservice.websocket;
+using Microsoft.Extensions.Logging;
 using org.whispersystems.curve25519;
 using Org.BouncyCastle.Crypto;
 using Strilanc.Value;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -31,6 +33,7 @@ namespace libsignalservice
     /// </summary>
     public class SignalServiceAccountManager
     {
+        private readonly ILogger Logger = LibsignalLogging.CreateLogger<SignalServiceAccountManager>();
         private PushServiceSocket PushServiceSocket;
         private static ProvisioningSocket ProvisioningSocket;
         private SignalServiceConfiguration Configuration;
@@ -260,13 +263,13 @@ namespace libsignalservice
             }
             try
             {
-                string authorizationToken = await PushServiceSocket.GetContactDiscoveryAuthorization(token);
+                string authorization = await PushServiceSocket.GetContactDiscoveryAuthorization(token);
                 Curve25519 curve = Curve25519.getInstance(Curve25519.BEST);
                 org.whispersystems.curve25519.Curve25519KeyPair keyPair = curve.generateKeyPair();
 
                 ContactDiscoveryCipher cipher = new ContactDiscoveryCipher();
                 RemoteAttestationRequest attestationRequest = new RemoteAttestationRequest(keyPair.getPublicKey());
-                (RemoteAttestationResponse, IList<string>) attestationResponse = await PushServiceSocket.GetContactDiscoveryRemoteAttestation(authorizationToken, attestationRequest, mrenclave, token);
+                (RemoteAttestationResponse, IList<string>) attestationResponse = await PushServiceSocket.GetContactDiscoveryRemoteAttestation(authorization, attestationRequest, mrenclave, token);
 
                 RemoteAttestationKeys keys = new RemoteAttestationKeys(keyPair, attestationResponse.Item1.ServerEphemeralPublic!, attestationResponse.Item1.ServerStaticPublic!);
                 Quote quote = new Quote(attestationResponse.Item1.Quote!);
@@ -284,7 +287,7 @@ namespace libsignalservice
                 }
 
                 DiscoveryRequest request = cipher.CreateDiscoveryRequest(addressBook, remoteAttestation);
-                DiscoveryResponse response = await PushServiceSocket.GetContactDiscoveryRegisteredUsers(authorizationToken, request, attestationResponse.Item2, mrenclave, token);
+                DiscoveryResponse response = await PushServiceSocket.GetContactDiscoveryRegisteredUsers(authorization, request, attestationResponse.Item2, mrenclave, token);
                 byte[] data = cipher.GetDiscoveryResponseData(response, remoteAttestation);
 
                 IEnumerator<string> addressBookIterator = addressBook.GetEnumerator();
@@ -304,6 +307,74 @@ namespace libsignalservice
             catch (InvalidCipherTextException ex)
             {
                 throw new UnauthenticatedResponseException(ex);
+            }
+        }
+
+        public async Task ReportContactDiscoveryServiceMatch(CancellationToken? token = null)
+        {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            try
+            {
+                await PushServiceSocket.ReportContactDiscoveryServiceMatch(token);
+            }
+            catch (IOException ex)
+            {
+                Logger.LogInformation(new EventId(), ex, "Request to indicate a contact discovery result match failed. Ignoring.");
+            }
+        }
+        
+        public async Task ReportContactDiscoveryServiceMismatch(CancellationToken? token = null)
+        {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            try
+            {
+                await PushServiceSocket.ReportContactDiscoveryServiceMismatch();
+            }
+            catch (IOException ex)
+            {
+                Logger.LogInformation(new EventId(), ex, "Request to indicate a contact discovery result mismatch failed. Ignoring.");
+            }
+        }
+
+        public async Task ReportContactDiscoveryServiceAttestationError(CancellationToken? token = null)
+        {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            try
+            {
+                await PushServiceSocket.ReportContactDiscoveryServiceAttestationError(token);
+            }
+            catch (IOException ex)
+            {
+                Logger.LogInformation(new EventId(), ex, "Request to indicate a contact discovery attestation error failed. Ignoring.");
+            }
+        }
+
+        public async Task ReportContactDiscoveryServiceUnexpectedError(CancellationToken? token = null)
+        {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            try
+            {
+                await PushServiceSocket.ReportContactDiscoveryServiceUnexpectedError(token);
+            }
+            catch (IOException ex)
+            {
+                Logger.LogInformation(new EventId(), ex, "Request to indicate a contact discovery unexpected error failed. Ignoring.");
             }
         }
 

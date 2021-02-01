@@ -494,25 +494,26 @@ namespace libsignalservice.push
                 token = CancellationToken.None;
             }
             string response = await MakeServiceRequestAsync(token.Value, DIRECTORY_AUTH_PATH, "GET", null);
-            return JsonUtil.FromJson<AuthorizationToken>(response).Token;
+            ContactDiscoveryCredentials credentials = JsonUtil.FromJson<ContactDiscoveryCredentials>(response);
+            return new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.UTF8.GetBytes($"{credentials.Username}:{credentials.Password}"))).ToString();
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="token"></param>
-        /// <param name="authorizationToken"></param>
+        /// <param name="authorization"></param>
         /// <param name="request"></param>
         /// <param name="mrenclave"></param>
+        /// <param name="token"></param>
         /// <returns></returns>
         /// <exception cref="IOException"></exception>
-        public async Task<(RemoteAttestationResponse, IList<string>)> GetContactDiscoveryRemoteAttestation(string authorizationToken, RemoteAttestationRequest request, string mrenclave, CancellationToken? token = null)
+        public async Task<(RemoteAttestationResponse, IList<string>)> GetContactDiscoveryRemoteAttestation(string authorization, RemoteAttestationRequest request, string mrenclave, CancellationToken? token = null)
         {
             if (token == null)
             {
                 token = CancellationToken.None;
             }
-            HttpResponseMessage response = await MakeContactDiscoveryRequestAsync(authorizationToken, new List<string>(), $"/v1/attestation/{mrenclave}", "GET", JsonUtil.ToJson(request), token);
+            HttpResponseMessage response = await MakeContactDiscoveryRequestAsync(authorization, new List<string>(), $"/v1/attestation/{mrenclave}", "PUT", JsonUtil.ToJson(request), token);
             HttpContent body = response.Content;
             IEnumerable<string> rawCookies = response.Headers.GetValues("Set-Cookie");
             List<string> cookies = new List<string>();
@@ -532,14 +533,68 @@ namespace libsignalservice.push
             }
         }
 
+        public async Task ReportContactDiscoveryServiceMatch(CancellationToken? token = null)
+        {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+            await MakeServiceRequestAsync(token.Value, "/v1/directory/feedback/ok", "PUT", "");
+        }
+
+        public async Task ReportContactDiscoveryServiceMismatch(CancellationToken? token = null)
+        {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+            await MakeServiceRequestAsync(token.Value, "/v1/directory/feedback/mismatch", "PUT", "");
+        }
+
+        public async Task ReportContactDiscoveryServiceServerError(CancellationToken? token = null)
+        {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+            await MakeServiceRequestAsync(token.Value, "/v1/directory/feedback/server-error", "PUT", "");
+        }
+
+        public async Task ReportContactDiscoveryServiceClientError(CancellationToken? token = null)
+        {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+            await MakeServiceRequestAsync(token.Value, "/v1/directory/feedback/client-error", "PUT", "");
+        }
+
+        public async Task ReportContactDiscoveryServiceAttestationError(CancellationToken? token = null)
+        {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+            await MakeServiceRequestAsync(token.Value, "/v1/directory/feedback/attestation-error", "PUT", "");
+        }
+
+        public async Task ReportContactDiscoveryServiceUnexpectedError(CancellationToken? token = null)
+        {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+            await MakeServiceRequestAsync(token.Value, "/v1/directory/feedback/unexpected-error", "PUT", "");
+        }
+
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="token"></param>
         /// <param name="authorizationToken"></param>
         /// <param name="request"></param>
         /// <param name="cookies"></param>
         /// <param name="mrenclave"></param>
+        /// <param name="token"></param>
         /// <returns></returns>
         /// <exception cref="IOException"></exception>
         public async Task<DiscoveryResponse> GetContactDiscoveryRegisteredUsers(string authorizationToken, DiscoveryRequest request, IList<string> cookies, string mrenclave, CancellationToken? token = null)
@@ -791,7 +846,7 @@ namespace libsignalservice.push
             return responseBody;
         }
 
-        private async Task<HttpResponseMessage> GetServiceConnectionAsync(CancellationToken token, string urlFragment, string method, string body, UnidentifiedAccess? unidentifiedAccess)
+        private async Task<HttpResponseMessage> GetServiceConnectionAsync(CancellationToken token, string urlFragment, string method, string? body, UnidentifiedAccess? unidentifiedAccess)
         {
             try
             {
