@@ -1,3 +1,4 @@
+using libsignalservice.util;
 using Newtonsoft.Json;
 
 namespace libsignalservice.contacts.entities
@@ -34,7 +35,7 @@ namespace libsignalservice.contacts.entities
 
         public override string ToString()
         {
-            return $"{{addressCount: {AddressCount}, ticket: {HelperMethods.ByteArrayToHexString(RequestId)}, iv: {HelperMethods.ByteArrayToHexString(Iv)}, data: {HelperMethods.ByteArrayToHexString(Data)}, mac: {HelperMethods.ByteArrayToHexString(Mac)}}}";
+            return $"{{addressCount: {AddressCount}, ticket: {Hex.ToString(RequestId!)}, iv: {Hex.ToString(Iv!)}, data: {Hex.ToString(Data!)}, mac: {Hex.ToString(Mac!)}}}";
         }
     }
 }
