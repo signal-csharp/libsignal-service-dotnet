@@ -6,12 +6,16 @@ using libsignal.state;
 using libsignal.util;
 using libsignal_service_dotnet.messages.calls;
 using libsignalservice.configuration;
+using libsignalservice.contacts.crypto;
+using libsignalservice.contacts.entities;
 using libsignalservice.crypto;
 using libsignalservice.messages.multidevice;
 using libsignalservice.push;
 using libsignalservice.push.http;
 using libsignalservice.util;
 using libsignalservice.websocket;
+using org.whispersystems.curve25519;
+using Org.BouncyCastle.Crypto;
 using Strilanc.Value;
 using System;
 using System.Collections.Generic;
@@ -246,6 +250,61 @@ namespace libsignalservice
             }
 
             return activeTokens;
+        }
+
+        public async Task<IList<string>> GetRegisteredUsers(IList<string> e164numbers, string mrenclave, CancellationToken? token = null)
+        {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+            try
+            {
+                string authorizationToken = await PushServiceSocket.GetContactDiscoveryAuthorization(token);
+                Curve25519 curve = Curve25519.getInstance(Curve25519.BEST);
+                org.whispersystems.curve25519.Curve25519KeyPair keyPair = curve.generateKeyPair();
+
+                ContactDiscoveryCipher cipher = new ContactDiscoveryCipher();
+                RemoteAttestationRequest attestationRequest = new RemoteAttestationRequest(keyPair.getPublicKey());
+                (RemoteAttestationResponse, IList<string>) attestationResponse = await PushServiceSocket.GetContactDiscoveryRemoteAttestation(authorizationToken, attestationRequest, mrenclave, token);
+
+                RemoteAttestationKeys keys = new RemoteAttestationKeys(keyPair, attestationResponse.Item1.ServerEphemeralPublic!, attestationResponse.Item1.ServerStaticPublic!);
+                Quote quote = new Quote(attestationResponse.Item1.Quote!);
+                byte[] requestId = cipher.GetRequestId(keys, attestationResponse.Item1);
+
+                cipher.VerifyServerQuote(quote, attestationResponse.Item1.ServerStaticPublic!, mrenclave);
+                cipher.VerifyIasSignature(attestationResponse.Item1.Certificates!, attestationResponse.Item1.SignatureBody!, attestationResponse.Item1.Signature!, quote);
+
+                RemoteAttestation remoteAttestation = new RemoteAttestation(requestId, keys);
+                List<string> addressBook = new List<string>();
+
+                foreach (string e164number in e164numbers)
+                {
+                    addressBook.Add(e164number.Substring(1));
+                }
+
+                DiscoveryRequest request = cipher.CreateDiscoveryRequest(addressBook, remoteAttestation);
+                DiscoveryResponse response = await PushServiceSocket.GetContactDiscoveryRegisteredUsers(authorizationToken, request, attestationResponse.Item2, mrenclave, token);
+                byte[] data = cipher.GetDiscoveryResponseData(response, remoteAttestation);
+
+                IEnumerator<string> addressBookIterator = addressBook.GetEnumerator();
+                List<string> results = new List<string>();
+
+                foreach (byte aData in data)
+                {
+                    addressBookIterator.MoveNext();
+                    string candidate = addressBookIterator.Current;
+
+                    if (aData != 0)
+                        results.Add($"+{candidate}");
+                }
+
+                return results;
+            }
+            catch (InvalidCipherTextException ex)
+            {
+                throw new UnauthenticatedResponseException(ex);
+            }
         }
 
         /// <summary>

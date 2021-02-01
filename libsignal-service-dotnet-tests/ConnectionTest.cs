@@ -1,4 +1,4 @@
-﻿using libsignalservice;
+using libsignalservice;
 using libsignalservice.configuration;
 using libsignalservice.push.exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -14,7 +14,7 @@ namespace libsignal_service_dotnet_tests
     public class ConnectionTest
     {
         public static SignalServiceUrl[] ServiceUrls = new SignalServiceUrl[] { new SignalServiceUrl("https://textsecure-service.whispersystems.org") };
-        public static SignalServiceConfiguration ServiceConfiguration = new SignalServiceConfiguration(ServiceUrls, null);
+        public static SignalServiceConfiguration ServiceConfiguration = new SignalServiceConfiguration(ServiceUrls, null, null);
         public static string UserAgent = "libsignal-service-dotnet-tests";
 
         [TestMethod]
