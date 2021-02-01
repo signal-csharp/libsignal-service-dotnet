@@ -18,6 +18,7 @@ namespace libsignalservice.contacts.crypto
     {
         private const int TAG_LENGTH_BYTES = 16;
         private const int TAG_LENGTH_BITS = TAG_LENGTH_BYTES * 8;
+        private const long SIGNATURE_BODY_VERSION = 3;
 
         public DiscoveryRequest CreateDiscoveryRequest(IList<string> addressBook, RemoteAttestation remoteAttestation)
         {
@@ -104,10 +105,9 @@ namespace libsignalservice.contacts.crypto
                     throw new UnauthenticatedQuoteException($"The response quote has the wrong mrenclave value in it: {Hex.ToStringCondensed(quote.Mrenclave)}");
                 }
 
-                if (!quote.IsDebugQuote())
+                if (quote.IsDebugQuote())
                 {
-                    // XXX Invert in production
-                    throw new UnauthenticatedQuoteException("Expecting debug quote!");
+                    throw new UnauthenticatedQuoteException("Received quote for debuggable enclave");
                 }
             }
             catch (IOException ex)
@@ -130,14 +130,17 @@ namespace libsignalservice.contacts.crypto
 
                 SignatureBodyEntity signatureBodyEntity = JsonUtil.FromJson<SignatureBodyEntity>(signatureBody);
 
+                if (signatureBodyEntity.Version != SIGNATURE_BODY_VERSION)
+                {
+                    throw new CryptographicException($"Unexpected signed quote version {signatureBodyEntity.Version}");
+                }
+
                 if (!Enumerable.SequenceEqual(ByteUtil.trim(signatureBodyEntity.IsvEnclaveQuoteBody, 432), ByteUtil.trim(quote.QuoteBytes, 432)))
                 {
                     throw new CryptographicException($"Signed quote is not the same as RA quote: {Hex.ToStringCondensed(signatureBodyEntity.IsvEnclaveQuoteBody!)} vs {Hex.ToStringCondensed(quote.QuoteBytes)}");
                 }
 
-                // TODO: "GROUP_OUT_OF_DATE" should only be allowed during testing
-                if ("OK" != signatureBodyEntity.IsvEnclaveQuoteStatus && "GROUP_OUT_OF_DATE" != signatureBodyEntity.IsvEnclaveQuoteStatus)
-                //if ("OK" != signatureBodyEntity.IsvEnclaveQuoteStatus)
+                if ("OK" != signatureBodyEntity.IsvEnclaveQuoteStatus)
                 {
                     throw new CryptographicException($"Quote status is: {signatureBodyEntity.IsvEnclaveQuoteStatus}");
                 }
