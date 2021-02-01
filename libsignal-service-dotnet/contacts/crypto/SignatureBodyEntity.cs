@@ -10,6 +10,9 @@ namespace libsignalservice.contacts.crypto
         [JsonProperty("isvEnclaveQuoteStatus")]
         public string? IsvEnclaveQuoteStatus { get; }
 
+        [JsonProperty("version")]
+        public long Version { get; }
+
         [JsonProperty("timestamp")]
         public string? Timestamp { get; }
     }
