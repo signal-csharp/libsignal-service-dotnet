@@ -1,9 +1,11 @@
 using libsignalservice;
 using libsignalservice.configuration;
 using libsignalservice.push.exceptions;
+using libsignalservice.util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,7 +16,8 @@ namespace libsignal_service_dotnet_tests
     public class ConnectionTest
     {
         public static SignalServiceUrl[] ServiceUrls = new SignalServiceUrl[] { new SignalServiceUrl("https://textsecure-service.whispersystems.org") };
-        public static SignalServiceConfiguration ServiceConfiguration = new SignalServiceConfiguration(ServiceUrls, null, null);
+        public static SignalContactDiscoveryUrl[] ContactDiscoveryUrls = new SignalContactDiscoveryUrl[] { new SignalContactDiscoveryUrl("https://api.directory.signal.org") };
+        public static SignalServiceConfiguration ServiceConfiguration = new SignalServiceConfiguration(ServiceUrls, null, ContactDiscoveryUrls);
         public static string UserAgent = "libsignal-service-dotnet-tests";
 
         [TestMethod]
@@ -27,6 +30,14 @@ namespace libsignal_service_dotnet_tests
                 var turn = await pushServiceSocket.GetTurnServerInfo(cancelSource.Token);
             }
             catch (AuthorizationFailedException) { }
+        }
+
+        [TestMethod]
+        public async Task TestSignalConnections()
+        {
+            using HttpClient httpClient = Util.CreateHttpClient();
+            await httpClient.GetAsync(ServiceUrls[0].Url);
+            await httpClient.GetAsync(ContactDiscoveryUrls[0].Url);
         }
     }
 }
