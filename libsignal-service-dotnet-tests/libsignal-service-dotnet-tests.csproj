@@ -1,9 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <RootNamespace>libsignal_service_dotnet_tests</RootNamespace>
-
+    <LangVersion>8.0</LangVersion>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
