@@ -3,8 +3,11 @@ using Newtonsoft.Json;
 
 namespace libsignalservice.contacts.entities
 {
-    public class DiscoveryResponse
+    internal class DiscoveryResponse
     {
+        [JsonProperty("requestId")]
+        public byte[]? RequestId { get; }
+
         [JsonProperty("iv")]
         public byte[]? Iv { get; }
 
@@ -13,17 +16,6 @@ namespace libsignalservice.contacts.entities
 
         [JsonProperty("mac")]
         public byte[]? Mac { get; }
-
-        public DiscoveryResponse()
-        {
-        }
-
-        public DiscoveryResponse(byte[] iv, byte[] data, byte[] mac)
-        {
-            Iv = iv;
-            Data = data;
-            Mac = mac;
-        }
 
         public override string ToString()
         {

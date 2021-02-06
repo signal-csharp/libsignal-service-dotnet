@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 namespace libsignalservice.push
 {
-    public class ContactDiscoveryCredentials
+    internal class ContactDiscoveryCredentials
     {
         [JsonProperty("username")]
         public string? Username { get; set; }

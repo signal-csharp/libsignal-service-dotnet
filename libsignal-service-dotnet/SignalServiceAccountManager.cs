@@ -1,3 +1,11 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net.Http;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using Google.Protobuf;
 using libsignal;
 using libsignal.ecc;
@@ -15,15 +23,8 @@ using libsignalservice.push.http;
 using libsignalservice.util;
 using libsignalservice.websocket;
 using Microsoft.Extensions.Logging;
-using org.whispersystems.curve25519;
 using Org.BouncyCastle.Crypto;
 using Strilanc.Value;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace libsignalservice
 {
@@ -34,11 +35,14 @@ namespace libsignalservice
     public class SignalServiceAccountManager
     {
         private readonly ILogger Logger = LibsignalLogging.CreateLogger<SignalServiceAccountManager>();
-        private PushServiceSocket PushServiceSocket;
-        private static ProvisioningSocket ProvisioningSocket;
-        private SignalServiceConfiguration Configuration;
-        private readonly string User;
-        private readonly string UserAgent;
+
+        private static ProvisioningSocket? ProvisioningSocket;
+
+        private PushServiceSocket pushServiceSocket;
+        private ICredentialsProvider credentials;
+        private readonly SignalServiceConfiguration configuration;
+        private readonly string userAgent;
+        private readonly HttpClient httpClient;
 
         /// <summary>
         /// Construct a SignalServivceAccountManager
@@ -49,11 +53,9 @@ namespace libsignalservice
         /// <param name="deviceId">A Signal Service device id</param>
         /// <param name="userAgent">A string which identifies the client software</param>
         public SignalServiceAccountManager(SignalServiceConfiguration configuration,
-                                        string user, string password, int deviceId, string userAgent)
+            string user, string password, int deviceId, string userAgent, HttpClient httpClient) :
+            this(configuration, new StaticCredentialsProvider(user, password, null, deviceId), userAgent, httpClient)
         {
-            PushServiceSocket = new PushServiceSocket(configuration, new StaticCredentialsProvider(user, password, null, deviceId), userAgent);
-            User = user;
-            UserAgent = userAgent;
         }
 
         /// <summary>
@@ -62,16 +64,30 @@ namespace libsignalservice
         /// <param name="configuration">The URL configuration for the Signal Service</param>
         /// <param name="userAgent">A string which identifies the client software</param>
         /// <param name="webSocketFactory">A factory which creates websocket connection objects</param>
-        public SignalServiceAccountManager(SignalServiceConfiguration configuration, string userAgent, ISignalWebSocketFactory webSocketFactory)
+        public SignalServiceAccountManager(SignalServiceConfiguration configuration, string userAgent, HttpClient httpClient, ISignalWebSocketFactory webSocketFactory)
         {
-            Configuration = configuration;
-            UserAgent = userAgent;
-            PushServiceSocket = new PushServiceSocket(configuration, new StaticCredentialsProvider(null, null, null, (int)SignalServiceAddress.DEFAULT_DEVICE_ID), userAgent);
+            this.httpClient = httpClient;
+            this.configuration = configuration;
+            this.userAgent = userAgent;
+            credentials = new StaticCredentialsProvider(null, null, null, (int)SignalServiceAddress.DEFAULT_DEVICE_ID);
+            pushServiceSocket = new PushServiceSocket(configuration, credentials, userAgent, httpClient);
+        }
+
+        public SignalServiceAccountManager(SignalServiceConfiguration configuration,
+            ICredentialsProvider credentialsProvider,
+            string signalAgent,
+            HttpClient httpClient)
+        {
+            this.pushServiceSocket = new PushServiceSocket(configuration, credentialsProvider, signalAgent, httpClient);
+            this.configuration = configuration;
+            this.credentials = credentialsProvider;
+            this.userAgent = signalAgent;
+            this.httpClient = httpClient;
         }
 
         public async Task<byte[]> GetSenderCertificate(CancellationToken token)
         {
-            return await PushServiceSocket.GetSenderCertificate(token);
+            return await pushServiceSocket.GetSenderCertificate(token);
         }
 
         /// <summary>
@@ -81,11 +97,11 @@ namespace libsignalservice
         {
             if (pin != null)
             {
-                await PushServiceSocket.SetPin(token, pin);
+                await pushServiceSocket.SetPin(token, pin);
             }
             else
             {
-                await PushServiceSocket.RemovePin(token);
+                await pushServiceSocket.RemovePin(token);
             }
         }
 
@@ -99,11 +115,11 @@ namespace libsignalservice
         {
             if (gcmRegistrationId != null)
             {
-                await PushServiceSocket.RegisterGcmId(token, gcmRegistrationId);
+                await pushServiceSocket.RegisterGcmId(token, gcmRegistrationId);
             }
             else
             {
-                await PushServiceSocket.UnregisterGcmId(token);
+                await pushServiceSocket.UnregisterGcmId(token);
             }
         }
 
@@ -114,7 +130,7 @@ namespace libsignalservice
         /// <returns></returns>
         public async Task RequestSmsVerificationCode(CancellationToken token)// throws IOException
         {
-            await PushServiceSocket.CreateAccount(token, false);
+            await pushServiceSocket.CreateAccount(token, false);
         }
 
         /// <summary>
@@ -124,7 +140,7 @@ namespace libsignalservice
         /// <returns></returns>
         public async Task RequestVoiceVerificationCode(CancellationToken token)// throws IOException
         {
-            await PushServiceSocket.CreateAccount(token, true);
+            await pushServiceSocket.CreateAccount(token, true);
         }
 
         /// <summary>
@@ -147,7 +163,7 @@ namespace libsignalservice
                                    uint signalProtocolRegistrationId, bool fetchesMessages, string pin,
                                    byte[] unidentifiedAccessKey, bool unrestrictedUnidentifiedAccess)
         {
-            await PushServiceSocket.VerifyAccountCode(token, verificationCode, signalingKey,
+            await pushServiceSocket.VerifyAccountCode(token, verificationCode, signalingKey,
                                                  signalProtocolRegistrationId, fetchesMessages, pin,
                                                  unidentifiedAccessKey, unrestrictedUnidentifiedAccess);
         }
@@ -169,7 +185,7 @@ namespace libsignalservice
         public async Task SetAccountAttributes(CancellationToken token, string signalingKey, uint signalProtocolRegistrationId, bool fetchesMessages, string pin,
             byte[] unidentifiedAccessKey, bool unrestrictedUnidentifiedAccess)
         {
-            await PushServiceSocket.SetAccountAttributes(token, signalingKey, signalProtocolRegistrationId, fetchesMessages, pin,
+            await pushServiceSocket.SetAccountAttributes(token, signalingKey, signalProtocolRegistrationId, fetchesMessages, pin,
                 unidentifiedAccessKey, unrestrictedUnidentifiedAccess);
         }
 
@@ -184,7 +200,7 @@ namespace libsignalservice
         /// <returns></returns>
         public async Task<bool> SetPreKeys(CancellationToken token, IdentityKey identityKey, SignedPreKeyRecord signedPreKey, IList<PreKeyRecord> oneTimePreKeys)//throws IOException
         {
-            await PushServiceSocket.RegisterPreKeys(token, identityKey, signedPreKey, oneTimePreKeys);
+            await pushServiceSocket.RegisterPreKeys(token, identityKey, signedPreKey, oneTimePreKeys);
             return true;
         }
 
@@ -194,7 +210,7 @@ namespace libsignalservice
         /// <returns>The server's count of currently available (eg. unused) prekeys for this user.</returns>
         public async Task<int> GetPreKeysCount(CancellationToken token)// throws IOException
         {
-            return await PushServiceSocket.GetAvailablePreKeys(token);
+            return await pushServiceSocket.GetAvailablePreKeys(token);
         }
 
         /// <summary>
@@ -204,7 +220,7 @@ namespace libsignalservice
         /// <param name="signedPreKey">The client's new signed prekey.</param>
         public async Task SetSignedPreKey(CancellationToken token, SignedPreKeyRecord signedPreKey)// throws IOException
         {
-            await PushServiceSocket.SetCurrentSignedPreKey(token, signedPreKey);
+            await pushServiceSocket.SetCurrentSignedPreKey(token, signedPreKey);
         }
 
         /// <summary>
@@ -213,7 +229,7 @@ namespace libsignalservice
         /// <returns>The server's view of the client's current signed prekey.</returns>
         public async Task<SignedPreKeyEntity> GetSignedPreKey(CancellationToken token)// throws IOException
         {
-            return await PushServiceSocket.GetCurrentSignedPreKey(token);
+            return await pushServiceSocket.GetCurrentSignedPreKey(token);
         }
 
         /// <summary>
@@ -225,7 +241,7 @@ namespace libsignalservice
         public async Task<May<ContactTokenDetails>> GetContact(CancellationToken token, string e164number)// throws IOException
         {
             string contactToken = CreateDirectoryServerToken(e164number, true);
-            ContactTokenDetails contactTokenDetails = await PushServiceSocket.GetContactTokenDetails(token, contactToken);
+            ContactTokenDetails contactTokenDetails = await pushServiceSocket.GetContactTokenDetails(token, contactToken);
 
             if (contactTokenDetails != null)
             {
@@ -244,7 +260,7 @@ namespace libsignalservice
         public async Task<List<ContactTokenDetails>> GetContacts(CancellationToken token, IList<string> e164numbers)
         {
             IDictionary<string, string> contactTokensMap = CreateDirectoryServerTokenMap(e164numbers);
-            List<ContactTokenDetails> activeTokens = await PushServiceSocket.RetrieveDirectory(token, contactTokensMap.Keys);
+            List<ContactTokenDetails> activeTokens = await pushServiceSocket.RetrieveDirectory(token, contactTokensMap.Keys);
 
             foreach (ContactTokenDetails activeToken in activeTokens)
             {
@@ -255,7 +271,7 @@ namespace libsignalservice
             return activeTokens;
         }
 
-        public async Task<IList<string>> GetRegisteredUsers(IList<string> e164numbers, string mrenclave, CancellationToken? token = null)
+        public async Task<Dictionary<string, Guid>> GetRegisteredUsersAsync(IList<string> e164numbers, string mrenclave, CancellationToken? token = null)
         {
             if (token == null)
             {
@@ -263,43 +279,36 @@ namespace libsignalservice
             }
             try
             {
-                string authorization = await PushServiceSocket.GetContactDiscoveryAuthorization(token);
-                Curve25519 curve = Curve25519.getInstance(Curve25519.BEST);
-                org.whispersystems.curve25519.Curve25519KeyPair keyPair = curve.generateKeyPair();
+                string authorization = await pushServiceSocket.GetContactDiscoveryAuthorizationAsync(token);
+                Dictionary<string, RemoteAttestation> attestations = await RemoteAttestationUtil.GetAndVerifyMultiRemoteAttestation(pushServiceSocket,
+                    PushServiceSocket.ClientSet.ContactDiscovery,
+                    mrenclave,
+                    mrenclave,
+                    authorization);
 
-                ContactDiscoveryCipher cipher = new ContactDiscoveryCipher();
-                RemoteAttestationRequest attestationRequest = new RemoteAttestationRequest(keyPair.getPublicKey());
-                (RemoteAttestationResponse, IList<string>) attestationResponse = await PushServiceSocket.GetContactDiscoveryRemoteAttestation(authorization, attestationRequest, mrenclave, token);
-
-                RemoteAttestationKeys keys = new RemoteAttestationKeys(keyPair, attestationResponse.Item1.ServerEphemeralPublic!, attestationResponse.Item1.ServerStaticPublic!);
-                Quote quote = new Quote(attestationResponse.Item1.Quote!);
-                byte[] requestId = cipher.GetRequestId(keys, attestationResponse.Item1);
-
-                cipher.VerifyServerQuote(quote, attestationResponse.Item1.ServerStaticPublic!, mrenclave);
-                cipher.VerifyIasSignature(attestationResponse.Item1.Certificates!, attestationResponse.Item1.SignatureBody!, attestationResponse.Item1.Signature!, quote);
-
-                RemoteAttestation remoteAttestation = new RemoteAttestation(requestId, keys);
-                List<string> addressBook = new List<string>();
+                List<string> addressBook = new List<string>(e164numbers.Count);
 
                 foreach (string e164number in e164numbers)
                 {
                     addressBook.Add(e164number.Substring(1));
                 }
 
-                DiscoveryRequest request = cipher.CreateDiscoveryRequest(addressBook, remoteAttestation);
-                DiscoveryResponse response = await PushServiceSocket.GetContactDiscoveryRegisteredUsers(authorization, request, attestationResponse.Item2, mrenclave, token);
-                byte[] data = cipher.GetDiscoveryResponseData(response, remoteAttestation);
+                IList<string> cookies = attestations.Values.ToList()[0].Cookies;
+                DiscoveryRequest request = ContactDiscoveryCipher.CreateDiscoveryRequest(addressBook, attestations);
+                DiscoveryResponse response = await pushServiceSocket.GetContactDiscoveryRegisteredUsersAsync(authorization, request, cookies, mrenclave);
+                byte[] data = ContactDiscoveryCipher.GetDiscoveryResponseData(response, attestations.Values);
 
-                IEnumerator<string> addressBookIterator = addressBook.GetEnumerator();
-                List<string> results = new List<string>();
+                Dictionary<string, Guid> results = new Dictionary<string, Guid>(addressBook.Count);
+                BinaryReader uuidInputStream = new BinaryReader(new MemoryStream(data));
 
-                foreach (byte aData in data)
+                foreach (string candidate in addressBook)
                 {
-                    addressBookIterator.MoveNext();
-                    string candidate = addressBookIterator.Current;
-
-                    if (aData != 0)
-                        results.Add($"+{candidate}");
+                    long candidateUuidHigh = uuidInputStream.ReadInt64();
+                    long candidateUuidLow = uuidInputStream.ReadInt64();
+                    if (candidateUuidHigh != 0 || candidateUuidLow != 0)
+                    {
+                        results.Add($"+{candidate}", Util.JavaUUIDToCSharpGuid(candidateUuidHigh, candidateUuidLow));
+                    }
                 }
 
                 return results;
@@ -307,74 +316,6 @@ namespace libsignalservice
             catch (InvalidCipherTextException ex)
             {
                 throw new UnauthenticatedResponseException(ex);
-            }
-        }
-
-        public async Task ReportContactDiscoveryServiceMatch(CancellationToken? token = null)
-        {
-            if (token == null)
-            {
-                token = CancellationToken.None;
-            }
-
-            try
-            {
-                await PushServiceSocket.ReportContactDiscoveryServiceMatch(token);
-            }
-            catch (IOException ex)
-            {
-                Logger.LogInformation(new EventId(), ex, "Request to indicate a contact discovery result match failed. Ignoring.");
-            }
-        }
-        
-        public async Task ReportContactDiscoveryServiceMismatch(CancellationToken? token = null)
-        {
-            if (token == null)
-            {
-                token = CancellationToken.None;
-            }
-
-            try
-            {
-                await PushServiceSocket.ReportContactDiscoveryServiceMismatch();
-            }
-            catch (IOException ex)
-            {
-                Logger.LogInformation(new EventId(), ex, "Request to indicate a contact discovery result mismatch failed. Ignoring.");
-            }
-        }
-
-        public async Task ReportContactDiscoveryServiceAttestationError(CancellationToken? token = null)
-        {
-            if (token == null)
-            {
-                token = CancellationToken.None;
-            }
-
-            try
-            {
-                await PushServiceSocket.ReportContactDiscoveryServiceAttestationError(token);
-            }
-            catch (IOException ex)
-            {
-                Logger.LogInformation(new EventId(), ex, "Request to indicate a contact discovery attestation error failed. Ignoring.");
-            }
-        }
-
-        public async Task ReportContactDiscoveryServiceUnexpectedError(CancellationToken? token = null)
-        {
-            if (token == null)
-            {
-                token = CancellationToken.None;
-            }
-
-            try
-            {
-                await PushServiceSocket.ReportContactDiscoveryServiceUnexpectedError(token);
-            }
-            catch (IOException ex)
-            {
-                Logger.LogInformation(new EventId(), ex, "Request to indicate a contact discovery unexpected error failed. Ignoring.");
             }
         }
 
@@ -387,7 +328,7 @@ namespace libsignalservice
         /// <returns></returns>
         public async Task<string> GetNewDeviceUuid(CancellationToken token, ISignalWebSocketFactory webSocketFactory)
         {
-            ProvisioningSocket = new ProvisioningSocket(Configuration.SignalServiceUrls[0].Url, webSocketFactory, token);
+            ProvisioningSocket = new ProvisioningSocket(configuration.SignalServiceUrls[0].Url, webSocketFactory, token);
             return (await ProvisioningSocket.GetProvisioningUuid(token)).Uuid;
         }
 
@@ -398,7 +339,7 @@ namespace libsignalservice
         /// <returns>A verification code (String of 6 digits)</returns>
         public async Task<string> GetNewDeviceVerificationCode(CancellationToken token)// throws IOException
         {
-            return await PushServiceSocket.GetNewDeviceVerificationCode(token);
+            return await pushServiceSocket.GetNewDeviceVerificationCode(token);
         }
 
         /// <summary>
@@ -409,6 +350,10 @@ namespace libsignalservice
         /// <returns></returns>
         public async Task<SignalServiceProvisionMessage> GetProvisioningMessage(CancellationToken token, IdentityKeyPair tempIdentity)
         {
+            if (ProvisioningSocket == null)
+            {
+                throw new NullReferenceException($"{nameof(ProvisioningSocket)} is null. Maybe you forgot to call GetNewDeviceUuid?");
+            }
             ProvisionMessage protoPm = await ProvisioningSocket.GetProvisioningMessage(token, tempIdentity);
             string provisioningCode = protoPm.ProvisioningCode;
             byte[] publicKeyBytes = protoPm.IdentityKeyPublic.ToByteArray();
@@ -441,11 +386,16 @@ namespace libsignalservice
         /// <param name="fetches"></param>
         /// <param name="regid"></param>
         /// <param name="name"></param>
-        /// <returns></returns>
+        /// <returns>Device id</returns>
         public async Task<int> FinishNewDeviceRegistration(CancellationToken token, SignalServiceProvisionMessage provisionMessage, string signalingKey, string password, bool sms, bool fetches, int regid, string name)
         {
-            PushServiceSocket = new PushServiceSocket(Configuration, new StaticCredentialsProvider(provisionMessage.Number, password, null, -1), UserAgent);
-            return await PushServiceSocket.FinishNewDeviceRegistration(token, provisionMessage.Code, signalingKey, sms, fetches, regid, name);
+            pushServiceSocket = new PushServiceSocket(configuration, new StaticCredentialsProvider(provisionMessage.Number, password, null, -1), userAgent, httpClient);
+
+            // update credentials and pushServiceSocket to keep internal state consistent
+            int deviceId = await pushServiceSocket.FinishNewDeviceRegistration(token, provisionMessage.Code, signalingKey, sms, fetches, regid, name);
+            credentials = new StaticCredentialsProvider(provisionMessage.Number, password, null, deviceId);
+            pushServiceSocket = new PushServiceSocket(configuration, credentials, userAgent, httpClient);
+            return deviceId;
         }
 
         /// <summary>
@@ -469,7 +419,7 @@ namespace libsignalservice
             {
                 IdentityKeyPublic = ByteString.CopyFrom(identityKeyPair.getPublicKey().serialize()),
                 IdentityKeyPrivate = ByteString.CopyFrom(identityKeyPair.getPrivateKey().serialize()),
-                Number = User,
+                Number = credentials.User,
                 ProvisioningCode = code
             };
 
@@ -479,7 +429,7 @@ namespace libsignalservice
             }
 
             byte[] ciphertext = cipher.encrypt(message);
-            await PushServiceSocket.SendProvisioningMessage(token, deviceIdentifier, ciphertext);
+            await pushServiceSocket.SendProvisioningMessage(token, deviceIdentifier, ciphertext);
         }
 
         /// <summary>
@@ -488,7 +438,7 @@ namespace libsignalservice
         /// <returns></returns>
         public async Task<List<DeviceInfo>> GetDevices(CancellationToken token)
         {
-            return await PushServiceSocket.GetDevices(token);
+            return await pushServiceSocket.GetDevices(token);
         }
 
         /// <summary>
@@ -498,7 +448,7 @@ namespace libsignalservice
         /// <param name="deviceId"></param>
         public async Task RemoveDevice(CancellationToken token, long deviceId)
         {
-            await PushServiceSocket.RemoveDevice(token, deviceId);
+            await pushServiceSocket.RemoveDevice(token, deviceId);
         }
 
         /// <summary>
@@ -507,7 +457,7 @@ namespace libsignalservice
         /// <returns></returns>
         public async Task<TurnServerInfo> GetTurnServerInfo(CancellationToken token)
         {
-            return await this.PushServiceSocket.GetTurnServerInfo(token);
+            return await this.pushServiceSocket.GetTurnServerInfo(token);
         }
 
         /// <summary>
@@ -520,7 +470,7 @@ namespace libsignalservice
         {
             if (name == null) name = "";
             string ciphertextName = Base64.EncodeBytesWithoutPadding(new ProfileCipher(key).EncryptName(Encoding.Unicode.GetBytes(name), ProfileCipher.NAME_PADDED_LENGTH));
-            await PushServiceSocket.SetProfileName(token, ciphertextName);
+            await pushServiceSocket.SetProfileName(token, ciphertextName);
         }
 
         /// <summary>
@@ -536,7 +486,7 @@ namespace libsignalservice
             {
                 profileAvatarData = new ProfileAvatarData(avatar.InputStream, avatar.Length, avatar.ContentType, new ProfileCipherOutputStreamFactory(key));
             }
-            await PushServiceSocket.SetProfileAvatar(token, profileAvatarData);
+            await pushServiceSocket.SetProfileAvatar(token, profileAvatarData);
         }
 
         /// <summary>
@@ -545,7 +495,7 @@ namespace libsignalservice
         /// <param name="soTimeoutMillis"></param>
         public void SetSoTimeoutMillis(long soTimeoutMillis)
         {
-            this.PushServiceSocket.SetSoTimeoutMillis(soTimeoutMillis);
+            this.pushServiceSocket.SetSoTimeoutMillis(soTimeoutMillis);
         }
 
         /// <summary>
@@ -553,7 +503,7 @@ namespace libsignalservice
         /// </summary>
         public void CancelInFlightRequests()
         {
-            this.PushServiceSocket.CancelInFlightRequests();
+            this.pushServiceSocket.CancelInFlightRequests();
         }
 
         private string CreateDirectoryServerToken(string e164number, bool urlSafe)

@@ -3,7 +3,7 @@ using System.IO;
 
 namespace libsignalservice.contacts.crypto
 {
-    public class Quote
+    internal class Quote
     {
         private static readonly ulong SGX_FLAGS_INITTED = 0x0000_0000_0000_0001L;
         private static readonly ulong SGX_FLAGS_DEBUG = 0x0000_0000_0000_0002L;

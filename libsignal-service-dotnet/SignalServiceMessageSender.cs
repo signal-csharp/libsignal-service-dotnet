@@ -1,3 +1,9 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 using Google.Protobuf;
 using libsignal;
 using libsignal.state;
@@ -14,13 +20,6 @@ using libsignalservice.util;
 using libsignalservicedotnet.crypto;
 using libsignalservicedotnet.messages;
 using Microsoft.Extensions.Logging;
-using Strilanc.Value;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
 using static libsignalservice.messages.SignalServiceDataMessage;
 using static libsignalservice.push.DataMessage.Types;
 using static libsignalservice.push.DataMessage.Types.Quote.Types;
@@ -53,7 +52,7 @@ namespace libsignalservice
         /// <param name="urls">The URL of the Signal Service.</param>
         /// <param name="user">The Signal Service username (eg phone number).</param>
         /// <param name="password">The Signal Service user password</param>
-        /// <param name="deviceId">Tbe Signal Service device id</param>
+        /// <param name="deviceId">The Signal Service device id</param>
         /// <param name="store">The SignalProtocolStore.</param>
         /// <param name="pipe">An optional SignalServiceMessagePipe</param>
         /// <param name="unidentifiedPipe"></param>
@@ -65,6 +64,7 @@ namespace libsignalservice
                                        string user, string password, int deviceId,
                                        SignalProtocolStore store,
                                        string userAgent,
+                                       HttpClient httpClient,
                                        bool isMultiDevice,
                                        SignalServiceMessagePipe? pipe,
                                        SignalServiceMessagePipe? unidentifiedPipe,
@@ -72,7 +72,7 @@ namespace libsignalservice
         {
             Token = token;
             CredentialsProvider = new StaticCredentialsProvider(user, password, null, deviceId);
-            Socket = new PushServiceSocket(urls, CredentialsProvider, userAgent);
+            Socket = new PushServiceSocket(urls, CredentialsProvider, userAgent, httpClient);
             Store = store;
             LocalAddress = new SignalServiceAddress(user);
             Pipe = pipe;
@@ -767,7 +767,7 @@ namespace libsignalservice
                     }
 
                     Logger.LogTrace("Not transmitting over pipe...");
-                    SendMessageResponse resp = await Socket.SendMessage(token, messages, unidentifiedAccess);
+                    SendMessageResponse resp = await Socket.SendMessage(messages, unidentifiedAccess, token);
                     return SendMessageResult.NewSuccess(recipient, unidentifiedAccess != null, resp.NeedsSync);
                 }
                 catch (MismatchedDevicesException mde)
@@ -946,7 +946,7 @@ namespace libsignalservice
             {
                 try
                 {
-                    List<PreKeyBundle> preKeys = await socket.GetPreKeys(token, recipient, unidentifiedAccess, deviceId);
+                    List<PreKeyBundle> preKeys = await socket.GetPreKeys(recipient, unidentifiedAccess, deviceId, token);
 
                     foreach (PreKeyBundle preKey in preKeys)
                     {

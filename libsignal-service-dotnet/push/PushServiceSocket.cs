@@ -1,3 +1,14 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Security.Cryptography;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using libsignal;
 using libsignal.ecc;
 using libsignal.push;
@@ -15,66 +26,65 @@ using libsignalservicedotnet.crypto;
 using libsignalservicedotnet.push;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Net.Security;
-using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using static libsignalservice.messages.SignalServiceAttachment;
 
 namespace libsignalservice.push
 {
-    public class PushServiceSocket
+    internal class PushServiceSocket
     {
-        private static readonly string CREATE_ACCOUNT_SMS_PATH = "/v1/accounts/sms/code/{0}";
-        private static readonly string CREATE_ACCOUNT_VOICE_PATH = "/v1/accounts/voice/code/{0}";
-        private static readonly string VERIFY_ACCOUNT_CODE_PATH = "/v1/accounts/code/{0}";
-        private static readonly string REGISTER_GCM_PATH = "/v1/accounts/gcm/";
-        private static readonly string TURN_SERVER_INFO = "/v1/accounts/turn";
-        private static readonly string SET_ACCOUNT_ATTRIBUTES = "/v1/accounts/attributes";
-        private static readonly string PIN_PATH = "/v1/accounts/pin/";
+        private const string CREATE_ACCOUNT_SMS_PATH = "/v1/accounts/sms/code/{0}";
+        private const string CREATE_ACCOUNT_VOICE_PATH = "/v1/accounts/voice/code/{0}";
+        private const string VERIFY_ACCOUNT_CODE_PATH = "/v1/accounts/code/{0}";
+        private const string REGISTER_GCM_PATH = "/v1/accounts/gcm/";
+        private const string TURN_SERVER_INFO = "/v1/accounts/turn";
+        private const string SET_ACCOUNT_ATTRIBUTES = "/v1/accounts/attributes";
+        private const string PIN_PATH = "/v1/accounts/pin/";
 
-        private static readonly string PREKEY_METADATA_PATH = "/v2/keys/";
-        private static readonly string PREKEY_PATH = "/v2/keys/{0}";
-        private static readonly string PREKEY_DEVICE_PATH = "/v2/keys/{0}/{1}";
-        private static readonly string SIGNED_PREKEY_PATH = "/v2/keys/signed";
+        private const string PREKEY_METADATA_PATH = "/v2/keys/";
+        private const string PREKEY_PATH = "/v2/keys/{0}";
+        private const string PREKEY_DEVICE_PATH = "/v2/keys/{0}/{1}";
+        private const string SIGNED_PREKEY_PATH = "/v2/keys/signed";
 
-        private static readonly string PROVISIONING_CODE_PATH = "/v1/devices/provisioning/code";
-        private static readonly string PROVISIONING_MESSAGE_PATH = "/v1/provisioning/{0}";
-        private static readonly string DEVICE_PATH = "/v1/devices/{0}";
+        private const string PROVISIONING_CODE_PATH = "/v1/devices/provisioning/code";
+        private const string PROVISIONING_MESSAGE_PATH = "/v1/provisioning/{0}";
+        private const string DEVICE_PATH = "/v1/devices/{0}";
 
-        private static readonly string DIRECTORY_TOKENS_PATH = "/v1/directory/tokens";
-        private static readonly string DIRECTORY_VERIFY_PATH = "/v1/directory/{0}";
-        private static readonly string DIRECTORY_AUTH_PATH = "/v1/directory/auth";
-        private static readonly string MESSAGE_PATH = "/v1/messages/{0}";
-        private static readonly string SENDER_ACK_MESSAGE_PATH = "/v1/messages/{0}/{1}";
-        private static readonly string UUID_ACK_MESSAGE_PATH     = "/v1/messages/uuid/{0}";
-        private static readonly string ATTACHMENT_PATH = "/v1/attachments/{0}";
+        private const string DIRECTORY_TOKENS_PATH = "/v1/directory/tokens";
+        private const string DIRECTORY_VERIFY_PATH = "/v1/directory/{0}";
+        private const string DIRECTORY_AUTH_PATH = "/v1/directory/auth";
+        private const string MESSAGE_PATH = "/v1/messages/{0}";
+        private const string SENDER_ACK_MESSAGE_PATH = "/v1/messages/{0}/{1}";
+        private const string UUID_ACK_MESSAGE_PATH     = "/v1/messages/uuid/{0}";
+        private const string ATTACHMENT_PATH = "/v1/attachments/{0}";
 
-        private static readonly string PROFILE_PATH = "/v1/profile/%s";
+        private const string PROFILE_PATH = "/v1/profile/%s";
 
-        private static readonly string SENDER_CERTIFICATE_PATH = "/v1/certificate/delivery";
+        private const string SENDER_CERTIFICATE_PATH = "/v1/certificate/delivery";
 
         private readonly ILogger Logger = LibsignalLogging.CreateLogger<PushServiceSocket>();
         private readonly SignalServiceConfiguration SignalConnectionInformation;
+        private readonly ConnectionHolder[] contactDiscoveryClients;
         private readonly ICredentialsProvider CredentialsProvider;
         private readonly string UserAgent;
+        private readonly HttpClient httpClient;
 
-        public PushServiceSocket(SignalServiceConfiguration serviceUrls, ICredentialsProvider credentialsProvider, string userAgent)
+        public enum ClientSet
+        {
+            ContactDiscovery,
+            KeyBackup
+        }
+
+        public PushServiceSocket(SignalServiceConfiguration serviceUrls,
+            ICredentialsProvider credentialsProvider,
+            string userAgent,
+            HttpClient httpClient)
         {
             CredentialsProvider = credentialsProvider;
             UserAgent = userAgent;
             SignalConnectionInformation = serviceUrls;
+            this.httpClient = httpClient;
+
+            this.contactDiscoveryClients = CreateConnectionHolders(SignalConnectionInformation.SignalContactDiscoveryUrls);
         }
 
         public async Task<bool> CreateAccount(CancellationToken token, bool voice)
@@ -162,11 +172,16 @@ namespace libsignalservice.push
             return JsonUtil.FromJson<SenderCertificate>(responseText).GetUnidentifiedCertificate();
         }
 
-        public async Task<SendMessageResponse> SendMessage(CancellationToken token, OutgoingPushMessageList bundle, UnidentifiedAccess? unidentifiedAccess)
+        public async Task<SendMessageResponse> SendMessage(OutgoingPushMessageList bundle, UnidentifiedAccess? unidentifiedAccess, CancellationToken? token = null)
         {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
             try
             {
-                string responseText = await MakeServiceRequestAsync(token, string.Format(MESSAGE_PATH, bundle.Destination), "PUT", JsonUtil.ToJson(bundle), unidentifiedAccess);
+                string responseText = await MakeServiceRequestAsync(string.Format(MESSAGE_PATH, bundle.Destination), "PUT", JsonUtil.ToJson(bundle), unidentifiedAccess, token);
                 return JsonUtil.FromJson<SendMessageResponse>(responseText);
             }
             catch (NotFoundException nfe)
@@ -221,9 +236,14 @@ namespace libsignalservice.push
             return preKeyStatus.Count;
         }
 
-        public async Task<List<PreKeyBundle>> GetPreKeys(CancellationToken token, SignalServiceAddress destination,
-            UnidentifiedAccess? unidentifiedAccess, uint deviceIdInteger)// throws IOException
+        public async Task<List<PreKeyBundle>> GetPreKeys(SignalServiceAddress destination,
+            UnidentifiedAccess? unidentifiedAccess, uint deviceIdInteger, CancellationToken? token = null)// throws IOException
         {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
             try
             {
                 string deviceId = deviceIdInteger.ToString();
@@ -238,7 +258,7 @@ namespace libsignalservice.push
                     path = path + "?relay=" + destination.Relay;
                 }
 
-                string responseText = await MakeServiceRequestAsync(token, path, "GET", null, unidentifiedAccess);
+                string responseText = await MakeServiceRequestAsync(path, "GET", null, unidentifiedAccess, token.Value);
                 PreKeyResponse response = JsonUtil.FromJson<PreKeyResponse>(responseText);
                 List<PreKeyBundle> bundles = new List<PreKeyBundle>();
 
@@ -398,11 +418,16 @@ namespace libsignalservice.push
             return descriptor.Location;
         }
 
-        public async Task<SignalServiceProfile> RetrieveProfile(CancellationToken token, SignalServiceAddress target, UnidentifiedAccess? unidentifiedAccess)
+        public async Task<SignalServiceProfile> RetrieveProfile(SignalServiceAddress target, UnidentifiedAccess? unidentifiedAccess, CancellationToken? token = null)
         {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
             try
             {
-                string response = await MakeServiceRequestAsync(token, string.Format(PROFILE_PATH, target.E164number), "GET", null, unidentifiedAccess);
+                string response = await MakeServiceRequestAsync(string.Format(PROFILE_PATH, target.E164number), "GET", null, unidentifiedAccess, token.Value);
                 return JsonUtil.FromJson<SignalServiceProfile>(response);
             }
             catch (Exception e)
@@ -487,7 +512,7 @@ namespace libsignalservice.push
             }
         }
 
-        public async Task<string> GetContactDiscoveryAuthorization(CancellationToken? token = null)
+        public async Task<string> GetContactDiscoveryAuthorizationAsync(CancellationToken? token = null)
         {
             if (token == null)
             {
@@ -501,95 +526,6 @@ namespace libsignalservice.push
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="authorization"></param>
-        /// <param name="request"></param>
-        /// <param name="mrenclave"></param>
-        /// <param name="token"></param>
-        /// <returns></returns>
-        /// <exception cref="IOException"></exception>
-        public async Task<(RemoteAttestationResponse, IList<string>)> GetContactDiscoveryRemoteAttestation(string authorization, RemoteAttestationRequest request, string mrenclave, CancellationToken? token = null)
-        {
-            if (token == null)
-            {
-                token = CancellationToken.None;
-            }
-            HttpResponseMessage response = await MakeContactDiscoveryRequestAsync(authorization, new List<string>(), $"/v1/attestation/{mrenclave}", "PUT", JsonUtil.ToJson(request), token);
-            HttpContent body = response.Content;
-            IEnumerable<string> rawCookies = response.Headers.GetValues("Set-Cookie");
-            List<string> cookies = new List<string>();
-
-            foreach (string cookie in rawCookies)
-            {
-                cookies.Add(cookie.Split(';')[0]);
-            }
-
-            if (body != null)
-            {
-                return (JsonUtil.FromJson<RemoteAttestationResponse>(await body.ReadAsStringAsync()), cookies);
-            }
-            else
-            {
-                throw new NonSuccessfulResponseCodeException("Empty response!");
-            }
-        }
-
-        public async Task ReportContactDiscoveryServiceMatch(CancellationToken? token = null)
-        {
-            if (token == null)
-            {
-                token = CancellationToken.None;
-            }
-            await MakeServiceRequestAsync(token.Value, "/v1/directory/feedback/ok", "PUT", "");
-        }
-
-        public async Task ReportContactDiscoveryServiceMismatch(CancellationToken? token = null)
-        {
-            if (token == null)
-            {
-                token = CancellationToken.None;
-            }
-            await MakeServiceRequestAsync(token.Value, "/v1/directory/feedback/mismatch", "PUT", "");
-        }
-
-        public async Task ReportContactDiscoveryServiceServerError(CancellationToken? token = null)
-        {
-            if (token == null)
-            {
-                token = CancellationToken.None;
-            }
-            await MakeServiceRequestAsync(token.Value, "/v1/directory/feedback/server-error", "PUT", "");
-        }
-
-        public async Task ReportContactDiscoveryServiceClientError(CancellationToken? token = null)
-        {
-            if (token == null)
-            {
-                token = CancellationToken.None;
-            }
-            await MakeServiceRequestAsync(token.Value, "/v1/directory/feedback/client-error", "PUT", "");
-        }
-
-        public async Task ReportContactDiscoveryServiceAttestationError(CancellationToken? token = null)
-        {
-            if (token == null)
-            {
-                token = CancellationToken.None;
-            }
-            await MakeServiceRequestAsync(token.Value, "/v1/directory/feedback/attestation-error", "PUT", "");
-        }
-
-        public async Task ReportContactDiscoveryServiceUnexpectedError(CancellationToken? token = null)
-        {
-            if (token == null)
-            {
-                token = CancellationToken.None;
-            }
-            await MakeServiceRequestAsync(token.Value, "/v1/directory/feedback/unexpected-error", "PUT", "");
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="authorizationToken"></param>
         /// <param name="request"></param>
         /// <param name="cookies"></param>
@@ -597,13 +533,13 @@ namespace libsignalservice.push
         /// <param name="token"></param>
         /// <returns></returns>
         /// <exception cref="IOException"></exception>
-        public async Task<DiscoveryResponse> GetContactDiscoveryRegisteredUsers(string authorizationToken, DiscoveryRequest request, IList<string> cookies, string mrenclave, CancellationToken? token = null)
+        public async Task<DiscoveryResponse> GetContactDiscoveryRegisteredUsersAsync(string authorizationToken, DiscoveryRequest request, IList<string> cookies, string mrenclave, CancellationToken? token = null)
         {
             if (token == null)
             {
                 token = CancellationToken.None;
             }
-            HttpContent body = (await MakeContactDiscoveryRequestAsync(authorizationToken, new List<string>(), $"/v1/discovery/{mrenclave}", "PUT", JsonUtil.ToJson(request), token)).Content;
+            HttpContent body = (await MakeRequestAsync(ClientSet.ContactDiscovery, authorizationToken, cookies, $"/v1/discovery/{mrenclave}", "PUT", JsonUtil.ToJson(request), token)).Content;
 
             if (body != null)
             {
@@ -754,14 +690,28 @@ namespace libsignalservice.push
 
         private async Task<string> MakeServiceRequestAsync(CancellationToken token, string urlFragment, string method, string? body)
         {
-            return await MakeServiceRequestAsync(token, urlFragment, method, body, null);
+            return await MakeServiceRequestAsync(urlFragment, method, body, null, token);
         }
 
 
-        private async Task<string> MakeServiceRequestAsync(CancellationToken token, string urlFragment, string method, string? body, UnidentifiedAccess? unidentifiedAccess)
-        //throws NonSuccessfulResponseCodeException, PushNetworkException
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="urlFragment"></param>
+        /// <param name="method"></param>
+        /// <param name="body"></param>
+        /// <param name="unidentifiedAccess"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        /// <exception cref="NonSuccessfulResponseCodeException"></exception>
+        /// <exception cref="PushNetworkException"></exception>
+        private async Task<string> MakeServiceRequestAsync(string urlFragment, string method, string? body, UnidentifiedAccess? unidentifiedAccess, CancellationToken? token = null)
         {
-            HttpResponseMessage connection = await GetServiceConnectionAsync(token, urlFragment, method, body, unidentifiedAccess);
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+            HttpResponseMessage connection = await GetServiceConnectionAsync(urlFragment, method, body, unidentifiedAccess, token.Value);
             HttpStatusCode responseCode;
             string responseMessage;
             string responseBody;
@@ -846,17 +796,27 @@ namespace libsignalservice.push
             return responseBody;
         }
 
-        private async Task<HttpResponseMessage> GetServiceConnectionAsync(CancellationToken token, string urlFragment, string method, string? body, UnidentifiedAccess? unidentifiedAccess)
+        private async Task<HttpResponseMessage> GetServiceConnectionAsync(string urlFragment, string method, string? body, UnidentifiedAccess? unidentifiedAccess, CancellationToken? token = null)
         {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
             try
             {
                 SignalUrl signalUrl = GetRandom(SignalConnectionInformation.SignalServiceUrls);
                 string url = signalUrl.Url;
                 string? hostHeader = signalUrl.HostHeader;
                 Uri uri = new Uri(string.Format("{0}{1}", url, urlFragment));
-                using HttpClient connection = Util.CreateHttpClient();
+                HttpRequestMessage request = new HttpRequestMessage(new HttpMethod(method), uri);
 
-                var headers = connection.DefaultRequestHeaders;
+                if (body != null)
+                {
+                    request.Content = new StringContent(body, Encoding.UTF8, "application/json");
+                }
+
+                HttpRequestHeaders headers = request.Headers;
 
                 if (unidentifiedAccess != null)
                 {
@@ -878,32 +838,7 @@ namespace libsignalservice.push
                     headers.Host = hostHeader;
                 }
 
-                StringContent content;
-                if (body != null)
-                {
-                    content = new StringContent(body, Encoding.UTF8, "application/json");
-                }
-                else
-                {
-                    content = new StringContent("");
-                }
-                switch (method)
-                {
-                    case "POST":
-                        return await connection.PostAsync(uri, content, token);
-
-                    case "PUT":
-                        return await connection.PutAsync(uri, content, token);
-
-                    case "DELETE":
-                        return await connection.DeleteAsync(uri, token);
-
-                    case "GET":
-                        return await connection.GetAsync(uri, token);
-
-                    default:
-                        throw new Exception("Unknown method: " + method);
-                }
+                return await httpClient.SendAsync(request, token.Value);
             }
             catch (Exception e)
             {
@@ -912,33 +847,52 @@ namespace libsignalservice.push
             }
         }
 
-        private async Task<HttpResponseMessage> MakeContactDiscoveryRequestAsync(string authorization, IList<string> cookies, string path, string method, string body, CancellationToken? token)
+        private ConnectionHolder[] ClientsFor(ClientSet clientSet)
+        {
+            if (clientSet == ClientSet.ContactDiscovery)
+            {
+                return contactDiscoveryClients;
+            }
+            else if (clientSet == ClientSet.KeyBackup)
+            {
+                throw new NotImplementedException("Needs to be implemented.");
+            }
+            else
+            {
+                throw new InvalidOperationException("Unknown attestation purpose");
+            }
+        }
+
+        public async Task<HttpResponseMessage> MakeRequestAsync(ClientSet clientSet, string authorization, IList<string> cookies, string path, string method, string body, CancellationToken? token = null)
         {
             if (token == null)
             {
                 token = CancellationToken.None;
             }
-            SignalContactDiscoveryUrl signalContactDiscoveryUrl = GetRandom(SignalConnectionInformation.SignalContactDiscoveryUrls);
-            string url = signalContactDiscoveryUrl.Url;
-            string? hostHeader = signalContactDiscoveryUrl.HostHeader;
-            Uri uri = new Uri($"{url}{path}");
-            using HttpClient connection = Util.CreateHttpClient();
+            ConnectionHolder connectionHolder = GetRandom(ClientsFor(clientSet));
+            return await MakeRequestAsync(connectionHolder, authorization, cookies, path, method, body, token);
+        }
 
-            StringContent content;
+        private async Task<HttpResponseMessage> MakeRequestAsync(ConnectionHolder connectionHolder, string? authorization, IList<string>? cookies, string path, string method, string body, CancellationToken? token = null)
+        {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            HttpClient client = connectionHolder.Client;
+            HttpRequestMessage request = new HttpRequestMessage(new HttpMethod(method), $"{connectionHolder.Url}{path}");
+
             if (body != null)
             {
-                content = new StringContent(body, Encoding.UTF8, "application/json");
-            }
-            else
-            {
-                content = new StringContent("");
+                request.Content = new StringContent(body, Encoding.UTF8, "application/json");
             }
 
-            var headers = connection.DefaultRequestHeaders;
-
-            if (hostHeader != null)
+            HttpRequestHeaders headers = request.Headers;
+            
+            if (connectionHolder.HostHeader != null)
             {
-                headers.Host = hostHeader;
+                headers.Host = connectionHolder.HostHeader;
             }
 
             if (authorization != null)
@@ -955,23 +909,7 @@ namespace libsignalservice.push
 
             try
             {
-                switch (method)
-                {
-                    case "POST":
-                        response = await connection.PostAsync(uri, content, token.Value);
-                        break;
-                    case "PUT":
-                        response = await connection.PutAsync(uri, content, token.Value);
-                        break;
-                    case "DELETE":
-                        response = await connection.DeleteAsync(uri, token.Value);
-                        break;
-                    case "GET":
-                        response = await connection.GetAsync(uri, token.Value);
-                        break;
-                    default:
-                        throw new Exception($"Unknown method: {method}");
-                }
+                response = await client.SendAsync(request, token.Value);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -983,7 +921,35 @@ namespace libsignalservice.push
                 throw new PushNetworkException(ex);
             }
 
-            throw new NonSuccessfulResponseCodeException($"Response: {response}");
+            switch ((int)response.StatusCode)
+            {
+                case 401:
+                case 403:
+                    throw new AuthorizationFailedException("Authorization failed!");
+                case 409:
+                    throw new RemoteAttestationResponseExpiredException("Remote attestation response expired");
+                case 429:
+                    throw new RateLimitException($"Rate limit exceeded: {response.StatusCode}");
+            }
+
+            if (response.Content != null)
+            {
+                throw new NonSuccessfulResponseCodeException($"Response: {await response.Content.ReadAsStringAsync()}");
+            }
+            else
+            {
+                throw new NonSuccessfulResponseCodeException($"Response: null");
+            }
+        }
+
+        private ConnectionHolder[] CreateConnectionHolders(SignalUrl[] urls)
+        {
+            List<ConnectionHolder> connectionHolder = new List<ConnectionHolder>();
+            foreach (SignalUrl url in urls)
+            {
+                connectionHolder.Add(new ConnectionHolder(httpClient, url.Url, url.HostHeader));
+            }
+            return connectionHolder.ToArray();
         }
 
         private string GetAuthorizationHeader(ICredentialsProvider provider)
@@ -1038,6 +1004,20 @@ namespace libsignalservice.push
         public long TimeRemaining { get; private set; }
 
         public RegistrationLockFailure() { }
+    }
+
+    internal class ConnectionHolder
+    {
+        public HttpClient Client { get; }
+        public string Url { get; }
+        public string? HostHeader { get; }
+
+        public ConnectionHolder(HttpClient client, string url, string? hostHeader)
+        {
+            Client = client;
+            Url = url;
+            HostHeader = hostHeader;
+        }
     }
 
     internal class AttachmentDescriptor
