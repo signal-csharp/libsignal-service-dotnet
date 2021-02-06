@@ -1,15 +1,16 @@
+using System.Collections.Generic;
 using libsignalservice.util;
 using Newtonsoft.Json;
 
 namespace libsignalservice.contacts.entities
 {
-    public class DiscoveryRequest
+    internal class DiscoveryRequest
     {
         [JsonProperty("addressCount")]
         public int AddressCount { get; }
 
-        [JsonProperty("requestId")]
-        public byte[]? RequestId { get; }
+        [JsonProperty("commitment")]
+        public byte[] Commitment { get; }
 
         [JsonProperty("iv")]
         public byte[]? Iv { get; }
@@ -20,22 +21,22 @@ namespace libsignalservice.contacts.entities
         [JsonProperty("mac")]
         public byte[]? Mac { get; }
 
-        public DiscoveryRequest()
-        {
-        }
+        [JsonProperty("envelopes")]
+        public Dictionary<string, QueryEnvelope> Envelopes;
 
-        public DiscoveryRequest(int addressCount, byte[] requestId, byte[] iv, byte[] data, byte[] mac)
+        public DiscoveryRequest(int addressCount, byte[] commitment, byte[] iv, byte[] data, byte[] mac, Dictionary<string, QueryEnvelope> envelopes)
         {
             AddressCount = addressCount;
-            RequestId = requestId;
+            Commitment = commitment;
             Iv = iv;
             Data = data;
             Mac = mac;
+            Envelopes = envelopes;
         }
 
         public override string ToString()
         {
-            return $"{{addressCount: {AddressCount}, ticket: {Hex.ToString(RequestId!)}, iv: {Hex.ToString(Iv!)}, data: {Hex.ToString(Data!)}, mac: {Hex.ToString(Mac!)}}}";
+            return $"{{ addressCount: {AddressCount}, envelopes: {Envelopes.Count} }}";
         }
     }
 }

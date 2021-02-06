@@ -6,7 +6,7 @@ using Org.BouncyCastle.Crypto.Parameters;
 
 namespace libsignalservice.contacts.crypto
 {
-    public class RemoteAttestationKeys
+    internal class RemoteAttestationKeys
     {
         public byte[] ClientKey { get; } = new byte[32];
         public byte[] ServerKey { get; } = new byte[32];

@@ -2,34 +2,34 @@ using Newtonsoft.Json;
 
 namespace libsignalservice.contacts.entities
 {
-    public class RemoteAttestationResponse
+    internal class RemoteAttestationResponse
     {
         [JsonProperty("serverEphemeralPublic")]
-        public byte[]? ServerEphemeralPublic { get; }
+        public byte[] ServerEphemeralPublic { get; }
 
         [JsonProperty("serverStaticPublic")]
-        public byte[]? ServerStaticPublic { get; }
+        public byte[] ServerStaticPublic { get; }
 
         [JsonProperty("quote")]
-        public byte[]? Quote { get; }
+        public byte[] Quote { get; }
 
         [JsonProperty("iv")]
-        public byte[]? Iv { get; }
+        public byte[] Iv { get; }
 
         [JsonProperty("ciphertext")]
-        public byte[]? Ciphertext { get; }
+        public byte[] Ciphertext { get; }
 
         [JsonProperty("tag")]
-        public byte[]? Tag { get; }
+        public byte[] Tag { get; }
 
         [JsonProperty("signature")]
-        public string? Signature { get; }
+        public string Signature { get; }
 
         [JsonProperty("certificates")]
-        public string? Certificates { get; }
+        public string Certificates { get; }
 
         [JsonProperty("signatureBody")]
-        public string? SignatureBody { get; }
+        public string SignatureBody { get; }
 
         public RemoteAttestationResponse(byte[] serverEphemeralPublic, byte[] serverStaticPublic,
             byte[] iv, byte[] ciphertext, byte[] tag,
@@ -44,10 +44,6 @@ namespace libsignalservice.contacts.entities
             Signature = signature;
             Certificates = certificates;
             SignatureBody = signatureBody;
-        }
-
-        public RemoteAttestationResponse()
-        {
         }
     }
 }

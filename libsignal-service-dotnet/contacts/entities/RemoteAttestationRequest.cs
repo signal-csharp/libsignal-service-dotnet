@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 namespace libsignalservice.contacts.entities
 {
-    public class RemoteAttestationRequest
+    internal class RemoteAttestationRequest
     {
         [JsonProperty("clientPublic")]
         public byte[]? ClientPublic { get; }

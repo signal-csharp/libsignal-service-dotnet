@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
@@ -42,11 +43,11 @@ namespace libsignalservice
         /// <param name="urls">The URL of the Signal Service.</param>
         /// <param name="credentials">The Signal Service user's credentials</param>
         /// <param name="userAgent"></param>
-        public SignalServiceMessageReceiver(SignalServiceConfiguration urls, ICredentialsProvider credentials, string userAgent)
+        public SignalServiceMessageReceiver(SignalServiceConfiguration urls, ICredentialsProvider credentials, string userAgent, HttpClient httpClient)
         {
             Urls = urls;
             CredentialsProvider = credentials;
-            Socket = new PushServiceSocket(urls, credentials, userAgent);
+            Socket = new PushServiceSocket(urls, credentials, userAgent, httpClient);
             UserAgent = userAgent;
         }
 
@@ -59,7 +60,7 @@ namespace libsignalservice
         /// <returns></returns>
         public async Task<SignalServiceProfile> RetrieveProfile(CancellationToken token, SignalServiceAddress address, UnidentifiedAccess? unidentifiedAccess)
         {
-            return await Socket.RetrieveProfile(token, address, unidentifiedAccess);
+            return await Socket.RetrieveProfile(address, unidentifiedAccess, token);
         }
 
         /// <summary>

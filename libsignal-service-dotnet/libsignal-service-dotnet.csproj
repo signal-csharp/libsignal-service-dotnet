@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard1.4</TargetFramework>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-    <Version>2.10.0</Version>
+    <Version>2.10.0.1-beta</Version>
     <Authors>Trolldemorted, golf1052, langboost, smndtrl</Authors>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
@@ -32,6 +32,7 @@
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <!-- Do not upgrade! 1.8.5 is the last version that supports .NETStandard 1.4 -->
     <PackageReference Include="Portable.BouncyCastle" Version="1.8.5" />
+    <PackageReference Include="System.Security.Cryptography.Algorithms" Version="4.3.1" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
   </ItemGroup>
 
