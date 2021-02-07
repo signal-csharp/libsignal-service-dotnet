@@ -87,11 +87,50 @@ namespace libsignalservice.push
             this.contactDiscoveryClients = CreateConnectionHolders(SignalConnectionInformation.SignalContactDiscoveryUrls);
         }
 
-        public async Task<bool> CreateAccount(CancellationToken token, bool voice)
+        public async Task RequestSmsVerificationCodeAsync(string? captchaToken, CancellationToken? token = null)
         {
-            string path = voice ? CREATE_ACCOUNT_VOICE_PATH : CREATE_ACCOUNT_SMS_PATH;
-            await MakeServiceRequestAsync(token, string.Format(path, CredentialsProvider.User), "GET", null);
-            return true;
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            string path = string.Format(CREATE_ACCOUNT_SMS_PATH, CredentialsProvider.User);
+
+            if (captchaToken != null)
+            {
+                path += $"?captcha={captchaToken}";
+            }
+
+            await MakeServiceRequestAsync(token.Value, path, "GET", null, (responseCode) =>
+            {
+                if (responseCode == 402)
+                {
+                    throw new CaptchaRequiredException();
+                }
+            });
+        }
+
+        public async Task RequestVoiceVerificationCodeAsync(string? captchaToken, CancellationToken? token = null)
+        {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            string path = string.Format(CREATE_ACCOUNT_VOICE_PATH, CredentialsProvider.User);
+
+            if (captchaToken != null)
+            {
+                path += $"?captcha={captchaToken}";
+            }
+
+            await MakeServiceRequestAsync(token.Value, path, "GET", null, (responseCode) =>
+            {
+                if (responseCode == 402)
+                {
+                    throw new CaptchaRequiredException();
+                }
+            });
         }
 
         public async Task<bool> VerifyAccountCode(CancellationToken token, string verificationCode, string signalingKey, uint registrationId, bool fetchesMessages, string pin,
@@ -181,7 +220,7 @@ namespace libsignalservice.push
 
             try
             {
-                string responseText = await MakeServiceRequestAsync(string.Format(MESSAGE_PATH, bundle.Destination), "PUT", JsonUtil.ToJson(bundle), unidentifiedAccess, token);
+                string responseText = await MakeServiceRequestAsync(string.Format(MESSAGE_PATH, bundle.Destination), "PUT", JsonUtil.ToJson(bundle), EmptyResponseCodeHandler, unidentifiedAccess, token);
                 return JsonUtil.FromJson<SendMessageResponse>(responseText);
             }
             catch (NotFoundException nfe)
@@ -258,7 +297,7 @@ namespace libsignalservice.push
                     path = path + "?relay=" + destination.Relay;
                 }
 
-                string responseText = await MakeServiceRequestAsync(path, "GET", null, unidentifiedAccess, token.Value);
+                string responseText = await MakeServiceRequestAsync(path, "GET", null, EmptyResponseCodeHandler, unidentifiedAccess, token.Value);
                 PreKeyResponse response = JsonUtil.FromJson<PreKeyResponse>(responseText);
                 List<PreKeyBundle> bundles = new List<PreKeyBundle>();
 
@@ -427,12 +466,12 @@ namespace libsignalservice.push
 
             try
             {
-                string response = await MakeServiceRequestAsync(string.Format(PROFILE_PATH, target.E164number), "GET", null, unidentifiedAccess, token.Value);
+                string response = await MakeServiceRequestAsync(string.Format(PROFILE_PATH, target.E164number), "GET", null, EmptyResponseCodeHandler, unidentifiedAccess, token.Value);
                 return JsonUtil.FromJson<SignalServiceProfile>(response);
             }
             catch (Exception e)
             {
-                throw new NonSuccessfulResponseCodeException("Unable to parse entity: "+e.Message);
+                throw new MalformedResponseException("Unable to parse entity", e);
             }
         }
 
@@ -457,7 +496,7 @@ namespace libsignalservice.push
             }
             catch (IOException e)
             {
-                throw new NonSuccessfulResponseCodeException("Unable to parse entity ("+e.Message+")");
+                throw new MalformedResponseException("Unable to parse entity", e);
             }
 
             if (profileAvatar != null)
@@ -547,7 +586,7 @@ namespace libsignalservice.push
             }
             else
             {
-                throw new NonSuccessfulResponseCodeException("Empty response!");
+                throw new MalformedResponseException("Empty response!");
             }
         }
 
@@ -688,9 +727,14 @@ namespace libsignalservice.push
             return (digest, encryptedData);
         }
 
-        private async Task<string> MakeServiceRequestAsync(CancellationToken token, string urlFragment, string method, string? body)
+        private async Task<string> MakeServiceRequestAsync(CancellationToken token, string urlFragment, string method, string? body, Action<int>? responseCodeHandler = null)
         {
-            return await MakeServiceRequestAsync(urlFragment, method, body, null, token);
+            if (responseCodeHandler == null)
+            {
+                responseCodeHandler = EmptyResponseCodeHandler;
+            }
+
+            return await MakeServiceRequestAsync(urlFragment, method, body, responseCodeHandler, null, token);
         }
 
 
@@ -705,7 +749,8 @@ namespace libsignalservice.push
         /// <returns></returns>
         /// <exception cref="NonSuccessfulResponseCodeException"></exception>
         /// <exception cref="PushNetworkException"></exception>
-        private async Task<string> MakeServiceRequestAsync(string urlFragment, string method, string? body, UnidentifiedAccess? unidentifiedAccess, CancellationToken? token = null)
+        /// <exception cref="MalformedResponseException"></exception>
+        private async Task<string> MakeServiceRequestAsync(string urlFragment, string method, string? body, Action<int> responseCodeHandler, UnidentifiedAccess? unidentifiedAccess, CancellationToken? token = null)
         {
             if (token == null)
             {
@@ -728,13 +773,15 @@ namespace libsignalservice.push
                 throw new PushNetworkException(ioe);
             }
 
+            responseCodeHandler.Invoke((int)responseCode);
+
             switch ((uint)responseCode)
             {
                 case 413: // HttpStatusCode.RequestEntityTooLarge
                     throw new RateLimitException("Rate limit exceeded: " + responseCode);
                 case 401: // HttpStatusCode.Unauthorized
                 case 403: // HttpStatusCode.Forbidden
-                    throw new AuthorizationFailedException("Authorization failed!");
+                    throw new AuthorizationFailedException((int)responseCode, "Authorization failed!");
                 case 404: // HttpStatusCode.NotFound
                     throw new NotFoundException("Not found");
                 case 409: // HttpStatusCode.Conflict
@@ -789,8 +836,8 @@ namespace libsignalservice.push
 
             if (responseCode != HttpStatusCode.OK && responseCode != HttpStatusCode.NoContent) // 200 & 204
             {
-                throw new NonSuccessfulResponseCodeException("Bad response: " + (int)responseCode + " " +
-                                                             responseMessage);
+                throw new NonSuccessfulResponseCodeException((int)responseCode,
+                    $"Bad response: {(int)responseCode} {responseMessage}");
             }
 
             return responseBody;
@@ -925,7 +972,7 @@ namespace libsignalservice.push
             {
                 case 401:
                 case 403:
-                    throw new AuthorizationFailedException("Authorization failed!");
+                    throw new AuthorizationFailedException((int)response.StatusCode, "Authorization failed!");
                 case 409:
                     throw new RemoteAttestationResponseExpiredException("Remote attestation response expired");
                 case 429:
@@ -934,11 +981,12 @@ namespace libsignalservice.push
 
             if (response.Content != null)
             {
-                throw new NonSuccessfulResponseCodeException($"Response: {await response.Content.ReadAsStringAsync()}");
+                throw new NonSuccessfulResponseCodeException((int)response.StatusCode,
+                    $"Response: {await response.Content.ReadAsStringAsync()}");
             }
             else
             {
-                throw new NonSuccessfulResponseCodeException($"Response: null");
+                throw new NonSuccessfulResponseCodeException((int)response.StatusCode, $"Response: null");
             }
         }
 
@@ -967,6 +1015,10 @@ namespace libsignalservice.push
         private T GetRandom<T>(T[] connections)
         {
             return connections[Util.generateRandomNumber() % connections.Length];
+        }
+
+        private void EmptyResponseCodeHandler(int responseCode)
+        {
         }
     }
 

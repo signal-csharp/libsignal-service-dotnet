@@ -1,20 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using libsignalservice.push.exceptions;
 
 namespace libsignalservice.push
 {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-    public class LockedException : Exception
+    internal class LockedException : NonSuccessfulResponseCodeException
     {
         public int Length { get; }
         public long TimeRemaining { get; }
 
-        public LockedException(int length, long timeRemaining)
+        public LockedException(int length, long timeRemaining) : base(423)
         {
             Length = length;
             TimeRemaining = timeRemaining;
         }
     }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

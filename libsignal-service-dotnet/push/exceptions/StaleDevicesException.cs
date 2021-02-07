@@ -1,16 +1,12 @@
-using System;
-
 namespace libsignalservice.push.exceptions
 {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-    public class StaleDevicesException : Exception
+    internal class StaleDevicesException : NonSuccessfulResponseCodeException
     {
         public StaleDevices StaleDevices;
 
-        public StaleDevicesException(StaleDevices staleDevices)
+        public StaleDevicesException(StaleDevices staleDevices) : base(410)
         {
             StaleDevices = staleDevices;
         }
     }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

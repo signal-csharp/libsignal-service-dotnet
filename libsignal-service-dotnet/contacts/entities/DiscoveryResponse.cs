@@ -6,16 +6,16 @@ namespace libsignalservice.contacts.entities
     internal class DiscoveryResponse
     {
         [JsonProperty("requestId")]
-        public byte[]? RequestId { get; }
+        public byte[]? RequestId { get; private set; }
 
         [JsonProperty("iv")]
-        public byte[]? Iv { get; }
+        public byte[]? Iv { get; private set; }
 
         [JsonProperty("data")]
-        public byte[]? Data { get; }
+        public byte[]? Data { get; private set; }
 
         [JsonProperty("mac")]
-        public byte[]? Mac { get; }
+        public byte[]? Mac { get; private set; }
 
         public override string ToString()
         {

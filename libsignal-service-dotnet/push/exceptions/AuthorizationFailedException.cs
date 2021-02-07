@@ -1,14 +1,9 @@
-using System;
-
 namespace libsignalservice.push.exceptions
 {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-    public class AuthorizationFailedException : Exception
+    public class AuthorizationFailedException : NonSuccessfulResponseCodeException
     {
-        public AuthorizationFailedException(String s)
-            : base(s)
+        public AuthorizationFailedException(int code, string s) : base(code, s)
         {
         }
     }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

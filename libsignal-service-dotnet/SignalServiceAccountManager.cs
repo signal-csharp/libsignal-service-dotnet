@@ -128,9 +128,14 @@ namespace libsignalservice
         /// an SMS verification code to this Signal user.
         /// </summary>
         /// <returns></returns>
-        public async Task RequestSmsVerificationCode(CancellationToken token)// throws IOException
+        public async Task RequestSmsVerificationCode(string? captchaToken, CancellationToken? token = null)// throws IOException
         {
-            await pushServiceSocket.CreateAccount(token, false);
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            await pushServiceSocket.RequestSmsVerificationCodeAsync(captchaToken, token.Value);
         }
 
         /// <summary>
@@ -138,15 +143,20 @@ namespace libsignalservice
         /// make a voice call to this Signal user.
         /// </summary>
         /// <returns></returns>
-        public async Task RequestVoiceVerificationCode(CancellationToken token)// throws IOException
+        public async Task RequestVoiceVerificationCode(string? captchaToken, CancellationToken? token = null)// throws IOException
         {
-            await pushServiceSocket.CreateAccount(token, true);
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            await pushServiceSocket.RequestVoiceVerificationCodeAsync(captchaToken, token.Value);
         }
 
         /// <summary>
         /// Verify a Signal Service account with a received SMS or voice verification code.
         /// </summary>
-        /// <param name="token">The cacellation token</param>
+        /// <param name="token">The cancellation token</param>
         /// <param name="verificationCode">The verification code received via SMS or Voice
         /// <see cref="RequestSmsVerificationCode(CancellationToken)"/> and <see cref="RequestVoiceVerificationCode(CancellationToken)"/></param>
         /// <param name="signalingKey">52 random bytes.  A 32 byte AES key and a 20 byte Hmac256 key, concatenated.</param>
