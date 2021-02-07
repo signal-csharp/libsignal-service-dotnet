@@ -1,14 +1,12 @@
 namespace libsignalservice.push.exceptions
 {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-    public class MismatchedDevicesException : NonSuccessfulResponseCodeException
+    internal class MismatchedDevicesException : NonSuccessfulResponseCodeException
     {
         public MismatchedDevices MismatchedDevices { get; set; }
 
-        public MismatchedDevicesException(MismatchedDevices mismatchedDevices)
+        public MismatchedDevicesException(MismatchedDevices mismatchedDevices) : base(409)
         {
-            this.MismatchedDevices = mismatchedDevices;
+            MismatchedDevices = mismatchedDevices;
         }
     }
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 }

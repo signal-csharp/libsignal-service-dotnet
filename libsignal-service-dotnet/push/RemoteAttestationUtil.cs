@@ -37,7 +37,7 @@ namespace libsignalservice.push
 
             if (response.Attestations!.Count == 0 || response.Attestations.Count > 3)
             {
-                throw new NonSuccessfulResponseCodeException($"Incorrect number of attestations: {response.Attestations.Count}");
+                throw new MalformedResponseException($"Incorrect number of attestations: {response.Attestations.Count}");
             }
 
             foreach (var entry in response.Attestations)
@@ -67,7 +67,7 @@ namespace libsignalservice.push
 
             if (body == null)
             {
-                throw new NonSuccessfulResponseCodeException("Empty response!");
+                throw new MalformedResponseException("Empty response!");
             }
 
             return new ResponsePair(await body.ReadAsStringAsync(), ParseCookies(response));

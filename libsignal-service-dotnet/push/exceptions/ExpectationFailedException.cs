@@ -1,8 +1,9 @@
 namespace libsignalservice.push.exceptions
 {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public class ExpectationFailedException : NonSuccessfulResponseCodeException
     {
+        public ExpectationFailedException() : base(417)
+        {
+        }
     }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

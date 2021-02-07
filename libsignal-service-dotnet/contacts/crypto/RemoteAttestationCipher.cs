@@ -83,7 +83,7 @@ namespace libsignalservice.contacts.crypto
                     throw new SignatureException($"Unexpected signed quote version {signatureBodyEntity.Version}");
                 }
 
-                if (Enumerable.SequenceEqual(ByteUtil.trim(signatureBodyEntity.IsvEnclaveQuoteBody, 432), ByteUtil.trim(quote.QuoteBytes, 432)))
+                if (!Enumerable.SequenceEqual(ByteUtil.trim(signatureBodyEntity.IsvEnclaveQuoteBody, 432), ByteUtil.trim(quote.QuoteBytes, 432)))
                 {
                     throw new SignatureException($"Signed quote is not the same as RA quote: {Hex.ToStringCondensed(signatureBodyEntity.IsvEnclaveQuoteBody!)} vs {Hex.ToStringCondensed(quote.QuoteBytes)}");
                 }
@@ -93,7 +93,7 @@ namespace libsignalservice.contacts.crypto
                     throw new SignatureException($"Quote status is: {signatureBodyEntity.IsvEnclaveQuoteStatus}");
                 }
 
-                DateTime datetime = DateTime.ParseExact(signatureBodyEntity.Timestamp, "yyy-MM-ddTHH:mm:ss.FFFFFF", CultureInfo.InvariantCulture);
+                DateTime datetime = DateTime.ParseExact(signatureBodyEntity.Timestamp, "yyyy-MM-ddTHH:mm:ss.FFFFFF", CultureInfo.InvariantCulture);
                 datetime = DateTime.SpecifyKind(datetime, DateTimeKind.Utc);
                 if (datetime.AddDays(1) < DateTime.UtcNow)
                 {
