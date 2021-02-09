@@ -14,6 +14,8 @@ namespace libsignal_service_dotnet_tests
     {
         public static SignalServiceUrl[] ServiceUrls = new SignalServiceUrl[] { new SignalServiceUrl("https://textsecure-service.whispersystems.org") };
         public static SignalContactDiscoveryUrl[] ContactDiscoveryUrls = new SignalContactDiscoveryUrl[] { new SignalContactDiscoveryUrl("https://api.directory.signal.org") };
+        public static SignalServiceUrl[] ServiceStagingUrls = new SignalServiceUrl[] { new SignalServiceUrl("https://textsecure-service-staging.whispersystems.org") };
+        public static SignalContactDiscoveryUrl[] ContactDiscoveryStagingUrls = new SignalContactDiscoveryUrl[] { new SignalContactDiscoveryUrl("https://api-staging.directory.signal.org") };
         public static SignalServiceConfiguration ServiceConfiguration = new SignalServiceConfiguration(ServiceUrls, null, ContactDiscoveryUrls);
         public static string UserAgent = "libsignal-service-dotnet-tests";
 
@@ -35,6 +37,8 @@ namespace libsignal_service_dotnet_tests
             using HttpClient httpClient = Util.CreateHttpClient();
             await httpClient.GetAsync(ServiceUrls[0].Url);
             await httpClient.GetAsync(ContactDiscoveryUrls[0].Url);
+            await httpClient.GetAsync(ServiceStagingUrls[0].Url);
+            await httpClient.GetAsync(ContactDiscoveryStagingUrls[0].Url);
         }
     }
 }
