@@ -30,7 +30,7 @@ namespace libsignalservice.contacts.crypto
         {
             try
             {
-                byte[] iv = Util.GetSecretBytes(32);
+                byte[] iv = Util.GetSecretBytes(12);
                 var cipher = new GcmBlockCipher(new AesEngine());
                 cipher.Init(true, new AeadParameters(new KeyParameter(key), TAG_LENGTH_BITS, iv));
                 if (aad != null)
