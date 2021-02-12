@@ -2,7 +2,7 @@ using libsignalservice.push.exceptions;
 
 namespace libsignalservice.push
 {
-    internal class LockedException : NonSuccessfulResponseCodeException
+    public class LockedException : NonSuccessfulResponseCodeException
     {
         public int Length { get; }
         public long TimeRemaining { get; }

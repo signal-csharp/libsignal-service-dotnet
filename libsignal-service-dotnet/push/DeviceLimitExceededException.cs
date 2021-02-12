@@ -2,7 +2,7 @@ using libsignalservice.push.exceptions;
 
 namespace libsignalservice.push
 {
-    internal class DeviceLimitExceededException : NonSuccessfulResponseCodeException
+    public class DeviceLimitExceededException : NonSuccessfulResponseCodeException
     {
         public DeviceLimit Limit { get; set; }
 

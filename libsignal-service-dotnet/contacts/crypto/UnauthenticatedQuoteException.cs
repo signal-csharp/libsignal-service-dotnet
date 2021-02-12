@@ -2,7 +2,7 @@ using System;
 
 namespace libsignalservice.contacts.crypto
 {
-    internal class UnauthenticatedQuoteException : Exception
+    public class UnauthenticatedQuoteException : Exception
     {
         public UnauthenticatedQuoteException(string s) : base(s)
         {

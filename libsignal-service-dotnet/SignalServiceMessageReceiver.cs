@@ -1,6 +1,8 @@
-using libsignal;
-using libsignal.push;
-using libsignal.util;
+using System.Collections.Generic;
+using System.IO;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 using libsignalservice.configuration;
 using libsignalservice.crypto;
 using libsignalservice.messages;
@@ -9,21 +11,11 @@ using libsignalservice.push;
 using libsignalservice.util;
 using libsignalservice.websocket;
 using libsignalservicedotnet.crypto;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Net.Http;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using static libsignalservice.messages.SignalServiceAttachment;
 using static libsignalservice.SignalServiceMessagePipe;
 
 namespace libsignalservice
 {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     /// <summary>
     /// The primary interface for receiving Signal Service messages.
     /// </summary>
@@ -167,5 +159,4 @@ namespace libsignalservice
             return results;
         }
     }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }
