@@ -72,7 +72,7 @@ namespace libsignalservice.contacts.crypto
             return new QueryEnvelope(requestId, result.iv, result.data, result.mac);
         }
 
-        internal class NoMatchingRequestIdException : IOException
+        public class NoMatchingRequestIdException : IOException
         {
         }
     }

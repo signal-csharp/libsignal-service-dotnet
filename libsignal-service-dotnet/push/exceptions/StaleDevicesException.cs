@@ -1,6 +1,6 @@
 namespace libsignalservice.push.exceptions
 {
-    internal class StaleDevicesException : NonSuccessfulResponseCodeException
+    public class StaleDevicesException : NonSuccessfulResponseCodeException
     {
         public StaleDevices StaleDevices;
 

@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using libsignalservice.util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

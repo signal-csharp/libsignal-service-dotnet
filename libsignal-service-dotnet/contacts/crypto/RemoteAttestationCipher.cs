@@ -1,9 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
 using libsignal.util;
 using libsignalservice.contacts.entities;
 using libsignalservice.util;

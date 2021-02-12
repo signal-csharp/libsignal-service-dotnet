@@ -1,6 +1,6 @@
 namespace libsignalservice.push.exceptions
 {
-    internal class MismatchedDevicesException : NonSuccessfulResponseCodeException
+    public class MismatchedDevicesException : NonSuccessfulResponseCodeException
     {
         public MismatchedDevices MismatchedDevices { get; set; }
 

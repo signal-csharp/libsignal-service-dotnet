@@ -2,7 +2,7 @@ using System;
 
 namespace libsignalservice.contacts.crypto
 {
-    internal class UnauthenticatedResponseException : Exception
+    public class UnauthenticatedResponseException : Exception
     {
         public UnauthenticatedResponseException(Exception e) : base(null, e)
         {

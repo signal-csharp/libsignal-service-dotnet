@@ -2,7 +2,7 @@ using System;
 
 namespace libsignalservice.push
 {
-    internal class UriFormatException : Exception
+    public class UriFormatException : Exception
     {
         public UriFormatException()
         {

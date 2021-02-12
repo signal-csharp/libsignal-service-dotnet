@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using libsignalservice.util;
 using Newtonsoft.Json;
 
 namespace libsignalservice.contacts.entities
