@@ -54,7 +54,7 @@ namespace libsignalservice
         /// <param name="userAgent">A string which identifies the client software</param>
         public SignalServiceAccountManager(SignalServiceConfiguration configuration,
             string user, string password, int deviceId, string userAgent, HttpClient httpClient) :
-            this(configuration, new StaticCredentialsProvider(user, password, null, deviceId), userAgent, httpClient)
+            this(configuration, new StaticCredentialsProvider(user, password, deviceId), userAgent, httpClient)
         {
         }
 
@@ -69,7 +69,7 @@ namespace libsignalservice
             this.httpClient = httpClient;
             this.configuration = configuration;
             this.userAgent = userAgent;
-            credentials = new StaticCredentialsProvider(null, null, null, (int)SignalServiceAddress.DEFAULT_DEVICE_ID);
+            credentials = new StaticCredentialsProvider(null, null, (int)SignalServiceAddress.DEFAULT_DEVICE_ID);
             pushServiceSocket = new PushServiceSocket(configuration, credentials, userAgent, httpClient);
         }
 
@@ -245,7 +245,7 @@ namespace libsignalservice
         /// <summary>
         /// Checks whether a contact is currently registered with the server
         /// </summary>
-        /// <param name="token">The cancellaion token</param>
+        /// <param name="token">The cancellation token</param>
         /// <param name="e164number">The contact to check.</param>
         /// <returns>An optional ContactTokenDetails, present if registered, absent if not.</returns>
         public async Task<May<ContactTokenDetails>> GetContact(CancellationToken token, string e164number)// throws IOException
@@ -399,11 +399,11 @@ namespace libsignalservice
         /// <returns>Device id</returns>
         public async Task<int> FinishNewDeviceRegistration(CancellationToken token, SignalServiceProvisionMessage provisionMessage, string signalingKey, string password, bool sms, bool fetches, int regid, string name)
         {
-            pushServiceSocket = new PushServiceSocket(configuration, new StaticCredentialsProvider(provisionMessage.Number, password, null, -1), userAgent, httpClient);
+            pushServiceSocket = new PushServiceSocket(configuration, new StaticCredentialsProvider(provisionMessage.Number, password, -1), userAgent, httpClient);
 
             // update credentials and pushServiceSocket to keep internal state consistent
             int deviceId = await pushServiceSocket.FinishNewDeviceRegistration(token, provisionMessage.Code, signalingKey, sms, fetches, regid, name);
-            credentials = new StaticCredentialsProvider(provisionMessage.Number, password, null, deviceId);
+            credentials = new StaticCredentialsProvider(provisionMessage.Number, password, deviceId);
             pushServiceSocket = new PushServiceSocket(configuration, credentials, userAgent, httpClient);
             return deviceId;
         }
@@ -539,7 +539,7 @@ namespace libsignalservice
             foreach (string number in e164numbers)
             {
                 var token = CreateDirectoryServerToken(number, false);
-                if (!tokenMap.ContainsKey(token)) // mimic java set behaviour
+                if (!tokenMap.ContainsKey(token)) // mimic Java set behavior
                 {
                     tokenMap.Add(token, number);
                 }
@@ -549,13 +549,10 @@ namespace libsignalservice
         }
     }
 
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public class SignalServiceProvisionMessage
     {
-        public IdentityKeyPair Identity { get; internal set; }
-        public string Number { get; internal set; }
-        public string Code { get; internal set; }
+        public IdentityKeyPair? Identity { get; internal set; }
+        public string? Number { get; internal set; }
+        public string? Code { get; internal set; }
     }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

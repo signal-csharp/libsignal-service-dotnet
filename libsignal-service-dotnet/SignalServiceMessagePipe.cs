@@ -1,5 +1,10 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using Google.Protobuf;
-using libsignal.push;
 using libsignalservice.messages;
 using libsignalservice.profiles;
 using libsignalservice.push;
@@ -7,13 +12,6 @@ using libsignalservice.util;
 using libsignalservice.websocket;
 using libsignalservicedotnet.crypto;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace libsignalservice
 {
@@ -51,7 +49,7 @@ namespace libsignalservice
         }
 
         /// <summary>
-        /// Blocks until a message was received, calls the IMessagePipeCallback and confirms the message to the server, unless the pipe's token is cancelled.
+        /// Blocks until a message was received, calls the IMessagePipeCallback and confirms the message to the server, unless the pipe's token is canceled.
         /// </summary>
         /// <param name="callback"></param>
         public async Task ReadBlocking(IMessagePipeCallback callback)
@@ -65,7 +63,7 @@ namespace libsignalservice
 
             if (IsSignalServiceEnvelope(request))
             {
-                SignalServiceMessagePipeMessage message = new SignalServiceEnvelope(request.Body.ToByteArray(), CredentialsProvider.SignalingKey);
+                SignalServiceMessagePipeMessage message = new SignalServiceEnvelope(request.Body.ToByteArray());
                 WebSocketResponseMessage response = CreateWebSocketResponse(request);
                 try
                 {
@@ -125,7 +123,7 @@ namespace libsignalservice
                 var (Status, Body) = sendTask.Result;
                 if (Status < 200 || Status >= 300)
                 {
-                    throw new IOException("non-successfull response: " + Status);
+                    throw new IOException("non-successful response: " + Status);
                 }
                 if (Util.IsEmpty(Body))
                     return new SendMessageResponse(false);
@@ -170,7 +168,7 @@ namespace libsignalservice
                 var (Status, Body) = sendTask.Result;
                 if (Status < 200 || Status >= 300)
                 {
-                    throw new IOException("non-successfull response: " + Status);
+                    throw new IOException("non-successful response: " + Status);
                 }
                 return JsonUtil.FromJson<SignalServiceProfile>(Body);
             }

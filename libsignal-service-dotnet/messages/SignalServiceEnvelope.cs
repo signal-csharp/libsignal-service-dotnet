@@ -1,16 +1,11 @@
+using System;
 using Google.Protobuf;
-using libsignal;
-using libsignal.util;
 using libsignalservice.push;
 using libsignalservice.util;
-
-using System;
-using System.Linq;
 using static libsignalservice.SignalServiceMessagePipe;
 
 namespace libsignalservice.messages
 {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     /// <summary>
     /// This class represents an encrypted Signal Service envelope.
     ///
@@ -19,41 +14,24 @@ namespace libsignalservice.messages
     /// </summary>
     public class SignalServiceEnvelope: SignalServiceMessagePipeMessage
     {
-        private static readonly int SUPPORTED_VERSION = 1;
-        private static readonly int CIPHER_KEY_SIZE = 32;
-        private static readonly int MAC_KEY_SIZE = 20;
-        private static readonly int MAC_SIZE = 10;
-
-        private static readonly int VERSION_OFFSET = 0;
-        private static readonly int VERSION_LENGTH = 1;
-        private static readonly int IV_OFFSET = VERSION_OFFSET + VERSION_LENGTH;
-        private static readonly int IV_LENGTH = 16;
-        private static readonly int CIPHERTEXT_OFFSET = IV_OFFSET + IV_LENGTH;
-
         public Envelope Envelope { get; }
 
-
-        public SignalServiceEnvelope(String message, String signalingKey)
-            : this(Base64.Decode(message), signalingKey)
+        /// <summary>
+        /// Construct an envelope from a serialized, Base64 encoded SignalServiceEnvelope.
+        /// </summary>
+        /// <param name="message">The serialized SignalServiceEnvelope, base64 encoded and encrypted.</param>
+        public SignalServiceEnvelope(string message)
+            : this(Base64.Decode(message))
         {
         }
 
         /// <summary>
-        /// Construct an envelope from a serialized SignalServiceEnvelope, encrypted with a signaling key.
+        /// Construct an envelope from a serialized SignalServiceEnvelope.
         /// </summary>
-        /// <param name="ciphertext">The serialized and encrypted SignalServiceEnvelope.</param>
-        /// <param name="signalingKey">The signaling key.</param>
-        public SignalServiceEnvelope(byte[] ciphertext, string signalingKey)//throws InvalidVersionException, IOException
+        /// <param name="input">The serialized and (optionally) encrypted SignalServiceEnvelope.</param>
+        public SignalServiceEnvelope(byte[] input)
         {
-            if (ciphertext.Length < VERSION_LENGTH || ciphertext[VERSION_OFFSET] != SUPPORTED_VERSION)
-                throw new InvalidVersionException("Unsupported version!");
-
-            byte[] cipherKey = GetCipherKey(signalingKey);
-            byte[] macKey = GetMacKey(signalingKey);
-
-            VerifyMac(ciphertext, macKey);
-
-            Envelope = Envelope.Parser.ParseFrom(GetPlaintext(ciphertext, cipherKey));
+            Envelope = Envelope.Parser.ParseFrom(input);
         }
 
         public SignalServiceEnvelope(int type, string sender, int senderDevice,
@@ -203,59 +181,5 @@ namespace libsignalservice.messages
         {
             return Envelope.Type == Envelope.Types.Type.UnidentifiedSender;
         }
-
-        private byte[] GetPlaintext(byte[] ciphertext, byte[] cipherKey) //throws IOException
-        {
-            byte[] ivBytes = new byte[IV_LENGTH];
-            System.Buffer.BlockCopy(ciphertext, IV_OFFSET, ivBytes, 0, ivBytes.Length);
-
-            byte[] message = new byte[ciphertext.Length - VERSION_LENGTH - IV_LENGTH - MAC_SIZE];
-            System.Buffer.BlockCopy(ciphertext, CIPHERTEXT_OFFSET, message, 0, message.Length);
-
-            return Decrypt.aesCbcPkcs5(message, cipherKey, ivBytes);
-        }
-
-        private void VerifyMac(byte[] ciphertext, byte[] macKey)// throws IOException
-        {
-            if (ciphertext.Length < MAC_SIZE + 1)
-                throw new Exception("Invalid MAC!");
-
-            byte[] sign = new byte[ciphertext.Length - MAC_SIZE];
-            Array.Copy(ciphertext, 0, sign, 0, ciphertext.Length - MAC_SIZE);
-
-            byte[] ourMacFull = Sign.sha256sum(macKey, sign);
-            byte[] ourMacBytes = new byte[MAC_SIZE];
-            System.Buffer.BlockCopy(ourMacFull, 0, ourMacBytes, 0, ourMacBytes.Length);
-
-            byte[] theirMacBytes = new byte[MAC_SIZE];
-            System.Buffer.BlockCopy(ciphertext, ciphertext.Length - MAC_SIZE, theirMacBytes, 0, theirMacBytes.Length);
-
-            /*Log.w(TAG, "Our MAC: " + Hex.toString(ourMacBytes));
-            Log.w(TAG, "Thr MAC: " + Hex.toString(theirMacBytes));
-            */
-            if (!(ourMacBytes.SequenceEqual(theirMacBytes)))
-            {
-                throw new Exception("Invalid MAC compare!");
-            }
-        }
-
-        private byte[] GetCipherKey(String signalingKey)// throws IOException
-        {
-            byte[] signalingKeyBytes = Base64.Decode(signalingKey);
-            byte[] cipherKey = new byte[CIPHER_KEY_SIZE];
-            System.Buffer.BlockCopy(signalingKeyBytes, 0, cipherKey, 0, cipherKey.Length);
-
-            return cipherKey;
-        }
-
-        private byte[] GetMacKey(String signalingKey)// throws IOException
-        {
-            byte[] signalingKeyBytes = Base64.Decode(signalingKey);
-            byte[] macKey = new byte[MAC_KEY_SIZE];
-            System.Buffer.BlockCopy(signalingKeyBytes, CIPHER_KEY_SIZE, macKey, 0, macKey.Length);
-
-            return macKey;
-        }
     }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

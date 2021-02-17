@@ -71,7 +71,7 @@ namespace libsignalservice
                                        IEventListener eventListener)
         {
             Token = token;
-            CredentialsProvider = new StaticCredentialsProvider(user, password, null, deviceId);
+            CredentialsProvider = new StaticCredentialsProvider(user, password, deviceId);
             Socket = new PushServiceSocket(urls, CredentialsProvider, userAgent, httpClient);
             Store = store;
             LocalAddress = new SignalServiceAddress(user);
