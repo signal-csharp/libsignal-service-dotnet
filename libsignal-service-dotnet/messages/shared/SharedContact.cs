@@ -105,14 +105,14 @@ namespace libsignalservice.messages.shared
         }
 
         public PostalAddressType Type;
-        public string? Label;
-        public string? Street;
-        public string? Pobox;
-        public string? Neighborhood;
-        public string? City;
-        public string? Region;
-        public string? Postcode;
-        public string? Country;
+        public string? Label { get; }
+        public string? Street { get; }
+        public string? Pobox { get; }
+        public string? Neighborhood { get; }
+        public string? City { get; }
+        public string? Region { get; }
+        public string? Postcode { get; }
+        public string? Country { get; }
 
         public PostalAddress(PostalAddressType type, string? label, string? street,
                              string? pobox, string? neighborhood,

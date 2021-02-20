@@ -1,32 +1,31 @@
-using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace libsignalservice.push
 {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public class OutgoingPushMessageList
     {
         [JsonProperty("destination")]
-        public String Destination { get; set; }
-
-        [JsonProperty("relay")]
-        public String Relay { get; set; }
+        public string Destination { get; }
 
         [JsonProperty("timestamp")]
-        public ulong Timestamp { get; set; }
+        public ulong Timestamp { get; }
 
         [JsonProperty("messages")]
-        public List<OutgoingPushMessage> Messages { get; set; }
+        public List<OutgoingPushMessage> Messages { get; }
 
-        public OutgoingPushMessageList(String destination, ulong timestamp, String relay,
-                                       List<OutgoingPushMessage> messages)
+        [JsonProperty("online")]
+        public bool Online { get; }
+
+        public OutgoingPushMessageList(string destination,
+            ulong timestamp,
+            List<OutgoingPushMessage> messages,
+            bool online)
         {
             Timestamp = timestamp;
             Destination = destination;
-            Relay = relay;
             Messages = messages;
+            Online = online;
         }
     }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

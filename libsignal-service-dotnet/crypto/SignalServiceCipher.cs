@@ -80,13 +80,11 @@ namespace libsignalservice.crypto
                 {
                     Plaintext plaintext = Decrypt(envelope, envelope.GetLegacyMessage());
                     DataMessage message = DataMessage.Parser.ParseFrom(plaintext.Data);
-                    return new SignalServiceContent(plaintext.Metadata.Sender,
-                                        plaintext.Metadata.SenderDevice,
-                                        plaintext.Metadata.Timestamp,
-                                        plaintext.Metadata.NeedsReceipt)
-                    {
-                        Message = CreateSignalServiceMessage(plaintext.Metadata, message)
-                    };
+                    return new SignalServiceContent(CreateSignalServiceMessage(plaintext.Metadata, message),
+                        plaintext.Metadata.Sender,
+                        plaintext.Metadata.SenderDevice,
+                        plaintext.Metadata.Timestamp,
+                        plaintext.Metadata.NeedsReceipt);
                 }
                 else if (envelope.HasContent())
                 {
@@ -94,43 +92,43 @@ namespace libsignalservice.crypto
                     Content message = Content.Parser.ParseFrom(plaintext.Data);
                     if (message.DataMessage != null)
                     {
-                        return new SignalServiceContent(plaintext.Metadata.Sender,
-                                        plaintext.Metadata.SenderDevice,
-                                        plaintext.Metadata.Timestamp,
-                                        plaintext.Metadata.NeedsReceipt)
-                        {
-                            Message = CreateSignalServiceMessage(plaintext.Metadata, message.DataMessage)
-                        };
+                        return new SignalServiceContent(CreateSignalServiceMessage(plaintext.Metadata, message.DataMessage),
+                            plaintext.Metadata.Sender,
+                            plaintext.Metadata.SenderDevice,
+                            plaintext.Metadata.Timestamp,
+                            plaintext.Metadata.NeedsReceipt);
                     }
                     else if (message.SyncMessage != null)
                     {
-                        return new SignalServiceContent(plaintext.Metadata.Sender,
-                                        plaintext.Metadata.SenderDevice,
-                                        plaintext.Metadata.Timestamp,
-                                        plaintext.Metadata.NeedsReceipt)
-                        {
-                            SynchronizeMessage = CreateSynchronizeMessage(plaintext.Metadata, message.SyncMessage)
-                        };
+                        return new SignalServiceContent(CreateSynchronizeMessage(plaintext.Metadata, message.SyncMessage),
+                            plaintext.Metadata.Sender,
+                            plaintext.Metadata.SenderDevice,
+                            plaintext.Metadata.Timestamp,
+                            plaintext.Metadata.NeedsReceipt);
                     }
                     else if (message.CallMessage != null)
                     {
-                        return new SignalServiceContent(plaintext.Metadata.Sender,
-                                        plaintext.Metadata.SenderDevice,
-                                        plaintext.Metadata.Timestamp,
-                                        plaintext.Metadata.NeedsReceipt)
-                        {
-                            CallMessage = CreateCallMessage(message.CallMessage)
-                        };
+                        return new SignalServiceContent(CreateCallMessage(message.CallMessage),
+                            plaintext.Metadata.Sender,
+                            plaintext.Metadata.SenderDevice,
+                            plaintext.Metadata.Timestamp,
+                            plaintext.Metadata.NeedsReceipt);
                     }
                     else if (message.ReceiptMessage != null)
                     {
-                        return new SignalServiceContent(plaintext.Metadata.Sender,
-                                        plaintext.Metadata.SenderDevice,
-                                        plaintext.Metadata.Timestamp,
-                                        plaintext.Metadata.NeedsReceipt)
-                        {
-                            ReadMessage = CreateReceiptMessage(plaintext.Metadata, message.ReceiptMessage)
-                        };
+                        return new SignalServiceContent(CreateReceiptMessage(plaintext.Metadata, message.ReceiptMessage),
+                            plaintext.Metadata.Sender,
+                            plaintext.Metadata.SenderDevice,
+                            plaintext.Metadata.Timestamp,
+                            plaintext.Metadata.NeedsReceipt);
+                    }
+                    else if (message.TypingMessage != null)
+                    {
+                        return new SignalServiceContent(CreateTypingMessage(plaintext.Metadata, message.TypingMessage),
+                            plaintext.Metadata.Sender,
+                            plaintext.Metadata.SenderDevice,
+                            plaintext.Metadata.Timestamp,
+                            false);
                     }
                 }
                 return null;
@@ -462,6 +460,32 @@ namespace libsignalservice.crypto
                 Timestamps = content.Timestamp.ToList(),
                 When = metadata.Timestamp
             };
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="metadata"></param>
+        /// <param name="content"></param>
+        /// <returns></returns>
+        /// <exception cref="ProtocolInvalidMessageException"></exception>
+        private SignalServiceTypingMessage CreateTypingMessage(Metadata metadata, TypingMessage content)
+        {
+            SignalServiceTypingMessage.Action action;
+
+            if (content.Action == TypingMessage.Types.Action.Started) action = SignalServiceTypingMessage.Action.STARTED;
+            else if (content.Action == TypingMessage.Types.Action.Stopped) action = SignalServiceTypingMessage.Action.STOPPED;
+            else action = SignalServiceTypingMessage.Action.UNKNOWN;
+
+            if (content.HasTimestamp && (long)content.Timestamp != metadata.Timestamp)
+            {
+                throw new ProtocolInvalidMessageException(new InvalidMessageException($"Timestamps don't match: {content.Timestamp} vs {metadata.Timestamp}"),
+                    metadata.Sender,
+                    metadata.SenderDevice);
+            }
+
+            return new SignalServiceTypingMessage(action, (long)content.Timestamp,
+                content.HasGroupId ? content.GroupId.ToByteArray() : null);
         }
 
         private SignalServiceDataMessage.SignalServiceQuote? CreateQuote(DataMessage content)

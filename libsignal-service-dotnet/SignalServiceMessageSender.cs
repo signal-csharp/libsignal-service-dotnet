@@ -82,6 +82,66 @@ namespace libsignalservice
         }
 
         /// <summary>
+        /// Send a read receipt for a received message.
+        /// </summary>
+        /// <param name="recipient">The sender of the received message you're acknowledging.</param>
+        /// <param name="unidentifiedAccess"></param>
+        /// <param name="message">The read receipt to deliver.</param>
+        /// <exception cref="IOException"></exception>
+        /// <exception cref="UntrustedIdentityException"></exception>
+        public async Task SendReceiptAsync(SignalServiceAddress recipient,
+            UnidentifiedAccessPair? unidentifiedAccess,
+            SignalServiceReceiptMessage message,
+            CancellationToken? token = null)
+        {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            byte[] content = CreateReceiptContent(message);
+            await SendMessageAsync(recipient, GetTargetUnidentifiedAccess(unidentifiedAccess), message.When, content, false, token);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="recipient"></param>
+        /// <param name="unidentifiedAccess"></param>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        /// <exception cref="IOException"></exception>
+        /// <exception cref="UntrustedIdentityException"></exception>
+        public async Task SendTypingAsync(SignalServiceAddress recipient,
+            UnidentifiedAccessPair? unidentifiedAccess,
+            SignalServiceTypingMessage message,
+            CancellationToken? token = null)
+        {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            byte[] content = CreateTypingContent(message);
+
+            await SendMessageAsync(recipient, GetTargetUnidentifiedAccess(unidentifiedAccess), message.Timestamp, content, true, token);
+        }
+
+        public async Task SendTypingAsync(List<SignalServiceAddress> recipients,
+            List<UnidentifiedAccessPair?> unidentifiedAccess,
+            SignalServiceTypingMessage message,
+            CancellationToken? token = null)
+        {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            byte[] content = CreateTypingContent(message);
+            await SendMessageAsync(recipients, GetTargetUnidentifiedAccess(unidentifiedAccess), message.Timestamp, content, true, token);
+        }
+
+        /// <summary>
         /// Send a call setup message to a single recipient
         /// </summary>
         /// <param name="token">The cancellation token</param>
@@ -92,7 +152,7 @@ namespace libsignalservice
             UnidentifiedAccessPair? unidentifiedAccess, SignalServiceCallMessage message)
         {
             byte[] content = CreateCallContent(message);
-            await SendMessage(token, recipient, unidentifiedAccess?.TargetUnidentifiedAccess, Util.CurrentTimeMillis(), content);
+            await SendMessageAsync(recipient, unidentifiedAccess?.TargetUnidentifiedAccess, Util.CurrentTimeMillis(), content, false, token);
         }
 
         /// <summary>
@@ -102,17 +162,21 @@ namespace libsignalservice
         /// <param name="recipient">The message's destination.</param>
         /// <param name="unidentifiedAccess"></param>
         /// <param name="message">The message.</param>
-        public async Task<SendMessageResult> SendMessage(CancellationToken token, SignalServiceAddress recipient,
-            UnidentifiedAccessPair? unidentifiedAccess, SignalServiceDataMessage message)
+        /// <exception cref="UntrustedIdentityException"></exception>
+        /// <exception cref="IOException"></exception>
+        public async Task<SendMessageResult> SendMessage(CancellationToken token,
+            SignalServiceAddress recipient,
+            UnidentifiedAccessPair? unidentifiedAccess,
+            SignalServiceDataMessage message)
         {
-            byte[] content = await CreateMessageContent(token, message);
+            byte[] content = await CreateMessageContentAsync(message, token);
             long timestamp = message.Timestamp;
-            SendMessageResult result = await SendMessage(token, recipient, unidentifiedAccess?.TargetUnidentifiedAccess, timestamp, content);
+            SendMessageResult result = await SendMessageAsync(recipient, unidentifiedAccess?.TargetUnidentifiedAccess, timestamp, content, false, token);
 
             if ((result.Success != null && result.Success.NeedsSync) || (unidentifiedAccess != null && IsMultiDevice))
             {
                 byte[] syncMessage = CreateMultiDeviceSentTranscriptContent(content, recipient, (ulong)timestamp, new List<SendMessageResult>() { result });
-                await SendMessage(token, LocalAddress, unidentifiedAccess?.SelfUnidentifiedAccess, timestamp, syncMessage);
+                await SendMessageAsync(LocalAddress, unidentifiedAccess?.SelfUnidentifiedAccess, timestamp, syncMessage, false, token);
             }
 
             if (message.EndSession)
@@ -134,12 +198,14 @@ namespace libsignalservice
         /// <param name="recipients">The group members.</param>
         /// <param name="unidentifiedAccess"></param>
         /// <param name="message">The group message.</param>
-        public async Task<List<SendMessageResult>> SendMessage(CancellationToken token, List<SignalServiceAddress> recipients,
-            List<UnidentifiedAccessPair?> unidentifiedAccess, SignalServiceDataMessage message)
+        public async Task<List<SendMessageResult>> SendMessage(CancellationToken token,
+            List<SignalServiceAddress> recipients,
+            List<UnidentifiedAccessPair?> unidentifiedAccess,
+            SignalServiceDataMessage message)
         {
-            byte[] content = await CreateMessageContent(token, message);
+            byte[] content = await CreateMessageContentAsync(message, token);
             long timestamp = message.Timestamp;
-            List<SendMessageResult> results = await SendMessage(token, recipients, GetTargetUnidentifiedAccess(unidentifiedAccess), timestamp, content);
+            List<SendMessageResult> results = await SendMessageAsync(recipients, GetTargetUnidentifiedAccess(unidentifiedAccess), timestamp, content, false, token);
             bool needsSyncInResults = false;
 
             foreach (var result in results)
@@ -153,29 +219,31 @@ namespace libsignalservice
             if (needsSyncInResults || IsMultiDevice)
             {
                 byte[] syncMessage = CreateMultiDeviceSentTranscriptContent(content, null, (ulong) timestamp, results);
-                await SendMessage(token, LocalAddress, GetSelfUnidentifiedAccess(unidentifiedAccess), timestamp, syncMessage);
+                await SendMessageAsync(LocalAddress, GetSelfUnidentifiedAccess(unidentifiedAccess), timestamp, syncMessage, false, token);
             }
             return results;
         }
 
         /// <summary>
-        /// TODO
+        /// 
         /// </summary>
         /// <param name="token"></param>
         /// <param name="message"></param>
         /// <param name="unidenfifiedAccess"></param>
+        /// <exception cref=""></exception>
         public async Task SendMessage(CancellationToken token, SignalServiceSyncMessage message, UnidentifiedAccessPair? unidenfifiedAccess)
         {
             byte[] content;
 
             if (message.Contacts != null)
             {
-                content = await CreateMultiDeviceContactsContent(token, message.Contacts.Contacts.AsStream(),
-                    message.Contacts.Complete);
+                content = await CreateMultiDeviceContactsContentAsync(message.Contacts.Contacts.AsStream(),
+                    message.Contacts.Complete,
+                    token);
             }
             else if (message.Groups != null)
             {
-                content = await CreateMultiDeviceGroupsContent(token, message.Groups.AsStream());
+                content = await CreateMultiDeviceGroupsContentAsync(message.Groups.AsStream(), token);
             }
             else if (message.Reads != null)
             {
@@ -191,7 +259,7 @@ namespace libsignalservice
             }
             else if (message.Verified != null)
             {
-                await SendMessage(token, message.Verified, unidenfifiedAccess);
+                await SendMessageAsync(message.Verified, unidenfifiedAccess, token);
                 return;
             }
             else if (message.Request != null)
@@ -203,11 +271,11 @@ namespace libsignalservice
                 throw new Exception("Unsupported sync message!");
             }
 
-            await SendMessage(token, LocalAddress, unidenfifiedAccess?.SelfUnidentifiedAccess, Util.CurrentTimeMillis(), content);
+            await SendMessageAsync(LocalAddress, unidenfifiedAccess?.SelfUnidentifiedAccess, Util.CurrentTimeMillis(), content, false, token);
         }
 
         /// <summary>
-        /// TODO
+        /// 
         /// </summary>
         /// <param name="soTimeoutMillis"></param>
         public void SetSoTimeoutMillis(long soTimeoutMillis)
@@ -216,15 +284,20 @@ namespace libsignalservice
         }
 
         /// <summary>
-        /// TODO
+        /// 
         /// </summary>
         public void CancelInFlightRequests()
         {
             Socket.CancelInFlightRequests();
         }
 
-        private async Task SendMessage(CancellationToken token, VerifiedMessage message, UnidentifiedAccessPair? unidentifiedAccessPair)
+        private async Task SendMessageAsync(VerifiedMessage message, UnidentifiedAccessPair? unidentifiedAccessPair, CancellationToken? token = null)
         {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
             byte[] nullMessageBody = new DataMessage()
             {
                 Body = Base64.EncodeBytes(Util.GetRandomLengthBytes(140))
@@ -240,13 +313,31 @@ namespace libsignalservice
                 NullMessage = nullMessage
             }.ToByteArray();
 
-            SendMessageResult result = await SendMessage(token, new SignalServiceAddress(message.Destination), unidentifiedAccessPair?.TargetUnidentifiedAccess, message.Timestamp, content);
+            SendMessageResult result = await SendMessageAsync(new SignalServiceAddress(message.Destination), unidentifiedAccessPair?.TargetUnidentifiedAccess, message.Timestamp, content, false, token);
 
             if (result.Success.NeedsSync)
             {
                 byte[] syncMessage = CreateMultiDeviceVerifiedContent(message, nullMessage.ToByteArray());
-                await SendMessage(token, LocalAddress, unidentifiedAccessPair?.SelfUnidentifiedAccess, message.Timestamp, syncMessage);
+                await SendMessageAsync(LocalAddress, unidentifiedAccessPair?.SelfUnidentifiedAccess, message.Timestamp, syncMessage, false, token);
             }
+        }
+
+        private byte[] CreateTypingContent(SignalServiceTypingMessage message)
+        {
+            Content content = new Content();
+            TypingMessage typingMessage = new TypingMessage();
+
+            if (message.IsTypingStarted()) typingMessage.Action = TypingMessage.Types.Action.Started;
+            else if (message.IsTypingStopped()) typingMessage.Action = TypingMessage.Types.Action.Stopped;
+            else throw new ArgumentException("Unknown typing indicator");
+
+            if (message.GroupId != null)
+            {
+                typingMessage.GroupId = ByteString.CopyFrom(message.GroupId);
+            }
+
+            content.TypingMessage = typingMessage;
+            return content.ToByteArray();
         }
 
         private byte[] CreateReceiptContent(SignalServiceReceiptMessage message)
@@ -264,14 +355,27 @@ namespace libsignalservice
                 receiptMessage.Type = ReceiptMessage.Types.Type.Read;
 
             content.ReceiptMessage = receiptMessage;
-            return receiptMessage.ToByteArray();
+            return content.ToByteArray();
         }
 
-        private async Task<byte[]> CreateMessageContent(CancellationToken token, SignalServiceDataMessage message)// throws IOException
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        /// <exception cref="IOException"></exception>
+        private async Task<byte[]> CreateMessageContentAsync(SignalServiceDataMessage message,
+            CancellationToken? token = null)
         {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
             Content content = new Content();
             DataMessage dataMessage = new DataMessage { };
-            IList<AttachmentPointer> pointers = await CreateAttachmentPointers(token, message.Attachments);
+            IList<AttachmentPointer> pointers = await CreateAttachmentPointersAsync(message.Attachments, token);
 
             if (pointers.Count != 0)
             {
@@ -285,7 +389,7 @@ namespace libsignalservice
 
             if (message.Group != null)
             {
-                dataMessage.Group = await CreateGroupContent(token, message.Group);
+                dataMessage.Group = await CreateGroupContentAsync(message.Group, token);
             }
 
             if (message.EndSession)
@@ -329,7 +433,7 @@ namespace libsignalservice
 
                     if (attachment.Thumbnail != null)
                     {
-                        protoAttachment.Thumbnail = await CreateAttachmentPointer(token, attachment.Thumbnail.AsStream());
+                        protoAttachment.Thumbnail = await CreateAttachmentPointerAsync(attachment.Thumbnail.AsStream(), token);
                     }
                     quote.Attachments.Add(protoAttachment);
                 }
@@ -337,7 +441,7 @@ namespace libsignalservice
             }
 
             if (message.SharedContacts != null)
-                dataMessage.Contact.AddRange(CreateSharedContactContent(message.SharedContacts));
+                dataMessage.Contact.AddRange(await CreateSharedContactContentAsync(message.SharedContacts, token));
 
             dataMessage.Timestamp = (ulong)message.Timestamp;
 
@@ -398,26 +502,38 @@ namespace libsignalservice
             return content.ToByteArray();
         }
 
-        private async Task<byte[]> CreateMultiDeviceContactsContent(CancellationToken token, SignalServiceAttachmentStream contacts, bool complete)
+        private async Task<byte[]> CreateMultiDeviceContactsContentAsync(SignalServiceAttachmentStream contacts, bool complete,
+            CancellationToken? token = null)
         {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
             Content content = new Content { };
             SyncMessage syncMessage = CreateSyncMessage();
             syncMessage.Contacts = new SyncMessage.Types.Contacts
             {
-                Blob = await CreateAttachmentPointer(token, contacts),
+                Blob = await CreateAttachmentPointerAsync(contacts, token),
                 Complete = complete
             };
             content.SyncMessage = syncMessage;
             return content.ToByteArray();
         }
 
-        private async Task<byte[]> CreateMultiDeviceGroupsContent(CancellationToken token, SignalServiceAttachmentStream groups)
+        private async Task<byte[]> CreateMultiDeviceGroupsContentAsync(SignalServiceAttachmentStream groups,
+            CancellationToken? token = null)
         {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
             Content content = new Content { };
             SyncMessage syncMessage = CreateSyncMessage();
             syncMessage.Groups = new SyncMessage.Types.Groups
             {
-                Blob = await CreateAttachmentPointer(token, groups)
+                Blob = await CreateAttachmentPointerAsync(groups, token)
             };
             content.SyncMessage = syncMessage;
             return content.ToByteArray();
@@ -568,8 +684,14 @@ namespace libsignalservice
             return syncMessage;
         }
 
-        private async Task<GroupContext> CreateGroupContent(CancellationToken token, SignalServiceGroup group)
+        private async Task<GroupContext> CreateGroupContentAsync(SignalServiceGroup group,
+            CancellationToken? token = null)
         {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
             GroupContext groupContext = new GroupContext { };
             groupContext.Id = ByteString.CopyFrom(group.GroupId);
 
@@ -585,7 +707,7 @@ namespace libsignalservice
 
                 if (group.Avatar != null && group.Avatar.IsStream())
                 {
-                    AttachmentPointer pointer = await CreateAttachmentPointer(token, group.Avatar.AsStream());
+                    AttachmentPointer pointer = await CreateAttachmentPointerAsync(group.Avatar.AsStream(), token);
                     groupContext.Avatar = pointer;
                 }
             }
@@ -597,154 +719,201 @@ namespace libsignalservice
             return groupContext;
         }
 
-        private async Task<List<SendMessageResult>> SendMessage(CancellationToken token, List<SignalServiceAddress> recipients,
-            List<UnidentifiedAccess?> unidentifiedAccess, long timestamp, byte[] content)
+        private async Task<List<Contact>> CreateSharedContactContentAsync(List<SharedContact> contacts,
+            CancellationToken? token = null)
         {
-            List<SendMessageResult> results = new List<SendMessageResult>();
-            for (int i = 0; i < recipients.Count; i++)
+            if (token == null)
             {
-                var recipient = recipients[i];
+                token = CancellationToken.None;
+            }
+
+            List<Contact> results = new List<Contact>();
+
+            foreach (SharedContact contact in contacts)
+            {
+                Contact.Types.Name nameBuilder = new Contact.Types.Name();
+                if (contact.Name.Family != null) nameBuilder.FamilyName = contact.Name.Family;
+                if (contact.Name.Given != null) nameBuilder.GivenName = contact.Name.Given;
+                if (contact.Name.Middle != null) nameBuilder.MiddleName = contact.Name.Middle;
+                if (contact.Name.Prefix != null) nameBuilder.Prefix = contact.Name.Prefix;
+                if (contact.Name.Suffix != null) nameBuilder.Suffix = contact.Name.Suffix;
+                if (contact.Name.Display != null) nameBuilder.DisplayName = contact.Name.Display;
+
+                Contact contactBuilder = new Contact()
+                {
+                    Name = nameBuilder
+                };
+
+                if (contact.Address != null)
+                {
+                    foreach (PostalAddress address in contact.Address)
+                    {
+                        Contact.Types.PostalAddress addressBuilder = new Contact.Types.PostalAddress();
+
+                        addressBuilder.Type = address.Type switch
+                        {
+                            PostalAddress.PostalAddressType.HOME => Contact.Types.PostalAddress.Types.Type.Home,
+                            PostalAddress.PostalAddressType.WORK => Contact.Types.PostalAddress.Types.Type.Work,
+                            PostalAddress.PostalAddressType.CUSTOM => Contact.Types.PostalAddress.Types.Type.Custom,
+                            _ => throw new ArgumentException($"Unknown type: {address.Type}")
+                        };
+
+                        if (address.City != null) addressBuilder.City = address.City;
+                        if (address.Country != null) addressBuilder.Country = address.Country;
+                        if (address.Label != null) addressBuilder.Label = address.Label;
+                        if (address.Neighborhood != null) addressBuilder.Neighborhood = address.Neighborhood;
+                        if (address.Pobox != null) addressBuilder.Pobox = address.Pobox;
+                        if (address.Postcode != null) addressBuilder.Postcode = address.Postcode;
+                        if (address.Region != null) addressBuilder.Region = address.Region;
+                        if (address.Street != null) addressBuilder.Street = address.Street;
+
+                        contactBuilder.Address.Add(addressBuilder);
+                    }
+                }
+
+                if (contact.Email != null)
+                {
+                    foreach (Email email in contact.Email)
+                    {
+                        Contact.Types.Email emailBuilder = new Contact.Types.Email()
+                        {
+                            Value = email.Value
+                        };
+
+                        emailBuilder.Type = email.Type switch
+                        {
+                            Email.EmailType.HOME => Contact.Types.Email.Types.Type.Home,
+                            Email.EmailType.WORK => Contact.Types.Email.Types.Type.Work,
+                            Email.EmailType.MOBILE => Contact.Types.Email.Types.Type.Mobile,
+                            Email.EmailType.CUSTOM => Contact.Types.Email.Types.Type.Custom,
+                            _ => throw new ArgumentException($"Unknown type {email.Type}")
+                        };
+
+                        if (email.Label != null) emailBuilder.Label = email.Label;
+
+                        contactBuilder.Email.Add(emailBuilder);
+                    }
+                }
+
+                if (contact.Phone != null)
+                {
+                    foreach (Phone phone in contact.Phone)
+                    {
+                        Contact.Types.Phone phoneBuilder = new Contact.Types.Phone()
+                        {
+                            Value = phone.Value
+                        };
+
+                        phoneBuilder.Type = phone.Type switch
+                        {
+                            Phone.PhoneType.HOME => Contact.Types.Phone.Types.Type.Home,
+                            Phone.PhoneType.WORK => Contact.Types.Phone.Types.Type.Work,
+                            Phone.PhoneType.MOBILE => Contact.Types.Phone.Types.Type.Mobile,
+                            Phone.PhoneType.CUSTOM => Contact.Types.Phone.Types.Type.Custom,
+                            _ => throw new ArgumentException($"Unknown type: {phone.Type}")
+                        };
+
+                        if (phone.Label != null) phoneBuilder.Label = phone.Label;
+
+                        contactBuilder.Number.Add(phoneBuilder);
+                    }
+                }
+
+                if (contact.Avatar != null)
+                {
+                    contactBuilder.Avatar = new Contact.Types.Avatar()
+                    {
+                        Avatar_ = await CreateAttachmentPointerAsync(contact.Avatar.Attachment.AsStream(), token),
+                        IsProfile = contact.Avatar.IsProfile
+                    };
+                }
+
+                if (contact.Organization != null)
+                {
+                    contactBuilder.Organization = contact.Organization;
+                }
+
+                results.Add(contactBuilder);
+            }
+
+            return results;
+        }
+
+        private async Task<List<SendMessageResult>> SendMessageAsync(List<SignalServiceAddress> recipients,
+            List<UnidentifiedAccess?> unidentifiedAccess,
+            long timestamp,
+            byte[] content,
+            bool online,
+            CancellationToken? token = null)
+        {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            List<SendMessageResult> results = new List<SendMessageResult>();
+            var recipientsIterator = recipients.GetEnumerator();
+            var unidentifiedAccessIterator = unidentifiedAccess.GetEnumerator();
+
+            while (recipientsIterator.MoveNext())
+            {
+                unidentifiedAccessIterator.MoveNext();
+                SignalServiceAddress recipient = recipientsIterator.Current;
+
                 try
                 {
-                    var result = await SendMessage(token, recipient, unidentifiedAccess[i], timestamp, content);
+                    SendMessageResult result = await SendMessageAsync(recipient, unidentifiedAccessIterator.Current, timestamp, content, online, token);
                     results.Add(result);
                 }
-                catch (UntrustedIdentityException e)
+                catch (UntrustedIdentityException ex)
                 {
-                    results.Add(SendMessageResult.NewIdentityFailure(recipient, e.IdentityKey));
+                    Logger.LogError(new EventId(), ex, "");
+                    results.Add(SendMessageResult.NewIdentityFailure(recipient, ex.IdentityKey));
                 }
-                catch (UnregisteredUserException e)
+                catch (UnregisteredUserException ex)
                 {
+                    Logger.LogError(new EventId(), ex, "");
                     results.Add(SendMessageResult.NewUnregisteredFailure(recipient));
                 }
-                catch (PushNetworkException e)
+                catch (PushNetworkException ex)
                 {
+                    Logger.LogError(new EventId(), ex, "");
                     results.Add(SendMessageResult.NewNetworkFailure(recipient));
                 }
             }
+
             return results;
         }
 
-        private List<Contact> CreateSharedContactContent(List<SharedContact> contacts)
-        {
-            List<Contact> results = new List<Contact>();
-
-            foreach (var contact in contacts)
-            {
-                //TODO
-                /*
-                DataMessage.Contact.Name.Builder nameBuilder = DataMessage.Contact.Name.newBuilder();
-
-                if (contact.getName().getFamily().isPresent()) nameBuilder.setFamilyName(contact.getName().getFamily().get());
-                if (contact.getName().getGiven().isPresent()) nameBuilder.setGivenName(contact.getName().getGiven().get());
-                if (contact.getName().getMiddle().isPresent()) nameBuilder.setMiddleName(contact.getName().getMiddle().get());
-                if (contact.getName().getPrefix().isPresent()) nameBuilder.setPrefix(contact.getName().getPrefix().get());
-                if (contact.getName().getSuffix().isPresent()) nameBuilder.setSuffix(contact.getName().getSuffix().get());
-                if (contact.getName().getDisplay().isPresent()) nameBuilder.setDisplayName(contact.getName().getDisplay().get());
-
-                DataMessage.Contact.Builder contactBuilder = DataMessage.Contact.newBuilder()
-                                                                                .setName(nameBuilder);
-
-                if (contact.getAddress().isPresent())
-                {
-                    for (SharedContact.PostalAddress address : contact.getAddress().get())
-                    {
-                        DataMessage.Contact.PostalAddress.Builder addressBuilder = DataMessage.Contact.PostalAddress.newBuilder();
-
-                        switch (address.getType())
-                        {
-                            case HOME: addressBuilder.setType(DataMessage.Contact.PostalAddress.Type.HOME); break;
-                            case WORK: addressBuilder.setType(DataMessage.Contact.PostalAddress.Type.WORK); break;
-                            case CUSTOM: addressBuilder.setType(DataMessage.Contact.PostalAddress.Type.CUSTOM); break;
-                            default: throw new AssertionError("Unknown type: " + address.getType());
-                        }
-
-                        if (address.getCity().isPresent()) addressBuilder.setCity(address.getCity().get());
-                        if (address.getCountry().isPresent()) addressBuilder.setCountry(address.getCountry().get());
-                        if (address.getLabel().isPresent()) addressBuilder.setLabel(address.getLabel().get());
-                        if (address.getNeighborhood().isPresent()) addressBuilder.setNeighborhood(address.getNeighborhood().get());
-                        if (address.getPobox().isPresent()) addressBuilder.setPobox(address.getPobox().get());
-                        if (address.getPostcode().isPresent()) addressBuilder.setPostcode(address.getPostcode().get());
-                        if (address.getRegion().isPresent()) addressBuilder.setRegion(address.getRegion().get());
-                        if (address.getStreet().isPresent()) addressBuilder.setStreet(address.getStreet().get());
-
-                        contactBuilder.addAddress(addressBuilder);
-                    }
-                }
-
-                if (contact.getEmail().isPresent())
-                {
-                    for (SharedContact.Email email : contact.getEmail().get())
-                    {
-                        DataMessage.Contact.Email.Builder emailBuilder = DataMessage.Contact.Email.newBuilder()
-                                                                                                  .setValue(email.getValue());
-
-                        switch (email.getType())
-                        {
-                            case HOME: emailBuilder.setType(DataMessage.Contact.Email.Type.HOME); break;
-                            case WORK: emailBuilder.setType(DataMessage.Contact.Email.Type.WORK); break;
-                            case MOBILE: emailBuilder.setType(DataMessage.Contact.Email.Type.MOBILE); break;
-                            case CUSTOM: emailBuilder.setType(DataMessage.Contact.Email.Type.CUSTOM); break;
-                            default: throw new AssertionError("Unknown type: " + email.getType());
-                        }
-
-                        if (email.getLabel().isPresent()) emailBuilder.setLabel(email.getLabel().get());
-
-                        contactBuilder.addEmail(emailBuilder);
-                    }
-                }
-
-                if (contact.getPhone().isPresent())
-                {
-                    for (SharedContact.Phone phone : contact.getPhone().get())
-                    {
-                        DataMessage.Contact.Phone.Builder phoneBuilder = DataMessage.Contact.Phone.newBuilder()
-                                                                                                  .setValue(phone.getValue());
-
-                        switch (phone.getType())
-                        {
-                            case HOME: phoneBuilder.setType(DataMessage.Contact.Phone.Type.HOME); break;
-                            case WORK: phoneBuilder.setType(DataMessage.Contact.Phone.Type.WORK); break;
-                            case MOBILE: phoneBuilder.setType(DataMessage.Contact.Phone.Type.MOBILE); break;
-                            case CUSTOM: phoneBuilder.setType(DataMessage.Contact.Phone.Type.CUSTOM); break;
-                            default: throw new AssertionError("Unknown type: " + phone.getType());
-                        }
-
-                        if (phone.getLabel().isPresent()) phoneBuilder.setLabel(phone.getLabel().get());
-
-                        contactBuilder.addNumber(phoneBuilder);
-                    }
-                }
-
-                if (contact.getAvatar().isPresent())
-                {
-                    contactBuilder.setAvatar(DataMessage.Contact.Avatar.newBuilder()
-                                                                       .setAvatar(createAttachmentPointer(contact.getAvatar().get().getAttachment().asStream()))
-                                                                       .setIsProfile(contact.getAvatar().get().isProfile()));
-                }
-
-                if (contact.getOrganization().isPresent())
-                {
-                    contactBuilder.setOrganization(contact.getOrganization().get());
-                }
-
-                results.add(contactBuilder.build());
-                */
-            }
-            return results;
-        }
-
-        private async Task<SendMessageResult> SendMessage(CancellationToken token,
-            SignalServiceAddress recipient,
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="recipient"></param>
+        /// <param name="unidentifiedAccess"></param>
+        /// <param name="timestamp"></param>
+        /// <param name="content"></param>
+        /// <param name="online"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        /// <exception cref="UntrustedIdentityException"></exception>
+        /// <exception cref="IOException"></exception>
+        private async Task<SendMessageResult> SendMessageAsync(SignalServiceAddress recipient,
             UnidentifiedAccess? unidentifiedAccess,
             long timestamp,
-            byte[] content)
+            byte[] content,
+            bool online,
+            CancellationToken? token = null)
         {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
             for (int i = 0; i < 4; i++)
             {
                 try
                 {
-                    OutgoingPushMessageList messages = await GetEncryptedMessages(token, Socket, recipient, unidentifiedAccess, timestamp, content);
+                    OutgoingPushMessageList messages = await GetEncryptedMessages(token.Value, Socket, recipient, unidentifiedAccess, timestamp, content, online);
                     var pipe = Pipe;
                     var unidentifiedPipe = UnidentifiedPipe;
                     if (Pipe != null && unidentifiedAccess == null)
@@ -772,7 +941,7 @@ namespace libsignalservice
                 }
                 catch (MismatchedDevicesException mde)
                 {
-                    await HandleMismatchedDevices(token, Socket, recipient, mde.MismatchedDevices);
+                    await HandleMismatchedDevices(token.Value, Socket, recipient, mde.MismatchedDevices);
                 }
                 catch (StaleDevicesException ste)
                 {
@@ -783,8 +952,14 @@ namespace libsignalservice
             throw new Exception("Failed to resolve conflicts after 3 attempts!");
         }
 
-        private async Task<IList<AttachmentPointer>> CreateAttachmentPointers(CancellationToken token, List<SignalServiceAttachment>? attachments)
+        private async Task<IList<AttachmentPointer>> CreateAttachmentPointersAsync(List<SignalServiceAttachment>? attachments,
+            CancellationToken? token = null)
         {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
             IList<AttachmentPointer> pointers = new List<AttachmentPointer>();
 
             if (attachments == null || attachments.Count == 0)
@@ -798,7 +973,7 @@ namespace libsignalservice
                 if (attachment.IsStream())
                 {
                     Logger.LogTrace("Found attachment, creating pointer...");
-                    pointers.Add(await CreateAttachmentPointer(token, attachment.AsStream()));
+                    pointers.Add(await CreateAttachmentPointerAsync(attachment.AsStream(), token));
                 }
                 else if (attachment.IsPointer())
                 {
@@ -809,8 +984,14 @@ namespace libsignalservice
             return pointers;
         }
 
-        private async Task<AttachmentPointer> CreateAttachmentPointer(CancellationToken token, SignalServiceAttachmentStream attachment)
+        private async Task<AttachmentPointer> CreateAttachmentPointerAsync(SignalServiceAttachmentStream attachment,
+            CancellationToken? token = null)
         {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
             byte[] attachmentKey = Util.GetSecretBytes(64);
             long paddedLength = PaddingInputStream.GetPaddedSize(attachment.Length);
             long ciphertextLength = AttachmentCipherInputStream.GetCiphertextLength(paddedLength);
@@ -820,7 +1001,7 @@ namespace libsignalservice
                                                                        new AttachmentCipherOutputStreamFactory(attachmentKey),
                                                                        attachment.Listener);
 
-            (ulong id, byte[] digest) = await Socket.SendAttachment(token, attachmentData);
+            (ulong id, byte[] digest) = await Socket.SendAttachment(token.Value, attachmentData);
 
             var attachmentPointer = new AttachmentPointer
             {
@@ -908,7 +1089,8 @@ namespace libsignalservice
             SignalServiceAddress recipient,
             UnidentifiedAccess? unidentifiedAccess,
             long timestamp,
-            byte[] plaintext)
+            byte[] plaintext,
+            bool online)
         {
             List<OutgoingPushMessage> messages = new List<OutgoingPushMessage>();
 
@@ -929,7 +1111,7 @@ namespace libsignalservice
                 }
             }
 
-            return new OutgoingPushMessageList(recipient.E164number, (ulong)timestamp, recipient.Relay, messages);
+            return new OutgoingPushMessageList(recipient.E164number, (ulong)timestamp, messages, online);
         }
 
         private async Task<OutgoingPushMessage> GetEncryptedMessage(CancellationToken token,
@@ -1023,6 +1205,16 @@ namespace libsignalservice
             {
                 Store.DeleteSession(new SignalProtocolAddress(recipient.E164number, staleDeviceId));
             }
+        }
+
+        private UnidentifiedAccess? GetTargetUnidentifiedAccess(UnidentifiedAccessPair? unidentifiedAccess)
+        {
+            if (unidentifiedAccess != null)
+            {
+                return unidentifiedAccess.TargetUnidentifiedAccess;
+            }
+
+            return null;
         }
 
         private List<UnidentifiedAccess?> GetTargetUnidentifiedAccess(List<UnidentifiedAccessPair?> unidentifiedAccess)
