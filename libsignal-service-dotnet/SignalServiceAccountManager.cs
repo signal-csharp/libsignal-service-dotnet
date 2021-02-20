@@ -24,7 +24,6 @@ using libsignalservice.util;
 using libsignalservice.websocket;
 using Microsoft.Extensions.Logging;
 using Org.BouncyCastle.Crypto;
-using Strilanc.Value;
 
 namespace libsignalservice
 {
@@ -248,17 +247,17 @@ namespace libsignalservice
         /// <param name="token">The cancellation token</param>
         /// <param name="e164number">The contact to check.</param>
         /// <returns>An optional ContactTokenDetails, present if registered, absent if not.</returns>
-        public async Task<May<ContactTokenDetails>> GetContact(CancellationToken token, string e164number)// throws IOException
+        public async Task<ContactTokenDetails?> GetContact(CancellationToken token, string e164number)// throws IOException
         {
             string contactToken = CreateDirectoryServerToken(e164number, true);
-            ContactTokenDetails contactTokenDetails = await pushServiceSocket.GetContactTokenDetails(token, contactToken);
+            ContactTokenDetails? contactTokenDetails = await pushServiceSocket.GetContactTokenDetails(token, contactToken);
 
             if (contactTokenDetails != null)
             {
                 contactTokenDetails.Number = e164number;
             }
 
-            return new May<ContactTokenDetails>(contactTokenDetails);
+            return contactTokenDetails;
         }
 
         /// <summary>
