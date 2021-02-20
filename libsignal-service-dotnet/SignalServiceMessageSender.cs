@@ -641,6 +641,11 @@ namespace libsignalservice
                 configurationMessage.UnidentifiedDeliveryIndicators = unidentifiedDeliveryIndicators;
             }
 
+            if (configuration.TypingIndicators.HasValue)
+            {
+                configurationMessage.TypingIndicators = configuration.TypingIndicators.Value;
+            }
+
             syncMessage.Configuration = configurationMessage;
             content.SyncMessage = syncMessage;
             return content.ToByteArray();
