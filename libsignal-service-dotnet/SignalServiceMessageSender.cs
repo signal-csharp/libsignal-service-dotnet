@@ -327,6 +327,8 @@ namespace libsignalservice
             Content content = new Content();
             TypingMessage typingMessage = new TypingMessage();
 
+            typingMessage.Timestamp = (ulong)message.Timestamp;
+
             if (message.IsTypingStarted()) typingMessage.Action = TypingMessage.Types.Action.Started;
             else if (message.IsTypingStopped()) typingMessage.Action = TypingMessage.Types.Action.Stopped;
             else throw new ArgumentException("Unknown typing indicator");
