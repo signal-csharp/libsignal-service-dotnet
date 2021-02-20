@@ -621,7 +621,8 @@ namespace libsignalservice.crypto
                 (int)pointer.Height,
                 pointer.HasDigest ? pointer.Digest.ToByteArray() : null,
                 pointer.HasFileName ? pointer.FileName : null,
-                (pointer.Flags & (uint)AttachmentPointer.Types.Flags.VoiceMessage) != 0);
+                (pointer.Flags & (uint)AttachmentPointer.Types.Flags.VoiceMessage) != 0,
+                pointer.HasCaption ? pointer.Caption : null);
         }
 
         private SignalServiceGroup? CreateGroupInfo(DataMessage content)
@@ -665,7 +666,8 @@ namespace libsignalservice.crypto
                         0, 0,
                         pointer.HasDigest ? pointer.Digest.ToByteArray() : null,
                         null,
-                        false);
+                        false,
+                        null);
                 }
 
                 return new SignalServiceGroup()

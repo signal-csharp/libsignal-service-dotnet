@@ -122,29 +122,30 @@ namespace libsignalservice.push {
             "BBopCgRSZWFkEg4KBnNlbmRlchgBIAEoCRIRCgl0aW1lc3RhbXAYAiABKAQa",
             "ZwoNQ29uZmlndXJhdGlvbhIUCgxyZWFkUmVjZWlwdHMYASABKAgSJgoedW5p",
             "ZGVudGlmaWVkRGVsaXZlcnlJbmRpY2F0b3JzGAIgASgIEhgKEHR5cGluZ0lu",
-            "ZGljYXRvcnMYAyABKAgizgEKEUF0dGFjaG1lbnRQb2ludGVyEgoKAmlkGAEg",
+            "ZGljYXRvcnMYAyABKAgi3wEKEUF0dGFjaG1lbnRQb2ludGVyEgoKAmlkGAEg",
             "ASgGEhMKC2NvbnRlbnRUeXBlGAIgASgJEgsKA2tleRgDIAEoDBIMCgRzaXpl",
             "GAQgASgNEhEKCXRodW1ibmFpbBgFIAEoDBIOCgZkaWdlc3QYBiABKAwSEAoI",
             "ZmlsZU5hbWUYByABKAkSDQoFZmxhZ3MYCCABKA0SDQoFd2lkdGgYCSABKA0S",
-            "DgoGaGVpZ2h0GAogASgNIhoKBUZsYWdzEhEKDVZPSUNFX01FU1NBR0UQASLf",
-            "AQoMR3JvdXBDb250ZXh0EgoKAmlkGAEgASgMEisKBHR5cGUYAiABKA4yHS50",
-            "ZXh0c2VjdXJlLkdyb3VwQ29udGV4dC5UeXBlEgwKBG5hbWUYAyABKAkSDwoH",
-            "bWVtYmVycxgEIAMoCRItCgZhdmF0YXIYBSABKAsyHS50ZXh0c2VjdXJlLkF0",
-            "dGFjaG1lbnRQb2ludGVyIkgKBFR5cGUSCwoHVU5LTk9XThAAEgoKBlVQREFU",
-            "RRABEgsKB0RFTElWRVIQAhIICgRRVUlUEAMSEAoMUkVRVUVTVF9JTkZPEAQi",
-            "gQIKDkNvbnRhY3REZXRhaWxzEg4KBm51bWJlchgBIAEoCRIMCgRuYW1lGAIg",
-            "ASgJEjEKBmF2YXRhchgDIAEoCzIhLnRleHRzZWN1cmUuQ29udGFjdERldGFp",
-            "bHMuQXZhdGFyEg0KBWNvbG9yGAQgASgJEiYKCHZlcmlmaWVkGAUgASgLMhQu",
-            "dGV4dHNlY3VyZS5WZXJpZmllZBISCgpwcm9maWxlS2V5GAYgASgMEg8KB2Js",
-            "b2NrZWQYByABKAgSEwoLZXhwaXJlVGltZXIYCCABKA0aLQoGQXZhdGFyEhMK",
-            "C2NvbnRlbnRUeXBlGAEgASgJEg4KBmxlbmd0aBgCIAEoDSLkAQoMR3JvdXBE",
-            "ZXRhaWxzEgoKAmlkGAEgASgMEgwKBG5hbWUYAiABKAkSDwoHbWVtYmVycxgD",
-            "IAMoCRIvCgZhdmF0YXIYBCABKAsyHy50ZXh0c2VjdXJlLkdyb3VwRGV0YWls",
-            "cy5BdmF0YXISFAoGYWN0aXZlGAUgASgIOgR0cnVlEhMKC2V4cGlyZVRpbWVy",
-            "GAYgASgNEg0KBWNvbG9yGAcgASgJEg8KB2Jsb2NrZWQYCCABKAgaLQoGQXZh",
-            "dGFyEhMKC2NvbnRlbnRUeXBlGAEgASgJEg4KBmxlbmd0aBgCIAEoDUJaCitv",
-            "cmcud2hpc3BlcnN5c3RlbXMudGV4dHNlY3VyZS5pbnRlcm5hbC5wdXNoQhNT",
-            "aWduYWxTZXJ2aWNlUHJvdG9zqgIVbGlic2lnbmFsc2VydmljZS5wdXNo"));
+            "DgoGaGVpZ2h0GAogASgNEg8KB2NhcHRpb24YCyABKAkiGgoFRmxhZ3MSEQoN",
+            "Vk9JQ0VfTUVTU0FHRRABIt8BCgxHcm91cENvbnRleHQSCgoCaWQYASABKAwS",
+            "KwoEdHlwZRgCIAEoDjIdLnRleHRzZWN1cmUuR3JvdXBDb250ZXh0LlR5cGUS",
+            "DAoEbmFtZRgDIAEoCRIPCgdtZW1iZXJzGAQgAygJEi0KBmF2YXRhchgFIAEo",
+            "CzIdLnRleHRzZWN1cmUuQXR0YWNobWVudFBvaW50ZXIiSAoEVHlwZRILCgdV",
+            "TktOT1dOEAASCgoGVVBEQVRFEAESCwoHREVMSVZFUhACEggKBFFVSVQQAxIQ",
+            "CgxSRVFVRVNUX0lORk8QBCKBAgoOQ29udGFjdERldGFpbHMSDgoGbnVtYmVy",
+            "GAEgASgJEgwKBG5hbWUYAiABKAkSMQoGYXZhdGFyGAMgASgLMiEudGV4dHNl",
+            "Y3VyZS5Db250YWN0RGV0YWlscy5BdmF0YXISDQoFY29sb3IYBCABKAkSJgoI",
+            "dmVyaWZpZWQYBSABKAsyFC50ZXh0c2VjdXJlLlZlcmlmaWVkEhIKCnByb2Zp",
+            "bGVLZXkYBiABKAwSDwoHYmxvY2tlZBgHIAEoCBITCgtleHBpcmVUaW1lchgI",
+            "IAEoDRotCgZBdmF0YXISEwoLY29udGVudFR5cGUYASABKAkSDgoGbGVuZ3Ro",
+            "GAIgASgNIuQBCgxHcm91cERldGFpbHMSCgoCaWQYASABKAwSDAoEbmFtZRgC",
+            "IAEoCRIPCgdtZW1iZXJzGAMgAygJEi8KBmF2YXRhchgEIAEoCzIfLnRleHRz",
+            "ZWN1cmUuR3JvdXBEZXRhaWxzLkF2YXRhchIUCgZhY3RpdmUYBSABKAg6BHRy",
+            "dWUSEwoLZXhwaXJlVGltZXIYBiABKA0SDQoFY29sb3IYByABKAkSDwoHYmxv",
+            "Y2tlZBgIIAEoCBotCgZBdmF0YXISEwoLY29udGVudFR5cGUYASABKAkSDgoG",
+            "bGVuZ3RoGAIgASgNQloKK29yZy53aGlzcGVyc3lzdGVtcy50ZXh0c2VjdXJl",
+            "LmludGVybmFsLnB1c2hCE1NpZ25hbFNlcnZpY2VQcm90b3OqAhVsaWJzaWdu",
+            "YWxzZXJ2aWNlLnB1c2g="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
@@ -172,7 +173,7 @@ namespace libsignalservice.push {
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Request), global::libsignalservice.push.SyncMessage.Types.Request.Parser, new[]{ "Type" }, null, new[]{ typeof(global::libsignalservice.push.SyncMessage.Types.Request.Types.Type) }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Read), global::libsignalservice.push.SyncMessage.Types.Read.Parser, new[]{ "Sender", "Timestamp" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Configuration), global::libsignalservice.push.SyncMessage.Types.Configuration.Parser, new[]{ "ReadReceipts", "UnidentifiedDeliveryIndicators", "TypingIndicators" }, null, null, null, null)}),
-            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.AttachmentPointer), global::libsignalservice.push.AttachmentPointer.Parser, new[]{ "Id", "ContentType", "Key", "Size", "Thumbnail", "Digest", "FileName", "Flags", "Width", "Height" }, null, new[]{ typeof(global::libsignalservice.push.AttachmentPointer.Types.Flags) }, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.AttachmentPointer), global::libsignalservice.push.AttachmentPointer.Parser, new[]{ "Id", "ContentType", "Key", "Size", "Thumbnail", "Digest", "FileName", "Flags", "Width", "Height", "Caption" }, null, new[]{ typeof(global::libsignalservice.push.AttachmentPointer.Types.Flags) }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.GroupContext), global::libsignalservice.push.GroupContext.Parser, new[]{ "Id", "Type", "Name", "Members", "Avatar" }, null, new[]{ typeof(global::libsignalservice.push.GroupContext.Types.Type) }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.ContactDetails), global::libsignalservice.push.ContactDetails.Parser, new[]{ "Number", "Name", "Avatar", "Color", "Verified", "ProfileKey", "Blocked", "ExpireTimer" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.ContactDetails.Types.Avatar), global::libsignalservice.push.ContactDetails.Types.Avatar.Parser, new[]{ "ContentType", "Length" }, null, null, null, null)}),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.GroupDetails), global::libsignalservice.push.GroupDetails.Parser, new[]{ "Id", "Name", "Members", "Avatar", "Active", "ExpireTimer", "Color", "Blocked" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.GroupDetails.Types.Avatar), global::libsignalservice.push.GroupDetails.Types.Avatar.Parser, new[]{ "ContentType", "Length" }, null, null, null, null)})
@@ -7570,6 +7571,7 @@ namespace libsignalservice.push {
       flags_ = other.flags_;
       width_ = other.width_;
       height_ = other.height_;
+      caption_ = other.caption_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -7813,6 +7815,29 @@ namespace libsignalservice.push {
       _hasBits0 &= ~16;
     }
 
+    /// <summary>Field number for the "caption" field.</summary>
+    public const int CaptionFieldNumber = 11;
+    private readonly static string CaptionDefaultValue = "";
+
+    private string caption_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Caption {
+      get { return caption_ ?? CaptionDefaultValue; }
+      set {
+        caption_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+    /// <summary>Gets whether the "caption" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool HasCaption {
+      get { return caption_ != null; }
+    }
+    /// <summary>Clears the value of the "caption" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearCaption() {
+      caption_ = null;
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as AttachmentPointer);
@@ -7836,6 +7861,7 @@ namespace libsignalservice.push {
       if (Flags != other.Flags) return false;
       if (Width != other.Width) return false;
       if (Height != other.Height) return false;
+      if (Caption != other.Caption) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -7852,6 +7878,7 @@ namespace libsignalservice.push {
       if (HasFlags) hash ^= Flags.GetHashCode();
       if (HasWidth) hash ^= Width.GetHashCode();
       if (HasHeight) hash ^= Height.GetHashCode();
+      if (HasCaption) hash ^= Caption.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -7905,6 +7932,10 @@ namespace libsignalservice.push {
         output.WriteRawTag(80);
         output.WriteUInt32(Height);
       }
+      if (HasCaption) {
+        output.WriteRawTag(90);
+        output.WriteString(Caption);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -7942,6 +7973,9 @@ namespace libsignalservice.push {
       }
       if (HasHeight) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(Height);
+      }
+      if (HasCaption) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Caption);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -7983,6 +8017,9 @@ namespace libsignalservice.push {
       }
       if (other.HasHeight) {
         Height = other.Height;
+      }
+      if (other.HasCaption) {
+        Caption = other.Caption;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -8033,6 +8070,10 @@ namespace libsignalservice.push {
           }
           case 80: {
             Height = input.ReadUInt32();
+            break;
+          }
+          case 90: {
+            Caption = input.ReadString();
             break;
           }
         }

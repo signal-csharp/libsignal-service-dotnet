@@ -3,7 +3,6 @@ using System.IO;
 
 namespace libsignalservice.messages
 {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public abstract class SignalServiceAttachment
     {
         public String ContentType { get; }
@@ -34,14 +33,15 @@ namespace libsignalservice.messages
 
         public class Builder
         {
-            private Stream InputStream;
-            private string ContentType;
-            private string FileName;
+            private Stream? InputStream;
+            private string? ContentType;
+            private string? FileName;
             private long Length;
-            private IProgressListener Listener;
+            private IProgressListener? Listener;
             private bool VoiceNote;
             private int Width;
             private int Height;
+            private string? Caption;
 
             internal Builder()
             {
@@ -95,6 +95,12 @@ namespace libsignalservice.messages
                 return this;
             }
 
+            public Builder WithCaption(string caption)
+            {
+                Caption = caption;
+                return this;
+            }
+
             public SignalServiceAttachmentStream Build()
             {
                 if (InputStream == null)
@@ -110,7 +116,7 @@ namespace libsignalservice.messages
                     throw new ArgumentException("No length specified!");
                 }
 
-                return new SignalServiceAttachmentStream(InputStream, ContentType, (uint)Length, FileName, VoiceNote, null, Width, Height, Listener);
+                return new SignalServiceAttachmentStream(InputStream, ContentType, (uint)Length, FileName, VoiceNote, null, Width, Height, Caption, Listener);
             }
         }
 
@@ -124,5 +130,4 @@ namespace libsignalservice.messages
             void OnAttachmentProgress(long total, long progress);
         }
     }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

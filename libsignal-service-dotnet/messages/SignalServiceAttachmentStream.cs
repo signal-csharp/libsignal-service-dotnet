@@ -15,14 +15,14 @@ namespace libsignalservice.messages
         public bool VoiceNote { get; }
         public int Width { get; }
         public int Height { get; }
-        
+        public string? Caption { get; }
 
         public SignalServiceAttachmentStream(Stream inputStream, string contentType, long length, string? fileName, bool voiceNote, IProgressListener? listener)
-           : this(inputStream, contentType, length, fileName, voiceNote, null, 0, 0, listener)
+           : this(inputStream, contentType, length, fileName, voiceNote, null, 0, 0, null, listener)
         {
         }
 
-        public SignalServiceAttachmentStream(Stream inputStream, string contentType, long length, string? fileName, bool voiceNote, byte[] preview, int width, int height, IProgressListener? listener)
+        public SignalServiceAttachmentStream(Stream inputStream, string contentType, long length, string? fileName, bool voiceNote, byte[]? preview, int width, int height, string? caption, IProgressListener? listener)
             : base(contentType)
         {
             InputStream = inputStream;
@@ -33,6 +33,7 @@ namespace libsignalservice.messages
             Preview = preview;
             Width = width;
             Height = height;
+            Caption = caption;
         }
 
         public override bool IsStream()

@@ -8,7 +8,6 @@ namespace libsignalservice.messages
     /// is a pointer to the actual attachment content, which needs to be
     /// retrieved using <see cref="SignalServiceMessageReceiver.RetrieveAttachment(CancellationToken, SignalServiceAttachmentPointer, Stream, int, IProgressListener)"/>
     /// </summary>
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public class SignalServiceAttachmentPointer : SignalServiceAttachment
     {
         public ulong Id { get; }
@@ -20,8 +19,13 @@ namespace libsignalservice.messages
         public bool VoiceNote { get; }
         public int Width { get; }
         public int Height { get; }
+        public string? Caption { get; }
 
-        public SignalServiceAttachmentPointer(ulong id, string contentType, byte[] key, uint? size, byte[]? preview, int width, int height, byte[]? digest, string? fileName, bool voiceNote)
+        public SignalServiceAttachmentPointer(ulong id, string contentType, byte[] key,
+            uint? size, byte[]? preview,
+            int width, int height,
+            byte[]? digest, string? fileName,
+            bool voiceNote, string? caption)
             : base(contentType)
         {
             Id = id;
@@ -33,6 +37,7 @@ namespace libsignalservice.messages
             VoiceNote = voiceNote;
             Width = width;
             Height = height;
+            Caption = caption;
         }
 
         public override bool IsStream()
@@ -45,5 +50,4 @@ namespace libsignalservice.messages
             return true;
         }
     }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

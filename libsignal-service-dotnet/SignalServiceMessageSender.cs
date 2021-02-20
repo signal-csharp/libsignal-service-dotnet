@@ -1042,6 +1042,11 @@ namespace libsignalservice
                 attachmentPointer.Flags = (uint)AttachmentPointer.Types.Flags.VoiceMessage;
             }
 
+            if (attachment.Caption != null)
+            {
+                attachmentPointer.Caption = attachment.Caption;
+            }
+
             return attachmentPointer;
         }
 
