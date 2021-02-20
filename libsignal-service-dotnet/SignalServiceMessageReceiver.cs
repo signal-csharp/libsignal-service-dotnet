@@ -153,7 +153,7 @@ namespace libsignalservice
                 await callback.OnMessage(envelope);
                 results.Add(envelope);
 
-                if (envelope.Envelope.ServerGUidOneofCase == Envelope.ServerGUidOneofOneofCase.ServerGuid) await Socket.AcknowledgeMessage(token, envelope.Envelope.ServerGuid);
+                if (envelope.HasUuid()) await Socket.AcknowledgeMessage(token, envelope.GetUuid());
                 else await Socket.AcknowledgeMessage(token, entity.Source, entity.Timestamp);
             }
             return results;

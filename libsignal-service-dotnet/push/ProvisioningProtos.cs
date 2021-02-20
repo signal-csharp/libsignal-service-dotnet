@@ -24,25 +24,21 @@ namespace libsignalservice.push {
     static ProvisioningReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "ChJQcm92aXNpb25pbmcucHJvdG8SCnRleHRzZWN1cmUiMAoQUHJvdmlzaW9u",
-            "aW5nVXVpZBIOCgR1dWlkGAEgASgJSABCDAoKdXVpZF9vbmVvZiJZChFQcm92",
-            "aXNpb25FbnZlbG9wZRITCglwdWJsaWNLZXkYASABKAxIABIOCgRib2R5GAIg",
-            "ASgMSAFCEQoPcHVibGljS2V5X29uZW9mQgwKCmJvZHlfb25lb2YirgIKEFBy",
-            "b3Zpc2lvbk1lc3NhZ2USGwoRaWRlbnRpdHlLZXlQdWJsaWMYASABKAxIABIc",
-            "ChJpZGVudGl0eUtleVByaXZhdGUYAiABKAxIARIQCgZudW1iZXIYAyABKAlI",
-            "AhIaChBwcm92aXNpb25pbmdDb2RlGAQgASgJSAMSEwoJdXNlckFnZW50GAUg",
-            "ASgJSAQSFAoKcHJvZmlsZUtleRgGIAEoDEgFQhkKF2lkZW50aXR5S2V5UHVi",
-            "bGljX29uZW9mQhoKGGlkZW50aXR5S2V5UHJpdmF0ZV9vbmVvZkIOCgxudW1i",
-            "ZXJfb25lb2ZCGAoWcHJvdmlzaW9uaW5nQ29kZV9vbmVvZkIRCg91c2VyQWdl",
-            "bnRfb25lb2ZCEgoQcHJvZmlsZUtleV9vbmVvZkJZCitvcmcud2hpc3BlcnN5",
-            "c3RlbXMudGV4dHNlY3VyZS5pbnRlcm5hbC5wdXNoQhJQcm92aXNpb25pbmdQ",
-            "cm90b3OqAhVsaWJzaWduYWxzZXJ2aWNlLnB1c2hiBnByb3RvMw=="));
+            "ChJQcm92aXNpb25pbmcucHJvdG8SCnRleHRzZWN1cmUiIAoQUHJvdmlzaW9u",
+            "aW5nVXVpZBIMCgR1dWlkGAEgASgJIjQKEVByb3Zpc2lvbkVudmVsb3BlEhEK",
+            "CXB1YmxpY0tleRgBIAEoDBIMCgRib2R5GAIgASgMIrABChBQcm92aXNpb25N",
+            "ZXNzYWdlEhkKEWlkZW50aXR5S2V5UHVibGljGAEgASgMEhoKEmlkZW50aXR5",
+            "S2V5UHJpdmF0ZRgCIAEoDBIOCgZudW1iZXIYAyABKAkSGAoQcHJvdmlzaW9u",
+            "aW5nQ29kZRgEIAEoCRIRCgl1c2VyQWdlbnQYBSABKAkSEgoKcHJvZmlsZUtl",
+            "eRgGIAEoDBIUCgxyZWFkUmVjZWlwdHMYByABKAhCWQorb3JnLndoaXNwZXJz",
+            "eXN0ZW1zLnRleHRzZWN1cmUuaW50ZXJuYWwucHVzaEISUHJvdmlzaW9uaW5n",
+            "UHJvdG9zqgIVbGlic2lnbmFsc2VydmljZS5wdXNo"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.ProvisioningUuid), global::libsignalservice.push.ProvisioningUuid.Parser, new[]{ "Uuid" }, new[]{ "UuidOneof" }, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.ProvisionEnvelope), global::libsignalservice.push.ProvisionEnvelope.Parser, new[]{ "PublicKey", "Body" }, new[]{ "PublicKeyOneof", "BodyOneof" }, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.ProvisionMessage), global::libsignalservice.push.ProvisionMessage.Parser, new[]{ "IdentityKeyPublic", "IdentityKeyPrivate", "Number", "ProvisioningCode", "UserAgent", "ProfileKey" }, new[]{ "IdentityKeyPublicOneof", "IdentityKeyPrivateOneof", "NumberOneof", "ProvisioningCodeOneof", "UserAgentOneof", "ProfileKeyOneof" }, null, null)
+          new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
+            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.ProvisioningUuid), global::libsignalservice.push.ProvisioningUuid.Parser, new[]{ "Uuid" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.ProvisionEnvelope), global::libsignalservice.push.ProvisionEnvelope.Parser, new[]{ "PublicKey", "Body" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.ProvisionMessage), global::libsignalservice.push.ProvisionMessage.Parser, new[]{ "IdentityKeyPublic", "IdentityKeyPrivate", "Number", "ProvisioningCode", "UserAgent", "ProfileKey", "ReadReceipts" }, null, null, null, null)
           }));
     }
     #endregion
@@ -74,12 +70,7 @@ namespace libsignalservice.push {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public ProvisioningUuid(ProvisioningUuid other) : this() {
-      switch (other.UuidOneofCase) {
-        case UuidOneofOneofCase.Uuid:
-          Uuid = other.Uuid;
-          break;
-      }
-
+      uuid_ = other.uuid_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -90,31 +81,25 @@ namespace libsignalservice.push {
 
     /// <summary>Field number for the "uuid" field.</summary>
     public const int UuidFieldNumber = 1;
+    private readonly static string UuidDefaultValue = "";
+
+    private string uuid_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Uuid {
-      get { return uuidOneofCase_ == UuidOneofOneofCase.Uuid ? (string) uuidOneof_ : ""; }
+      get { return uuid_ ?? UuidDefaultValue; }
       set {
-        uuidOneof_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-        uuidOneofCase_ = UuidOneofOneofCase.Uuid;
+        uuid_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
-
-    private object uuidOneof_;
-    /// <summary>Enum of possible cases for the "uuid_oneof" oneof.</summary>
-    public enum UuidOneofOneofCase {
-      None = 0,
-      Uuid = 1,
-    }
-    private UuidOneofOneofCase uuidOneofCase_ = UuidOneofOneofCase.None;
+    /// <summary>Gets whether the "uuid" field is set</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public UuidOneofOneofCase UuidOneofCase {
-      get { return uuidOneofCase_; }
+    public bool HasUuid {
+      get { return uuid_ != null; }
     }
-
+    /// <summary>Clears the value of the "uuid" field</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void ClearUuidOneof() {
-      uuidOneofCase_ = UuidOneofOneofCase.None;
-      uuidOneof_ = null;
+    public void ClearUuid() {
+      uuid_ = null;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -131,15 +116,13 @@ namespace libsignalservice.push {
         return true;
       }
       if (Uuid != other.Uuid) return false;
-      if (UuidOneofCase != other.UuidOneofCase) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (uuidOneofCase_ == UuidOneofOneofCase.Uuid) hash ^= Uuid.GetHashCode();
-      hash ^= (int) uuidOneofCase_;
+      if (HasUuid) hash ^= Uuid.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -153,7 +136,7 @@ namespace libsignalservice.push {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (uuidOneofCase_ == UuidOneofOneofCase.Uuid) {
+      if (HasUuid) {
         output.WriteRawTag(10);
         output.WriteString(Uuid);
       }
@@ -165,7 +148,7 @@ namespace libsignalservice.push {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (uuidOneofCase_ == UuidOneofOneofCase.Uuid) {
+      if (HasUuid) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Uuid);
       }
       if (_unknownFields != null) {
@@ -179,12 +162,9 @@ namespace libsignalservice.push {
       if (other == null) {
         return;
       }
-      switch (other.UuidOneofCase) {
-        case UuidOneofOneofCase.Uuid:
-          Uuid = other.Uuid;
-          break;
+      if (other.HasUuid) {
+        Uuid = other.Uuid;
       }
-
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -231,18 +211,8 @@ namespace libsignalservice.push {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public ProvisionEnvelope(ProvisionEnvelope other) : this() {
-      switch (other.PublicKeyOneofCase) {
-        case PublicKeyOneofOneofCase.PublicKey:
-          PublicKey = other.PublicKey;
-          break;
-      }
-
-      switch (other.BodyOneofCase) {
-        case BodyOneofOneofCase.Body:
-          Body = other.Body;
-          break;
-      }
-
+      publicKey_ = other.publicKey_;
+      body_ = other.body_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -253,60 +223,51 @@ namespace libsignalservice.push {
 
     /// <summary>Field number for the "publicKey" field.</summary>
     public const int PublicKeyFieldNumber = 1;
+    private readonly static pb::ByteString PublicKeyDefaultValue = pb::ByteString.Empty;
+
+    private pb::ByteString publicKey_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pb::ByteString PublicKey {
-      get { return publicKeyOneofCase_ == PublicKeyOneofOneofCase.PublicKey ? (pb::ByteString) publicKeyOneof_ : pb::ByteString.Empty; }
+      get { return publicKey_ ?? PublicKeyDefaultValue; }
       set {
-        publicKeyOneof_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-        publicKeyOneofCase_ = PublicKeyOneofOneofCase.PublicKey;
+        publicKey_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
+    }
+    /// <summary>Gets whether the "publicKey" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool HasPublicKey {
+      get { return publicKey_ != null; }
+    }
+    /// <summary>Clears the value of the "publicKey" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearPublicKey() {
+      publicKey_ = null;
     }
 
     /// <summary>Field number for the "body" field.</summary>
     public const int BodyFieldNumber = 2;
+    private readonly static pb::ByteString BodyDefaultValue = pb::ByteString.Empty;
+
+    private pb::ByteString body_;
+    /// <summary>
+    /// Encrypted ProvisionMessage
+    /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pb::ByteString Body {
-      get { return bodyOneofCase_ == BodyOneofOneofCase.Body ? (pb::ByteString) bodyOneof_ : pb::ByteString.Empty; }
+      get { return body_ ?? BodyDefaultValue; }
       set {
-        bodyOneof_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-        bodyOneofCase_ = BodyOneofOneofCase.Body;
+        body_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
-
-    private object publicKeyOneof_;
-    /// <summary>Enum of possible cases for the "publicKey_oneof" oneof.</summary>
-    public enum PublicKeyOneofOneofCase {
-      None = 0,
-      PublicKey = 1,
-    }
-    private PublicKeyOneofOneofCase publicKeyOneofCase_ = PublicKeyOneofOneofCase.None;
+    /// <summary>Gets whether the "body" field is set</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public PublicKeyOneofOneofCase PublicKeyOneofCase {
-      get { return publicKeyOneofCase_; }
+    public bool HasBody {
+      get { return body_ != null; }
     }
-
+    /// <summary>Clears the value of the "body" field</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void ClearPublicKeyOneof() {
-      publicKeyOneofCase_ = PublicKeyOneofOneofCase.None;
-      publicKeyOneof_ = null;
-    }
-
-    private object bodyOneof_;
-    /// <summary>Enum of possible cases for the "body_oneof" oneof.</summary>
-    public enum BodyOneofOneofCase {
-      None = 0,
-      Body = 2,
-    }
-    private BodyOneofOneofCase bodyOneofCase_ = BodyOneofOneofCase.None;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public BodyOneofOneofCase BodyOneofCase {
-      get { return bodyOneofCase_; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void ClearBodyOneof() {
-      bodyOneofCase_ = BodyOneofOneofCase.None;
-      bodyOneof_ = null;
+    public void ClearBody() {
+      body_ = null;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -324,18 +285,14 @@ namespace libsignalservice.push {
       }
       if (PublicKey != other.PublicKey) return false;
       if (Body != other.Body) return false;
-      if (PublicKeyOneofCase != other.PublicKeyOneofCase) return false;
-      if (BodyOneofCase != other.BodyOneofCase) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (publicKeyOneofCase_ == PublicKeyOneofOneofCase.PublicKey) hash ^= PublicKey.GetHashCode();
-      if (bodyOneofCase_ == BodyOneofOneofCase.Body) hash ^= Body.GetHashCode();
-      hash ^= (int) publicKeyOneofCase_;
-      hash ^= (int) bodyOneofCase_;
+      if (HasPublicKey) hash ^= PublicKey.GetHashCode();
+      if (HasBody) hash ^= Body.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -349,11 +306,11 @@ namespace libsignalservice.push {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (publicKeyOneofCase_ == PublicKeyOneofOneofCase.PublicKey) {
+      if (HasPublicKey) {
         output.WriteRawTag(10);
         output.WriteBytes(PublicKey);
       }
-      if (bodyOneofCase_ == BodyOneofOneofCase.Body) {
+      if (HasBody) {
         output.WriteRawTag(18);
         output.WriteBytes(Body);
       }
@@ -365,10 +322,10 @@ namespace libsignalservice.push {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (publicKeyOneofCase_ == PublicKeyOneofOneofCase.PublicKey) {
+      if (HasPublicKey) {
         size += 1 + pb::CodedOutputStream.ComputeBytesSize(PublicKey);
       }
-      if (bodyOneofCase_ == BodyOneofOneofCase.Body) {
+      if (HasBody) {
         size += 1 + pb::CodedOutputStream.ComputeBytesSize(Body);
       }
       if (_unknownFields != null) {
@@ -382,18 +339,12 @@ namespace libsignalservice.push {
       if (other == null) {
         return;
       }
-      switch (other.PublicKeyOneofCase) {
-        case PublicKeyOneofOneofCase.PublicKey:
-          PublicKey = other.PublicKey;
-          break;
+      if (other.HasPublicKey) {
+        PublicKey = other.PublicKey;
       }
-
-      switch (other.BodyOneofCase) {
-        case BodyOneofOneofCase.Body:
-          Body = other.Body;
-          break;
+      if (other.HasBody) {
+        Body = other.Body;
       }
-
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -422,6 +373,7 @@ namespace libsignalservice.push {
   public sealed partial class ProvisionMessage : pb::IMessage<ProvisionMessage> {
     private static readonly pb::MessageParser<ProvisionMessage> _parser = new pb::MessageParser<ProvisionMessage>(() => new ProvisionMessage());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pb::MessageParser<ProvisionMessage> Parser { get { return _parser; } }
 
@@ -444,42 +396,14 @@ namespace libsignalservice.push {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public ProvisionMessage(ProvisionMessage other) : this() {
-      switch (other.IdentityKeyPublicOneofCase) {
-        case IdentityKeyPublicOneofOneofCase.IdentityKeyPublic:
-          IdentityKeyPublic = other.IdentityKeyPublic;
-          break;
-      }
-
-      switch (other.IdentityKeyPrivateOneofCase) {
-        case IdentityKeyPrivateOneofOneofCase.IdentityKeyPrivate:
-          IdentityKeyPrivate = other.IdentityKeyPrivate;
-          break;
-      }
-
-      switch (other.NumberOneofCase) {
-        case NumberOneofOneofCase.Number:
-          Number = other.Number;
-          break;
-      }
-
-      switch (other.ProvisioningCodeOneofCase) {
-        case ProvisioningCodeOneofOneofCase.ProvisioningCode:
-          ProvisioningCode = other.ProvisioningCode;
-          break;
-      }
-
-      switch (other.UserAgentOneofCase) {
-        case UserAgentOneofOneofCase.UserAgent:
-          UserAgent = other.UserAgent;
-          break;
-      }
-
-      switch (other.ProfileKeyOneofCase) {
-        case ProfileKeyOneofOneofCase.ProfileKey:
-          ProfileKey = other.ProfileKey;
-          break;
-      }
-
+      _hasBits0 = other._hasBits0;
+      identityKeyPublic_ = other.identityKeyPublic_;
+      identityKeyPrivate_ = other.identityKeyPrivate_;
+      number_ = other.number_;
+      provisioningCode_ = other.provisioningCode_;
+      userAgent_ = other.userAgent_;
+      profileKey_ = other.profileKey_;
+      readReceipts_ = other.readReceipts_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -490,176 +414,164 @@ namespace libsignalservice.push {
 
     /// <summary>Field number for the "identityKeyPublic" field.</summary>
     public const int IdentityKeyPublicFieldNumber = 1;
+    private readonly static pb::ByteString IdentityKeyPublicDefaultValue = pb::ByteString.Empty;
+
+    private pb::ByteString identityKeyPublic_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pb::ByteString IdentityKeyPublic {
-      get { return identityKeyPublicOneofCase_ == IdentityKeyPublicOneofOneofCase.IdentityKeyPublic ? (pb::ByteString) identityKeyPublicOneof_ : pb::ByteString.Empty; }
+      get { return identityKeyPublic_ ?? IdentityKeyPublicDefaultValue; }
       set {
-        identityKeyPublicOneof_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-        identityKeyPublicOneofCase_ = IdentityKeyPublicOneofOneofCase.IdentityKeyPublic;
+        identityKeyPublic_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
+    }
+    /// <summary>Gets whether the "identityKeyPublic" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool HasIdentityKeyPublic {
+      get { return identityKeyPublic_ != null; }
+    }
+    /// <summary>Clears the value of the "identityKeyPublic" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearIdentityKeyPublic() {
+      identityKeyPublic_ = null;
     }
 
     /// <summary>Field number for the "identityKeyPrivate" field.</summary>
     public const int IdentityKeyPrivateFieldNumber = 2;
+    private readonly static pb::ByteString IdentityKeyPrivateDefaultValue = pb::ByteString.Empty;
+
+    private pb::ByteString identityKeyPrivate_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pb::ByteString IdentityKeyPrivate {
-      get { return identityKeyPrivateOneofCase_ == IdentityKeyPrivateOneofOneofCase.IdentityKeyPrivate ? (pb::ByteString) identityKeyPrivateOneof_ : pb::ByteString.Empty; }
+      get { return identityKeyPrivate_ ?? IdentityKeyPrivateDefaultValue; }
       set {
-        identityKeyPrivateOneof_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-        identityKeyPrivateOneofCase_ = IdentityKeyPrivateOneofOneofCase.IdentityKeyPrivate;
+        identityKeyPrivate_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
+    }
+    /// <summary>Gets whether the "identityKeyPrivate" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool HasIdentityKeyPrivate {
+      get { return identityKeyPrivate_ != null; }
+    }
+    /// <summary>Clears the value of the "identityKeyPrivate" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearIdentityKeyPrivate() {
+      identityKeyPrivate_ = null;
     }
 
     /// <summary>Field number for the "number" field.</summary>
     public const int NumberFieldNumber = 3;
+    private readonly static string NumberDefaultValue = "";
+
+    private string number_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Number {
-      get { return numberOneofCase_ == NumberOneofOneofCase.Number ? (string) numberOneof_ : ""; }
+      get { return number_ ?? NumberDefaultValue; }
       set {
-        numberOneof_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-        numberOneofCase_ = NumberOneofOneofCase.Number;
+        number_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
+    }
+    /// <summary>Gets whether the "number" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool HasNumber {
+      get { return number_ != null; }
+    }
+    /// <summary>Clears the value of the "number" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearNumber() {
+      number_ = null;
     }
 
     /// <summary>Field number for the "provisioningCode" field.</summary>
     public const int ProvisioningCodeFieldNumber = 4;
+    private readonly static string ProvisioningCodeDefaultValue = "";
+
+    private string provisioningCode_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string ProvisioningCode {
-      get { return provisioningCodeOneofCase_ == ProvisioningCodeOneofOneofCase.ProvisioningCode ? (string) provisioningCodeOneof_ : ""; }
+      get { return provisioningCode_ ?? ProvisioningCodeDefaultValue; }
       set {
-        provisioningCodeOneof_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-        provisioningCodeOneofCase_ = ProvisioningCodeOneofOneofCase.ProvisioningCode;
+        provisioningCode_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
+    }
+    /// <summary>Gets whether the "provisioningCode" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool HasProvisioningCode {
+      get { return provisioningCode_ != null; }
+    }
+    /// <summary>Clears the value of the "provisioningCode" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearProvisioningCode() {
+      provisioningCode_ = null;
     }
 
     /// <summary>Field number for the "userAgent" field.</summary>
     public const int UserAgentFieldNumber = 5;
+    private readonly static string UserAgentDefaultValue = "";
+
+    private string userAgent_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string UserAgent {
-      get { return userAgentOneofCase_ == UserAgentOneofOneofCase.UserAgent ? (string) userAgentOneof_ : ""; }
+      get { return userAgent_ ?? UserAgentDefaultValue; }
       set {
-        userAgentOneof_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-        userAgentOneofCase_ = UserAgentOneofOneofCase.UserAgent;
+        userAgent_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
+    }
+    /// <summary>Gets whether the "userAgent" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool HasUserAgent {
+      get { return userAgent_ != null; }
+    }
+    /// <summary>Clears the value of the "userAgent" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearUserAgent() {
+      userAgent_ = null;
     }
 
     /// <summary>Field number for the "profileKey" field.</summary>
     public const int ProfileKeyFieldNumber = 6;
+    private readonly static pb::ByteString ProfileKeyDefaultValue = pb::ByteString.Empty;
+
+    private pb::ByteString profileKey_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pb::ByteString ProfileKey {
-      get { return profileKeyOneofCase_ == ProfileKeyOneofOneofCase.ProfileKey ? (pb::ByteString) profileKeyOneof_ : pb::ByteString.Empty; }
+      get { return profileKey_ ?? ProfileKeyDefaultValue; }
       set {
-        profileKeyOneof_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-        profileKeyOneofCase_ = ProfileKeyOneofOneofCase.ProfileKey;
+        profileKey_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
-
-    private object identityKeyPublicOneof_;
-    /// <summary>Enum of possible cases for the "identityKeyPublic_oneof" oneof.</summary>
-    public enum IdentityKeyPublicOneofOneofCase {
-      None = 0,
-      IdentityKeyPublic = 1,
-    }
-    private IdentityKeyPublicOneofOneofCase identityKeyPublicOneofCase_ = IdentityKeyPublicOneofOneofCase.None;
+    /// <summary>Gets whether the "profileKey" field is set</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public IdentityKeyPublicOneofOneofCase IdentityKeyPublicOneofCase {
-      get { return identityKeyPublicOneofCase_; }
+    public bool HasProfileKey {
+      get { return profileKey_ != null; }
+    }
+    /// <summary>Clears the value of the "profileKey" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearProfileKey() {
+      profileKey_ = null;
     }
 
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void ClearIdentityKeyPublicOneof() {
-      identityKeyPublicOneofCase_ = IdentityKeyPublicOneofOneofCase.None;
-      identityKeyPublicOneof_ = null;
-    }
+    /// <summary>Field number for the "readReceipts" field.</summary>
+    public const int ReadReceiptsFieldNumber = 7;
+    private readonly static bool ReadReceiptsDefaultValue = false;
 
-    private object identityKeyPrivateOneof_;
-    /// <summary>Enum of possible cases for the "identityKeyPrivate_oneof" oneof.</summary>
-    public enum IdentityKeyPrivateOneofOneofCase {
-      None = 0,
-      IdentityKeyPrivate = 2,
-    }
-    private IdentityKeyPrivateOneofOneofCase identityKeyPrivateOneofCase_ = IdentityKeyPrivateOneofOneofCase.None;
+    private bool readReceipts_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public IdentityKeyPrivateOneofOneofCase IdentityKeyPrivateOneofCase {
-      get { return identityKeyPrivateOneofCase_; }
+    public bool ReadReceipts {
+      get { if ((_hasBits0 & 1) != 0) { return readReceipts_; } else { return ReadReceiptsDefaultValue; } }
+      set {
+        _hasBits0 |= 1;
+        readReceipts_ = value;
+      }
     }
-
+    /// <summary>Gets whether the "readReceipts" field is set</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void ClearIdentityKeyPrivateOneof() {
-      identityKeyPrivateOneofCase_ = IdentityKeyPrivateOneofOneofCase.None;
-      identityKeyPrivateOneof_ = null;
+    public bool HasReadReceipts {
+      get { return (_hasBits0 & 1) != 0; }
     }
-
-    private object numberOneof_;
-    /// <summary>Enum of possible cases for the "number_oneof" oneof.</summary>
-    public enum NumberOneofOneofCase {
-      None = 0,
-      Number = 3,
-    }
-    private NumberOneofOneofCase numberOneofCase_ = NumberOneofOneofCase.None;
+    /// <summary>Clears the value of the "readReceipts" field</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public NumberOneofOneofCase NumberOneofCase {
-      get { return numberOneofCase_; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void ClearNumberOneof() {
-      numberOneofCase_ = NumberOneofOneofCase.None;
-      numberOneof_ = null;
-    }
-
-    private object provisioningCodeOneof_;
-    /// <summary>Enum of possible cases for the "provisioningCode_oneof" oneof.</summary>
-    public enum ProvisioningCodeOneofOneofCase {
-      None = 0,
-      ProvisioningCode = 4,
-    }
-    private ProvisioningCodeOneofOneofCase provisioningCodeOneofCase_ = ProvisioningCodeOneofOneofCase.None;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public ProvisioningCodeOneofOneofCase ProvisioningCodeOneofCase {
-      get { return provisioningCodeOneofCase_; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void ClearProvisioningCodeOneof() {
-      provisioningCodeOneofCase_ = ProvisioningCodeOneofOneofCase.None;
-      provisioningCodeOneof_ = null;
-    }
-
-    private object userAgentOneof_;
-    /// <summary>Enum of possible cases for the "userAgent_oneof" oneof.</summary>
-    public enum UserAgentOneofOneofCase {
-      None = 0,
-      UserAgent = 5,
-    }
-    private UserAgentOneofOneofCase userAgentOneofCase_ = UserAgentOneofOneofCase.None;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public UserAgentOneofOneofCase UserAgentOneofCase {
-      get { return userAgentOneofCase_; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void ClearUserAgentOneof() {
-      userAgentOneofCase_ = UserAgentOneofOneofCase.None;
-      userAgentOneof_ = null;
-    }
-
-    private object profileKeyOneof_;
-    /// <summary>Enum of possible cases for the "profileKey_oneof" oneof.</summary>
-    public enum ProfileKeyOneofOneofCase {
-      None = 0,
-      ProfileKey = 6,
-    }
-    private ProfileKeyOneofOneofCase profileKeyOneofCase_ = ProfileKeyOneofOneofCase.None;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public ProfileKeyOneofOneofCase ProfileKeyOneofCase {
-      get { return profileKeyOneofCase_; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void ClearProfileKeyOneof() {
-      profileKeyOneofCase_ = ProfileKeyOneofOneofCase.None;
-      profileKeyOneof_ = null;
+    public void ClearReadReceipts() {
+      _hasBits0 &= ~1;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -681,30 +593,20 @@ namespace libsignalservice.push {
       if (ProvisioningCode != other.ProvisioningCode) return false;
       if (UserAgent != other.UserAgent) return false;
       if (ProfileKey != other.ProfileKey) return false;
-      if (IdentityKeyPublicOneofCase != other.IdentityKeyPublicOneofCase) return false;
-      if (IdentityKeyPrivateOneofCase != other.IdentityKeyPrivateOneofCase) return false;
-      if (NumberOneofCase != other.NumberOneofCase) return false;
-      if (ProvisioningCodeOneofCase != other.ProvisioningCodeOneofCase) return false;
-      if (UserAgentOneofCase != other.UserAgentOneofCase) return false;
-      if (ProfileKeyOneofCase != other.ProfileKeyOneofCase) return false;
+      if (ReadReceipts != other.ReadReceipts) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (identityKeyPublicOneofCase_ == IdentityKeyPublicOneofOneofCase.IdentityKeyPublic) hash ^= IdentityKeyPublic.GetHashCode();
-      if (identityKeyPrivateOneofCase_ == IdentityKeyPrivateOneofOneofCase.IdentityKeyPrivate) hash ^= IdentityKeyPrivate.GetHashCode();
-      if (numberOneofCase_ == NumberOneofOneofCase.Number) hash ^= Number.GetHashCode();
-      if (provisioningCodeOneofCase_ == ProvisioningCodeOneofOneofCase.ProvisioningCode) hash ^= ProvisioningCode.GetHashCode();
-      if (userAgentOneofCase_ == UserAgentOneofOneofCase.UserAgent) hash ^= UserAgent.GetHashCode();
-      if (profileKeyOneofCase_ == ProfileKeyOneofOneofCase.ProfileKey) hash ^= ProfileKey.GetHashCode();
-      hash ^= (int) identityKeyPublicOneofCase_;
-      hash ^= (int) identityKeyPrivateOneofCase_;
-      hash ^= (int) numberOneofCase_;
-      hash ^= (int) provisioningCodeOneofCase_;
-      hash ^= (int) userAgentOneofCase_;
-      hash ^= (int) profileKeyOneofCase_;
+      if (HasIdentityKeyPublic) hash ^= IdentityKeyPublic.GetHashCode();
+      if (HasIdentityKeyPrivate) hash ^= IdentityKeyPrivate.GetHashCode();
+      if (HasNumber) hash ^= Number.GetHashCode();
+      if (HasProvisioningCode) hash ^= ProvisioningCode.GetHashCode();
+      if (HasUserAgent) hash ^= UserAgent.GetHashCode();
+      if (HasProfileKey) hash ^= ProfileKey.GetHashCode();
+      if (HasReadReceipts) hash ^= ReadReceipts.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -718,29 +620,33 @@ namespace libsignalservice.push {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (identityKeyPublicOneofCase_ == IdentityKeyPublicOneofOneofCase.IdentityKeyPublic) {
+      if (HasIdentityKeyPublic) {
         output.WriteRawTag(10);
         output.WriteBytes(IdentityKeyPublic);
       }
-      if (identityKeyPrivateOneofCase_ == IdentityKeyPrivateOneofOneofCase.IdentityKeyPrivate) {
+      if (HasIdentityKeyPrivate) {
         output.WriteRawTag(18);
         output.WriteBytes(IdentityKeyPrivate);
       }
-      if (numberOneofCase_ == NumberOneofOneofCase.Number) {
+      if (HasNumber) {
         output.WriteRawTag(26);
         output.WriteString(Number);
       }
-      if (provisioningCodeOneofCase_ == ProvisioningCodeOneofOneofCase.ProvisioningCode) {
+      if (HasProvisioningCode) {
         output.WriteRawTag(34);
         output.WriteString(ProvisioningCode);
       }
-      if (userAgentOneofCase_ == UserAgentOneofOneofCase.UserAgent) {
+      if (HasUserAgent) {
         output.WriteRawTag(42);
         output.WriteString(UserAgent);
       }
-      if (profileKeyOneofCase_ == ProfileKeyOneofOneofCase.ProfileKey) {
+      if (HasProfileKey) {
         output.WriteRawTag(50);
         output.WriteBytes(ProfileKey);
+      }
+      if (HasReadReceipts) {
+        output.WriteRawTag(56);
+        output.WriteBool(ReadReceipts);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -750,23 +656,26 @@ namespace libsignalservice.push {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (identityKeyPublicOneofCase_ == IdentityKeyPublicOneofOneofCase.IdentityKeyPublic) {
+      if (HasIdentityKeyPublic) {
         size += 1 + pb::CodedOutputStream.ComputeBytesSize(IdentityKeyPublic);
       }
-      if (identityKeyPrivateOneofCase_ == IdentityKeyPrivateOneofOneofCase.IdentityKeyPrivate) {
+      if (HasIdentityKeyPrivate) {
         size += 1 + pb::CodedOutputStream.ComputeBytesSize(IdentityKeyPrivate);
       }
-      if (numberOneofCase_ == NumberOneofOneofCase.Number) {
+      if (HasNumber) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Number);
       }
-      if (provisioningCodeOneofCase_ == ProvisioningCodeOneofOneofCase.ProvisioningCode) {
+      if (HasProvisioningCode) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(ProvisioningCode);
       }
-      if (userAgentOneofCase_ == UserAgentOneofOneofCase.UserAgent) {
+      if (HasUserAgent) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(UserAgent);
       }
-      if (profileKeyOneofCase_ == ProfileKeyOneofOneofCase.ProfileKey) {
+      if (HasProfileKey) {
         size += 1 + pb::CodedOutputStream.ComputeBytesSize(ProfileKey);
+      }
+      if (HasReadReceipts) {
+        size += 1 + 1;
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -779,42 +688,27 @@ namespace libsignalservice.push {
       if (other == null) {
         return;
       }
-      switch (other.IdentityKeyPublicOneofCase) {
-        case IdentityKeyPublicOneofOneofCase.IdentityKeyPublic:
-          IdentityKeyPublic = other.IdentityKeyPublic;
-          break;
+      if (other.HasIdentityKeyPublic) {
+        IdentityKeyPublic = other.IdentityKeyPublic;
       }
-
-      switch (other.IdentityKeyPrivateOneofCase) {
-        case IdentityKeyPrivateOneofOneofCase.IdentityKeyPrivate:
-          IdentityKeyPrivate = other.IdentityKeyPrivate;
-          break;
+      if (other.HasIdentityKeyPrivate) {
+        IdentityKeyPrivate = other.IdentityKeyPrivate;
       }
-
-      switch (other.NumberOneofCase) {
-        case NumberOneofOneofCase.Number:
-          Number = other.Number;
-          break;
+      if (other.HasNumber) {
+        Number = other.Number;
       }
-
-      switch (other.ProvisioningCodeOneofCase) {
-        case ProvisioningCodeOneofOneofCase.ProvisioningCode:
-          ProvisioningCode = other.ProvisioningCode;
-          break;
+      if (other.HasProvisioningCode) {
+        ProvisioningCode = other.ProvisioningCode;
       }
-
-      switch (other.UserAgentOneofCase) {
-        case UserAgentOneofOneofCase.UserAgent:
-          UserAgent = other.UserAgent;
-          break;
+      if (other.HasUserAgent) {
+        UserAgent = other.UserAgent;
       }
-
-      switch (other.ProfileKeyOneofCase) {
-        case ProfileKeyOneofOneofCase.ProfileKey:
-          ProfileKey = other.ProfileKey;
-          break;
+      if (other.HasProfileKey) {
+        ProfileKey = other.ProfileKey;
       }
-
+      if (other.HasReadReceipts) {
+        ReadReceipts = other.ReadReceipts;
+      }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -848,6 +742,10 @@ namespace libsignalservice.push {
           }
           case 50: {
             ProfileKey = input.ReadBytes();
+            break;
+          }
+          case 56: {
+            ReadReceipts = input.ReadBool();
             break;
           }
         }

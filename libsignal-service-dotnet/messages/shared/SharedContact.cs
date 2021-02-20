@@ -11,7 +11,7 @@ namespace libsignalservice.messages.shared
         public List<Phone>? Phone { get; }
         public List<Email>? Email { get; }
         public List<PostalAddress>? Address { get; }
-        public string Organization { get; }
+        public string? Organization { get; }
 
         public SharedContact(Name name,
                      Avatar? avatar,
@@ -99,7 +99,6 @@ namespace libsignalservice.messages.shared
 
     public class PostalAddress
     {
-
         public enum PostalAddressType
         {
             HOME, WORK, CUSTOM

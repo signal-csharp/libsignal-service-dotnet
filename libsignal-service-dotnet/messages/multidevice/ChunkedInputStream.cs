@@ -59,7 +59,7 @@ namespace libsignalservice.messages.multidevice
                                 }
                             }
 
-                            throw new IOException("Malformed varint!");
+                            throw new IOException("Malformed variant!");
                         }
                     }
                 }

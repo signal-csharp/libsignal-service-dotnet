@@ -1,16 +1,15 @@
-using libsignalservice.push;
-using libsignalservice.util;
 using System.Collections.Generic;
 using System.IO;
+using libsignalservice.push;
+using libsignalservice.util;
 
 namespace libsignalservice.messages.multidevice
 {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public class DeviceGroupsInputStream : ChunkedInputStream
     {
         public DeviceGroupsInputStream(Stream input): base(input) { }
 
-        public DeviceGroup Read()
+        public DeviceGroup? Read()
         {
             int detailsLength = ReadRawVarint32();
             if (detailsLength == -1)
@@ -22,16 +21,16 @@ namespace libsignalservice.messages.multidevice
 
             GroupDetails details = GroupDetails.Parser.ParseFrom(detailsSerialized);
             byte[] id = details.Id.ToByteArray();
-            string name = details.Name;
+            string? name = details.HasName ? details.Name : null;
             List<string> members = new List<string>();
             members.AddRange(details.Members);
-            SignalServiceAttachmentStream avatar = null;
+            SignalServiceAttachmentStream? avatar = null;
             bool active = details.Active;
             uint? expirationTimer = null;
-            string? color = details.ColorOneofCase == GroupDetails.ColorOneofOneofCase.Color ? details.Color : null;
-            var blocked = details.Blocked;
+            string? color = details.HasColor ? details.Color : null;
+            bool blocked = details.Blocked;
 
-            if (details.AvatarOneofCase == GroupDetails.AvatarOneofOneofCase.Avatar)
+            if (details.Avatar != null)
             {
                 long avatarLength = details.Avatar.Length;
                 Stream avatarStream = new LimitedInputStream(InputStream, avatarLength);
@@ -39,7 +38,7 @@ namespace libsignalservice.messages.multidevice
                 avatar = new SignalServiceAttachmentStream(avatarStream, avatarContentType, avatarLength, null, false, null);
             }
 
-            if (details.ExpireTimerOneofCase == GroupDetails.ExpireTimerOneofOneofCase.ExpireTimer)
+            if (details.HasExpireTimer && details.ExpireTimer > 0)
             {
                 expirationTimer = details.ExpireTimer;
             }
@@ -47,5 +46,4 @@ namespace libsignalservice.messages.multidevice
             return new DeviceGroup(id, name, members, avatar, active, expirationTimer, color, blocked);
         }
     }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

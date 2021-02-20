@@ -1,25 +1,28 @@
+# Verify protoc is available and version is 3.12.4
+
 $userdir = $env:USERPROFILE
 
-$protobufPath = $userdir + '/.nuget/packages/google.protobuf.tools'
+$protobufPath = $userdir + '/.nuget/packages/google.protobuf.tools/3.12.4/tools/windows_x64/protoc.exe'
 
-if (-not (Test-Path $protobufPath))
-{
-    Write-Error ('Could not find protobuf tools path at ' + $protobufPath + "`nTry restoring nuget packages")
-    exit
+try {
+    $output = & $protobufPath --version
+}
+catch {
+    Write-Error "Could not find protoc. Did you restore NuGet packages (dotnet restore) or is your NuGet cache not in your home directory?"
+    return
 }
 
-$versions = Get-ChildItem $protobufPath
-$protoc = $protobufPath + "/$($versions[-1].Name)/tools/windows_x64/protoc.exe"
+$expectedVersion = "3.12.4"
+$version = $output.Split(" ")[1]
 
-if (-not (Test-Path $protoc))
-{
-    Write-Error ('Could not find protoc at ' + $protoc + "`nTry restoring nuget packages")
-    exit
+if ($version -ne $expectedVersion) {
+    Write-Error "protoc version must be $expectedVersion!"
+    return
 }
 
-& $protoc --csharp_out=. Provisioning.proto
-& $protoc --csharp_out=. SignalService.proto
-& $protoc --csharp_out=. WebSocketResources.proto
+& $protobufPath --csharp_out=. Provisioning.proto
+& $protobufPath --csharp_out=. SignalService.proto
+& $protobufPath --csharp_out=. WebSocketResources.proto
 
 Move-Item -Force Provisioning.cs ../push/ProvisioningProtos.cs
 Move-Item -Force SignalService.cs ../push/SignalServiceProtos.cs

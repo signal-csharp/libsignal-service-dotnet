@@ -14,26 +14,26 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-syntax = "proto3";
+syntax = "proto2";
 package textsecure;
 option csharp_namespace = "libsignalservice.websocket";
 option java_package = "org.whispersystems.textsecure.internal.websocket";
 option java_outer_classname = "WebSocketProtos";
 
 message WebSocketRequestMessage {
-    oneof verb_oneof						{ string verb    = 1; }
-    oneof path_oneof						{ string path    = 2; }
-    oneof body_oneof						{ bytes  body    = 3; }
-	repeated string headers = 5;
-    oneof id_oneof							{ uint64 id      = 4; }
+    optional string verb    = 1;
+    optional string path    = 2;
+    optional bytes  body    = 3;
+    repeated string headers = 5;
+    optional uint64 id      = 4;
 }
 
 message WebSocketResponseMessage {
-    oneof id_oneof							{ uint64 id      = 1; }
-    oneof status_oneof						{ uint32 status  = 2; }
-    oneof message_oneof						{ string message = 3; }
-	repeated string headers = 5;
-    oneof body_oneof						{ bytes  body    = 4; }
+    optional uint64 id      = 1;
+    optional uint32 status  = 2;
+    optional string message = 3;
+    repeated string headers = 5;
+    optional bytes  body    = 4;
 }
 
 message WebSocketMessage {
@@ -43,7 +43,7 @@ message WebSocketMessage {
         RESPONSE = 2;
     }
 
-    oneof type_oneof						{ Type                     type     = 1; }
-    oneof request_oneof						{ WebSocketRequestMessage  request  = 2; }
-    oneof response_oneof					{ WebSocketResponseMessage response = 3; }
+    optional Type                     type     = 1;
+    optional WebSocketRequestMessage  request  = 2;
+    optional WebSocketResponseMessage response = 3;
 }

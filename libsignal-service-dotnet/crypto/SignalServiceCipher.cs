@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Google.Protobuf;
 using libsignal;
 using libsignal.messages.multidevice;
@@ -13,13 +16,9 @@ using libsignalservice.messages.shared;
 using libsignalservice.push;
 using libsignalservice.util;
 using libsignalservicedotnet.crypto;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace libsignalservice.crypto
 {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     /// <summary>
     /// This is used to decrypt received <see cref="SignalServiceEnvelope"/>s
     /// </summary>
@@ -93,7 +92,7 @@ namespace libsignalservice.crypto
                 {
                     Plaintext plaintext = Decrypt(envelope, envelope.Envelope.Content.ToByteArray());
                     Content message = Content.Parser.ParseFrom(plaintext.Data);
-                    if (message.DataMessageOneofCase == Content.DataMessageOneofOneofCase.DataMessage)
+                    if (message.DataMessage != null)
                     {
                         return new SignalServiceContent(plaintext.Metadata.Sender,
                                         plaintext.Metadata.SenderDevice,
@@ -103,7 +102,7 @@ namespace libsignalservice.crypto
                             Message = CreateSignalServiceMessage(plaintext.Metadata, message.DataMessage)
                         };
                     }
-                    else if (message.SyncMessageOneofCase == Content.SyncMessageOneofOneofCase.SyncMessage)
+                    else if (message.SyncMessage != null)
                     {
                         return new SignalServiceContent(plaintext.Metadata.Sender,
                                         plaintext.Metadata.SenderDevice,
@@ -113,7 +112,7 @@ namespace libsignalservice.crypto
                             SynchronizeMessage = CreateSynchronizeMessage(plaintext.Metadata, message.SyncMessage)
                         };
                     }
-                    else if (message.CallMessageOneofCase == Content.CallMessageOneofOneofCase.CallMessage)
+                    else if (message.CallMessage != null)
                     {
                         return new SignalServiceContent(plaintext.Metadata.Sender,
                                         plaintext.Metadata.SenderDevice,
@@ -123,7 +122,7 @@ namespace libsignalservice.crypto
                             CallMessage = CreateCallMessage(message.CallMessage)
                         };
                     }
-                    else if (message.ReceiptMessageOneofCase == Content.ReceiptMessageOneofOneofCase.ReceiptMessage)
+                    else if (message.ReceiptMessage != null)
                     {
                         return new SignalServiceContent(plaintext.Metadata.Sender,
                                         plaintext.Metadata.SenderDevice,
@@ -142,6 +141,23 @@ namespace libsignalservice.crypto
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="envelope"></param>
+        /// <param name="ciphertext"></param>
+        /// <returns></returns>
+        /// <exception cref="InvalidMetadataMessageException"></exception>
+        /// <exception cref="InvalidMetadataVersionException"></exception>
+        /// <exception cref="ProtocolDuplicateMessageException"></exception>
+        /// <exception cref="ProtocolUntrustedIdentityException"></exception>
+        /// <exception cref="ProtocolLegacyMessageException"></exception>
+        /// <exception cref="ProtocolInvalidKeyException"></exception>
+        /// <exception cref="ProtocolInvalidVersionException"></exception>
+        /// <exception cref="ProtocolInvalidMessageException"></exception>
+        /// <exception cref="ProtocolInvalidKeyIdException"></exception>
+        /// <exception cref="ProtocolNoSessionException"></exception>
+        /// <exception cref="SelfSendException"></exception>
         private Plaintext Decrypt(SignalServiceEnvelope envelope, byte[] ciphertext)
         {
             try
@@ -231,7 +247,7 @@ namespace libsignalservice.crypto
                 attachments.Add(CreateAttachmentPointer(pointer));
             }
 
-            if (content.TimestampOneofCase == DataMessage.TimestampOneofOneofCase.Timestamp && (long)content.Timestamp != metadata.Timestamp)
+            if (content.HasTimestamp && (long)content.Timestamp != metadata.Timestamp)
             {
                 throw new ProtocolInvalidMessageException(new InvalidMessageException("Timestamps don't match: " + content.Timestamp + " vs " + metadata.Timestamp),
                                                                            metadata.Sender,
@@ -247,16 +263,24 @@ namespace libsignalservice.crypto
                 EndSession = endSession,
                 ExpiresInSeconds = (int)content.ExpireTimer,
                 ExpirationUpdate = expirationUpdate,
-                ProfileKey = content.ProfileKeyOneofCase == DataMessage.ProfileKeyOneofOneofCase.ProfileKey ? content.ProfileKey.ToByteArray() : null,
+                ProfileKey = content.HasProfileKey ? content.ProfileKey.ToByteArray() : null,
                 ProfileKeyUpdate = profileKeyUpdate,
                 Quote = quote,
                 SharedContacts = sharedContacts
             };
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="metadata"></param>
+        /// <param name="content"></param>
+        /// <returns></returns>
+        /// <exception cref="ProtocolInvalidMessageException"></exception>
+        /// <exception cref="ProtocolInvalidKeyException"></exception>
         private SignalServiceSyncMessage CreateSynchronizeMessage(Metadata metadata, SyncMessage content)
         {
-            if (content.SentOneofCase == SyncMessage.SentOneofOneofCase.Sent)
+            if (content.Sent != null)
             {
                 SyncMessage.Types.Sent sentContent = content.Sent;
                 var unidentifiedStatuses = new Dictionary<string, bool>();
@@ -273,7 +297,7 @@ namespace libsignalservice.crypto
                                                                            unidentifiedStatuses));
             }
 
-            if (content.RequestOneofCase == SyncMessage.RequestOneofOneofCase.Request)
+            if (content.Request != null)
             {
                 return SignalServiceSyncMessage.ForRequest(new RequestMessage(content.Request));
             }
@@ -290,19 +314,19 @@ namespace libsignalservice.crypto
                 return SignalServiceSyncMessage.ForRead(readMessages);
             }
 
-            if (content.ContactsOneofCase == SyncMessage.ContactsOneofOneofCase.Contacts)
+            if (content.Contacts != null)
             {
                 AttachmentPointer pointer = content.Contacts.Blob;
                 return SignalServiceSyncMessage.ForContacts(new ContactsMessage(CreateAttachmentPointer(pointer), content.Contacts.Complete));
             }
 
-            if (content.GroupsOneofCase == SyncMessage.GroupsOneofOneofCase.Groups)
+            if (content.Groups != null)
             {
                 AttachmentPointer pointer = content.Groups.Blob;
                 return SignalServiceSyncMessage.ForGroups(CreateAttachmentPointer(pointer));
             }
 
-            if (content.VerifiedOneofCase == SyncMessage.VerifiedOneofOneofCase.Verified)
+            if (content.Verified != null)
             {
                 try
                 {
@@ -337,7 +361,7 @@ namespace libsignalservice.crypto
                 }
             }
 
-            if (content.BlockedOneofCase == SyncMessage.BlockedOneofOneofCase.Blocked)
+            if (content.Blocked != null)
             {
                 List<string> blockedNumbers = new List<string>(content.Blocked.Numbers.Count);
                 foreach (var blocked in content.Blocked.Numbers)
@@ -347,46 +371,12 @@ namespace libsignalservice.crypto
                 return SignalServiceSyncMessage.ForBlocked(new BlockedListMessage(blockedNumbers, content.Blocked.GroupIds.Select(gid => gid.ToByteArray()).ToList()));
             }
 
-            if (content.VerifiedOneofCase == SyncMessage.VerifiedOneofOneofCase.Verified)
-            {
-                try
-                {
-                    Verified verified = content.Verified;
-                    string destination = verified.Destination;
-                    IdentityKey identityKey = new IdentityKey(verified.IdentityKey.ToByteArray(), 0);
-
-                    VerifiedMessage.VerifiedState verifiedState;
-
-                    if (verified.State == Verified.Types.State.Default)
-                    {
-                        verifiedState = VerifiedMessage.VerifiedState.Default;
-                    }
-                    else if (verified.State == Verified.Types.State.Verified)
-                    {
-                        verifiedState = VerifiedMessage.VerifiedState.Verified;
-                    }
-                    else if (verified.State == Verified.Types.State.Unverified)
-                    {
-                        verifiedState = VerifiedMessage.VerifiedState.Unverified;
-                    }
-                    else
-                    {
-                        throw new ProtocolInvalidMessageException(new InvalidMessageException("Unknown state: " + verified.State),
-                                                    metadata.Sender, metadata.SenderDevice);
-                    }
-                    return SignalServiceSyncMessage.ForVerified(new VerifiedMessage(destination, identityKey, verifiedState, Util.CurrentTimeMillis()));
-                }
-                catch (InvalidKeyException e)
-                {
-                    throw new ProtocolInvalidKeyException(e, metadata.Sender, metadata.SenderDevice);
-                }
-            }
             return SignalServiceSyncMessage.Empty();
         }
 
         private SignalServiceCallMessage CreateCallMessage(CallMessage content)
         {
-            if (content.OfferOneofCase == CallMessage.OfferOneofOneofCase.Offer)
+            if (content.Offer != null)
             {
                 return new SignalServiceCallMessage()
                 {
@@ -397,7 +387,7 @@ namespace libsignalservice.crypto
                     }
                 };
             }
-            else if (content.AnswerOneofCase == CallMessage.AnswerOneofOneofCase.Answer)
+            else if (content.Answer != null)
             {
                 return new SignalServiceCallMessage()
                 {
@@ -425,7 +415,7 @@ namespace libsignalservice.crypto
                 m.IceUpdateMessages = l;
                 return m;
             }
-            else if (content.HangupOneofCase == CallMessage.HangupOneofOneofCase.Hangup)
+            else if (content.Hangup != null)
             {
                 return new SignalServiceCallMessage()
                 {
@@ -435,7 +425,7 @@ namespace libsignalservice.crypto
                     }
                 };
             }
-            else if (content.BusyOneofCase == CallMessage.BusyOneofOneofCase.Busy)
+            else if (content.Busy != null)
             {
                 return new SignalServiceCallMessage()
                 {
@@ -445,6 +435,7 @@ namespace libsignalservice.crypto
                     }
                 };
             }
+
             return new SignalServiceCallMessage();
         }
 
@@ -452,50 +443,39 @@ namespace libsignalservice.crypto
         {
             SignalServiceReceiptMessage.Type type;
 
-            if (content.TypeOneofCase == ReceiptMessage.TypeOneofOneofCase.Type)
+            if (content.Type == ReceiptMessage.Types.Type.Delivery)
             {
-                if (content.Type == ReceiptMessage.Types.Type.Delivery)
-                {
-                    type = SignalServiceReceiptMessage.Type.DELIVERY;
-                }
-                else if (content.Type == ReceiptMessage.Types.Type.Read)
-                {
-                    type = SignalServiceReceiptMessage.Type.READ;
-                }
-                else
-                {
-                    type = SignalServiceReceiptMessage.Type.UNKNOWN;
-                }
+                type = SignalServiceReceiptMessage.Type.DELIVERY;
+            }
+            else if (content.Type == ReceiptMessage.Types.Type.Read)
+            {
+                type = SignalServiceReceiptMessage.Type.READ;
             }
             else
             {
                 type = SignalServiceReceiptMessage.Type.UNKNOWN;
             }
-            var timestamps = new List<ulong>();
-            foreach (var timestamp in content.Timestamp)
-            {
-                timestamps.Add(timestamp);
-            }
+
             return new SignalServiceReceiptMessage()
             {
                 ReceiptType = type,
-                Timestamps = timestamps,
+                Timestamps = content.Timestamp.ToList(),
                 When = metadata.Timestamp
             };
         }
 
         private SignalServiceDataMessage.SignalServiceQuote? CreateQuote(DataMessage content)
         {
-            if (content.QuoteOneofCase != DataMessage.QuoteOneofOneofCase.Quote)
+            if (content.Quote == null)
                 return null;
 
             var attachments = new List<SignalServiceDataMessage.SignalServiceQuotedAttachment>();
 
-            foreach (var pointer in content.Quote.Attachments)
+            foreach (var attachment in content.Quote.Attachments)
             {
-                attachments.Add(new SignalServiceDataMessage.SignalServiceQuotedAttachment(pointer.ContentType,
-                    pointer.FileName,
-                    pointer.ThumbnailOneofCase == DataMessage.Types.Quote.Types.QuotedAttachment.ThumbnailOneofOneofCase.Thumbnail ? CreateAttachmentPointer(pointer.Thumbnail) : null));
+                attachments.Add(new SignalServiceDataMessage.SignalServiceQuotedAttachment(attachment.ContentType,
+                    attachment.FileName,
+                    attachment.Thumbnail != null ? CreateAttachmentPointer(attachment.Thumbnail) : null));
             }
 
             return new SignalServiceDataMessage.SignalServiceQuote((long)content.Quote.Id,
@@ -512,132 +492,117 @@ namespace libsignalservice.crypto
 
             foreach (var contact in content.Contact)
             {
-                var name = new Name(contact.Name.DisplayNameOneofCase == DataMessage.Types.Contact.Types.Name.DisplayNameOneofOneofCase.DisplayName ? contact.Name.DisplayName : null,
-                    contact.Name.GivenNameOneofCase == DataMessage.Types.Contact.Types.Name.GivenNameOneofOneofCase.GivenName ? contact.Name.GivenName : null,
-                    contact.Name.FamilyNameOneofCase == DataMessage.Types.Contact.Types.Name.FamilyNameOneofOneofCase.FamilyName ? contact.Name.FamilyName : null,
-                    contact.Name.PrefixOneofCase == DataMessage.Types.Contact.Types.Name.PrefixOneofOneofCase.Prefix ? contact.Name.Prefix : null,
-                    contact.Name.SuffixOneofCase == DataMessage.Types.Contact.Types.Name.SuffixOneofOneofCase.Suffix ? contact.Name.DisplayName : null,
-                    contact.Name.MiddleNameOneofCase == DataMessage.Types.Contact.Types.Name.MiddleNameOneofOneofCase.MiddleName ? contact.Name.MiddleName : null);
+                Name name = new Name(contact.Name.DisplayName,
+                    contact.Name.GivenName,
+                    contact.Name.FamilyName,
+                    contact.Name.Prefix,
+                    contact.Name.Suffix,
+                    contact.Name.MiddleName);
 
-                Avatar? avatar = null;
-                string? organization = null;
+                List<PostalAddress> postalAddresses = new List<PostalAddress>();
                 if (contact.Address.Count > 0)
                 {
                     foreach (var address in contact.Address)
                     {
-                        //TODO
-                        /*
-                        SharedContact.PostalAddress.Type type = SharedContact.PostalAddress.Type.HOME;
+                        PostalAddress.PostalAddressType postalAddressType = PostalAddress.PostalAddressType.HOME;
 
-                        switch (address.getType())
+                        switch (address.Type)
                         {
-                            case WORK: type = SharedContact.PostalAddress.Type.WORK; break;
-                            case HOME: type = SharedContact.PostalAddress.Type.HOME; break;
-                            case CUSTOM: type = SharedContact.PostalAddress.Type.CUSTOM; break;
+                            case DataMessage.Types.Contact.Types.PostalAddress.Types.Type.Work: postalAddressType = PostalAddress.PostalAddressType.WORK; break;
+                            case DataMessage.Types.Contact.Types.PostalAddress.Types.Type.Home: postalAddressType = PostalAddress.PostalAddressType.HOME; break;
+                            case DataMessage.Types.Contact.Types.PostalAddress.Types.Type.Custom: postalAddressType = PostalAddress.PostalAddressType.CUSTOM; break;
                         }
 
-                        builder.withAddress(SharedContact.PostalAddress.newBuilder()
-                                                                       .setCity(address.getCity())
-                                                                       .setCountry(address.getCountry())
-                                                                       .setLabel(address.getLabel())
-                                                                       .setNeighborhood(address.getNeighborhood())
-                                                                       .setPobox(address.getPobox())
-                                                                       .setPostcode(address.getPostcode())
-                                                                       .setRegion(address.getRegion())
-                                                                       .setStreet(address.getStreet())
-                                                                       .setType(type)
-                                                                       .build());
-                                                                       */
+                        postalAddresses.Add(new PostalAddress(postalAddressType,
+                            address.Label,
+                            address.Street,
+                            address.Pobox,
+                            address.Neighborhood,
+                            address.City,
+                            address.Region,
+                            address.Postcode,
+                            address.Country));
                     }
                 }
 
+                List<Phone> phones = new List<Phone>();
                 if (contact.Number.Count > 0)
                 {
                     foreach (var phone in contact.Number)
                     {
-                        //TODO
-                        /*
-                        SharedContact.Phone.Type type = SharedContact.Phone.Type.HOME;
+                        Phone.PhoneType phoneType = Phone.PhoneType.HOME;
 
-                        switch (phone.getType())
+                        switch (phone.Type)
                         {
-                            case HOME: type = SharedContact.Phone.Type.HOME; break;
-                            case WORK: type = SharedContact.Phone.Type.WORK; break;
-                            case MOBILE: type = SharedContact.Phone.Type.MOBILE; break;
-                            case CUSTOM: type = SharedContact.Phone.Type.CUSTOM; break;
+                            case DataMessage.Types.Contact.Types.Phone.Types.Type.Home: phoneType = Phone.PhoneType.HOME; break;
+                            case DataMessage.Types.Contact.Types.Phone.Types.Type.Work: phoneType = Phone.PhoneType.WORK; break;
+                            case DataMessage.Types.Contact.Types.Phone.Types.Type.Mobile: phoneType = Phone.PhoneType.MOBILE; break;
+                            case DataMessage.Types.Contact.Types.Phone.Types.Type.Custom: phoneType = Phone.PhoneType.CUSTOM; break;
                         }
 
-                        builder.withPhone(SharedContact.Phone.newBuilder()
-                                                             .setLabel(phone.getLabel())
-                                                             .setType(type)
-                                                             .setValue(phone.getValue())
-                                                             .build());
-                                                             */
+                        phones.Add(new Phone(phone.Value, phoneType, phone.Label));
                     }
                 }
 
+                List<Email> emails = new List<Email>();
                 if (contact.Email.Count > 0)
                 {
                     foreach (var email in contact.Email)
                     {
-                        //TODO
-                        /*
-                        SharedContact.Email.Type type = SharedContact.Email.Type.HOME;
+                        Email.EmailType emailType = Email.EmailType.HOME;
 
-                        switch (email.getType())
+                        switch (email.Type)
                         {
-                            case HOME: type = SharedContact.Email.Type.HOME; break;
-                            case WORK: type = SharedContact.Email.Type.WORK; break;
-                            case MOBILE: type = SharedContact.Email.Type.MOBILE; break;
-                            case CUSTOM: type = SharedContact.Email.Type.CUSTOM; break;
+                            case DataMessage.Types.Contact.Types.Email.Types.Type.Home: emailType = Email.EmailType.HOME; break;
+                            case DataMessage.Types.Contact.Types.Email.Types.Type.Work: emailType = Email.EmailType.WORK; break;
+                            case DataMessage.Types.Contact.Types.Email.Types.Type.Mobile: emailType = Email.EmailType.MOBILE; break;
+                            case DataMessage.Types.Contact.Types.Email.Types.Type.Custom: emailType = Email.EmailType.CUSTOM; break;
                         }
 
-                        builder.withEmail(SharedContact.Email.newBuilder()
-                                                             .setLabel(email.getLabel())
-                                                             .setType(type)
-                                                             .setValue(email.getValue())
-                                                             .build());
-                                                             */
+                        emails.Add(new Email(email.Value, emailType, email.Label));
                     }
                 }
 
-                if (contact.AvatarOneofCase == DataMessage.Types.Contact.AvatarOneofOneofCase.Avatar)
+                Avatar? avatar = null;
+                if (contact.Avatar != null)
                 {
                     avatar = new Avatar(CreateAttachmentPointer(contact.Avatar.Avatar_), contact.Avatar.IsProfile);
                 }
 
-                if (contact.OrganizationOneofCase == DataMessage.Types.Contact.OrganizationOneofOneofCase.Organization)
+                string? organization = null;
+                if (contact.HasOrganization)
                 {
                     organization = contact.Organization;
                 }
 
-                results.Add(new SharedContact(name, avatar, null, null, null, organization)); //TODO
+                SharedContact sharedContact = new SharedContact(name, avatar,
+                    phones.Count > 0 ? phones : null,
+                    emails.Count > 0 ? emails : null,
+                    postalAddresses.Count > 0 ? postalAddresses : null,
+                    organization);
+                results.Add(sharedContact);
             }
+
             return results;
         }
 
         private SignalServiceAttachmentPointer CreateAttachmentPointer(AttachmentPointer pointer)
         {
-            uint? size = null;
-            if (pointer.SizeOneofCase == AttachmentPointer.SizeOneofOneofCase.Size)
-            {
-                size = pointer.Size;
-            }
             return new SignalServiceAttachmentPointer(pointer.Id,
                 pointer.ContentType,
                 pointer.Key.ToByteArray(),
-                size,
-                pointer.ThumbnailOneofCase == AttachmentPointer.ThumbnailOneofOneofCase.Thumbnail ? pointer.Thumbnail.ToByteArray() : null,
+                pointer.HasSize ? pointer.Size : (uint?)null,
+                pointer.HasThumbnail ? pointer.Thumbnail.ToByteArray() : null,
                 (int)pointer.Width,
                 (int)pointer.Height,
-                pointer.DigestOneofCase == AttachmentPointer.DigestOneofOneofCase.Digest ? pointer.Digest.ToByteArray() : null,
-                pointer.FileNameOneofCase == AttachmentPointer.FileNameOneofOneofCase.FileName ? pointer.FileName : null,
+                pointer.HasDigest ? pointer.Digest.ToByteArray() : null,
+                pointer.HasFileName ? pointer.FileName : null,
                 (pointer.Flags & (uint)AttachmentPointer.Types.Flags.VoiceMessage) != 0);
         }
 
         private SignalServiceGroup? CreateGroupInfo(DataMessage content)
         {
-            if (content.GroupOneofCase == DataMessage.GroupOneofOneofCase.None) return null;
+            if (content.Group == null) return null;
 
             var type = content.Group.Type switch
             {
@@ -647,13 +612,14 @@ namespace libsignalservice.crypto
                 GroupContext.Types.Type.RequestInfo => SignalServiceGroup.GroupType.REQUEST_INFO,
                 _ => SignalServiceGroup.GroupType.UNKNOWN,
             };
+
             if (content.Group.Type != GroupContext.Types.Type.Deliver)
             {
                 string? name = null;
                 IList<string>? members = null;
                 SignalServiceAttachmentPointer? avatar = null;
 
-                if (content.Group.NameOneofCase == GroupContext.NameOneofOneofCase.Name)
+                if (content.Group.HasName)
                 {
                     name = content.Group.Name;
                 }
@@ -663,17 +629,17 @@ namespace libsignalservice.crypto
                     members = content.Group.Members;
                 }
 
-                if (content.Group.AvatarOneofCase == GroupContext.AvatarOneofOneofCase.Avatar)
+                if (content.Group.Avatar != null)
                 {
                     AttachmentPointer pointer = content.Group.Avatar;
 
                     avatar = new SignalServiceAttachmentPointer(pointer.Id,
                         pointer.ContentType,
                         pointer.Key.ToByteArray(),
-                        pointer.SizeOneofCase == AttachmentPointer.SizeOneofOneofCase.Size ? pointer.Size : 0,
+                        pointer.HasSize ? pointer.Size : 0,
                         null,
                         0, 0,
-                        pointer.DigestOneofCase == AttachmentPointer.DigestOneofOneofCase.Digest ? pointer.Digest.ToByteArray() : null,
+                        pointer.HasDigest ? pointer.Digest.ToByteArray() : null,
                         null,
                         false);
                 }
@@ -723,5 +689,4 @@ namespace libsignalservice.crypto
             this.Data     = data;
         }
     }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

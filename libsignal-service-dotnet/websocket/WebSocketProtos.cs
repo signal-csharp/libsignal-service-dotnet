@@ -24,29 +24,25 @@ namespace libsignalservice.websocket {
     static WebSocketResourcesReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "ChhXZWJTb2NrZXRSZXNvdXJjZXMucHJvdG8SCnRleHRzZWN1cmUingEKF1dl",
-            "YlNvY2tldFJlcXVlc3RNZXNzYWdlEg4KBHZlcmIYASABKAlIABIOCgRwYXRo",
-            "GAIgASgJSAESDgoEYm9keRgDIAEoDEgCEg8KB2hlYWRlcnMYBSADKAkSDAoC",
-            "aWQYBCABKARIA0IMCgp2ZXJiX29uZW9mQgwKCnBhdGhfb25lb2ZCDAoKYm9k",
-            "eV9vbmVvZkIKCghpZF9vbmVvZiKpAQoYV2ViU29ja2V0UmVzcG9uc2VNZXNz",
-            "YWdlEgwKAmlkGAEgASgESAASEAoGc3RhdHVzGAIgASgNSAESEQoHbWVzc2Fn",
-            "ZRgDIAEoCUgCEg8KB2hlYWRlcnMYBSADKAkSDgoEYm9keRgEIAEoDEgDQgoK",
-            "CGlkX29uZW9mQg4KDHN0YXR1c19vbmVvZkIPCg1tZXNzYWdlX29uZW9mQgwK",
-            "CmJvZHlfb25lb2YimAIKEFdlYlNvY2tldE1lc3NhZ2USMQoEdHlwZRgBIAEo",
-            "DjIhLnRleHRzZWN1cmUuV2ViU29ja2V0TWVzc2FnZS5UeXBlSAASNgoHcmVx",
-            "dWVzdBgCIAEoCzIjLnRleHRzZWN1cmUuV2ViU29ja2V0UmVxdWVzdE1lc3Nh",
-            "Z2VIARI4CghyZXNwb25zZRgDIAEoCzIkLnRleHRzZWN1cmUuV2ViU29ja2V0",
-            "UmVzcG9uc2VNZXNzYWdlSAIiLgoEVHlwZRILCgdVTktOT1dOEAASCwoHUkVR",
-            "VUVTVBABEgwKCFJFU1BPTlNFEAJCDAoKdHlwZV9vbmVvZkIPCg1yZXF1ZXN0",
-            "X29uZW9mQhAKDnJlc3BvbnNlX29uZW9mQmAKMG9yZy53aGlzcGVyc3lzdGVt",
-            "cy50ZXh0c2VjdXJlLmludGVybmFsLndlYnNvY2tldEIPV2ViU29ja2V0UHJv",
-            "dG9zqgIabGlic2lnbmFsc2VydmljZS53ZWJzb2NrZXRiBnByb3RvMw=="));
+            "ChhXZWJTb2NrZXRSZXNvdXJjZXMucHJvdG8SCnRleHRzZWN1cmUiYAoXV2Vi",
+            "U29ja2V0UmVxdWVzdE1lc3NhZ2USDAoEdmVyYhgBIAEoCRIMCgRwYXRoGAIg",
+            "ASgJEgwKBGJvZHkYAyABKAwSDwoHaGVhZGVycxgFIAMoCRIKCgJpZBgEIAEo",
+            "BCJmChhXZWJTb2NrZXRSZXNwb25zZU1lc3NhZ2USCgoCaWQYASABKAQSDgoG",
+            "c3RhdHVzGAIgASgNEg8KB21lc3NhZ2UYAyABKAkSDwoHaGVhZGVycxgFIAMo",
+            "CRIMCgRib2R5GAQgASgMIuEBChBXZWJTb2NrZXRNZXNzYWdlEi8KBHR5cGUY",
+            "ASABKA4yIS50ZXh0c2VjdXJlLldlYlNvY2tldE1lc3NhZ2UuVHlwZRI0Cgdy",
+            "ZXF1ZXN0GAIgASgLMiMudGV4dHNlY3VyZS5XZWJTb2NrZXRSZXF1ZXN0TWVz",
+            "c2FnZRI2CghyZXNwb25zZRgDIAEoCzIkLnRleHRzZWN1cmUuV2ViU29ja2V0",
+            "UmVzcG9uc2VNZXNzYWdlIi4KBFR5cGUSCwoHVU5LTk9XThAAEgsKB1JFUVVF",
+            "U1QQARIMCghSRVNQT05TRRACQmAKMG9yZy53aGlzcGVyc3lzdGVtcy50ZXh0",
+            "c2VjdXJlLmludGVybmFsLndlYnNvY2tldEIPV2ViU29ja2V0UHJvdG9zqgIa",
+            "bGlic2lnbmFsc2VydmljZS53ZWJzb2NrZXQ="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.websocket.WebSocketRequestMessage), global::libsignalservice.websocket.WebSocketRequestMessage.Parser, new[]{ "Verb", "Path", "Body", "Headers", "Id" }, new[]{ "VerbOneof", "PathOneof", "BodyOneof", "IdOneof" }, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.websocket.WebSocketResponseMessage), global::libsignalservice.websocket.WebSocketResponseMessage.Parser, new[]{ "Id", "Status", "Message", "Headers", "Body" }, new[]{ "IdOneof", "StatusOneof", "MessageOneof", "BodyOneof" }, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.websocket.WebSocketMessage), global::libsignalservice.websocket.WebSocketMessage.Parser, new[]{ "Type", "Request", "Response" }, new[]{ "TypeOneof", "RequestOneof", "ResponseOneof" }, new[]{ typeof(global::libsignalservice.websocket.WebSocketMessage.Types.Type) }, null)
+          new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
+            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.websocket.WebSocketRequestMessage), global::libsignalservice.websocket.WebSocketRequestMessage.Parser, new[]{ "Verb", "Path", "Body", "Headers", "Id" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.websocket.WebSocketResponseMessage), global::libsignalservice.websocket.WebSocketResponseMessage.Parser, new[]{ "Id", "Status", "Message", "Headers", "Body" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.websocket.WebSocketMessage), global::libsignalservice.websocket.WebSocketMessage.Parser, new[]{ "Type", "Request", "Response" }, null, new[]{ typeof(global::libsignalservice.websocket.WebSocketMessage.Types.Type) }, null, null)
           }));
     }
     #endregion
@@ -56,6 +52,7 @@ namespace libsignalservice.websocket {
   public sealed partial class WebSocketRequestMessage : pb::IMessage<WebSocketRequestMessage> {
     private static readonly pb::MessageParser<WebSocketRequestMessage> _parser = new pb::MessageParser<WebSocketRequestMessage>(() => new WebSocketRequestMessage());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pb::MessageParser<WebSocketRequestMessage> Parser { get { return _parser; } }
 
@@ -78,31 +75,12 @@ namespace libsignalservice.websocket {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public WebSocketRequestMessage(WebSocketRequestMessage other) : this() {
+      _hasBits0 = other._hasBits0;
+      verb_ = other.verb_;
+      path_ = other.path_;
+      body_ = other.body_;
       headers_ = other.headers_.Clone();
-      switch (other.VerbOneofCase) {
-        case VerbOneofOneofCase.Verb:
-          Verb = other.Verb;
-          break;
-      }
-
-      switch (other.PathOneofCase) {
-        case PathOneofOneofCase.Path:
-          Path = other.Path;
-          break;
-      }
-
-      switch (other.BodyOneofCase) {
-        case BodyOneofOneofCase.Body:
-          Body = other.Body;
-          break;
-      }
-
-      switch (other.IdOneofCase) {
-        case IdOneofOneofCase.Id:
-          Id = other.Id;
-          break;
-      }
-
+      id_ = other.id_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -113,35 +91,71 @@ namespace libsignalservice.websocket {
 
     /// <summary>Field number for the "verb" field.</summary>
     public const int VerbFieldNumber = 1;
+    private readonly static string VerbDefaultValue = "";
+
+    private string verb_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Verb {
-      get { return verbOneofCase_ == VerbOneofOneofCase.Verb ? (string) verbOneof_ : ""; }
+      get { return verb_ ?? VerbDefaultValue; }
       set {
-        verbOneof_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-        verbOneofCase_ = VerbOneofOneofCase.Verb;
+        verb_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
+    }
+    /// <summary>Gets whether the "verb" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool HasVerb {
+      get { return verb_ != null; }
+    }
+    /// <summary>Clears the value of the "verb" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearVerb() {
+      verb_ = null;
     }
 
     /// <summary>Field number for the "path" field.</summary>
     public const int PathFieldNumber = 2;
+    private readonly static string PathDefaultValue = "";
+
+    private string path_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Path {
-      get { return pathOneofCase_ == PathOneofOneofCase.Path ? (string) pathOneof_ : ""; }
+      get { return path_ ?? PathDefaultValue; }
       set {
-        pathOneof_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-        pathOneofCase_ = PathOneofOneofCase.Path;
+        path_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
+    }
+    /// <summary>Gets whether the "path" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool HasPath {
+      get { return path_ != null; }
+    }
+    /// <summary>Clears the value of the "path" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearPath() {
+      path_ = null;
     }
 
     /// <summary>Field number for the "body" field.</summary>
     public const int BodyFieldNumber = 3;
+    private readonly static pb::ByteString BodyDefaultValue = pb::ByteString.Empty;
+
+    private pb::ByteString body_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pb::ByteString Body {
-      get { return bodyOneofCase_ == BodyOneofOneofCase.Body ? (pb::ByteString) bodyOneof_ : pb::ByteString.Empty; }
+      get { return body_ ?? BodyDefaultValue; }
       set {
-        bodyOneof_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-        bodyOneofCase_ = BodyOneofOneofCase.Body;
+        body_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
+    }
+    /// <summary>Gets whether the "body" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool HasBody {
+      get { return body_ != null; }
+    }
+    /// <summary>Clears the value of the "body" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearBody() {
+      body_ = null;
     }
 
     /// <summary>Field number for the "headers" field.</summary>
@@ -156,85 +170,26 @@ namespace libsignalservice.websocket {
 
     /// <summary>Field number for the "id" field.</summary>
     public const int IdFieldNumber = 4;
+    private readonly static ulong IdDefaultValue = 0UL;
+
+    private ulong id_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public ulong Id {
-      get { return idOneofCase_ == IdOneofOneofCase.Id ? (ulong) idOneof_ : 0UL; }
+      get { if ((_hasBits0 & 1) != 0) { return id_; } else { return IdDefaultValue; } }
       set {
-        idOneof_ = value;
-        idOneofCase_ = IdOneofOneofCase.Id;
+        _hasBits0 |= 1;
+        id_ = value;
       }
     }
-
-    private object verbOneof_;
-    /// <summary>Enum of possible cases for the "verb_oneof" oneof.</summary>
-    public enum VerbOneofOneofCase {
-      None = 0,
-      Verb = 1,
-    }
-    private VerbOneofOneofCase verbOneofCase_ = VerbOneofOneofCase.None;
+    /// <summary>Gets whether the "id" field is set</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public VerbOneofOneofCase VerbOneofCase {
-      get { return verbOneofCase_; }
+    public bool HasId {
+      get { return (_hasBits0 & 1) != 0; }
     }
-
+    /// <summary>Clears the value of the "id" field</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void ClearVerbOneof() {
-      verbOneofCase_ = VerbOneofOneofCase.None;
-      verbOneof_ = null;
-    }
-
-    private object pathOneof_;
-    /// <summary>Enum of possible cases for the "path_oneof" oneof.</summary>
-    public enum PathOneofOneofCase {
-      None = 0,
-      Path = 2,
-    }
-    private PathOneofOneofCase pathOneofCase_ = PathOneofOneofCase.None;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public PathOneofOneofCase PathOneofCase {
-      get { return pathOneofCase_; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void ClearPathOneof() {
-      pathOneofCase_ = PathOneofOneofCase.None;
-      pathOneof_ = null;
-    }
-
-    private object bodyOneof_;
-    /// <summary>Enum of possible cases for the "body_oneof" oneof.</summary>
-    public enum BodyOneofOneofCase {
-      None = 0,
-      Body = 3,
-    }
-    private BodyOneofOneofCase bodyOneofCase_ = BodyOneofOneofCase.None;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public BodyOneofOneofCase BodyOneofCase {
-      get { return bodyOneofCase_; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void ClearBodyOneof() {
-      bodyOneofCase_ = BodyOneofOneofCase.None;
-      bodyOneof_ = null;
-    }
-
-    private object idOneof_;
-    /// <summary>Enum of possible cases for the "id_oneof" oneof.</summary>
-    public enum IdOneofOneofCase {
-      None = 0,
-      Id = 4,
-    }
-    private IdOneofOneofCase idOneofCase_ = IdOneofOneofCase.None;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public IdOneofOneofCase IdOneofCase {
-      get { return idOneofCase_; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void ClearIdOneof() {
-      idOneofCase_ = IdOneofOneofCase.None;
-      idOneof_ = null;
+    public void ClearId() {
+      _hasBits0 &= ~1;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -255,25 +210,17 @@ namespace libsignalservice.websocket {
       if (Body != other.Body) return false;
       if(!headers_.Equals(other.headers_)) return false;
       if (Id != other.Id) return false;
-      if (VerbOneofCase != other.VerbOneofCase) return false;
-      if (PathOneofCase != other.PathOneofCase) return false;
-      if (BodyOneofCase != other.BodyOneofCase) return false;
-      if (IdOneofCase != other.IdOneofCase) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (verbOneofCase_ == VerbOneofOneofCase.Verb) hash ^= Verb.GetHashCode();
-      if (pathOneofCase_ == PathOneofOneofCase.Path) hash ^= Path.GetHashCode();
-      if (bodyOneofCase_ == BodyOneofOneofCase.Body) hash ^= Body.GetHashCode();
+      if (HasVerb) hash ^= Verb.GetHashCode();
+      if (HasPath) hash ^= Path.GetHashCode();
+      if (HasBody) hash ^= Body.GetHashCode();
       hash ^= headers_.GetHashCode();
-      if (idOneofCase_ == IdOneofOneofCase.Id) hash ^= Id.GetHashCode();
-      hash ^= (int) verbOneofCase_;
-      hash ^= (int) pathOneofCase_;
-      hash ^= (int) bodyOneofCase_;
-      hash ^= (int) idOneofCase_;
+      if (HasId) hash ^= Id.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -287,19 +234,19 @@ namespace libsignalservice.websocket {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (verbOneofCase_ == VerbOneofOneofCase.Verb) {
+      if (HasVerb) {
         output.WriteRawTag(10);
         output.WriteString(Verb);
       }
-      if (pathOneofCase_ == PathOneofOneofCase.Path) {
+      if (HasPath) {
         output.WriteRawTag(18);
         output.WriteString(Path);
       }
-      if (bodyOneofCase_ == BodyOneofOneofCase.Body) {
+      if (HasBody) {
         output.WriteRawTag(26);
         output.WriteBytes(Body);
       }
-      if (idOneofCase_ == IdOneofOneofCase.Id) {
+      if (HasId) {
         output.WriteRawTag(32);
         output.WriteUInt64(Id);
       }
@@ -312,17 +259,17 @@ namespace libsignalservice.websocket {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (verbOneofCase_ == VerbOneofOneofCase.Verb) {
+      if (HasVerb) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Verb);
       }
-      if (pathOneofCase_ == PathOneofOneofCase.Path) {
+      if (HasPath) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Path);
       }
-      if (bodyOneofCase_ == BodyOneofOneofCase.Body) {
+      if (HasBody) {
         size += 1 + pb::CodedOutputStream.ComputeBytesSize(Body);
       }
       size += headers_.CalculateSize(_repeated_headers_codec);
-      if (idOneofCase_ == IdOneofOneofCase.Id) {
+      if (HasId) {
         size += 1 + pb::CodedOutputStream.ComputeUInt64Size(Id);
       }
       if (_unknownFields != null) {
@@ -336,31 +283,19 @@ namespace libsignalservice.websocket {
       if (other == null) {
         return;
       }
+      if (other.HasVerb) {
+        Verb = other.Verb;
+      }
+      if (other.HasPath) {
+        Path = other.Path;
+      }
+      if (other.HasBody) {
+        Body = other.Body;
+      }
       headers_.Add(other.headers_);
-      switch (other.VerbOneofCase) {
-        case VerbOneofOneofCase.Verb:
-          Verb = other.Verb;
-          break;
+      if (other.HasId) {
+        Id = other.Id;
       }
-
-      switch (other.PathOneofCase) {
-        case PathOneofOneofCase.Path:
-          Path = other.Path;
-          break;
-      }
-
-      switch (other.BodyOneofCase) {
-        case BodyOneofOneofCase.Body:
-          Body = other.Body;
-          break;
-      }
-
-      switch (other.IdOneofCase) {
-        case IdOneofOneofCase.Id:
-          Id = other.Id;
-          break;
-      }
-
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -401,6 +336,7 @@ namespace libsignalservice.websocket {
   public sealed partial class WebSocketResponseMessage : pb::IMessage<WebSocketResponseMessage> {
     private static readonly pb::MessageParser<WebSocketResponseMessage> _parser = new pb::MessageParser<WebSocketResponseMessage>(() => new WebSocketResponseMessage());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pb::MessageParser<WebSocketResponseMessage> Parser { get { return _parser; } }
 
@@ -423,31 +359,12 @@ namespace libsignalservice.websocket {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public WebSocketResponseMessage(WebSocketResponseMessage other) : this() {
+      _hasBits0 = other._hasBits0;
+      id_ = other.id_;
+      status_ = other.status_;
+      message_ = other.message_;
       headers_ = other.headers_.Clone();
-      switch (other.IdOneofCase) {
-        case IdOneofOneofCase.Id:
-          Id = other.Id;
-          break;
-      }
-
-      switch (other.StatusOneofCase) {
-        case StatusOneofOneofCase.Status:
-          Status = other.Status;
-          break;
-      }
-
-      switch (other.MessageOneofCase) {
-        case MessageOneofOneofCase.Message:
-          Message = other.Message;
-          break;
-      }
-
-      switch (other.BodyOneofCase) {
-        case BodyOneofOneofCase.Body:
-          Body = other.Body;
-          break;
-      }
-
+      body_ = other.body_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -458,35 +375,73 @@ namespace libsignalservice.websocket {
 
     /// <summary>Field number for the "id" field.</summary>
     public const int IdFieldNumber = 1;
+    private readonly static ulong IdDefaultValue = 0UL;
+
+    private ulong id_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public ulong Id {
-      get { return idOneofCase_ == IdOneofOneofCase.Id ? (ulong) idOneof_ : 0UL; }
+      get { if ((_hasBits0 & 1) != 0) { return id_; } else { return IdDefaultValue; } }
       set {
-        idOneof_ = value;
-        idOneofCase_ = IdOneofOneofCase.Id;
+        _hasBits0 |= 1;
+        id_ = value;
       }
+    }
+    /// <summary>Gets whether the "id" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool HasId {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "id" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearId() {
+      _hasBits0 &= ~1;
     }
 
     /// <summary>Field number for the "status" field.</summary>
     public const int StatusFieldNumber = 2;
+    private readonly static uint StatusDefaultValue = 0;
+
+    private uint status_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public uint Status {
-      get { return statusOneofCase_ == StatusOneofOneofCase.Status ? (uint) statusOneof_ : 0; }
+      get { if ((_hasBits0 & 2) != 0) { return status_; } else { return StatusDefaultValue; } }
       set {
-        statusOneof_ = value;
-        statusOneofCase_ = StatusOneofOneofCase.Status;
+        _hasBits0 |= 2;
+        status_ = value;
       }
+    }
+    /// <summary>Gets whether the "status" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool HasStatus {
+      get { return (_hasBits0 & 2) != 0; }
+    }
+    /// <summary>Clears the value of the "status" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearStatus() {
+      _hasBits0 &= ~2;
     }
 
     /// <summary>Field number for the "message" field.</summary>
     public const int MessageFieldNumber = 3;
+    private readonly static string MessageDefaultValue = "";
+
+    private string message_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Message {
-      get { return messageOneofCase_ == MessageOneofOneofCase.Message ? (string) messageOneof_ : ""; }
+      get { return message_ ?? MessageDefaultValue; }
       set {
-        messageOneof_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-        messageOneofCase_ = MessageOneofOneofCase.Message;
+        message_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
+    }
+    /// <summary>Gets whether the "message" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool HasMessage {
+      get { return message_ != null; }
+    }
+    /// <summary>Clears the value of the "message" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearMessage() {
+      message_ = null;
     }
 
     /// <summary>Field number for the "headers" field.</summary>
@@ -501,85 +456,25 @@ namespace libsignalservice.websocket {
 
     /// <summary>Field number for the "body" field.</summary>
     public const int BodyFieldNumber = 4;
+    private readonly static pb::ByteString BodyDefaultValue = pb::ByteString.Empty;
+
+    private pb::ByteString body_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pb::ByteString Body {
-      get { return bodyOneofCase_ == BodyOneofOneofCase.Body ? (pb::ByteString) bodyOneof_ : pb::ByteString.Empty; }
+      get { return body_ ?? BodyDefaultValue; }
       set {
-        bodyOneof_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-        bodyOneofCase_ = BodyOneofOneofCase.Body;
+        body_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
-
-    private object idOneof_;
-    /// <summary>Enum of possible cases for the "id_oneof" oneof.</summary>
-    public enum IdOneofOneofCase {
-      None = 0,
-      Id = 1,
-    }
-    private IdOneofOneofCase idOneofCase_ = IdOneofOneofCase.None;
+    /// <summary>Gets whether the "body" field is set</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public IdOneofOneofCase IdOneofCase {
-      get { return idOneofCase_; }
+    public bool HasBody {
+      get { return body_ != null; }
     }
-
+    /// <summary>Clears the value of the "body" field</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void ClearIdOneof() {
-      idOneofCase_ = IdOneofOneofCase.None;
-      idOneof_ = null;
-    }
-
-    private object statusOneof_;
-    /// <summary>Enum of possible cases for the "status_oneof" oneof.</summary>
-    public enum StatusOneofOneofCase {
-      None = 0,
-      Status = 2,
-    }
-    private StatusOneofOneofCase statusOneofCase_ = StatusOneofOneofCase.None;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public StatusOneofOneofCase StatusOneofCase {
-      get { return statusOneofCase_; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void ClearStatusOneof() {
-      statusOneofCase_ = StatusOneofOneofCase.None;
-      statusOneof_ = null;
-    }
-
-    private object messageOneof_;
-    /// <summary>Enum of possible cases for the "message_oneof" oneof.</summary>
-    public enum MessageOneofOneofCase {
-      None = 0,
-      Message = 3,
-    }
-    private MessageOneofOneofCase messageOneofCase_ = MessageOneofOneofCase.None;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public MessageOneofOneofCase MessageOneofCase {
-      get { return messageOneofCase_; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void ClearMessageOneof() {
-      messageOneofCase_ = MessageOneofOneofCase.None;
-      messageOneof_ = null;
-    }
-
-    private object bodyOneof_;
-    /// <summary>Enum of possible cases for the "body_oneof" oneof.</summary>
-    public enum BodyOneofOneofCase {
-      None = 0,
-      Body = 4,
-    }
-    private BodyOneofOneofCase bodyOneofCase_ = BodyOneofOneofCase.None;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public BodyOneofOneofCase BodyOneofCase {
-      get { return bodyOneofCase_; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void ClearBodyOneof() {
-      bodyOneofCase_ = BodyOneofOneofCase.None;
-      bodyOneof_ = null;
+    public void ClearBody() {
+      body_ = null;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -600,25 +495,17 @@ namespace libsignalservice.websocket {
       if (Message != other.Message) return false;
       if(!headers_.Equals(other.headers_)) return false;
       if (Body != other.Body) return false;
-      if (IdOneofCase != other.IdOneofCase) return false;
-      if (StatusOneofCase != other.StatusOneofCase) return false;
-      if (MessageOneofCase != other.MessageOneofCase) return false;
-      if (BodyOneofCase != other.BodyOneofCase) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (idOneofCase_ == IdOneofOneofCase.Id) hash ^= Id.GetHashCode();
-      if (statusOneofCase_ == StatusOneofOneofCase.Status) hash ^= Status.GetHashCode();
-      if (messageOneofCase_ == MessageOneofOneofCase.Message) hash ^= Message.GetHashCode();
+      if (HasId) hash ^= Id.GetHashCode();
+      if (HasStatus) hash ^= Status.GetHashCode();
+      if (HasMessage) hash ^= Message.GetHashCode();
       hash ^= headers_.GetHashCode();
-      if (bodyOneofCase_ == BodyOneofOneofCase.Body) hash ^= Body.GetHashCode();
-      hash ^= (int) idOneofCase_;
-      hash ^= (int) statusOneofCase_;
-      hash ^= (int) messageOneofCase_;
-      hash ^= (int) bodyOneofCase_;
+      if (HasBody) hash ^= Body.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -632,19 +519,19 @@ namespace libsignalservice.websocket {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (idOneofCase_ == IdOneofOneofCase.Id) {
+      if (HasId) {
         output.WriteRawTag(8);
         output.WriteUInt64(Id);
       }
-      if (statusOneofCase_ == StatusOneofOneofCase.Status) {
+      if (HasStatus) {
         output.WriteRawTag(16);
         output.WriteUInt32(Status);
       }
-      if (messageOneofCase_ == MessageOneofOneofCase.Message) {
+      if (HasMessage) {
         output.WriteRawTag(26);
         output.WriteString(Message);
       }
-      if (bodyOneofCase_ == BodyOneofOneofCase.Body) {
+      if (HasBody) {
         output.WriteRawTag(34);
         output.WriteBytes(Body);
       }
@@ -657,17 +544,17 @@ namespace libsignalservice.websocket {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (idOneofCase_ == IdOneofOneofCase.Id) {
+      if (HasId) {
         size += 1 + pb::CodedOutputStream.ComputeUInt64Size(Id);
       }
-      if (statusOneofCase_ == StatusOneofOneofCase.Status) {
+      if (HasStatus) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(Status);
       }
-      if (messageOneofCase_ == MessageOneofOneofCase.Message) {
+      if (HasMessage) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Message);
       }
       size += headers_.CalculateSize(_repeated_headers_codec);
-      if (bodyOneofCase_ == BodyOneofOneofCase.Body) {
+      if (HasBody) {
         size += 1 + pb::CodedOutputStream.ComputeBytesSize(Body);
       }
       if (_unknownFields != null) {
@@ -681,31 +568,19 @@ namespace libsignalservice.websocket {
       if (other == null) {
         return;
       }
+      if (other.HasId) {
+        Id = other.Id;
+      }
+      if (other.HasStatus) {
+        Status = other.Status;
+      }
+      if (other.HasMessage) {
+        Message = other.Message;
+      }
       headers_.Add(other.headers_);
-      switch (other.IdOneofCase) {
-        case IdOneofOneofCase.Id:
-          Id = other.Id;
-          break;
+      if (other.HasBody) {
+        Body = other.Body;
       }
-
-      switch (other.StatusOneofCase) {
-        case StatusOneofOneofCase.Status:
-          Status = other.Status;
-          break;
-      }
-
-      switch (other.MessageOneofCase) {
-        case MessageOneofOneofCase.Message:
-          Message = other.Message;
-          break;
-      }
-
-      switch (other.BodyOneofCase) {
-        case BodyOneofOneofCase.Body:
-          Body = other.Body;
-          break;
-      }
-
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -746,6 +621,7 @@ namespace libsignalservice.websocket {
   public sealed partial class WebSocketMessage : pb::IMessage<WebSocketMessage> {
     private static readonly pb::MessageParser<WebSocketMessage> _parser = new pb::MessageParser<WebSocketMessage>(() => new WebSocketMessage());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pb::MessageParser<WebSocketMessage> Parser { get { return _parser; } }
 
@@ -768,24 +644,10 @@ namespace libsignalservice.websocket {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public WebSocketMessage(WebSocketMessage other) : this() {
-      switch (other.TypeOneofCase) {
-        case TypeOneofOneofCase.Type:
-          Type = other.Type;
-          break;
-      }
-
-      switch (other.RequestOneofCase) {
-        case RequestOneofOneofCase.Request:
-          Request = other.Request.Clone();
-          break;
-      }
-
-      switch (other.ResponseOneofCase) {
-        case ResponseOneofOneofCase.Response:
-          Response = other.Response.Clone();
-          break;
-      }
-
+      _hasBits0 = other._hasBits0;
+      type_ = other.type_;
+      request_ = other.request_ != null ? other.request_.Clone() : null;
+      response_ = other.response_ != null ? other.response_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -796,89 +658,48 @@ namespace libsignalservice.websocket {
 
     /// <summary>Field number for the "type" field.</summary>
     public const int TypeFieldNumber = 1;
+    private readonly static global::libsignalservice.websocket.WebSocketMessage.Types.Type TypeDefaultValue = global::libsignalservice.websocket.WebSocketMessage.Types.Type.Unknown;
+
+    private global::libsignalservice.websocket.WebSocketMessage.Types.Type type_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::libsignalservice.websocket.WebSocketMessage.Types.Type Type {
-      get { return typeOneofCase_ == TypeOneofOneofCase.Type ? (global::libsignalservice.websocket.WebSocketMessage.Types.Type) typeOneof_ : 0; }
+      get { if ((_hasBits0 & 1) != 0) { return type_; } else { return TypeDefaultValue; } }
       set {
-        typeOneof_ = value;
-        typeOneofCase_ = TypeOneofOneofCase.Type;
+        _hasBits0 |= 1;
+        type_ = value;
       }
+    }
+    /// <summary>Gets whether the "type" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool HasType {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "type" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearType() {
+      _hasBits0 &= ~1;
     }
 
     /// <summary>Field number for the "request" field.</summary>
     public const int RequestFieldNumber = 2;
+    private global::libsignalservice.websocket.WebSocketRequestMessage request_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::libsignalservice.websocket.WebSocketRequestMessage Request {
-      get { return requestOneofCase_ == RequestOneofOneofCase.Request ? (global::libsignalservice.websocket.WebSocketRequestMessage) requestOneof_ : null; }
+      get { return request_; }
       set {
-        requestOneof_ = value;
-        requestOneofCase_ = value == null ? RequestOneofOneofCase.None : RequestOneofOneofCase.Request;
+        request_ = value;
       }
     }
 
     /// <summary>Field number for the "response" field.</summary>
     public const int ResponseFieldNumber = 3;
+    private global::libsignalservice.websocket.WebSocketResponseMessage response_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::libsignalservice.websocket.WebSocketResponseMessage Response {
-      get { return responseOneofCase_ == ResponseOneofOneofCase.Response ? (global::libsignalservice.websocket.WebSocketResponseMessage) responseOneof_ : null; }
+      get { return response_; }
       set {
-        responseOneof_ = value;
-        responseOneofCase_ = value == null ? ResponseOneofOneofCase.None : ResponseOneofOneofCase.Response;
+        response_ = value;
       }
-    }
-
-    private object typeOneof_;
-    /// <summary>Enum of possible cases for the "type_oneof" oneof.</summary>
-    public enum TypeOneofOneofCase {
-      None = 0,
-      Type = 1,
-    }
-    private TypeOneofOneofCase typeOneofCase_ = TypeOneofOneofCase.None;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public TypeOneofOneofCase TypeOneofCase {
-      get { return typeOneofCase_; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void ClearTypeOneof() {
-      typeOneofCase_ = TypeOneofOneofCase.None;
-      typeOneof_ = null;
-    }
-
-    private object requestOneof_;
-    /// <summary>Enum of possible cases for the "request_oneof" oneof.</summary>
-    public enum RequestOneofOneofCase {
-      None = 0,
-      Request = 2,
-    }
-    private RequestOneofOneofCase requestOneofCase_ = RequestOneofOneofCase.None;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public RequestOneofOneofCase RequestOneofCase {
-      get { return requestOneofCase_; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void ClearRequestOneof() {
-      requestOneofCase_ = RequestOneofOneofCase.None;
-      requestOneof_ = null;
-    }
-
-    private object responseOneof_;
-    /// <summary>Enum of possible cases for the "response_oneof" oneof.</summary>
-    public enum ResponseOneofOneofCase {
-      None = 0,
-      Response = 3,
-    }
-    private ResponseOneofOneofCase responseOneofCase_ = ResponseOneofOneofCase.None;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public ResponseOneofOneofCase ResponseOneofCase {
-      get { return responseOneofCase_; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void ClearResponseOneof() {
-      responseOneofCase_ = ResponseOneofOneofCase.None;
-      responseOneof_ = null;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -897,21 +718,15 @@ namespace libsignalservice.websocket {
       if (Type != other.Type) return false;
       if (!object.Equals(Request, other.Request)) return false;
       if (!object.Equals(Response, other.Response)) return false;
-      if (TypeOneofCase != other.TypeOneofCase) return false;
-      if (RequestOneofCase != other.RequestOneofCase) return false;
-      if (ResponseOneofCase != other.ResponseOneofCase) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (typeOneofCase_ == TypeOneofOneofCase.Type) hash ^= Type.GetHashCode();
-      if (requestOneofCase_ == RequestOneofOneofCase.Request) hash ^= Request.GetHashCode();
-      if (responseOneofCase_ == ResponseOneofOneofCase.Response) hash ^= Response.GetHashCode();
-      hash ^= (int) typeOneofCase_;
-      hash ^= (int) requestOneofCase_;
-      hash ^= (int) responseOneofCase_;
+      if (HasType) hash ^= Type.GetHashCode();
+      if (request_ != null) hash ^= Request.GetHashCode();
+      if (response_ != null) hash ^= Response.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -925,15 +740,15 @@ namespace libsignalservice.websocket {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (typeOneofCase_ == TypeOneofOneofCase.Type) {
+      if (HasType) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Type);
       }
-      if (requestOneofCase_ == RequestOneofOneofCase.Request) {
+      if (request_ != null) {
         output.WriteRawTag(18);
         output.WriteMessage(Request);
       }
-      if (responseOneofCase_ == ResponseOneofOneofCase.Response) {
+      if (response_ != null) {
         output.WriteRawTag(26);
         output.WriteMessage(Response);
       }
@@ -945,13 +760,13 @@ namespace libsignalservice.websocket {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (typeOneofCase_ == TypeOneofOneofCase.Type) {
+      if (HasType) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Type);
       }
-      if (requestOneofCase_ == RequestOneofOneofCase.Request) {
+      if (request_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Request);
       }
-      if (responseOneofCase_ == ResponseOneofOneofCase.Response) {
+      if (response_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Response);
       }
       if (_unknownFields != null) {
@@ -965,30 +780,21 @@ namespace libsignalservice.websocket {
       if (other == null) {
         return;
       }
-      switch (other.TypeOneofCase) {
-        case TypeOneofOneofCase.Type:
-          Type = other.Type;
-          break;
+      if (other.HasType) {
+        Type = other.Type;
       }
-
-      switch (other.RequestOneofCase) {
-        case RequestOneofOneofCase.Request:
-          if (Request == null) {
-            Request = new global::libsignalservice.websocket.WebSocketRequestMessage();
-          }
-          Request.MergeFrom(other.Request);
-          break;
+      if (other.request_ != null) {
+        if (request_ == null) {
+          Request = new global::libsignalservice.websocket.WebSocketRequestMessage();
+        }
+        Request.MergeFrom(other.Request);
       }
-
-      switch (other.ResponseOneofCase) {
-        case ResponseOneofOneofCase.Response:
-          if (Response == null) {
-            Response = new global::libsignalservice.websocket.WebSocketResponseMessage();
-          }
-          Response.MergeFrom(other.Response);
-          break;
+      if (other.response_ != null) {
+        if (response_ == null) {
+          Response = new global::libsignalservice.websocket.WebSocketResponseMessage();
+        }
+        Response.MergeFrom(other.Response);
       }
-
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -1001,26 +807,21 @@ namespace libsignalservice.websocket {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 8: {
-            typeOneof_ = input.ReadEnum();
-            typeOneofCase_ = TypeOneofOneofCase.Type;
+            Type = (global::libsignalservice.websocket.WebSocketMessage.Types.Type) input.ReadEnum();
             break;
           }
           case 18: {
-            global::libsignalservice.websocket.WebSocketRequestMessage subBuilder = new global::libsignalservice.websocket.WebSocketRequestMessage();
-            if (requestOneofCase_ == RequestOneofOneofCase.Request) {
-              subBuilder.MergeFrom(Request);
+            if (request_ == null) {
+              Request = new global::libsignalservice.websocket.WebSocketRequestMessage();
             }
-            input.ReadMessage(subBuilder);
-            Request = subBuilder;
+            input.ReadMessage(Request);
             break;
           }
           case 26: {
-            global::libsignalservice.websocket.WebSocketResponseMessage subBuilder = new global::libsignalservice.websocket.WebSocketResponseMessage();
-            if (responseOneofCase_ == ResponseOneofOneofCase.Response) {
-              subBuilder.MergeFrom(Response);
+            if (response_ == null) {
+              Response = new global::libsignalservice.websocket.WebSocketResponseMessage();
             }
-            input.ReadMessage(subBuilder);
-            Response = subBuilder;
+            input.ReadMessage(Response);
             break;
           }
         }

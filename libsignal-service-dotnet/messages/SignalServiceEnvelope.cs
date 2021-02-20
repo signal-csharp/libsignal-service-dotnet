@@ -69,6 +69,16 @@ namespace libsignalservice.messages
             Envelope = envelope;
         }
 
+        public string GetUuid()
+        {
+            return Envelope.ServerGuid;
+        }
+
+        public bool HasUuid()
+        {
+            return Envelope.HasServerGuid;
+        }
+
         /// <summary>
         /// The envelope's sender.
         /// </summary>
@@ -120,7 +130,7 @@ namespace libsignalservice.messages
         /// <returns>Whether the envelope contains a SignalServiceDataMessage</returns>
         public bool HasLegacyMessage()
         {
-            return Envelope.LegacyMessageOneofCase == Envelope.LegacyMessageOneofOneofCase.LegacyMessage;
+            return Envelope.HasLegacyMessage;
         }
 
         /// <summary>
@@ -138,7 +148,7 @@ namespace libsignalservice.messages
         /// <returns>Whether the envelope contains an encrypted SignalServiceContent</returns>
         public bool HasContent()
         {
-            return Envelope.ContentOneofCase == Envelope.ContentOneofOneofCase.Content;
+            return Envelope.HasContent;
         }
 
         /// <summary>
