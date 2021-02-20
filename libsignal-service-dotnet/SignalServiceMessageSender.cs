@@ -219,7 +219,7 @@ namespace libsignalservice
             if (needsSyncInResults || IsMultiDevice)
             {
                 byte[] syncMessage = CreateMultiDeviceSentTranscriptContent(content, null, (ulong) timestamp, results);
-                await SendMessageAsync(LocalAddress, GetSelfUnidentifiedAccess(unidentifiedAccess), timestamp, syncMessage, false, token);
+                await SendMessageAsync(LocalAddress, null, timestamp, syncMessage, false, token);
             }
             return results;
         }
@@ -1238,24 +1238,9 @@ namespace libsignalservice
             return results;
         }
 
-        private UnidentifiedAccess? GetSelfUnidentifiedAccess(List<UnidentifiedAccessPair?> unidentifiedAccess)
-        {
-            foreach (UnidentifiedAccessPair? item in unidentifiedAccess)
-            {
-                if (item != null && item.SelfUnidentifiedAccess != null)
-                {
-                    return item.SelfUnidentifiedAccess;
-                }
-            }
-            return null;
-        }
-
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public interface IEventListener
         {
             void OnSecurityEvent(SignalServiceAddress address);
         }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
     }
 }
