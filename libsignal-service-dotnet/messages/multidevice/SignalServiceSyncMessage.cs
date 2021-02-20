@@ -1,30 +1,27 @@
-using libsignal.messages.multidevice;
-using Strilanc.Value;
-
 using System.Collections.Generic;
+using libsignal.messages.multidevice;
 
 namespace libsignalservice.messages.multidevice
 {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public class SignalServiceSyncMessage
     {
-        public SentTranscriptMessage Sent { get; }
-        public ContactsMessage Contacts { get; }
-        public SignalServiceAttachment Groups { get; }
-        public BlockedListMessage BlockedList { get; }
-        public RequestMessage Request { get; }
-        public List<ReadMessage> Reads { get; }
-        public VerifiedMessage Verified { get; }
-        public ConfigurationMessage Configuration { get; }
+        public SentTranscriptMessage? Sent { get; }
+        public ContactsMessage? Contacts { get; }
+        public SignalServiceAttachment? Groups { get; }
+        public BlockedListMessage? BlockedList { get; }
+        public RequestMessage? Request { get; }
+        public List<ReadMessage>? Reads { get; }
+        public VerifiedMessage? Verified { get; }
+        public ConfigurationMessage? Configuration { get; }
 
-        private SignalServiceSyncMessage(SentTranscriptMessage sent,
-            ContactsMessage contacts,
-            SignalServiceAttachment groups,
-            BlockedListMessage blockedList,
-            RequestMessage request,
-            List<ReadMessage> reads,
-            VerifiedMessage verified,
-            ConfigurationMessage configuration)
+        private SignalServiceSyncMessage(SentTranscriptMessage? sent,
+            ContactsMessage? contacts,
+            SignalServiceAttachment? groups,
+            BlockedListMessage? blockedList,
+            RequestMessage? request,
+            List<ReadMessage>? reads,
+            VerifiedMessage? verified,
+            ConfigurationMessage? configuration)
         {
             Sent = sent;
             Contacts = contacts;
@@ -158,5 +155,4 @@ namespace libsignalservice.messages.multidevice
                 null);
         }
     }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }
