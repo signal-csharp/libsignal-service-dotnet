@@ -511,9 +511,16 @@ namespace libsignalservice.crypto
         {
             if (content.Preview == null) return null;
 
+            SignalServiceAttachment? attachment = null;
+
+            if (content.Preview.Image != null)
+            {
+                attachment = CreateAttachmentPointer(content.Preview.Image);
+            }
+
             return new SignalServiceDataMessage.SignalServicePreview(content.Preview.Url,
                 content.Preview.Title,
-                CreateAttachmentPointer(content.Preview.Image));
+                attachment);
         }
 
         private List<SharedContact>? CreateSharedContacts(DataMessage content)

@@ -66,7 +66,7 @@ namespace libsignalservice.messages
         /// <param name="attachments">The attachments.</param>
         /// <param name="body">The message contents.</param>
         /// <param name="expiresInSeconds">The number of seconds in which the message should expire after having been seen.</param>
-        public SignalServiceDataMessage(long timestamp, List<SignalServiceAttachment> attachments, string body, int expiresInSeconds) :
+        public SignalServiceDataMessage(long timestamp, List<SignalServiceAttachment>? attachments, string body, int expiresInSeconds) :
             this(timestamp, null, attachments, body, expiresInSeconds)
         {
         }
@@ -91,16 +91,16 @@ namespace libsignalservice.messages
         /// <param name="attachments">The attachments.</param>
         /// <param name="body">The message contents.</param>
         /// <param name="expiresInSeconds"></param>
-        public SignalServiceDataMessage(long timestamp, SignalServiceGroup group, List<SignalServiceAttachment> attachments, string body, int expiresInSeconds) :
+        public SignalServiceDataMessage(long timestamp, SignalServiceGroup? group, List<SignalServiceAttachment>? attachments, string body, int expiresInSeconds) :
             this(timestamp, group, attachments, body, false, expiresInSeconds, false, null, false, null, null, null)
         {
         }
 
-        public SignalServiceDataMessage(long timestamp, SignalServiceGroup group,
-            List<SignalServiceAttachment> attachments,
+        public SignalServiceDataMessage(long timestamp, SignalServiceGroup? group,
+            List<SignalServiceAttachment>? attachments,
             string body, bool endSession, int expiresInSeconds,
-            bool expirationUpdate, byte[] profileKey, bool profileKeyUpdate,
-            SignalServiceQuote quote, List<SharedContact> sharedContacts, SignalServicePreview preview)
+            bool expirationUpdate, byte[]? profileKey, bool profileKeyUpdate,
+            SignalServiceQuote? quote, List<SharedContact>? sharedContacts, SignalServicePreview? preview)
         {
             Timestamp = timestamp;
             Body = body;
@@ -176,9 +176,9 @@ namespace libsignalservice.messages
         {
             public string Url { get; }
             public string Title { get; }
-            public SignalServiceAttachment Image { get; }
+            public SignalServiceAttachment? Image { get; }
 
-            public SignalServicePreview(string url, string title, SignalServiceAttachment image)
+            public SignalServicePreview(string url, string title, SignalServiceAttachment? image)
             {
                 Url = url;
                 Title = title;

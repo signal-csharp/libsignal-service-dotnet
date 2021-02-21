@@ -482,12 +482,16 @@ namespace libsignalservice
 
             if (message.Preview != null)
             {
-                dataMessage.Preview = new Preview()
+                Preview previewBuilder = new Preview();
+                previewBuilder.Title = message.Preview.Title;
+                previewBuilder.Url = message.Preview.Url;
+
+                if (message.Preview.Image != null)
                 {
-                    Title = message.Preview.Title,
-                    Url = message.Preview.Url,
-                    Image = await CreateAttachmentPointerAsync(message.Preview.Image.AsStream(), token)
-                };
+                    previewBuilder.Image = await CreateAttachmentPointerAsync(message.Preview.Image.AsStream(), token);
+                }
+
+                dataMessage.Preview = previewBuilder;
             }
 
             dataMessage.Timestamp = (ulong)message.Timestamp;
