@@ -4,7 +4,6 @@ using System.Text.RegularExpressions;
 
 namespace CustomExtensions
 {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public static class StringExtension
     {
         public static string ReplaceAll(this string str, string regex, string replacement)
@@ -25,17 +24,39 @@ namespace libsignalservice.util
     public class PhoneNumberFormatter
     {
         private static readonly ILogger Logger = LibsignalLogging.CreateLogger<PhoneNumberFormatter>();
-        public static bool IsValidNumber(string number)
+
+        private const string COUNTRY_CODE_BR = "55";
+        private const string COUNTRY_CODE_US = "1";
+
+        public static bool IsValidNumber(string e164Number, string countryCode)
         {
-            return (new Regex("^\\+[0-9]{10,}").Match(number)).Success ||
-                (new Regex("^\\+685[0-9]{5}").Match(number)).Success ||
-                (new Regex("^\\+376[0-9]{6}").Match(number)).Success ||
-                (new Regex("^\\+299[0-9]{6}").Match(number)).Success ||
-                (new Regex("^\\+597[0-9]{6}").Match(number)).Success ||
-                (new Regex("^\\+298[0-9]{6}").Match(number)).Success ||
-                (new Regex("^\\+240[0-9]{6}").Match(number)).Success ||
-                (new Regex("^\\+687[0-9]{6}").Match(number)).Success ||
-                (new Regex("^\\+689[0-9]{6}").Match(number)).Success;
+            if (!PhoneNumberUtil.GetInstance().IsPossibleNumber(e164Number, countryCode))
+            {
+                Logger.LogError("Failed IsPossibleNumber()");
+                return false;
+            }
+
+            if (COUNTRY_CODE_US == countryCode && !new Regex("^\\+1\\d{10}$").Match(e164Number).Success)
+            {
+                Logger.LogError("Failed US number format check");
+                return false;
+            }
+
+            if (COUNTRY_CODE_BR == countryCode && !new Regex("^\\+55\\d{2}9?\\d{8}$").Match(e164Number).Success)
+            {
+                Logger.LogError("Failed Brazil number format check");
+                return false;
+            }
+
+            return (new Regex("^\\+[0-9]{10,}").Match(e164Number)).Success ||
+                (new Regex("^\\+685[0-9]{5}").Match(e164Number)).Success ||
+                (new Regex("^\\+376[0-9]{6}").Match(e164Number)).Success ||
+                (new Regex("^\\+299[0-9]{6}").Match(e164Number)).Success ||
+                (new Regex("^\\+597[0-9]{6}").Match(e164Number)).Success ||
+                (new Regex("^\\+298[0-9]{6}").Match(e164Number)).Success ||
+                (new Regex("^\\+240[0-9]{6}").Match(e164Number)).Success ||
+                (new Regex("^\\+687[0-9]{6}").Match(e164Number)).Success ||
+                (new Regex("^\\+689[0-9]{6}").Match(e164Number)).Success;
         }
 
         private static string ImpreciseFormatNumber(string number, string localNumber)
@@ -155,5 +176,4 @@ namespace libsignalservice.util
             }
         }
     }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }
