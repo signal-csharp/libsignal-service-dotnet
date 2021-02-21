@@ -322,7 +322,7 @@ namespace libsignalservice
 
                 return results;
             }
-            catch (InvalidCipherTextException ex)
+            catch (InvalidCiphertextException ex)
             {
                 throw new UnauthenticatedResponseException(ex);
             }

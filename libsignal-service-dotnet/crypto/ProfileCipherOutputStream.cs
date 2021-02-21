@@ -1,38 +1,57 @@
-﻿using Org.BouncyCastle.Crypto.Engines;
-using Org.BouncyCastle.Crypto.Modes;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
-using System.Text;
+using Org.BouncyCastle.Crypto;
+using Org.BouncyCastle.Crypto.Engines;
+using Org.BouncyCastle.Crypto.Modes;
+using Org.BouncyCastle.Crypto.Parameters;
 
 namespace libsignalservice.crypto
 {
-    internal class ProfileCipherOutputStream : DigestingOutputStream
+    public class ProfileCipherOutputStream : DigestingOutputStream
     {
-        private readonly GcmBlockCipher Cipher;
+        private readonly GcmBlockCipher cipher;
 
-        internal ProfileCipherOutputStream(Stream outputStream, byte[] key) : base(outputStream)
+        public ProfileCipherOutputStream(Stream outputStream, byte[] key) : base(outputStream)
         {
-            Cipher = new GcmBlockCipher(new AesEngine());
+            cipher = new GcmBlockCipher(new AesEngine());
+
             byte[] nonce = GenerateNonce();
+            cipher.Init(true, new AeadParameters(new KeyParameter(key), 128, nonce));
+
             base.Write(nonce, 0, nonce.Length);
         }
 
         public override void Write(byte[] buffer, int offset, int count)
         {
-            byte[] output = new byte[Cipher.GetUpdateOutputSize(count)];
-            int encrypted = Cipher.ProcessBytes(buffer, offset, count, output, 0);
+            byte[] output = new byte[cipher.GetUpdateOutputSize(count)];
+            int encrypted = cipher.ProcessBytes(buffer, offset, count, output, 0);
+
+            base.Write(output, 0, encrypted);
+        }
+
+        public override void WriteByte(byte b)
+        {
+            byte[] output = new byte[cipher.GetUpdateOutputSize(1)];
+            int encrypted = cipher.ProcessByte(b, output, 0);
 
             base.Write(output, 0, encrypted);
         }
 
         public override void Flush()
         {
-            byte[] output = new byte[Cipher.GetOutputSize(0)];
-            int encrypted = Cipher.DoFinal(output, 0);
-            base.Write(output, 0, encrypted);
-            base.Flush();
+            try
+            {
+                byte[] output = new byte[cipher.GetOutputSize(0)];
+                int encrypted = cipher.DoFinal(output, 0);
+                base.Write(output, 0, encrypted);
+                base.Flush();
+            }
+            catch (InvalidCipherTextException ex)
+            {
+                throw new ArgumentException(null, ex);
+            }
+            
         }
 
         private byte[] GenerateNonce()

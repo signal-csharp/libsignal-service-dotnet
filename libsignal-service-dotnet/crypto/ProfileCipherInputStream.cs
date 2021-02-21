@@ -1,20 +1,19 @@
-﻿using libsignalservice.util;
+using System;
+using System.IO;
+using libsignalservice.util;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Engines;
 using Org.BouncyCastle.Crypto.Modes;
 using Org.BouncyCastle.Crypto.Parameters;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
 
 namespace libsignalservice.crypto
 {
-    internal class ProfileCipherInputStream : Stream
+    public class ProfileCipherInputStream : Stream
     {
-        private readonly GcmBlockCipher Cipher;
+        private readonly GcmBlockCipher cipher;
         private readonly Stream InputStream;
-        private bool Finished = false;
+
+        private bool finished = false;
 
         public override bool CanRead => true;
         public override bool CanSeek => false;
@@ -25,10 +24,10 @@ namespace libsignalservice.crypto
 
         public ProfileCipherInputStream(Stream inputStream, byte[] key)
         {
-            Cipher = new GcmBlockCipher(new AesEngine());
+            cipher = new GcmBlockCipher(new AesEngine());
             byte[] nonce = new byte[12];
             Util.ReadFully(inputStream, nonce);
-            Cipher.Init(false, new AeadParameters(new KeyParameter(key), 128, nonce));
+            cipher.Init(false, new AeadParameters(new KeyParameter(key), 128, nonce));
             InputStream = inputStream;
         }
 
@@ -37,9 +36,17 @@ namespace libsignalservice.crypto
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="offset"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        /// <exception cref="IOException"></exception>
         public override int Read(byte[] buffer, int offset, int count)
         {
-            if (Finished) return 0;
+            if (finished) return 0;
             try
             {
                 byte[] ciphertext = new byte[count / 2];
@@ -47,25 +54,25 @@ namespace libsignalservice.crypto
 
                 if (read <= 0)
                 {
-                    if (Cipher.GetOutputSize(0) > count)
+                    if (cipher.GetOutputSize(0) > count)
                     {
-                        throw new InvalidOperationException("Need: " + Cipher.GetOutputSize(0) + " but only have: " + count);
+                        throw new InvalidOperationException("Need: " + cipher.GetOutputSize(0) + " but only have: " + count);
                     }
-                    Finished = true;
-                    return Cipher.DoFinal(buffer, offset);
+                    finished = true;
+                    return cipher.DoFinal(buffer, offset);
                 }
                 else
                 {
-                    if (Cipher.GetUpdateOutputSize(read) > count)
+                    if (cipher.GetUpdateOutputSize(read) > count)
                     {
-                        throw new InvalidOperationException("Need: " + Cipher.GetOutputSize(read) + " but only have: " + count);
+                        throw new InvalidOperationException("Need: " + cipher.GetOutputSize(read) + " but only have: " + count);
                     }
-                    return Cipher.ProcessBytes(ciphertext, 0, read, buffer, offset);
+                    return cipher.ProcessBytes(ciphertext, 0, read, buffer, offset);
                 }
             }
             catch (InvalidCipherTextException e)
             {
-                throw new IOException(e.Message);
+                throw new IOException(null, e);
             }
         }
 

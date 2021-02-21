@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace libsignal_service_dotnet_tests.util
 {
     [TestClass]
-    public class PhoneNumberFormatterTest
+    public class PhoneNumberFormatterTests
     {
         private const string LOCAL_NUMBER_US = "+15555555555";
         private const string NUMBER_CH = "+41446681800";

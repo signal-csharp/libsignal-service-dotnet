@@ -1,10 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Security.Cryptography;
-using System.Text;
 using libsignal.util;
 using libsignalmetadatadotnet.certificate;
-using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Engines;
 using Org.BouncyCastle.Crypto.Modes;
 using Org.BouncyCastle.Crypto.Parameters;
@@ -27,7 +22,7 @@ namespace libsignalservicedotnet.crypto
             byte[] nonce = new byte[12];
             byte[] input = new byte[16];
             var cipher = new GcmBlockCipher(new AesEngine());
-            cipher.Init(false, new AeadParameters(new KeyParameter(profileKey), 128, nonce));
+            cipher.Init(true, new AeadParameters(new KeyParameter(profileKey), 128, nonce));
 
             byte[] ciphertext = new byte[cipher.GetUpdateOutputSize(input.Length)];
             cipher.ProcessBytes(input, 0, input.Length, ciphertext, 0);
