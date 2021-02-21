@@ -55,7 +55,7 @@ namespace libsignalservice.push {
             "cmVUaW1lchgFIAEoDRISCgpwcm9maWxlS2V5GAYgASgMEhEKCXRpbWVzdGFt",
             "cBgHIAEoBBIsCgVxdW90ZRgIIAEoCzIdLnRleHRzZWN1cmUuRGF0YU1lc3Nh",
             "Z2UuUXVvdGUSMAoHY29udGFjdBgJIAMoCzIfLnRleHRzZWN1cmUuRGF0YU1l",
-            "c3NhZ2UuQ29udGFjdBIwCgdwcmV2aWV3GAogASgLMh8udGV4dHNlY3VyZS5E",
+            "c3NhZ2UuQ29udGFjdBIwCgdwcmV2aWV3GAogAygLMh8udGV4dHNlY3VyZS5E",
             "YXRhTWVzc2FnZS5QcmV2aWV3GuMBCgVRdW90ZRIKCgJpZBgBIAEoBBIOCgZh",
             "dXRob3IYAiABKAkSDAoEdGV4dBgDIAEoCRJDCgthdHRhY2htZW50cxgEIAMo",
             "CzIuLnRleHRzZWN1cmUuRGF0YU1lc3NhZ2UuUXVvdGUuUXVvdGVkQXR0YWNo",
@@ -2202,7 +2202,7 @@ namespace libsignalservice.push {
       timestamp_ = other.timestamp_;
       quote_ = other.quote_ != null ? other.quote_.Clone() : null;
       contact_ = other.contact_.Clone();
-      preview_ = other.preview_ != null ? other.preview_.Clone() : null;
+      preview_ = other.preview_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -2373,13 +2373,12 @@ namespace libsignalservice.push {
 
     /// <summary>Field number for the "preview" field.</summary>
     public const int PreviewFieldNumber = 10;
-    private global::libsignalservice.push.DataMessage.Types.Preview preview_;
+    private static readonly pb::FieldCodec<global::libsignalservice.push.DataMessage.Types.Preview> _repeated_preview_codec
+        = pb::FieldCodec.ForMessage(82, global::libsignalservice.push.DataMessage.Types.Preview.Parser);
+    private readonly pbc::RepeatedField<global::libsignalservice.push.DataMessage.Types.Preview> preview_ = new pbc::RepeatedField<global::libsignalservice.push.DataMessage.Types.Preview>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::libsignalservice.push.DataMessage.Types.Preview Preview {
+    public pbc::RepeatedField<global::libsignalservice.push.DataMessage.Types.Preview> Preview {
       get { return preview_; }
-      set {
-        preview_ = value;
-      }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2404,7 +2403,7 @@ namespace libsignalservice.push {
       if (Timestamp != other.Timestamp) return false;
       if (!object.Equals(Quote, other.Quote)) return false;
       if(!contact_.Equals(other.contact_)) return false;
-      if (!object.Equals(Preview, other.Preview)) return false;
+      if(!preview_.Equals(other.preview_)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -2420,7 +2419,7 @@ namespace libsignalservice.push {
       if (HasTimestamp) hash ^= Timestamp.GetHashCode();
       if (quote_ != null) hash ^= Quote.GetHashCode();
       hash ^= contact_.GetHashCode();
-      if (preview_ != null) hash ^= Preview.GetHashCode();
+      hash ^= preview_.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -2464,10 +2463,7 @@ namespace libsignalservice.push {
         output.WriteMessage(Quote);
       }
       contact_.WriteTo(output, _repeated_contact_codec);
-      if (preview_ != null) {
-        output.WriteRawTag(82);
-        output.WriteMessage(Preview);
-      }
+      preview_.WriteTo(output, _repeated_preview_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -2499,9 +2495,7 @@ namespace libsignalservice.push {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Quote);
       }
       size += contact_.CalculateSize(_repeated_contact_codec);
-      if (preview_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Preview);
-      }
+      size += preview_.CalculateSize(_repeated_preview_codec);
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -2542,12 +2536,7 @@ namespace libsignalservice.push {
         Quote.MergeFrom(other.Quote);
       }
       contact_.Add(other.contact_);
-      if (other.preview_ != null) {
-        if (preview_ == null) {
-          Preview = new global::libsignalservice.push.DataMessage.Types.Preview();
-        }
-        Preview.MergeFrom(other.Preview);
-      }
+      preview_.Add(other.preview_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -2602,10 +2591,7 @@ namespace libsignalservice.push {
             break;
           }
           case 82: {
-            if (preview_ == null) {
-              Preview = new global::libsignalservice.push.DataMessage.Types.Preview();
-            }
-            input.ReadMessage(Preview);
+            preview_.AddEntriesFrom(input, _repeated_preview_codec);
             break;
           }
         }

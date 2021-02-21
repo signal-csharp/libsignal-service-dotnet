@@ -20,7 +20,7 @@ namespace libsignalservice.messages
         public bool ProfileKeyUpdate { get; set; }
         public SignalServiceQuote? Quote { get; set; }
         public List<SharedContact>? SharedContacts { get; set; }
-        public SignalServicePreview? Preview { get; set; }
+        public List<SignalServicePreview>? Previews { get; set; }
 
         /// <summary>
         /// Construct a SignalServiceDataMessage with a body and no attachments.
@@ -100,7 +100,7 @@ namespace libsignalservice.messages
             List<SignalServiceAttachment>? attachments,
             string body, bool endSession, int expiresInSeconds,
             bool expirationUpdate, byte[]? profileKey, bool profileKeyUpdate,
-            SignalServiceQuote? quote, List<SharedContact>? sharedContacts, SignalServicePreview? preview)
+            SignalServiceQuote? quote, List<SharedContact>? sharedContacts, List<SignalServicePreview>? previews)
         {
             Timestamp = timestamp;
             Body = body;
@@ -111,7 +111,6 @@ namespace libsignalservice.messages
             ProfileKey = profileKey;
             ProfileKeyUpdate = profileKeyUpdate;
             Quote = quote;
-            Preview = preview;
 
             if (attachments != null && attachments.Count > 0)
             {
@@ -129,6 +128,15 @@ namespace libsignalservice.messages
             else
             {
                 SharedContacts = null;
+            }
+
+            if (previews != null && previews.Count > 0)
+            {
+                Previews = previews;
+            }
+            else
+            {
+                Previews = null;
             }
         }
 

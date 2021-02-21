@@ -239,7 +239,7 @@ namespace libsignalservice.crypto
             bool profileKeyUpdate = ((content.Flags & (uint)DataMessage.Types.Flags.ProfileKeyUpdate) != 0);
             SignalServiceDataMessage.SignalServiceQuote? quote = CreateQuote(content);
             List<SharedContact>? sharedContacts = CreateSharedContacts(content);
-            SignalServiceDataMessage.SignalServicePreview? preview = CreatePreview(content);
+            List<SignalServiceDataMessage.SignalServicePreview>? previews = CreatePreviews(content);
 
             foreach (AttachmentPointer pointer in content.Attachments)
             {
@@ -264,7 +264,7 @@ namespace libsignalservice.crypto
                 profileKeyUpdate,
                 quote,
                 sharedContacts,
-                preview);
+                previews);
         }
 
         /// <summary>
@@ -507,20 +507,27 @@ namespace libsignalservice.crypto
                 attachments);
         }
 
-        private SignalServiceDataMessage.SignalServicePreview? CreatePreview(DataMessage content)
+        private List<SignalServiceDataMessage.SignalServicePreview>? CreatePreviews(DataMessage content)
         {
-            if (content.Preview == null) return null;
+            if (content.Preview.Count <= 0) return null;
 
-            SignalServiceAttachment? attachment = null;
+            List<SignalServiceDataMessage.SignalServicePreview> results = new List<SignalServiceDataMessage.SignalServicePreview>();
 
-            if (content.Preview.Image != null)
+            foreach (var preview in content.Preview)
             {
-                attachment = CreateAttachmentPointer(content.Preview.Image);
+                SignalServiceAttachment? attachment = null;
+
+                if (preview.Image != null)
+                {
+                    attachment = CreateAttachmentPointer(preview.Image);
+                }
+
+                results.Add(new SignalServiceDataMessage.SignalServicePreview(preview.Url,
+                    preview.Title,
+                    attachment));
             }
 
-            return new SignalServiceDataMessage.SignalServicePreview(content.Preview.Url,
-                content.Preview.Title,
-                attachment);
+            return results;
         }
 
         private List<SharedContact>? CreateSharedContacts(DataMessage content)

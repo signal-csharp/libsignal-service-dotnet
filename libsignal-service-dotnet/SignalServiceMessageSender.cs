@@ -480,18 +480,21 @@ namespace libsignalservice
             if (message.SharedContacts != null)
                 dataMessage.Contact.AddRange(await CreateSharedContactContentAsync(message.SharedContacts, token));
 
-            if (message.Preview != null)
+            if (message.Previews != null)
             {
-                Preview previewBuilder = new Preview();
-                previewBuilder.Title = message.Preview.Title;
-                previewBuilder.Url = message.Preview.Url;
-
-                if (message.Preview.Image != null)
+                foreach (SignalServicePreview preview in message.Previews)
                 {
-                    previewBuilder.Image = await CreateAttachmentPointerAsync(message.Preview.Image.AsStream(), token);
-                }
+                    Preview previewBuilder = new Preview();
+                    previewBuilder.Title = preview.Title;
+                    previewBuilder.Url = preview.Url;
 
-                dataMessage.Preview = previewBuilder;
+                    if (preview.Image != null)
+                    {
+                        previewBuilder.Image = await CreateAttachmentPointerAsync(preview.Image.AsStream(), token);
+                    }
+
+                    dataMessage.Preview.Add(previewBuilder);
+                }
             }
 
             dataMessage.Timestamp = (ulong)message.Timestamp;
