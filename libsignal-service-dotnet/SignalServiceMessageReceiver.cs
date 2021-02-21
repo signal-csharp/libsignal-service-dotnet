@@ -3,6 +3,7 @@ using System.IO;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using libsignal;
 using libsignalservice.configuration;
 using libsignalservice.crypto;
 using libsignalservice.messages;
@@ -44,6 +45,26 @@ namespace libsignalservice
         }
 
         /// <summary>
+        /// Retrieves a SignalServiceAttachment.
+        /// </summary>
+        /// <param name="pointer">The <see cref="SignalServiceAttachmentPointer"/> received in a <see cref="SignalServiceDataMessage"/>.</param>
+        /// <param name="destination">The download destination for this attachment.</param>
+        /// <param name="maxSizeBytes"></param>
+        /// <param name="token"></param>
+        /// <returns>A Stream that streams the plaintext attachment contents.</returns>
+        /// <exception cref="IOException"></exception>
+        /// <exception cref="InvalidMessageException"></exception>
+        public async Task<Stream> RetrieveAttachmentAsync(SignalServiceAttachmentPointer pointer, FileStream destination, int maxSizeBytes, CancellationToken? token = null)
+        {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            return await RetrieveAttachment(pointer, destination, maxSizeBytes, null, token);
+        }
+
+        /// <summary>
         /// TODO
         /// </summary>
         /// <param name="token"></param>
@@ -63,9 +84,14 @@ namespace libsignalservice
         /// <param name="profileKey"></param>
         /// <param name="maxSizeBytes"></param>
         /// <returns></returns>
-        public Stream RetrieveProfileAvatar(string path, FileStream destination, byte[] profileKey, int maxSizeBytes)
+        public async Task<Stream> RetrieveProfileAvatarAsync(string path, FileStream destination, byte[] profileKey, int maxSizeBytes, CancellationToken? token = null)
         {
-            Socket.RetrieveProfileAvatar(path, destination, maxSizeBytes);
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            await Socket.RetrieveProfileAvatarAsync(path, destination, maxSizeBytes, token);
             destination.Seek(0, SeekOrigin.Begin);
             return new ProfileCipherInputStream(destination, profileKey);
         }
@@ -73,28 +99,26 @@ namespace libsignalservice
         /// <summary>
         /// Retrieves a SignalServiceAttachment
         /// </summary>
-        /// <param name="token"></param>
         /// <param name="pointer">The <see cref="SignalServiceAttachmentPointer"/>
         /// received in a <see cref="SignalServiceDataMessage"/></param>
-        /// <param name="tmpCipherDestination">The temporary destination for this attachment before decryption</param>
-        /// <param name="maxSizeBytes">The maximum size for this attachment (not yet implemented)</param>
+        /// <param name="destination">The download destination for this attachment.</param>
+        /// <param name="maxSizeBytes"></param>
         /// <param name="listener">An optional listener (may be null) to receive callbacks on download progress.</param>
-        public async Task<Stream> RetrieveAttachment(CancellationToken token, SignalServiceAttachmentPointer pointer, Stream tmpCipherDestination, int maxSizeBytes, IProgressListener listener)
-        {
-            await Socket.RetrieveAttachment(token, pointer.Id, tmpCipherDestination, maxSizeBytes);
-            tmpCipherDestination.Position = 0;
-            return AttachmentCipherInputStream.CreateFor(tmpCipherDestination, pointer.Size != null ? pointer.Size.Value : 0, pointer.Key, pointer.Digest);
-        }
-
-        /// <summary>
-        /// Retrieves an attachment URL location
-        /// </summary>
         /// <param name="token"></param>
-        /// <param name="pointer">The pointer to the attachment</param>
-        /// <returns></returns>
-        public async Task<string> RetrieveAttachmentDownloadUrl(CancellationToken token, SignalServiceAttachmentPointer pointer)
+        /// <exception cref="IOException"></exception>
+        /// <exception cref="InvalidMessageException"></exception>
+        public async Task<Stream> RetrieveAttachment(SignalServiceAttachmentPointer pointer, FileStream destination, int maxSizeBytes, IProgressListener? listener, CancellationToken? token = null)
         {
-            return await Socket.RetrieveAttachmentDownloadUrl(token, pointer.Id);
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            if (pointer.Digest == null) throw new InvalidMessageException("No attachment digest!");
+
+            await Socket.RetrieveAttachmentAsync((long)pointer.Id, destination, maxSizeBytes, listener, token);
+            destination.Position = 0;
+            return AttachmentCipherInputStream.CreateFor(destination, pointer.Size != null ? pointer.Size.Value : 0, pointer.Key, pointer.Digest);
         }
 
         /// <summary>

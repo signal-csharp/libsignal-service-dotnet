@@ -212,8 +212,12 @@ namespace libsignalservice.util
         {
             return d == SslPolicyErrors.None ||
                 b.RawData.SequenceEqual(SignalCertificateInformation.SignalServiceCertificate) ||
+                b.RawData.SequenceEqual(SignalCertificateInformation.SignalCdnCertificate) ||
+                b.RawData.SequenceEqual(SignalCertificateInformation.SignalCdn2Certificate) ||
                 b.RawData.SequenceEqual(SignalCertificateInformation.SignalContactDiscoveryServiceCertificate) ||
                 b.RawData.SequenceEqual(SignalCertificateInformation.SignalServiceStagingCertificate) ||
+                b.RawData.SequenceEqual(SignalCertificateInformation.SignalCdnStagingCertificate) ||
+                b.RawData.SequenceEqual(SignalCertificateInformation.SignalCdn2StagingCertificate) ||
                 b.RawData.SequenceEqual(SignalCertificateInformation.SignalContactDiscoveryServiceStagingCertificate);
         }
     }

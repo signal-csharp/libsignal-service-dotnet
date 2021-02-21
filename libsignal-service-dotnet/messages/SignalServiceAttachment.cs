@@ -125,7 +125,7 @@ namespace libsignalservice.messages
             /// <summary>
             /// Called on a progress change event.
             /// </summary>
-            /// <param name="total">The total amount of transmit/receive in bytes.</param>
+            /// <param name="total">The total amount of transmit/receive in bytes. If this is 0 the total is unknown.</param>
             /// <param name="progress">The amount that has been transmitted/received in bytes thus far</param>
             void OnAttachmentProgress(long total, long progress);
         }

@@ -21,6 +21,7 @@ using libsignalservice.crypto;
 using libsignalservice.messages.multidevice;
 using libsignalservice.profiles;
 using libsignalservice.push.exceptions;
+using libsignalservice.push.http;
 using libsignalservice.util;
 using libsignalservicedotnet.crypto;
 using libsignalservicedotnet.push;
@@ -55,16 +56,20 @@ namespace libsignalservice.push
         private const string MESSAGE_PATH = "/v1/messages/{0}";
         private const string SENDER_ACK_MESSAGE_PATH = "/v1/messages/{0}/{1}";
         private const string UUID_ACK_MESSAGE_PATH     = "/v1/messages/uuid/{0}";
-        private const string ATTACHMENT_PATH = "/v1/attachments/{0}";
+        private const string ATTACHMENT_PATH = "/v2/attachments/form/upload";
 
         private const string PROFILE_PATH = "/v1/profile/%s";
 
         private const string SENDER_CERTIFICATE_PATH = "/v1/certificate/delivery";
 
+        private const string ATTACHMENT_DOWNLOAD_PATH = "attachments/{0}";
+        private const string ATTACHMENT_UPLOAD_PATH = "attachments/";
+
         private readonly Dictionary<string, string> NO_HEADERS = new Dictionary<string, string>();
 
         private readonly ILogger Logger = LibsignalLogging.CreateLogger<PushServiceSocket>();
         private readonly SignalServiceConfiguration SignalConnectionInformation;
+        private readonly ConnectionHolder[] cdnClients;
         private readonly ConnectionHolder[] contactDiscoveryClients;
         private readonly ICredentialsProvider CredentialsProvider;
         private readonly string UserAgent;
@@ -86,7 +91,8 @@ namespace libsignalservice.push
             SignalConnectionInformation = serviceUrls;
             this.httpClient = httpClient;
 
-            this.contactDiscoveryClients = CreateConnectionHolders(SignalConnectionInformation.SignalContactDiscoveryUrls);
+            cdnClients = CreateConnectionHolders(SignalConnectionInformation.SignalCdnUrls);
+            contactDiscoveryClients = CreateConnectionHolders(SignalConnectionInformation.SignalContactDiscoveryUrls);
         }
 
         public async Task RequestSmsVerificationCodeAsync(string? captchaToken, CancellationToken? token = null)
@@ -415,48 +421,14 @@ namespace libsignalservice.push
             return true;
         }
 
-        public async Task<(ulong id, byte[] digest)> SendAttachment(CancellationToken token, PushAttachmentData attachment)// throws IOException
+        public async Task RetrieveAttachmentAsync(long attachmentId, FileStream destination, int maxSizeBytes, IProgressListener? listener, CancellationToken? token = null)
         {
-            var (id, location) = await RetrieveAttachmentUploadUrl(token);
-
-            byte[] digest = await UploadAttachment(token, "PUT", location, attachment.Data,
-                attachment.DataSize, attachment.OutputFactory, attachment.Listener);
-
-            return (id, digest);
-        }
-
-        /// <summary>
-        /// Gets a URL that can be used to upload an attachment
-        /// </summary>
-        /// <returns>The attachment ID and the URL</returns>
-        public async Task<(ulong id, string location)> RetrieveAttachmentUploadUrl(CancellationToken token)
-        {
-            string response = await MakeServiceRequestAsync(token, string.Format(ATTACHMENT_PATH, ""), "GET", null, NO_HEADERS);
-            AttachmentDescriptor attachmentKey = JsonUtil.FromJson<AttachmentDescriptor>(response);
-
-            if (attachmentKey == null || attachmentKey.Location == null)
+            if (token == null)
             {
-                throw new Exception("Server failed to allocate an attachment key!");
+                token = CancellationToken.None;
             }
-            return (attachmentKey.Id, attachmentKey.Location);
-        }
 
-        public async Task RetrieveAttachment(CancellationToken token, ulong attachmentId, Stream tmpDestination, int maxSizeBytes)
-        {
-            string attachmentUrlLocation = await RetrieveAttachmentDownloadUrl(token, attachmentId);
-            await DownloadAttachment(token, attachmentUrlLocation, tmpDestination);
-        }
-
-        /// <summary>
-        /// Gets the URL location of an attachment
-        /// </summary>
-        public async Task<string> RetrieveAttachmentDownloadUrl(CancellationToken token, ulong attachmentId)
-        {
-            string path = string.Format(ATTACHMENT_PATH, attachmentId.ToString());
-
-            string response = await MakeServiceRequestAsync(token, path, "GET", null, NO_HEADERS);
-            AttachmentDescriptor descriptor = JsonUtil.FromJson<AttachmentDescriptor>(response);
-            return descriptor.Location;
+            await DownloadFromCdnAsync(destination, string.Format(ATTACHMENT_DOWNLOAD_PATH, attachmentId), maxSizeBytes, listener, token);
         }
 
         public async Task<SignalServiceProfile> RetrieveProfile(SignalServiceAddress target, UnidentifiedAccess? unidentifiedAccess, CancellationToken? token = null)
@@ -477,9 +449,14 @@ namespace libsignalservice.push
             }
         }
 
-        public void RetrieveProfileAvatar(string path, FileStream destination, int maxSizeByzes)
+        public async Task RetrieveProfileAvatarAsync(string path, FileStream destination, int maxSizeByzes, CancellationToken? token = null)
         {
-            DownloadFromCdn(destination, path, maxSizeByzes);
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            await DownloadFromCdnAsync(destination, path, maxSizeByzes, null, token);
         }
 
         public async Task SetProfileName(CancellationToken token, string name)
@@ -503,30 +480,146 @@ namespace libsignalservice.push
 
             if (profileAvatar != null)
             {
-                UploadToCdn(formAttributes.Acl, formAttributes.Key,
+                await UploadToCdnAsync("", formAttributes.Acl, formAttributes.Key,
                     formAttributes.Policy, formAttributes.Algorithm,
                     formAttributes.Credential, formAttributes.Date,
                     formAttributes.Signature, profileAvatar.InputData,
                     profileAvatar.ContentType, profileAvatar.DataLength,
-                    profileAvatar.OutputStreamFactory);
+                    profileAvatar.OutputStreamFactory, null, token);
             }
         }
 
-        private void DownloadFromCdn(Stream destination, string path, int maxSizeBytes)
+        private async Task DownloadFromCdnAsync(FileStream destination, string path, int maxSizeBytes, IProgressListener? listener, CancellationToken? token = null)
         {
-            SignalUrl signalUrl = GetRandom(SignalConnectionInformation.SignalCdnUrls);
-            string url = signalUrl.Url;
-            string hostHeader = signalUrl.HostHeader;
-            throw new NotImplementedException(); //TODO
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            ConnectionHolder connectionHolder = GetRandom(cdnClients);
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, new Uri($"{connectionHolder.Url}/{path}"));
+            
+            if (connectionHolder.HostHeader != null)
+            {
+                request.Headers.Host = connectionHolder.HostHeader;
+            }
+
+            HttpResponseMessage response;
+
+            try
+            {
+                response = await httpClient.SendAsync(request, token.Value);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    HttpContent body = response.Content;
+
+                    if (body == null) throw new PushNetworkException("No response body!");
+
+                    try
+                    {
+                        await body.LoadIntoBufferAsync(maxSizeBytes);
+                    }
+                    catch (HttpRequestException)
+                    {
+                        throw new PushNetworkException("Response exceeds max size!");
+                    }
+
+                    Stream _in = await body.ReadAsStreamAsync();
+                    byte[] buffer = new byte[32768];
+
+                    int read = 0;
+                    int totalRead = 0;
+
+                    while ((read = _in.Read(buffer, 0, buffer.Length)) != 0)
+                    {
+                        destination.Write(buffer, 0, read);
+                        if ((totalRead += read) > maxSizeBytes) throw new PushNetworkException("Response exceeded max size!");
+
+                        if (listener != null)
+                        {
+                            listener.OnAttachmentProgress(body.Headers.ContentLength.HasValue ? body.Headers.ContentLength.Value : 0, totalRead);
+                        }
+                    }
+
+                    return;
+                }
+            }
+            catch (IOException ex)
+            {
+                throw new PushNetworkException(ex);
+            }
+
+            throw new NonSuccessfulResponseCodeException((int)response.StatusCode, $"Response: {await response.Content.ReadAsStringAsync()}");
         }
 
-        private void UploadToCdn(string acl, string key, string policy, string algorithm, string credential, string date,
-            string signature, Stream inputData, string contentType, long dataLength, IOutputStreamFactory outputStreamFactory)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="acl"></param>
+        /// <param name="key"></param>
+        /// <param name="policy"></param>
+        /// <param name="algorithm"></param>
+        /// <param name="credential"></param>
+        /// <param name="date"></param>
+        /// <param name="signature"></param>
+        /// <param name="data"></param>
+        /// <param name="contentType"></param>
+        /// <param name="length"></param>
+        /// <param name="outputStreamFactory"></param>
+        /// <param name="progressListener"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        /// <exception cref="PushNetworkException"></exception>
+        /// <exception cref="NonSuccessfulResponseCodeException"></exception>
+        private async Task<byte[]> UploadToCdnAsync(string path, string acl, string key, string policy, string algorithm,
+            string credential, string date, string signature,
+            Stream data, string contentType, long length,
+            IOutputStreamFactory outputStreamFactory, IProgressListener? progressListener,
+            CancellationToken? token = null)
         {
-            SignalUrl signalUrl = GetRandom(SignalConnectionInformation.SignalCdnUrls);
-            string url = signalUrl.Url;
-            string hostHeader = signalUrl.HostHeader;
-            throw new NotImplementedException(); //TODO
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            ConnectionHolder connectionHolder = GetRandom(cdnClients);
+
+            DigestingRequestBody file = new DigestingRequestBody(data, outputStreamFactory, contentType, length, progressListener);
+
+            MultipartFormDataContent requestBody = new MultipartFormDataContent();
+            requestBody.Add(new StringContent(acl), "acl");
+            requestBody.Add(new StringContent(key), "key");
+            requestBody.Add(new StringContent(policy), "policy");
+            requestBody.Add(new StringContent(contentType), "Content-Type");
+            requestBody.Add(new StringContent(algorithm), "x-amz-algorithm");
+            requestBody.Add(new StringContent(credential), "x-amz-credential");
+            requestBody.Add(new StringContent(date), "x-amz-date");
+            requestBody.Add(new StringContent(signature), "x-amz-signature");
+            requestBody.Add(file, "file", "file");
+
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, new Uri($"{connectionHolder.Url}/{path}"));
+            request.Content = requestBody;
+
+            if (connectionHolder.HostHeader != null)
+            {
+                request.Headers.Host = connectionHolder.HostHeader;
+            }
+
+            HttpResponseMessage response;
+
+            try
+            {
+                response = await httpClient.SendAsync(request, token.Value);
+            }
+            catch (Exception ex)
+            {
+                throw new PushNetworkException(ex);
+            }
+
+            if (response.IsSuccessStatusCode) return file.GetTransmittedDigest();
+            else throw new NonSuccessfulResponseCodeException((int)response.StatusCode, $"Response: {await response.Content.ReadAsStringAsync()}");
         }
 
         public async Task<List<ContactTokenDetails>> RetrieveDirectory(CancellationToken token, ICollection<string> contactTokens) // TODO: whacky
@@ -641,32 +734,59 @@ namespace libsignalservice.push
             }
         }
 
-        private async Task<byte[]> UploadAttachment(CancellationToken token, string method, string url, Stream data, long dataSize,
-            IOutputStreamFactory outputStreamFactory, IProgressListener listener)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="NonSuccessfulResponseCodeException"></exception>
+        /// <exception cref="PushNetworkException"></exception>
+        public async Task<AttachmentUploadAttributes> GetAttachmentUploadAttributesAsync(CancellationToken? token = null)
         {
-            // buffer payload in memory...
-            MemoryStream tmpStream = new MemoryStream();
-            DigestingOutputStream outputStream = outputStreamFactory.CreateFor(tmpStream);
-            StreamContent streamContent = new StreamContent(tmpStream);
-            data.CopyTo(outputStream);
-            outputStream.Flush();
-            tmpStream.Position = 0;
-
-            // ... and upload it!
-            var request = new HttpRequestMessage(HttpMethod.Put, url)
+            if (token == null)
             {
-                Content = new StreamContent(tmpStream)
-            };
-            request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
-            request.Headers.ConnectionClose = true;
-            HttpClient client = Util.CreateHttpClient();
-            HttpResponseMessage response = await client.SendAsync(request, token);
-            if (response.StatusCode != HttpStatusCode.OK)
-            {
-                throw new IOException($"Bad response: {response.StatusCode} {await response.Content.ReadAsStringAsync()}");
+                token = CancellationToken.None;
             }
 
-            return outputStream.GetTransmittedDigest();
+            string response = await MakeServiceRequestAsync(ATTACHMENT_PATH, "GET", null, token);
+
+            try
+            {
+                return JsonUtil.FromJson<AttachmentUploadAttributes>(response);
+            }
+            catch (IOException ex)
+            {
+                Logger.LogTrace(new EventId(), ex, string.Empty);
+                throw new NonSuccessfulResponseCodeException(500, "Unable to parse entity");
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="attachment"></param>
+        /// <param name="uploadAttributes"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        /// <exception cref="PushNetworkException"></exception>
+        /// <exception cref="NonSuccessfulResponseCodeException"></exception>
+        public async Task<(long, byte[])> UploadAttachmentAsync(PushAttachmentData attachment, AttachmentUploadAttributes uploadAttributes,
+            CancellationToken? token = null)
+        {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            long id = long.Parse(uploadAttributes.AttachmentId);
+            byte[] digest = await UploadToCdnAsync(ATTACHMENT_UPLOAD_PATH, uploadAttributes.Acl!, uploadAttributes.Key!,
+                uploadAttributes.Policy!, uploadAttributes.Algorithm!,
+                uploadAttributes.Credential!, uploadAttributes.Date!,
+                uploadAttributes.Signature!, attachment.Data,
+                "application/octet-stream", attachment.DataSize,
+                attachment.OutputFactory, attachment.Listener,
+                token);
+
+            return (id, digest);
         }
 
         /// <summary>
@@ -727,6 +847,16 @@ namespace libsignalservice.push
             // The crypto stream closed the stream so we need to make a new one
             MemoryStream encryptedData = new MemoryStream(memoryStream.ToArray());
             return (digest, encryptedData);
+        }
+
+        private async Task<string> MakeServiceRequestAsync(string urlFragment, string method, string? body, CancellationToken? token = null)
+        {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            return await MakeServiceRequestAsync(urlFragment, method, body, NO_HEADERS, EmptyResponseCodeHandler, null, token);
         }
 
         private async Task<string> MakeServiceRequestAsync(CancellationToken token, string urlFragment, string method, string? body, Dictionary<string, string> headers, Action<int>? responseCodeHandler = null)

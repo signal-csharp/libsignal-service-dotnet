@@ -241,15 +241,28 @@ namespace libsignalservice
                                                                        new AttachmentCipherOutputStreamFactory(attachmentKey),
                                                                        attachment.Listener);
 
-            (ulong id, byte[] digest) = await Socket.SendAttachment(token.Value, attachmentData);
+            AttachmentUploadAttributes uploadAttributes;
 
-            return new SignalServiceAttachmentPointer(id,
+            if (Pipe != null)
+            {
+                Logger.LogTrace("Using pipe to retrieve attachment upload attributes...");
+                uploadAttributes = await Pipe.GetAttachmentUploadAttributesAsync();
+            }
+            else
+            {
+                Logger.LogTrace("Not using pipe to retrieve attachment upload attributes...");
+                uploadAttributes = await Socket.GetAttachmentUploadAttributesAsync(token);
+            }
+
+            (long, byte[]) attachmentIdAndDigest = await Socket.UploadAttachmentAsync(attachmentData, uploadAttributes, token);
+
+            return new SignalServiceAttachmentPointer((ulong)attachmentIdAndDigest.Item1,
                 attachment.ContentType,
                 attachmentKey,
                 (uint)Util.ToIntExact(attachment.Length),
                 attachment.Preview,
                 attachment.Width, attachment.Height,
-                digest,
+                attachmentIdAndDigest.Item2,
                 attachment.FileName,
                 attachment.VoiceNote,
                 attachment.Caption);
@@ -1144,15 +1157,6 @@ namespace libsignalservice
             }
 
             return attachmentPointer;
-        }
-
-        /// <summary>
-        /// Gets a URL that can be used to upload an attachment
-        /// </summary>
-        /// <returns>The attachment ID and the URL</returns>
-        public async Task<(ulong id, string location)> RetrieveAttachmentUploadUrl(CancellationToken token)
-        {
-            return await Socket.RetrieveAttachmentUploadUrl(token);
         }
 
         /// <summary>

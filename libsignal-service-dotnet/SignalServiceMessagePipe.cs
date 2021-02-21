@@ -162,7 +162,7 @@ namespace libsignalservice
 
             var sendTask = (await Websocket.SendRequest(requestMessage)).Task;
             var timerCancelSource = new CancellationTokenSource();
-            if (await Task.WhenAny(sendTask, Task.Delay(10 * 1000, timerCancelSource.Token)) == sendTask)
+            if (await Task.WhenAny(sendTask, Task.Delay(TimeSpan.FromSeconds(10), timerCancelSource.Token)) == sendTask)
             {
                 timerCancelSource.Cancel();
                 var (Status, Body) = sendTask.Result;
@@ -175,6 +175,39 @@ namespace libsignalservice
             else
             {
                 throw new IOException("timeout reached while waiting for profile");
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="IOException"></exception>
+        public async Task<AttachmentUploadAttributes> GetAttachmentUploadAttributesAsync()
+        {
+            WebSocketRequestMessage requestMessage = new WebSocketRequestMessage()
+            {
+                Id = BitConverter.ToUInt64(Util.GetSecretBytes(sizeof(long)), 0),
+                Verb = "GET",
+                Path = "/v2/attachments/form/upload"
+            };
+
+            var sendTask = (await Websocket.SendRequest(requestMessage)).Task;
+            var timerCancelSource = new CancellationTokenSource();
+            if (await Task.WhenAny(sendTask, Task.Delay(TimeSpan.FromSeconds(10), timerCancelSource.Token)) == sendTask)
+            {
+                timerCancelSource.Cancel();
+                var (status, body) = sendTask.Result;
+                if (status < 200 || status >= 300)
+                {
+                    throw new IOException($"Non-successful response: {status}");
+                }
+
+                return JsonUtil.FromJson<AttachmentUploadAttributes>(body);
+            }
+            else
+            {
+                throw new IOException("Timeout reached while waiting for attachment upload attributes.");
             }
         }
 

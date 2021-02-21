@@ -2,21 +2,14 @@ using System;
 
 namespace libsignalservice.push.exceptions
 {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public class PushNetworkException : Exception
     {
-        public Exception exception;
-
-        public PushNetworkException(Exception exception)
-            : base(exception.Message)
+        public PushNetworkException(Exception exception) : base(null, exception)
         {
-            this.exception = exception;
         }
 
-        public override string ToString()
+        public PushNetworkException(string s) : base(s)
         {
-            return base.ToString() + " [" + exception + "]";
         }
     }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }
