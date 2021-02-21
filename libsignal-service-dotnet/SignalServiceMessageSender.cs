@@ -224,6 +224,37 @@ namespace libsignalservice
             return results;
         }
 
+        public async Task<SignalServiceAttachmentPointer> UploadAttachmentAsync(SignalServiceAttachmentStream attachment,
+            CancellationToken? token = null)
+        {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            byte[] attachmentKey = Util.GetSecretBytes(64);
+            long paddedLength = PaddingInputStream.GetPaddedSize(attachment.Length);
+            long ciphertextLength = AttachmentCipherInputStream.GetCiphertextLength(paddedLength);
+            PushAttachmentData attachmentData = new PushAttachmentData(attachment.ContentType,
+                                                                       new PaddingInputStream(attachment.InputStream, attachment.Length),
+                                                                       ciphertextLength,
+                                                                       new AttachmentCipherOutputStreamFactory(attachmentKey),
+                                                                       attachment.Listener);
+
+            (ulong id, byte[] digest) = await Socket.SendAttachment(token.Value, attachmentData);
+
+            return new SignalServiceAttachmentPointer(id,
+                attachment.ContentType,
+                attachmentKey,
+                (uint)Util.ToIntExact(attachment.Length),
+                attachment.Preview,
+                attachment.Width, attachment.Height,
+                digest,
+                attachment.FileName,
+                attachment.VoiceNote,
+                attachment.Caption);
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -984,6 +1015,7 @@ namespace libsignalservice
                 }
                 else if (attachment.IsPointer())
                 {
+                    Logger.LogTrace("Including existing attachment pointer...");
                     pointers.Add(CreateAttachmentPointerFromPointer(attachment.AsPointer()));
                 }
             }
@@ -991,32 +1023,15 @@ namespace libsignalservice
             return pointers;
         }
 
-        private async Task<AttachmentPointer> CreateAttachmentPointerAsync(SignalServiceAttachmentStream attachment,
-            CancellationToken? token = null)
+        private AttachmentPointer CreateAttachmentPointer(SignalServiceAttachmentPointer attachment)
         {
-            if (token == null)
-            {
-                token = CancellationToken.None;
-            }
-
-            byte[] attachmentKey = Util.GetSecretBytes(64);
-            long paddedLength = PaddingInputStream.GetPaddedSize(attachment.Length);
-            long ciphertextLength = AttachmentCipherInputStream.GetCiphertextLength(paddedLength);
-            PushAttachmentData attachmentData = new PushAttachmentData(attachment.ContentType,
-                                                                       new PaddingInputStream(attachment.InputStream, attachment.Length),
-                                                                       ciphertextLength,
-                                                                       new AttachmentCipherOutputStreamFactory(attachmentKey),
-                                                                       attachment.Listener);
-
-            (ulong id, byte[] digest) = await Socket.SendAttachment(token.Value, attachmentData);
-
             var attachmentPointer = new AttachmentPointer
             {
                 ContentType = attachment.ContentType,
-                Id = id,
-                Key = ByteString.CopyFrom(attachmentKey),
-                Digest = ByteString.CopyFrom(digest),
-                Size = (uint)attachment.Length
+                Id = attachment.Id,
+                Key = ByteString.CopyFrom(attachment.Key),
+                Digest = ByteString.CopyFrom(attachment.Digest),
+                Size = (uint)attachment.Size
             };
 
             if (attachment.FileName != null)
@@ -1094,6 +1109,18 @@ namespace libsignalservice
         public (byte[] digest, Stream encryptedData) EncryptAttachment(Stream data, byte[] key)
         {
             return Socket.EncryptAttachment(data, key);
+        }
+
+        private async Task<AttachmentPointer> CreateAttachmentPointerAsync(SignalServiceAttachmentStream attachment,
+            CancellationToken? token = null)
+        {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            SignalServiceAttachmentPointer pointer = await UploadAttachmentAsync(attachment, token);
+            return CreateAttachmentPointer(pointer);
         }
 
         private async Task<OutgoingPushMessageList> GetEncryptedMessages(CancellationToken token,
