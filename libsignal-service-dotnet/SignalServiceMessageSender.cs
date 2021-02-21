@@ -480,6 +480,16 @@ namespace libsignalservice
             if (message.SharedContacts != null)
                 dataMessage.Contact.AddRange(await CreateSharedContactContentAsync(message.SharedContacts, token));
 
+            if (message.Preview != null)
+            {
+                dataMessage.Preview = new Preview()
+                {
+                    Title = message.Preview.Title,
+                    Url = message.Preview.Url,
+                    Image = await CreateAttachmentPointerAsync(message.Preview.Image.AsStream(), token)
+                };
+            }
+
             dataMessage.Timestamp = (ulong)message.Timestamp;
 
             content.DataMessage = dataMessage;

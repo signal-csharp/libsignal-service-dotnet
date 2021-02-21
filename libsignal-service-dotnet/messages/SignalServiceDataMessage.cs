@@ -1,10 +1,9 @@
+using System.Collections.Generic;
 using libsignalservice.messages.shared;
 using libsignalservice.push;
-using System.Collections.Generic;
 
 namespace libsignalservice.messages
 {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     /// <summary>
     /// Represents a decrypted Signal Service data message.
     /// </summary>
@@ -21,6 +20,117 @@ namespace libsignalservice.messages
         public bool ProfileKeyUpdate { get; set; }
         public SignalServiceQuote? Quote { get; set; }
         public List<SharedContact>? SharedContacts { get; set; }
+        public SignalServicePreview? Preview { get; set; }
+
+        /// <summary>
+        /// Construct a SignalServiceDataMessage with a body and no attachments.
+        /// </summary>
+        /// <param name="timestamp">The sent timestamp.</param>
+        /// <param name="body">The message contents.</param>
+        public SignalServiceDataMessage(long timestamp, string body) :
+            this(timestamp, body, 0)
+        {
+        }
+
+        /// <summary>
+        /// Construct an expiring SignalServiceDataMessage with a body and no attachments.
+        /// </summary>
+        /// <param name="timestamp">The sent timestamp.</param>
+        /// <param name="body">The message contents.</param>
+        /// <param name="expiresInSeconds">The number of seconds in which the message should expire after having been seen.</param>
+        public SignalServiceDataMessage(long timestamp, string body, int expiresInSeconds) :
+            this(timestamp, null, body, expiresInSeconds)
+        {
+        }
+
+        public SignalServiceDataMessage(long timestamp, SignalServiceAttachment attachment, string body) :
+            this(timestamp, new List<SignalServiceAttachment>() { attachment }, body)
+        {
+        }
+
+        /// <summary>
+        /// Construct a SignalServiceDataMessage with a body and list of attachments.
+        /// </summary>
+        /// <param name="timestamp">The sent timestamp.</param>
+        /// <param name="attachments">The attachments.</param>
+        /// <param name="body">The message contents.</param>
+        public SignalServiceDataMessage(long timestamp, List<SignalServiceAttachment> attachments, string body) :
+            this(timestamp, attachments, body, 0)
+        {
+        }
+
+        /// <summary>
+        /// Construct an expiring SignalServiceDataMessage with a body and list of attachments.
+        /// </summary>
+        /// <param name="timestamp">The sent timestamp</param>
+        /// <param name="attachments">The attachments.</param>
+        /// <param name="body">The message contents.</param>
+        /// <param name="expiresInSeconds">The number of seconds in which the message should expire after having been seen.</param>
+        public SignalServiceDataMessage(long timestamp, List<SignalServiceAttachment> attachments, string body, int expiresInSeconds) :
+            this(timestamp, null, attachments, body, expiresInSeconds)
+        {
+        }
+
+        /// <summary>
+        /// Construct a SignalServiceDataMessage group message with attachments and body.
+        /// </summary>
+        /// <param name="timestamp">The sent timestamp.</param>
+        /// <param name="group">The group information.</param>
+        /// <param name="attachments">The attachments.</param>
+        /// <param name="body">The message contents.</param>
+        public SignalServiceDataMessage(long timestamp, SignalServiceGroup group, List<SignalServiceAttachment> attachments, string body) :
+            this(timestamp, group, attachments, body, 0)
+        {
+        }
+
+        /// <summary>
+        /// Construct an expiring SignalServiceDataMessage group message with attachments and body.
+        /// </summary>
+        /// <param name="timestamp">The sent timestamp.</param>
+        /// <param name="group">The group information.</param>
+        /// <param name="attachments">The attachments.</param>
+        /// <param name="body">The message contents.</param>
+        /// <param name="expiresInSeconds"></param>
+        public SignalServiceDataMessage(long timestamp, SignalServiceGroup group, List<SignalServiceAttachment> attachments, string body, int expiresInSeconds) :
+            this(timestamp, group, attachments, body, false, expiresInSeconds, false, null, false, null, null, null)
+        {
+        }
+
+        public SignalServiceDataMessage(long timestamp, SignalServiceGroup group,
+            List<SignalServiceAttachment> attachments,
+            string body, bool endSession, int expiresInSeconds,
+            bool expirationUpdate, byte[] profileKey, bool profileKeyUpdate,
+            SignalServiceQuote quote, List<SharedContact> sharedContacts, SignalServicePreview preview)
+        {
+            Timestamp = timestamp;
+            Body = body;
+            Group = group;
+            EndSession = endSession;
+            ExpiresInSeconds = expiresInSeconds;
+            ExpirationUpdate = expirationUpdate;
+            ProfileKey = profileKey;
+            ProfileKeyUpdate = profileKeyUpdate;
+            Quote = quote;
+            Preview = preview;
+
+            if (attachments != null && attachments.Count > 0)
+            {
+                Attachments = attachments;
+            }
+            else
+            {
+                Attachments = null;
+            }
+
+            if (sharedContacts != null && sharedContacts.Count > 0)
+            {
+                SharedContacts = sharedContacts;
+            }
+            else
+            {
+                SharedContacts = null;
+            }
+        }
 
         public bool IsProfileKeyUpdate()
         {
@@ -61,6 +171,19 @@ namespace libsignalservice.messages
                 Thumbnail = thumbnail;
             }
         }
+
+        public class SignalServicePreview
+        {
+            public string Url { get; }
+            public string Title { get; }
+            public SignalServiceAttachment Image { get; }
+
+            public SignalServicePreview(string url, string title, SignalServiceAttachment image)
+            {
+                Url = url;
+                Title = title;
+                Image = image;
+            }
+        }
     }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

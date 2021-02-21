@@ -48,43 +48,46 @@ namespace libsignalservice.push {
             "bhgCIAEoCRopCgZBbnN3ZXISCgoCaWQYASABKAQSEwoLZGVzY3JpcHRpb24Y",
             "AiABKAkaSwoJSWNlVXBkYXRlEgoKAmlkGAEgASgEEg4KBnNkcE1pZBgCIAEo",
             "CRIVCg1zZHBNTGluZUluZGV4GAMgASgNEgsKA3NkcBgEIAEoCRoSCgRCdXN5",
-            "EgoKAmlkGAEgASgEGhQKBkhhbmd1cBIKCgJpZBgBIAEoBCKEDQoLRGF0YU1l",
+            "EgoKAmlkGAEgASgEGhQKBkhhbmd1cBIKCgJpZBgBIAEoBCKLDgoLRGF0YU1l",
             "c3NhZ2USDAoEYm9keRgBIAEoCRIyCgthdHRhY2htZW50cxgCIAMoCzIdLnRl",
             "eHRzZWN1cmUuQXR0YWNobWVudFBvaW50ZXISJwoFZ3JvdXAYAyABKAsyGC50",
             "ZXh0c2VjdXJlLkdyb3VwQ29udGV4dBINCgVmbGFncxgEIAEoDRITCgtleHBp",
             "cmVUaW1lchgFIAEoDRISCgpwcm9maWxlS2V5GAYgASgMEhEKCXRpbWVzdGFt",
             "cBgHIAEoBBIsCgVxdW90ZRgIIAEoCzIdLnRleHRzZWN1cmUuRGF0YU1lc3Nh",
             "Z2UuUXVvdGUSMAoHY29udGFjdBgJIAMoCzIfLnRleHRzZWN1cmUuRGF0YU1l",
-            "c3NhZ2UuQ29udGFjdBrjAQoFUXVvdGUSCgoCaWQYASABKAQSDgoGYXV0aG9y",
-            "GAIgASgJEgwKBHRleHQYAyABKAkSQwoLYXR0YWNobWVudHMYBCADKAsyLi50",
-            "ZXh0c2VjdXJlLkRhdGFNZXNzYWdlLlF1b3RlLlF1b3RlZEF0dGFjaG1lbnQa",
-            "awoQUXVvdGVkQXR0YWNobWVudBITCgtjb250ZW50VHlwZRgBIAEoCRIQCghm",
-            "aWxlTmFtZRgCIAEoCRIwCgl0aHVtYm5haWwYAyABKAsyHS50ZXh0c2VjdXJl",
-            "LkF0dGFjaG1lbnRQb2ludGVyGqkICgdDb250YWN0EjIKBG5hbWUYASABKAsy",
-            "JC50ZXh0c2VjdXJlLkRhdGFNZXNzYWdlLkNvbnRhY3QuTmFtZRI1CgZudW1i",
-            "ZXIYAyADKAsyJS50ZXh0c2VjdXJlLkRhdGFNZXNzYWdlLkNvbnRhY3QuUGhv",
-            "bmUSNAoFZW1haWwYBCADKAsyJS50ZXh0c2VjdXJlLkRhdGFNZXNzYWdlLkNv",
-            "bnRhY3QuRW1haWwSPgoHYWRkcmVzcxgFIAMoCzItLnRleHRzZWN1cmUuRGF0",
-            "YU1lc3NhZ2UuQ29udGFjdC5Qb3N0YWxBZGRyZXNzEjYKBmF2YXRhchgGIAEo",
-            "CzImLnRleHRzZWN1cmUuRGF0YU1lc3NhZ2UuQ29udGFjdC5BdmF0YXISFAoM",
-            "b3JnYW5pemF0aW9uGAcgASgJGnYKBE5hbWUSEQoJZ2l2ZW5OYW1lGAEgASgJ",
-            "EhIKCmZhbWlseU5hbWUYAiABKAkSDgoGcHJlZml4GAMgASgJEg4KBnN1ZmZp",
-            "eBgEIAEoCRISCgptaWRkbGVOYW1lGAUgASgJEhMKC2Rpc3BsYXlOYW1lGAYg",
-            "ASgJGpMBCgVQaG9uZRINCgV2YWx1ZRgBIAEoCRI4CgR0eXBlGAIgASgOMiou",
-            "dGV4dHNlY3VyZS5EYXRhTWVzc2FnZS5Db250YWN0LlBob25lLlR5cGUSDQoF",
-            "bGFiZWwYAyABKAkiMgoEVHlwZRIICgRIT01FEAESCgoGTU9CSUxFEAISCAoE",
-            "V09SSxADEgoKBkNVU1RPTRAEGpMBCgVFbWFpbBINCgV2YWx1ZRgBIAEoCRI4",
-            "CgR0eXBlGAIgASgOMioudGV4dHNlY3VyZS5EYXRhTWVzc2FnZS5Db250YWN0",
-            "LkVtYWlsLlR5cGUSDQoFbGFiZWwYAyABKAkiMgoEVHlwZRIICgRIT01FEAES",
-            "CgoGTU9CSUxFEAISCAoEV09SSxADEgoKBkNVU1RPTRAEGv4BCg1Qb3N0YWxB",
-            "ZGRyZXNzEkAKBHR5cGUYASABKA4yMi50ZXh0c2VjdXJlLkRhdGFNZXNzYWdl",
-            "LkNvbnRhY3QuUG9zdGFsQWRkcmVzcy5UeXBlEg0KBWxhYmVsGAIgASgJEg4K",
-            "BnN0cmVldBgDIAEoCRINCgVwb2JveBgEIAEoCRIUCgxuZWlnaGJvcmhvb2QY",
-            "BSABKAkSDAoEY2l0eRgGIAEoCRIOCgZyZWdpb24YByABKAkSEAoIcG9zdGNv",
-            "ZGUYCCABKAkSDwoHY291bnRyeRgJIAEoCSImCgRUeXBlEggKBEhPTUUQARII",
-            "CgRXT1JLEAISCgoGQ1VTVE9NEAMaSgoGQXZhdGFyEi0KBmF2YXRhchgBIAEo",
-            "CzIdLnRleHRzZWN1cmUuQXR0YWNobWVudFBvaW50ZXISEQoJaXNQcm9maWxl",
-            "GAIgASgIIk0KBUZsYWdzEg8KC0VORF9TRVNTSU9OEAESGwoXRVhQSVJBVElP",
+            "c3NhZ2UuQ29udGFjdBIwCgdwcmV2aWV3GAogASgLMh8udGV4dHNlY3VyZS5E",
+            "YXRhTWVzc2FnZS5QcmV2aWV3GuMBCgVRdW90ZRIKCgJpZBgBIAEoBBIOCgZh",
+            "dXRob3IYAiABKAkSDAoEdGV4dBgDIAEoCRJDCgthdHRhY2htZW50cxgEIAMo",
+            "CzIuLnRleHRzZWN1cmUuRGF0YU1lc3NhZ2UuUXVvdGUuUXVvdGVkQXR0YWNo",
+            "bWVudBprChBRdW90ZWRBdHRhY2htZW50EhMKC2NvbnRlbnRUeXBlGAEgASgJ",
+            "EhAKCGZpbGVOYW1lGAIgASgJEjAKCXRodW1ibmFpbBgDIAEoCzIdLnRleHRz",
+            "ZWN1cmUuQXR0YWNobWVudFBvaW50ZXIaqQgKB0NvbnRhY3QSMgoEbmFtZRgB",
+            "IAEoCzIkLnRleHRzZWN1cmUuRGF0YU1lc3NhZ2UuQ29udGFjdC5OYW1lEjUK",
+            "Bm51bWJlchgDIAMoCzIlLnRleHRzZWN1cmUuRGF0YU1lc3NhZ2UuQ29udGFj",
+            "dC5QaG9uZRI0CgVlbWFpbBgEIAMoCzIlLnRleHRzZWN1cmUuRGF0YU1lc3Nh",
+            "Z2UuQ29udGFjdC5FbWFpbBI+CgdhZGRyZXNzGAUgAygLMi0udGV4dHNlY3Vy",
+            "ZS5EYXRhTWVzc2FnZS5Db250YWN0LlBvc3RhbEFkZHJlc3MSNgoGYXZhdGFy",
+            "GAYgASgLMiYudGV4dHNlY3VyZS5EYXRhTWVzc2FnZS5Db250YWN0LkF2YXRh",
+            "chIUCgxvcmdhbml6YXRpb24YByABKAkadgoETmFtZRIRCglnaXZlbk5hbWUY",
+            "ASABKAkSEgoKZmFtaWx5TmFtZRgCIAEoCRIOCgZwcmVmaXgYAyABKAkSDgoG",
+            "c3VmZml4GAQgASgJEhIKCm1pZGRsZU5hbWUYBSABKAkSEwoLZGlzcGxheU5h",
+            "bWUYBiABKAkakwEKBVBob25lEg0KBXZhbHVlGAEgASgJEjgKBHR5cGUYAiAB",
+            "KA4yKi50ZXh0c2VjdXJlLkRhdGFNZXNzYWdlLkNvbnRhY3QuUGhvbmUuVHlw",
+            "ZRINCgVsYWJlbBgDIAEoCSIyCgRUeXBlEggKBEhPTUUQARIKCgZNT0JJTEUQ",
+            "AhIICgRXT1JLEAMSCgoGQ1VTVE9NEAQakwEKBUVtYWlsEg0KBXZhbHVlGAEg",
+            "ASgJEjgKBHR5cGUYAiABKA4yKi50ZXh0c2VjdXJlLkRhdGFNZXNzYWdlLkNv",
+            "bnRhY3QuRW1haWwuVHlwZRINCgVsYWJlbBgDIAEoCSIyCgRUeXBlEggKBEhP",
+            "TUUQARIKCgZNT0JJTEUQAhIICgRXT1JLEAMSCgoGQ1VTVE9NEAQa/gEKDVBv",
+            "c3RhbEFkZHJlc3MSQAoEdHlwZRgBIAEoDjIyLnRleHRzZWN1cmUuRGF0YU1l",
+            "c3NhZ2UuQ29udGFjdC5Qb3N0YWxBZGRyZXNzLlR5cGUSDQoFbGFiZWwYAiAB",
+            "KAkSDgoGc3RyZWV0GAMgASgJEg0KBXBvYm94GAQgASgJEhQKDG5laWdoYm9y",
+            "aG9vZBgFIAEoCRIMCgRjaXR5GAYgASgJEg4KBnJlZ2lvbhgHIAEoCRIQCghw",
+            "b3N0Y29kZRgIIAEoCRIPCgdjb3VudHJ5GAkgASgJIiYKBFR5cGUSCAoESE9N",
+            "RRABEggKBFdPUksQAhIKCgZDVVNUT00QAxpKCgZBdmF0YXISLQoGYXZhdGFy",
+            "GAEgASgLMh0udGV4dHNlY3VyZS5BdHRhY2htZW50UG9pbnRlchIRCglpc1By",
+            "b2ZpbGUYAiABKAgaUwoHUHJldmlldxILCgN1cmwYASABKAkSDQoFdGl0bGUY",
+            "AiABKAkSLAoFaW1hZ2UYAyABKAsyHS50ZXh0c2VjdXJlLkF0dGFjaG1lbnRQ",
+            "b2ludGVyIk0KBUZsYWdzEg8KC0VORF9TRVNTSU9OEAESGwoXRVhQSVJBVElP",
             "Tl9USU1FUl9VUERBVEUQAhIWChJQUk9GSUxFX0tFWV9VUERBVEUQBCIeCgtO",
             "dWxsTWVzc2FnZRIPCgdwYWRkaW5nGAEgASgMInIKDlJlY2VpcHRNZXNzYWdl",
             "Ei0KBHR5cGUYASABKA4yHy50ZXh0c2VjdXJlLlJlY2VpcHRNZXNzYWdlLlR5",
@@ -156,12 +159,13 @@ namespace libsignalservice.push {
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.CallMessage.Types.IceUpdate), global::libsignalservice.push.CallMessage.Types.IceUpdate.Parser, new[]{ "Id", "SdpMid", "SdpMLineIndex", "Sdp" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.CallMessage.Types.Busy), global::libsignalservice.push.CallMessage.Types.Busy.Parser, new[]{ "Id" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.CallMessage.Types.Hangup), global::libsignalservice.push.CallMessage.Types.Hangup.Parser, new[]{ "Id" }, null, null, null, null)}),
-            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.DataMessage), global::libsignalservice.push.DataMessage.Parser, new[]{ "Body", "Attachments", "Group", "Flags", "ExpireTimer", "ProfileKey", "Timestamp", "Quote", "Contact" }, null, new[]{ typeof(global::libsignalservice.push.DataMessage.Types.Flags) }, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.DataMessage.Types.Quote), global::libsignalservice.push.DataMessage.Types.Quote.Parser, new[]{ "Id", "Author", "Text", "Attachments" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.DataMessage.Types.Quote.Types.QuotedAttachment), global::libsignalservice.push.DataMessage.Types.Quote.Types.QuotedAttachment.Parser, new[]{ "ContentType", "FileName", "Thumbnail" }, null, null, null, null)}),
+            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.DataMessage), global::libsignalservice.push.DataMessage.Parser, new[]{ "Body", "Attachments", "Group", "Flags", "ExpireTimer", "ProfileKey", "Timestamp", "Quote", "Contact", "Preview" }, null, new[]{ typeof(global::libsignalservice.push.DataMessage.Types.Flags) }, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.DataMessage.Types.Quote), global::libsignalservice.push.DataMessage.Types.Quote.Parser, new[]{ "Id", "Author", "Text", "Attachments" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.DataMessage.Types.Quote.Types.QuotedAttachment), global::libsignalservice.push.DataMessage.Types.Quote.Types.QuotedAttachment.Parser, new[]{ "ContentType", "FileName", "Thumbnail" }, null, null, null, null)}),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.DataMessage.Types.Contact), global::libsignalservice.push.DataMessage.Types.Contact.Parser, new[]{ "Name", "Number", "Email", "Address", "Avatar", "Organization" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.DataMessage.Types.Contact.Types.Name), global::libsignalservice.push.DataMessage.Types.Contact.Types.Name.Parser, new[]{ "GivenName", "FamilyName", "Prefix", "Suffix", "MiddleName", "DisplayName" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.DataMessage.Types.Contact.Types.Phone), global::libsignalservice.push.DataMessage.Types.Contact.Types.Phone.Parser, new[]{ "Value", "Type", "Label" }, null, new[]{ typeof(global::libsignalservice.push.DataMessage.Types.Contact.Types.Phone.Types.Type) }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.DataMessage.Types.Contact.Types.Email), global::libsignalservice.push.DataMessage.Types.Contact.Types.Email.Parser, new[]{ "Value", "Type", "Label" }, null, new[]{ typeof(global::libsignalservice.push.DataMessage.Types.Contact.Types.Email.Types.Type) }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.DataMessage.Types.Contact.Types.PostalAddress), global::libsignalservice.push.DataMessage.Types.Contact.Types.PostalAddress.Parser, new[]{ "Type", "Label", "Street", "Pobox", "Neighborhood", "City", "Region", "Postcode", "Country" }, null, new[]{ typeof(global::libsignalservice.push.DataMessage.Types.Contact.Types.PostalAddress.Types.Type) }, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.DataMessage.Types.Contact.Types.Avatar), global::libsignalservice.push.DataMessage.Types.Contact.Types.Avatar.Parser, new[]{ "Avatar_", "IsProfile" }, null, null, null, null)})}),
+            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.DataMessage.Types.Contact.Types.Avatar), global::libsignalservice.push.DataMessage.Types.Contact.Types.Avatar.Parser, new[]{ "Avatar_", "IsProfile" }, null, null, null, null)}),
+            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.DataMessage.Types.Preview), global::libsignalservice.push.DataMessage.Types.Preview.Parser, new[]{ "Url", "Title", "Image" }, null, null, null, null)}),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.NullMessage), global::libsignalservice.push.NullMessage.Parser, new[]{ "Padding" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.ReceiptMessage), global::libsignalservice.push.ReceiptMessage.Parser, new[]{ "Type", "Timestamp" }, null, new[]{ typeof(global::libsignalservice.push.ReceiptMessage.Types.Type) }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.TypingMessage), global::libsignalservice.push.TypingMessage.Parser, new[]{ "Timestamp", "Action", "GroupId" }, null, new[]{ typeof(global::libsignalservice.push.TypingMessage.Types.Action) }, null, null),
@@ -2198,6 +2202,7 @@ namespace libsignalservice.push {
       timestamp_ = other.timestamp_;
       quote_ = other.quote_ != null ? other.quote_.Clone() : null;
       contact_ = other.contact_.Clone();
+      preview_ = other.preview_ != null ? other.preview_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -2366,6 +2371,17 @@ namespace libsignalservice.push {
       get { return contact_; }
     }
 
+    /// <summary>Field number for the "preview" field.</summary>
+    public const int PreviewFieldNumber = 10;
+    private global::libsignalservice.push.DataMessage.Types.Preview preview_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::libsignalservice.push.DataMessage.Types.Preview Preview {
+      get { return preview_; }
+      set {
+        preview_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as DataMessage);
@@ -2388,6 +2404,7 @@ namespace libsignalservice.push {
       if (Timestamp != other.Timestamp) return false;
       if (!object.Equals(Quote, other.Quote)) return false;
       if(!contact_.Equals(other.contact_)) return false;
+      if (!object.Equals(Preview, other.Preview)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -2403,6 +2420,7 @@ namespace libsignalservice.push {
       if (HasTimestamp) hash ^= Timestamp.GetHashCode();
       if (quote_ != null) hash ^= Quote.GetHashCode();
       hash ^= contact_.GetHashCode();
+      if (preview_ != null) hash ^= Preview.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -2446,6 +2464,10 @@ namespace libsignalservice.push {
         output.WriteMessage(Quote);
       }
       contact_.WriteTo(output, _repeated_contact_codec);
+      if (preview_ != null) {
+        output.WriteRawTag(82);
+        output.WriteMessage(Preview);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -2477,6 +2499,9 @@ namespace libsignalservice.push {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Quote);
       }
       size += contact_.CalculateSize(_repeated_contact_codec);
+      if (preview_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Preview);
+      }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -2517,6 +2542,12 @@ namespace libsignalservice.push {
         Quote.MergeFrom(other.Quote);
       }
       contact_.Add(other.contact_);
+      if (other.preview_ != null) {
+        if (preview_ == null) {
+          Preview = new global::libsignalservice.push.DataMessage.Types.Preview();
+        }
+        Preview.MergeFrom(other.Preview);
+      }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -2568,6 +2599,13 @@ namespace libsignalservice.push {
           }
           case 74: {
             contact_.AddEntriesFrom(input, _repeated_contact_codec);
+            break;
+          }
+          case 82: {
+            if (preview_ == null) {
+              Preview = new global::libsignalservice.push.DataMessage.Types.Preview();
+            }
+            input.ReadMessage(Preview);
             break;
           }
         }
@@ -4795,6 +4833,221 @@ namespace libsignalservice.push {
 
         }
         #endregion
+
+      }
+
+      public sealed partial class Preview : pb::IMessage<Preview> {
+        private static readonly pb::MessageParser<Preview> _parser = new pb::MessageParser<Preview>(() => new Preview());
+        private pb::UnknownFieldSet _unknownFields;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public static pb::MessageParser<Preview> Parser { get { return _parser; } }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public static pbr::MessageDescriptor Descriptor {
+          get { return global::libsignalservice.push.DataMessage.Descriptor.NestedTypes[2]; }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        pbr::MessageDescriptor pb::IMessage.Descriptor {
+          get { return Descriptor; }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public Preview() {
+          OnConstruction();
+        }
+
+        partial void OnConstruction();
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public Preview(Preview other) : this() {
+          url_ = other.url_;
+          title_ = other.title_;
+          image_ = other.image_ != null ? other.image_.Clone() : null;
+          _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public Preview Clone() {
+          return new Preview(this);
+        }
+
+        /// <summary>Field number for the "url" field.</summary>
+        public const int UrlFieldNumber = 1;
+        private readonly static string UrlDefaultValue = "";
+
+        private string url_;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public string Url {
+          get { return url_ ?? UrlDefaultValue; }
+          set {
+            url_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+          }
+        }
+        /// <summary>Gets whether the "url" field is set</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public bool HasUrl {
+          get { return url_ != null; }
+        }
+        /// <summary>Clears the value of the "url" field</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void ClearUrl() {
+          url_ = null;
+        }
+
+        /// <summary>Field number for the "title" field.</summary>
+        public const int TitleFieldNumber = 2;
+        private readonly static string TitleDefaultValue = "";
+
+        private string title_;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public string Title {
+          get { return title_ ?? TitleDefaultValue; }
+          set {
+            title_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+          }
+        }
+        /// <summary>Gets whether the "title" field is set</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public bool HasTitle {
+          get { return title_ != null; }
+        }
+        /// <summary>Clears the value of the "title" field</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void ClearTitle() {
+          title_ = null;
+        }
+
+        /// <summary>Field number for the "image" field.</summary>
+        public const int ImageFieldNumber = 3;
+        private global::libsignalservice.push.AttachmentPointer image_;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public global::libsignalservice.push.AttachmentPointer Image {
+          get { return image_; }
+          set {
+            image_ = value;
+          }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public override bool Equals(object other) {
+          return Equals(other as Preview);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public bool Equals(Preview other) {
+          if (ReferenceEquals(other, null)) {
+            return false;
+          }
+          if (ReferenceEquals(other, this)) {
+            return true;
+          }
+          if (Url != other.Url) return false;
+          if (Title != other.Title) return false;
+          if (!object.Equals(Image, other.Image)) return false;
+          return Equals(_unknownFields, other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public override int GetHashCode() {
+          int hash = 1;
+          if (HasUrl) hash ^= Url.GetHashCode();
+          if (HasTitle) hash ^= Title.GetHashCode();
+          if (image_ != null) hash ^= Image.GetHashCode();
+          if (_unknownFields != null) {
+            hash ^= _unknownFields.GetHashCode();
+          }
+          return hash;
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public override string ToString() {
+          return pb::JsonFormatter.ToDiagnosticString(this);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void WriteTo(pb::CodedOutputStream output) {
+          if (HasUrl) {
+            output.WriteRawTag(10);
+            output.WriteString(Url);
+          }
+          if (HasTitle) {
+            output.WriteRawTag(18);
+            output.WriteString(Title);
+          }
+          if (image_ != null) {
+            output.WriteRawTag(26);
+            output.WriteMessage(Image);
+          }
+          if (_unknownFields != null) {
+            _unknownFields.WriteTo(output);
+          }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public int CalculateSize() {
+          int size = 0;
+          if (HasUrl) {
+            size += 1 + pb::CodedOutputStream.ComputeStringSize(Url);
+          }
+          if (HasTitle) {
+            size += 1 + pb::CodedOutputStream.ComputeStringSize(Title);
+          }
+          if (image_ != null) {
+            size += 1 + pb::CodedOutputStream.ComputeMessageSize(Image);
+          }
+          if (_unknownFields != null) {
+            size += _unknownFields.CalculateSize();
+          }
+          return size;
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void MergeFrom(Preview other) {
+          if (other == null) {
+            return;
+          }
+          if (other.HasUrl) {
+            Url = other.Url;
+          }
+          if (other.HasTitle) {
+            Title = other.Title;
+          }
+          if (other.image_ != null) {
+            if (image_ == null) {
+              Image = new global::libsignalservice.push.AttachmentPointer();
+            }
+            Image.MergeFrom(other.Image);
+          }
+          _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void MergeFrom(pb::CodedInputStream input) {
+          uint tag;
+          while ((tag = input.ReadTag()) != 0) {
+            switch(tag) {
+              default:
+                _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+                break;
+              case 10: {
+                Url = input.ReadString();
+                break;
+              }
+              case 18: {
+                Title = input.ReadString();
+                break;
+              }
+              case 26: {
+                if (image_ == null) {
+                  Image = new global::libsignalservice.push.AttachmentPointer();
+                }
+                input.ReadMessage(Image);
+                break;
+              }
+            }
+          }
+        }
 
       }
 

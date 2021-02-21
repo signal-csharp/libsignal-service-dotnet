@@ -45,7 +45,7 @@ namespace libsignalservice.crypto
                 SealedSessionCipher sessionCipher = new SealedSessionCipher(SignalProtocolStore, new SignalProtocolAddress(LocalAddress.E164number, 1));
                 PushTransportDetails transportDetails = new PushTransportDetails((uint)sessionCipher.GetSessionVersion(destination));
                 byte[] ciphertext = sessionCipher.Encrypt(destination, unidentifiedAccess.UnidentifiedCertificate, transportDetails.getPaddedMessageBody(unpaddedMessage));
-                String body = Base64.EncodeBytes(ciphertext);
+                string body = Base64.EncodeBytes(ciphertext);
                 uint remoteRegistrationId = (uint)sessionCipher.GetRemoteRegistrationId(destination);
                 return new OutgoingPushMessage((uint)Envelope.Types.Type.UnidentifiedSender, destination.DeviceId, remoteRegistrationId, body);
             }
@@ -239,6 +239,7 @@ namespace libsignalservice.crypto
             bool profileKeyUpdate = ((content.Flags & (uint)DataMessage.Types.Flags.ProfileKeyUpdate) != 0);
             SignalServiceDataMessage.SignalServiceQuote? quote = CreateQuote(content);
             List<SharedContact>? sharedContacts = CreateSharedContacts(content);
+            SignalServiceDataMessage.SignalServicePreview? preview = CreatePreview(content);
 
             foreach (AttachmentPointer pointer in content.Attachments)
             {
@@ -252,20 +253,18 @@ namespace libsignalservice.crypto
                                                                            metadata.SenderDevice);
             }
 
-            return new SignalServiceDataMessage()
-            {
-                Timestamp = metadata.Timestamp,
-                Group = groupInfo,
-                Attachments = attachments,
-                Body = content.Body,
-                EndSession = endSession,
-                ExpiresInSeconds = (int)content.ExpireTimer,
-                ExpirationUpdate = expirationUpdate,
-                ProfileKey = content.HasProfileKey ? content.ProfileKey.ToByteArray() : null,
-                ProfileKeyUpdate = profileKeyUpdate,
-                Quote = quote,
-                SharedContacts = sharedContacts
-            };
+            return new SignalServiceDataMessage(metadata.Timestamp,
+                groupInfo,
+                attachments,
+                content.Body,
+                endSession,
+                (int)content.ExpireTimer,
+                expirationUpdate,
+                content.HasProfileKey ? content.ProfileKey.ToByteArray() : null,
+                profileKeyUpdate,
+                quote,
+                sharedContacts,
+                preview);
         }
 
         /// <summary>
@@ -506,6 +505,15 @@ namespace libsignalservice.crypto
                 new SignalServiceAddress(content.Quote.Author),
                 content.Quote.Text,
                 attachments);
+        }
+
+        private SignalServiceDataMessage.SignalServicePreview? CreatePreview(DataMessage content)
+        {
+            if (content.Preview == null) return null;
+
+            return new SignalServiceDataMessage.SignalServicePreview(content.Preview.Url,
+                content.Preview.Title,
+                CreateAttachmentPointer(content.Preview.Image));
         }
 
         private List<SharedContact>? CreateSharedContacts(DataMessage content)
