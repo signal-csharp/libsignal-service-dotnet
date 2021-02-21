@@ -29,7 +29,7 @@
     <PackageReference Include="libphonenumber-csharp" Version="8.9.8" />
     <PackageReference Include="libsignal-metadata-dotnet" Version="0.0.3" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="1.1.2" />
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <!-- Do not upgrade! 1.8.5 is the last version that supports .NETStandard 1.4 -->
     <PackageReference Include="Portable.BouncyCastle" Version="1.8.5" />
     <PackageReference Include="System.Security.Cryptography.Algorithms" Version="4.3.1" />
