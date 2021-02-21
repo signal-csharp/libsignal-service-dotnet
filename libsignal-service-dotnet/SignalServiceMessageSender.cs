@@ -490,7 +490,14 @@ namespace libsignalservice
 
                     if (preview.Image != null)
                     {
-                        previewBuilder.Image = await CreateAttachmentPointerAsync(preview.Image.AsStream(), token);
+                        if (preview.Image.IsStream())
+                        {
+                            previewBuilder.Image = await CreateAttachmentPointerAsync(preview.Image.AsStream(), token);
+                        }
+                        else
+                        {
+                            previewBuilder.Image = CreateAttachmentPointer(preview.Image.AsPointer());
+                        }
                     }
 
                     dataMessage.Preview.Add(previewBuilder);
@@ -776,10 +783,16 @@ namespace libsignalservice
                 if (group.Name != null) groupContext.Name = group.Name;
                 if (group.Members != null) groupContext.Members.AddRange(group.Members);
 
-                if (group.Avatar != null && group.Avatar.IsStream())
+                if (group.Avatar != null)
                 {
-                    AttachmentPointer pointer = await CreateAttachmentPointerAsync(group.Avatar.AsStream(), token);
-                    groupContext.Avatar = pointer;
+                    if (group.Avatar.IsStream())
+                    {
+                        groupContext.Avatar = await CreateAttachmentPointerAsync(group.Avatar.AsStream(), token);
+                    }
+                    else
+                    {
+                        groupContext.Avatar = CreateAttachmentPointer(group.Avatar.AsPointer());
+                    }
                 }
             }
             else
@@ -892,9 +905,13 @@ namespace libsignalservice
 
                 if (contact.Avatar != null)
                 {
+                    AttachmentPointer pointer = contact.Avatar.Attachment.IsStream() ?
+                        await CreateAttachmentPointerAsync(contact.Avatar.Attachment.AsStream(), token) :
+                        CreateAttachmentPointer(contact.Avatar.Attachment.AsPointer());
+
                     contactBuilder.Avatar = new Contact.Types.Avatar()
                     {
-                        Avatar_ = await CreateAttachmentPointerAsync(contact.Avatar.Attachment.AsStream(), token),
+                        Avatar_ = pointer,
                         IsProfile = contact.Avatar.IsProfile
                     };
                 }
