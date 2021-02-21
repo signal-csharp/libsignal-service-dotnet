@@ -288,6 +288,10 @@ namespace libsignalservice
             {
                 content = CreateMultiDeviceConfigurationContent(message.Configuration);
             }
+            else if (message.Sent != null)
+            {
+                content = await CreateMultiDeviceSentTranscriptContentAsync(message.Sent, unidenfifiedAccess, token);
+            }
             else if (message.Verified != null)
             {
                 await SendMessageAsync(message.Verified, unidenfifiedAccess, token);
@@ -570,6 +574,18 @@ namespace libsignalservice
             };
             content.SyncMessage = syncMessage;
             return content.ToByteArray();
+        }
+
+        private async Task<byte[]> CreateMultiDeviceSentTranscriptContentAsync(SentTranscriptMessage transcript, UnidentifiedAccessPair? unidentifiedAccess,
+            CancellationToken? token = null)
+        {
+            SignalServiceAddress address = new SignalServiceAddress(transcript.Destination!);
+            SendMessageResult result = SendMessageResult.NewSuccess(address, unidentifiedAccess != null, true);
+
+            return CreateMultiDeviceSentTranscriptContent(await CreateMessageContentAsync(transcript.Message, token),
+                address,
+                (ulong)transcript.Timestamp,
+                new List<SendMessageResult>() { result });
         }
 
         private byte[] CreateMultiDeviceSentTranscriptContent(byte[] rawContent, SignalServiceAddress? recipient, ulong timestamp, List<SendMessageResult> sendMessageResults)
