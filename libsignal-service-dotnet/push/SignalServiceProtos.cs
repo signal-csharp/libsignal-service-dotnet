@@ -99,7 +99,7 @@ namespace libsignalservice.push {
             "KAkSEwoLaWRlbnRpdHlLZXkYAiABKAwSKQoFc3RhdGUYAyABKA4yGi50ZXh0",
             "c2VjdXJlLlZlcmlmaWVkLlN0YXRlEhMKC251bGxNZXNzYWdlGAQgASgMIjIK",
             "BVN0YXRlEgsKB0RFRkFVTFQQABIMCghWRVJJRklFRBABEg4KClVOVkVSSUZJ",
-            "RUQQAiKZCQoLU3luY01lc3NhZ2USKgoEc2VudBgBIAEoCzIcLnRleHRzZWN1",
+            "RUQQAiKvCQoLU3luY01lc3NhZ2USKgoEc2VudBgBIAEoCzIcLnRleHRzZWN1",
             "cmUuU3luY01lc3NhZ2UuU2VudBIyCghjb250YWN0cxgCIAEoCzIgLnRleHRz",
             "ZWN1cmUuU3luY01lc3NhZ2UuQ29udGFjdHMSLgoGZ3JvdXBzGAMgASgLMh4u",
             "dGV4dHNlY3VyZS5TeW5jTWVzc2FnZS5Hcm91cHMSMAoHcmVxdWVzdBgEIAEo",
@@ -123,32 +123,32 @@ namespace libsignalservice.push {
             "UmVxdWVzdC5UeXBlIk0KBFR5cGUSCwoHVU5LTk9XThAAEgwKCENPTlRBQ1RT",
             "EAESCgoGR1JPVVBTEAISCwoHQkxPQ0tFRBADEhEKDUNPTkZJR1VSQVRJT04Q",
             "BBopCgRSZWFkEg4KBnNlbmRlchgBIAEoCRIRCgl0aW1lc3RhbXAYAiABKAQa",
-            "ZwoNQ29uZmlndXJhdGlvbhIUCgxyZWFkUmVjZWlwdHMYASABKAgSJgoedW5p",
+            "fQoNQ29uZmlndXJhdGlvbhIUCgxyZWFkUmVjZWlwdHMYASABKAgSJgoedW5p",
             "ZGVudGlmaWVkRGVsaXZlcnlJbmRpY2F0b3JzGAIgASgIEhgKEHR5cGluZ0lu",
-            "ZGljYXRvcnMYAyABKAgi3wEKEUF0dGFjaG1lbnRQb2ludGVyEgoKAmlkGAEg",
-            "ASgGEhMKC2NvbnRlbnRUeXBlGAIgASgJEgsKA2tleRgDIAEoDBIMCgRzaXpl",
-            "GAQgASgNEhEKCXRodW1ibmFpbBgFIAEoDBIOCgZkaWdlc3QYBiABKAwSEAoI",
-            "ZmlsZU5hbWUYByABKAkSDQoFZmxhZ3MYCCABKA0SDQoFd2lkdGgYCSABKA0S",
-            "DgoGaGVpZ2h0GAogASgNEg8KB2NhcHRpb24YCyABKAkiGgoFRmxhZ3MSEQoN",
-            "Vk9JQ0VfTUVTU0FHRRABIt8BCgxHcm91cENvbnRleHQSCgoCaWQYASABKAwS",
-            "KwoEdHlwZRgCIAEoDjIdLnRleHRzZWN1cmUuR3JvdXBDb250ZXh0LlR5cGUS",
-            "DAoEbmFtZRgDIAEoCRIPCgdtZW1iZXJzGAQgAygJEi0KBmF2YXRhchgFIAEo",
-            "CzIdLnRleHRzZWN1cmUuQXR0YWNobWVudFBvaW50ZXIiSAoEVHlwZRILCgdV",
-            "TktOT1dOEAASCgoGVVBEQVRFEAESCwoHREVMSVZFUhACEggKBFFVSVQQAxIQ",
-            "CgxSRVFVRVNUX0lORk8QBCKBAgoOQ29udGFjdERldGFpbHMSDgoGbnVtYmVy",
-            "GAEgASgJEgwKBG5hbWUYAiABKAkSMQoGYXZhdGFyGAMgASgLMiEudGV4dHNl",
-            "Y3VyZS5Db250YWN0RGV0YWlscy5BdmF0YXISDQoFY29sb3IYBCABKAkSJgoI",
-            "dmVyaWZpZWQYBSABKAsyFC50ZXh0c2VjdXJlLlZlcmlmaWVkEhIKCnByb2Zp",
-            "bGVLZXkYBiABKAwSDwoHYmxvY2tlZBgHIAEoCBITCgtleHBpcmVUaW1lchgI",
-            "IAEoDRotCgZBdmF0YXISEwoLY29udGVudFR5cGUYASABKAkSDgoGbGVuZ3Ro",
-            "GAIgASgNIuQBCgxHcm91cERldGFpbHMSCgoCaWQYASABKAwSDAoEbmFtZRgC",
-            "IAEoCRIPCgdtZW1iZXJzGAMgAygJEi8KBmF2YXRhchgEIAEoCzIfLnRleHRz",
-            "ZWN1cmUuR3JvdXBEZXRhaWxzLkF2YXRhchIUCgZhY3RpdmUYBSABKAg6BHRy",
-            "dWUSEwoLZXhwaXJlVGltZXIYBiABKA0SDQoFY29sb3IYByABKAkSDwoHYmxv",
-            "Y2tlZBgIIAEoCBotCgZBdmF0YXISEwoLY29udGVudFR5cGUYASABKAkSDgoG",
-            "bGVuZ3RoGAIgASgNQloKK29yZy53aGlzcGVyc3lzdGVtcy50ZXh0c2VjdXJl",
-            "LmludGVybmFsLnB1c2hCE1NpZ25hbFNlcnZpY2VQcm90b3OqAhVsaWJzaWdu",
-            "YWxzZXJ2aWNlLnB1c2g="));
+            "ZGljYXRvcnMYAyABKAgSFAoMbGlua1ByZXZpZXdzGAQgASgIIt8BChFBdHRh",
+            "Y2htZW50UG9pbnRlchIKCgJpZBgBIAEoBhITCgtjb250ZW50VHlwZRgCIAEo",
+            "CRILCgNrZXkYAyABKAwSDAoEc2l6ZRgEIAEoDRIRCgl0aHVtYm5haWwYBSAB",
+            "KAwSDgoGZGlnZXN0GAYgASgMEhAKCGZpbGVOYW1lGAcgASgJEg0KBWZsYWdz",
+            "GAggASgNEg0KBXdpZHRoGAkgASgNEg4KBmhlaWdodBgKIAEoDRIPCgdjYXB0",
+            "aW9uGAsgASgJIhoKBUZsYWdzEhEKDVZPSUNFX01FU1NBR0UQASLfAQoMR3Jv",
+            "dXBDb250ZXh0EgoKAmlkGAEgASgMEisKBHR5cGUYAiABKA4yHS50ZXh0c2Vj",
+            "dXJlLkdyb3VwQ29udGV4dC5UeXBlEgwKBG5hbWUYAyABKAkSDwoHbWVtYmVy",
+            "cxgEIAMoCRItCgZhdmF0YXIYBSABKAsyHS50ZXh0c2VjdXJlLkF0dGFjaG1l",
+            "bnRQb2ludGVyIkgKBFR5cGUSCwoHVU5LTk9XThAAEgoKBlVQREFURRABEgsK",
+            "B0RFTElWRVIQAhIICgRRVUlUEAMSEAoMUkVRVUVTVF9JTkZPEAQigQIKDkNv",
+            "bnRhY3REZXRhaWxzEg4KBm51bWJlchgBIAEoCRIMCgRuYW1lGAIgASgJEjEK",
+            "BmF2YXRhchgDIAEoCzIhLnRleHRzZWN1cmUuQ29udGFjdERldGFpbHMuQXZh",
+            "dGFyEg0KBWNvbG9yGAQgASgJEiYKCHZlcmlmaWVkGAUgASgLMhQudGV4dHNl",
+            "Y3VyZS5WZXJpZmllZBISCgpwcm9maWxlS2V5GAYgASgMEg8KB2Jsb2NrZWQY",
+            "ByABKAgSEwoLZXhwaXJlVGltZXIYCCABKA0aLQoGQXZhdGFyEhMKC2NvbnRl",
+            "bnRUeXBlGAEgASgJEg4KBmxlbmd0aBgCIAEoDSLkAQoMR3JvdXBEZXRhaWxz",
+            "EgoKAmlkGAEgASgMEgwKBG5hbWUYAiABKAkSDwoHbWVtYmVycxgDIAMoCRIv",
+            "CgZhdmF0YXIYBCABKAsyHy50ZXh0c2VjdXJlLkdyb3VwRGV0YWlscy5BdmF0",
+            "YXISFAoGYWN0aXZlGAUgASgIOgR0cnVlEhMKC2V4cGlyZVRpbWVyGAYgASgN",
+            "Eg0KBWNvbG9yGAcgASgJEg8KB2Jsb2NrZWQYCCABKAgaLQoGQXZhdGFyEhMK",
+            "C2NvbnRlbnRUeXBlGAEgASgJEg4KBmxlbmd0aBgCIAEoDUJaCitvcmcud2hp",
+            "c3BlcnN5c3RlbXMudGV4dHNlY3VyZS5pbnRlcm5hbC5wdXNoQhNTaWduYWxT",
+            "ZXJ2aWNlUHJvdG9zqgIVbGlic2lnbmFsc2VydmljZS5wdXNo"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
@@ -176,7 +176,7 @@ namespace libsignalservice.push {
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Blocked), global::libsignalservice.push.SyncMessage.Types.Blocked.Parser, new[]{ "Numbers", "GroupIds" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Request), global::libsignalservice.push.SyncMessage.Types.Request.Parser, new[]{ "Type" }, null, new[]{ typeof(global::libsignalservice.push.SyncMessage.Types.Request.Types.Type) }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Read), global::libsignalservice.push.SyncMessage.Types.Read.Parser, new[]{ "Sender", "Timestamp" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Configuration), global::libsignalservice.push.SyncMessage.Types.Configuration.Parser, new[]{ "ReadReceipts", "UnidentifiedDeliveryIndicators", "TypingIndicators" }, null, null, null, null)}),
+            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Configuration), global::libsignalservice.push.SyncMessage.Types.Configuration.Parser, new[]{ "ReadReceipts", "UnidentifiedDeliveryIndicators", "TypingIndicators", "LinkPreviews" }, null, null, null, null)}),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.AttachmentPointer), global::libsignalservice.push.AttachmentPointer.Parser, new[]{ "Id", "ContentType", "Key", "Size", "Thumbnail", "Digest", "FileName", "Flags", "Width", "Height", "Caption" }, null, new[]{ typeof(global::libsignalservice.push.AttachmentPointer.Types.Flags) }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.GroupContext), global::libsignalservice.push.GroupContext.Parser, new[]{ "Id", "Type", "Name", "Members", "Avatar" }, null, new[]{ typeof(global::libsignalservice.push.GroupContext.Types.Type) }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.ContactDetails), global::libsignalservice.push.ContactDetails.Parser, new[]{ "Number", "Name", "Avatar", "Color", "Verified", "ProfileKey", "Blocked", "ExpireTimer" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.ContactDetails.Types.Avatar), global::libsignalservice.push.ContactDetails.Types.Avatar.Parser, new[]{ "ContentType", "Length" }, null, null, null, null)}),
@@ -7572,6 +7572,7 @@ namespace libsignalservice.push {
           readReceipts_ = other.readReceipts_;
           unidentifiedDeliveryIndicators_ = other.unidentifiedDeliveryIndicators_;
           typingIndicators_ = other.typingIndicators_;
+          linkPreviews_ = other.linkPreviews_;
           _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
         }
 
@@ -7652,6 +7653,30 @@ namespace libsignalservice.push {
           _hasBits0 &= ~4;
         }
 
+        /// <summary>Field number for the "linkPreviews" field.</summary>
+        public const int LinkPreviewsFieldNumber = 4;
+        private readonly static bool LinkPreviewsDefaultValue = false;
+
+        private bool linkPreviews_;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public bool LinkPreviews {
+          get { if ((_hasBits0 & 8) != 0) { return linkPreviews_; } else { return LinkPreviewsDefaultValue; } }
+          set {
+            _hasBits0 |= 8;
+            linkPreviews_ = value;
+          }
+        }
+        /// <summary>Gets whether the "linkPreviews" field is set</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public bool HasLinkPreviews {
+          get { return (_hasBits0 & 8) != 0; }
+        }
+        /// <summary>Clears the value of the "linkPreviews" field</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void ClearLinkPreviews() {
+          _hasBits0 &= ~8;
+        }
+
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public override bool Equals(object other) {
           return Equals(other as Configuration);
@@ -7668,6 +7693,7 @@ namespace libsignalservice.push {
           if (ReadReceipts != other.ReadReceipts) return false;
           if (UnidentifiedDeliveryIndicators != other.UnidentifiedDeliveryIndicators) return false;
           if (TypingIndicators != other.TypingIndicators) return false;
+          if (LinkPreviews != other.LinkPreviews) return false;
           return Equals(_unknownFields, other._unknownFields);
         }
 
@@ -7677,6 +7703,7 @@ namespace libsignalservice.push {
           if (HasReadReceipts) hash ^= ReadReceipts.GetHashCode();
           if (HasUnidentifiedDeliveryIndicators) hash ^= UnidentifiedDeliveryIndicators.GetHashCode();
           if (HasTypingIndicators) hash ^= TypingIndicators.GetHashCode();
+          if (HasLinkPreviews) hash ^= LinkPreviews.GetHashCode();
           if (_unknownFields != null) {
             hash ^= _unknownFields.GetHashCode();
           }
@@ -7702,6 +7729,10 @@ namespace libsignalservice.push {
             output.WriteRawTag(24);
             output.WriteBool(TypingIndicators);
           }
+          if (HasLinkPreviews) {
+            output.WriteRawTag(32);
+            output.WriteBool(LinkPreviews);
+          }
           if (_unknownFields != null) {
             _unknownFields.WriteTo(output);
           }
@@ -7717,6 +7748,9 @@ namespace libsignalservice.push {
             size += 1 + 1;
           }
           if (HasTypingIndicators) {
+            size += 1 + 1;
+          }
+          if (HasLinkPreviews) {
             size += 1 + 1;
           }
           if (_unknownFields != null) {
@@ -7739,6 +7773,9 @@ namespace libsignalservice.push {
           if (other.HasTypingIndicators) {
             TypingIndicators = other.TypingIndicators;
           }
+          if (other.HasLinkPreviews) {
+            LinkPreviews = other.LinkPreviews;
+          }
           _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
         }
 
@@ -7760,6 +7797,10 @@ namespace libsignalservice.push {
               }
               case 24: {
                 TypingIndicators = input.ReadBool();
+                break;
+              }
+              case 32: {
+                LinkPreviews = input.ReadBool();
                 break;
               }
             }

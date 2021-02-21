@@ -719,6 +719,11 @@ namespace libsignalservice
                 configurationMessage.TypingIndicators = configuration.TypingIndicators.Value;
             }
 
+            if (configuration.LinkPreviews.HasValue)
+            {
+                configurationMessage.LinkPreviews = configuration.LinkPreviews.Value;
+            }
+
             syncMessage.Configuration = configurationMessage;
             content.SyncMessage = syncMessage;
             return content.ToByteArray();
