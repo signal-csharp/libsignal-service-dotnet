@@ -1,8 +1,6 @@
-﻿using libsignalservice.util;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
+using libsignalservice.util;
 
 namespace libsignalservice.crypto
 {
@@ -60,7 +58,8 @@ namespace libsignalservice.crypto
 
         public static long GetPaddedSize(long size)
         {
-            return size;
+            return (int)Math.Max(541, Math.Floor(Math.Pow(1.05, Math.Ceiling(Math.Log(size) / Math.Log(1.05)))));
+            //return size;
         }
 
         private static long GetRoundedUp(long size, long interval)

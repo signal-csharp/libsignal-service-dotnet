@@ -225,6 +225,7 @@ namespace libsignalservice
         }
 
         public async Task<SignalServiceAttachmentPointer> UploadAttachmentAsync(SignalServiceAttachmentStream attachment,
+            bool usePadding,
             CancellationToken? token = null)
         {
             if (token == null)
@@ -233,10 +234,13 @@ namespace libsignalservice
             }
 
             byte[] attachmentKey = Util.GetSecretBytes(64);
-            long paddedLength = PaddingInputStream.GetPaddedSize(attachment.Length);
+            long paddedLength = usePadding ? PaddingInputStream.GetPaddedSize(attachment.Length) :
+                attachment.Length;
+            Stream dataStream = usePadding ? new PaddingInputStream(attachment.InputStream, attachment.Length) :
+                attachment.InputStream;
             long ciphertextLength = AttachmentCipherInputStream.GetCiphertextLength(paddedLength);
             PushAttachmentData attachmentData = new PushAttachmentData(attachment.ContentType,
-                                                                       new PaddingInputStream(attachment.InputStream, attachment.Length),
+                                                                       dataStream,
                                                                        ciphertextLength,
                                                                        new AttachmentCipherOutputStreamFactory(attachmentKey),
                                                                        attachment.Listener);
@@ -531,7 +535,7 @@ namespace libsignalservice
 
                 if (message.Sticker.Attachment.IsStream())
                 {
-                    stickerBuilder.Data = await CreateAttachmentPointerAsync(message.Sticker.Attachment.AsStream(), token);
+                    stickerBuilder.Data = await CreateAttachmentPointerAsync(message.Sticker.Attachment.AsStream(), true, token);
                 }
                 else
                 {
@@ -1237,7 +1241,19 @@ namespace libsignalservice
                 token = CancellationToken.None;
             }
 
-            SignalServiceAttachmentPointer pointer = await UploadAttachmentAsync(attachment, token);
+            return await CreateAttachmentPointerAsync(attachment, false, token);
+        }
+
+        private async Task<AttachmentPointer> CreateAttachmentPointerAsync(SignalServiceAttachmentStream attachment,
+            bool usePadding,
+            CancellationToken? token = null)
+        {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            SignalServiceAttachmentPointer pointer = await UploadAttachmentAsync(attachment, usePadding, token);
             return CreateAttachmentPointer(pointer);
         }
 
