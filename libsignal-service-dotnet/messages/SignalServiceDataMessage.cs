@@ -21,6 +21,7 @@ namespace libsignalservice.messages
         public SignalServiceQuote? Quote { get; set; }
         public List<SharedContact>? SharedContacts { get; set; }
         public List<SignalServicePreview>? Previews { get; set; }
+        public SignalServiceSticker? Sticker { get; set; }
 
         /// <summary>
         /// Construct a SignalServiceDataMessage with a body and no attachments.
@@ -78,7 +79,7 @@ namespace libsignalservice.messages
         /// <param name="group">The group information.</param>
         /// <param name="attachments">The attachments.</param>
         /// <param name="body">The message contents.</param>
-        public SignalServiceDataMessage(long timestamp, SignalServiceGroup group, List<SignalServiceAttachment> attachments, string body) :
+        public SignalServiceDataMessage(long timestamp, SignalServiceGroup? group, List<SignalServiceAttachment>? attachments, string body) :
             this(timestamp, group, attachments, body, 0)
         {
         }
@@ -92,7 +93,7 @@ namespace libsignalservice.messages
         /// <param name="body">The message contents.</param>
         /// <param name="expiresInSeconds"></param>
         public SignalServiceDataMessage(long timestamp, SignalServiceGroup? group, List<SignalServiceAttachment>? attachments, string body, int expiresInSeconds) :
-            this(timestamp, group, attachments, body, false, expiresInSeconds, false, null, false, null, null, null)
+            this(timestamp, group, attachments, body, false, expiresInSeconds, false, null, false, null, null, null, null)
         {
         }
 
@@ -100,7 +101,8 @@ namespace libsignalservice.messages
             List<SignalServiceAttachment>? attachments,
             string body, bool endSession, int expiresInSeconds,
             bool expirationUpdate, byte[]? profileKey, bool profileKeyUpdate,
-            SignalServiceQuote? quote, List<SharedContact>? sharedContacts, List<SignalServicePreview>? previews)
+            SignalServiceQuote? quote, List<SharedContact>? sharedContacts, List<SignalServicePreview>? previews,
+            SignalServiceSticker? sticker)
         {
             Timestamp = timestamp;
             Body = body;
@@ -191,6 +193,22 @@ namespace libsignalservice.messages
                 Url = url;
                 Title = title;
                 Image = image;
+            }
+        }
+
+        public class SignalServiceSticker
+        {
+            public byte[] PackId { get; }
+            public byte[] PackKey { get; }
+            public int StickerId { get; }
+            public SignalServiceAttachment Attachment { get; }
+
+            public SignalServiceSticker(byte[] packId, byte[] packKey, int stickerId, SignalServiceAttachment attachment)
+            {
+                PackId = packId;
+                PackKey = packKey;
+                StickerId = stickerId;
+                Attachment = attachment;
             }
         }
     }

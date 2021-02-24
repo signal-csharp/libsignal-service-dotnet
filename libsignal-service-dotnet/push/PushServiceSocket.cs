@@ -65,6 +65,9 @@ namespace libsignalservice.push
         private const string ATTACHMENT_DOWNLOAD_PATH = "attachments/{0}";
         private const string ATTACHMENT_UPLOAD_PATH = "attachments/";
 
+        private const string STICKER_MANIFEST_PATH = "stickers/{0}/manifest.proto";
+        private const string STICKER_PATH = "stickers/{0}/full/{1}";
+
         private readonly Dictionary<string, string> NO_HEADERS = new Dictionary<string, string>();
 
         private readonly ILogger Logger = LibsignalLogging.CreateLogger<PushServiceSocket>();
@@ -431,6 +434,74 @@ namespace libsignalservice.push
             await DownloadFromCdnAsync(destination, string.Format(ATTACHMENT_DOWNLOAD_PATH, attachmentId), maxSizeBytes, listener, token);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="destination"></param>
+        /// <param name="packId"></param>
+        /// <param name="stickerId"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        /// <exception cref="NonSuccessfulResponseCodeException"></exception>
+        /// <exception cref="PushNetworkException"></exception>
+        public async Task RetrieveStickerAsync(FileStream destination, byte[] packId, int stickerId, CancellationToken? token = null)
+        {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            string hexPackId = Hex.ToStringCondensed(packId);
+            await DownloadFromCdnAsync(destination, string.Format(STICKER_PATH, hexPackId, stickerId), 1024 * 1024, null, token);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="packId"></param>
+        /// <param name="stickerId"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        /// <exception cref="NonSuccessfulResponseCodeException"></exception>
+        /// <exception cref="PushNetworkException"></exception>
+        public async Task<byte[]> RetrieveStickerAsync(byte[] packId, int stickerId, CancellationToken? token = null)
+        {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            string hexPackId = Hex.ToStringCondensed(packId);
+            MemoryStream output = new MemoryStream();
+
+            await DownloadFromCdnAsync(output, string.Format(STICKER_PATH, hexPackId, stickerId), 1024 * 1024, null, token);
+
+            return output.ToArray();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="packId"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        /// <exception cref="NonSuccessfulResponseCodeException"></exception>
+        /// <exception cref="PushNetworkException"></exception>
+        public async Task<byte[]> RetrieveStickerManifestAsync(byte[] packId, CancellationToken? token = null)
+        {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            string hexPackId = Hex.ToStringCondensed(packId);
+            MemoryStream output = new MemoryStream();
+
+            await DownloadFromCdnAsync(output, string.Format(STICKER_MANIFEST_PATH, hexPackId), 1024 * 1024, null, token);
+
+            return output.ToArray();
+        }
+
         public async Task<SignalServiceProfile> RetrieveProfile(SignalServiceAddress target, UnidentifiedAccess? unidentifiedAccess, CancellationToken? token = null)
         {
             if (token == null)
@@ -489,7 +560,7 @@ namespace libsignalservice.push
             }
         }
 
-        private async Task DownloadFromCdnAsync(FileStream destination, string path, int maxSizeBytes, IProgressListener? listener, CancellationToken? token = null)
+        private async Task DownloadFromCdnAsync(Stream destination, string path, int maxSizeBytes, IProgressListener? listener, CancellationToken? token = null)
         {
             if (token == null)
             {

@@ -1,14 +1,10 @@
-﻿using libsignalservice.util;
-using Org.BouncyCastle.Crypto.Modes;
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
-using System.Text;
+using libsignalservice.util;
 
 namespace libsignalservice.crypto
 {
-    internal class AttachmentCipherOutputStream : DigestingOutputStream
+    public class AttachmentCipherOutputStream : DigestingOutputStream
     {
         private readonly Aes Aes;
         private readonly CryptoStream Cipher;
@@ -16,7 +12,7 @@ namespace libsignalservice.crypto
         private readonly MemoryStream TmpStream = new MemoryStream();
         private readonly IncrementalHash Mac;
         
-        internal AttachmentCipherOutputStream(byte[] combinedKeyMaterial, Stream outputStream) : base(outputStream)
+        public AttachmentCipherOutputStream(byte[] combinedKeyMaterial, Stream outputStream) : base(outputStream)
         {
             byte[][] keyParts = Util.Split(combinedKeyMaterial, 32, 32);
             Aes = Aes.Create();

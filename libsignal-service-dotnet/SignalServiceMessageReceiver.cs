@@ -118,7 +118,53 @@ namespace libsignalservice
 
             await Socket.RetrieveAttachmentAsync((long)pointer.Id, destination, maxSizeBytes, listener, token);
             destination.Position = 0;
-            return AttachmentCipherInputStream.CreateFor(destination, pointer.Size != null ? pointer.Size.Value : 0, pointer.Key, pointer.Digest);
+            return AttachmentCipherInputStream.CreateForAttachment(destination, pointer.Size != null ? pointer.Size.Value : 0, pointer.Key, pointer.Digest);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="packId"></param>
+        /// <param name="packKey"></param>
+        /// <param name="stickerId"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        /// <exception cref="IOException"></exception>
+        /// <exception cref="InvalidMessageException"></exception>
+        public async Task<Stream> RetrieveStickerAsync(byte[] packId, byte[] packKey, int stickerId, CancellationToken? token = null)
+        {
+            byte[] data = await Socket.RetrieveStickerAsync(packId, stickerId, token);
+            return AttachmentCipherInputStream.CreateForStickerData(data, packKey);
+        }
+
+        /// <summary>
+        /// Retrieves a <see cref="SignalServiceStickerManifest"/>.
+        /// </summary>
+        /// <param name="packId">The 16-byte packId that identifies the sticker pack.</param>
+        /// <param name="packKey">The 32-byte packKey that decrypts the sticker pack.</param>
+        /// <param name="token">Cancellation token, may be null.</param>
+        /// <returns>The <see cref="SignalServiceStickerManifest"/> representing the sticker pack.</returns>
+        /// <exception cref="IOException"></exception>
+        /// <exception cref="InvalidMessageException"></exception>
+        public async Task<SignalServiceStickerManifest> RetrieveStickerManifestAsync(byte[] packId, byte[] packKey, CancellationToken? token = null)
+        {
+            byte[] manifestBytes = await Socket.RetrieveStickerManifestAsync(packId, token);
+
+            Stream cipherStream = AttachmentCipherInputStream.CreateForStickerData(manifestBytes, packKey);
+            MemoryStream outputStream = new MemoryStream();
+
+            Util.Copy(cipherStream, outputStream);
+
+            sticker.Pack pack = sticker.Pack.Parser.ParseFrom(outputStream.ToArray());
+            List<SignalServiceStickerManifest.StickerInfo> stickers = new List<SignalServiceStickerManifest.StickerInfo>(pack.Stickers.Count);
+            SignalServiceStickerManifest.StickerInfo? cover = pack.Cover != null ? new SignalServiceStickerManifest.StickerInfo((int)pack.Cover.Id, pack.Cover.Emoji) : null;
+
+            foreach (sticker.Pack.Types.Sticker sticker in pack.Stickers)
+            {
+                stickers.Add(new SignalServiceStickerManifest.StickerInfo((int)sticker.Id, sticker.Emoji));
+            }
+
+            return new SignalServiceStickerManifest(pack.Title, pack.Author, cover, stickers);
         }
 
         /// <summary>

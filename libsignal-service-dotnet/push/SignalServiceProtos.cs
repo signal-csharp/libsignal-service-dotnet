@@ -48,7 +48,7 @@ namespace libsignalservice.push {
             "bhgCIAEoCRopCgZBbnN3ZXISCgoCaWQYASABKAQSEwoLZGVzY3JpcHRpb24Y",
             "AiABKAkaSwoJSWNlVXBkYXRlEgoKAmlkGAEgASgEEg4KBnNkcE1pZBgCIAEo",
             "CRIVCg1zZHBNTGluZUluZGV4GAMgASgNEgsKA3NkcBgEIAEoCRoSCgRCdXN5",
-            "EgoKAmlkGAEgASgEGhQKBkhhbmd1cBIKCgJpZBgBIAEoBCKLDgoLRGF0YU1l",
+            "EgoKAmlkGAEgASgEGhQKBkhhbmd1cBIKCgJpZBgBIAEoBCKpDwoLRGF0YU1l",
             "c3NhZ2USDAoEYm9keRgBIAEoCRIyCgthdHRhY2htZW50cxgCIAMoCzIdLnRl",
             "eHRzZWN1cmUuQXR0YWNobWVudFBvaW50ZXISJwoFZ3JvdXAYAyABKAsyGC50",
             "ZXh0c2VjdXJlLkdyb3VwQ29udGV4dBINCgVmbGFncxgEIAEoDRITCgtleHBp",
@@ -56,99 +56,108 @@ namespace libsignalservice.push {
             "cBgHIAEoBBIsCgVxdW90ZRgIIAEoCzIdLnRleHRzZWN1cmUuRGF0YU1lc3Nh",
             "Z2UuUXVvdGUSMAoHY29udGFjdBgJIAMoCzIfLnRleHRzZWN1cmUuRGF0YU1l",
             "c3NhZ2UuQ29udGFjdBIwCgdwcmV2aWV3GAogAygLMh8udGV4dHNlY3VyZS5E",
-            "YXRhTWVzc2FnZS5QcmV2aWV3GuMBCgVRdW90ZRIKCgJpZBgBIAEoBBIOCgZh",
-            "dXRob3IYAiABKAkSDAoEdGV4dBgDIAEoCRJDCgthdHRhY2htZW50cxgEIAMo",
-            "CzIuLnRleHRzZWN1cmUuRGF0YU1lc3NhZ2UuUXVvdGUuUXVvdGVkQXR0YWNo",
-            "bWVudBprChBRdW90ZWRBdHRhY2htZW50EhMKC2NvbnRlbnRUeXBlGAEgASgJ",
-            "EhAKCGZpbGVOYW1lGAIgASgJEjAKCXRodW1ibmFpbBgDIAEoCzIdLnRleHRz",
-            "ZWN1cmUuQXR0YWNobWVudFBvaW50ZXIaqQgKB0NvbnRhY3QSMgoEbmFtZRgB",
-            "IAEoCzIkLnRleHRzZWN1cmUuRGF0YU1lc3NhZ2UuQ29udGFjdC5OYW1lEjUK",
-            "Bm51bWJlchgDIAMoCzIlLnRleHRzZWN1cmUuRGF0YU1lc3NhZ2UuQ29udGFj",
-            "dC5QaG9uZRI0CgVlbWFpbBgEIAMoCzIlLnRleHRzZWN1cmUuRGF0YU1lc3Nh",
-            "Z2UuQ29udGFjdC5FbWFpbBI+CgdhZGRyZXNzGAUgAygLMi0udGV4dHNlY3Vy",
-            "ZS5EYXRhTWVzc2FnZS5Db250YWN0LlBvc3RhbEFkZHJlc3MSNgoGYXZhdGFy",
-            "GAYgASgLMiYudGV4dHNlY3VyZS5EYXRhTWVzc2FnZS5Db250YWN0LkF2YXRh",
-            "chIUCgxvcmdhbml6YXRpb24YByABKAkadgoETmFtZRIRCglnaXZlbk5hbWUY",
-            "ASABKAkSEgoKZmFtaWx5TmFtZRgCIAEoCRIOCgZwcmVmaXgYAyABKAkSDgoG",
-            "c3VmZml4GAQgASgJEhIKCm1pZGRsZU5hbWUYBSABKAkSEwoLZGlzcGxheU5h",
-            "bWUYBiABKAkakwEKBVBob25lEg0KBXZhbHVlGAEgASgJEjgKBHR5cGUYAiAB",
-            "KA4yKi50ZXh0c2VjdXJlLkRhdGFNZXNzYWdlLkNvbnRhY3QuUGhvbmUuVHlw",
-            "ZRINCgVsYWJlbBgDIAEoCSIyCgRUeXBlEggKBEhPTUUQARIKCgZNT0JJTEUQ",
-            "AhIICgRXT1JLEAMSCgoGQ1VTVE9NEAQakwEKBUVtYWlsEg0KBXZhbHVlGAEg",
-            "ASgJEjgKBHR5cGUYAiABKA4yKi50ZXh0c2VjdXJlLkRhdGFNZXNzYWdlLkNv",
-            "bnRhY3QuRW1haWwuVHlwZRINCgVsYWJlbBgDIAEoCSIyCgRUeXBlEggKBEhP",
-            "TUUQARIKCgZNT0JJTEUQAhIICgRXT1JLEAMSCgoGQ1VTVE9NEAQa/gEKDVBv",
-            "c3RhbEFkZHJlc3MSQAoEdHlwZRgBIAEoDjIyLnRleHRzZWN1cmUuRGF0YU1l",
-            "c3NhZ2UuQ29udGFjdC5Qb3N0YWxBZGRyZXNzLlR5cGUSDQoFbGFiZWwYAiAB",
-            "KAkSDgoGc3RyZWV0GAMgASgJEg0KBXBvYm94GAQgASgJEhQKDG5laWdoYm9y",
-            "aG9vZBgFIAEoCRIMCgRjaXR5GAYgASgJEg4KBnJlZ2lvbhgHIAEoCRIQCghw",
-            "b3N0Y29kZRgIIAEoCRIPCgdjb3VudHJ5GAkgASgJIiYKBFR5cGUSCAoESE9N",
-            "RRABEggKBFdPUksQAhIKCgZDVVNUT00QAxpKCgZBdmF0YXISLQoGYXZhdGFy",
-            "GAEgASgLMh0udGV4dHNlY3VyZS5BdHRhY2htZW50UG9pbnRlchIRCglpc1By",
-            "b2ZpbGUYAiABKAgaUwoHUHJldmlldxILCgN1cmwYASABKAkSDQoFdGl0bGUY",
-            "AiABKAkSLAoFaW1hZ2UYAyABKAsyHS50ZXh0c2VjdXJlLkF0dGFjaG1lbnRQ",
-            "b2ludGVyIk0KBUZsYWdzEg8KC0VORF9TRVNTSU9OEAESGwoXRVhQSVJBVElP",
-            "Tl9USU1FUl9VUERBVEUQAhIWChJQUk9GSUxFX0tFWV9VUERBVEUQBCIeCgtO",
-            "dWxsTWVzc2FnZRIPCgdwYWRkaW5nGAEgASgMInIKDlJlY2VpcHRNZXNzYWdl",
-            "Ei0KBHR5cGUYASABKA4yHy50ZXh0c2VjdXJlLlJlY2VpcHRNZXNzYWdlLlR5",
-            "cGUSEQoJdGltZXN0YW1wGAIgAygEIh4KBFR5cGUSDAoIREVMSVZFUlkQABII",
-            "CgRSRUFEEAEiiQEKDVR5cGluZ01lc3NhZ2USEQoJdGltZXN0YW1wGAEgASgE",
-            "EjAKBmFjdGlvbhgCIAEoDjIgLnRleHRzZWN1cmUuVHlwaW5nTWVzc2FnZS5B",
-            "Y3Rpb24SDwoHZ3JvdXBJZBgDIAEoDCIiCgZBY3Rpb24SCwoHU1RBUlRFRBAA",
-            "EgsKB1NUT1BQRUQQASKoAQoIVmVyaWZpZWQSEwoLZGVzdGluYXRpb24YASAB",
-            "KAkSEwoLaWRlbnRpdHlLZXkYAiABKAwSKQoFc3RhdGUYAyABKA4yGi50ZXh0",
-            "c2VjdXJlLlZlcmlmaWVkLlN0YXRlEhMKC251bGxNZXNzYWdlGAQgASgMIjIK",
-            "BVN0YXRlEgsKB0RFRkFVTFQQABIMCghWRVJJRklFRBABEg4KClVOVkVSSUZJ",
-            "RUQQAiKvCQoLU3luY01lc3NhZ2USKgoEc2VudBgBIAEoCzIcLnRleHRzZWN1",
-            "cmUuU3luY01lc3NhZ2UuU2VudBIyCghjb250YWN0cxgCIAEoCzIgLnRleHRz",
-            "ZWN1cmUuU3luY01lc3NhZ2UuQ29udGFjdHMSLgoGZ3JvdXBzGAMgASgLMh4u",
-            "dGV4dHNlY3VyZS5TeW5jTWVzc2FnZS5Hcm91cHMSMAoHcmVxdWVzdBgEIAEo",
-            "CzIfLnRleHRzZWN1cmUuU3luY01lc3NhZ2UuUmVxdWVzdBIqCgRyZWFkGAUg",
-            "AygLMhwudGV4dHNlY3VyZS5TeW5jTWVzc2FnZS5SZWFkEjAKB2Jsb2NrZWQY",
-            "BiABKAsyHy50ZXh0c2VjdXJlLlN5bmNNZXNzYWdlLkJsb2NrZWQSJgoIdmVy",
-            "aWZpZWQYByABKAsyFC50ZXh0c2VjdXJlLlZlcmlmaWVkEjwKDWNvbmZpZ3Vy",
-            "YXRpb24YCSABKAsyJS50ZXh0c2VjdXJlLlN5bmNNZXNzYWdlLkNvbmZpZ3Vy",
-            "YXRpb24SDwoHcGFkZGluZxgIIAEoDBqYAgoEU2VudBITCgtkZXN0aW5hdGlv",
-            "bhgBIAEoCRIRCgl0aW1lc3RhbXAYAiABKAQSKAoHbWVzc2FnZRgDIAEoCzIX",
-            "LnRleHRzZWN1cmUuRGF0YU1lc3NhZ2USIAoYZXhwaXJhdGlvblN0YXJ0VGlt",
-            "ZXN0YW1wGAQgASgEElMKEnVuaWRlbnRpZmllZFN0YXR1cxgFIAMoCzI3LnRl",
-            "eHRzZWN1cmUuU3luY01lc3NhZ2UuU2VudC5VbmlkZW50aWZpZWREZWxpdmVy",
-            "eVN0YXR1cxpHChpVbmlkZW50aWZpZWREZWxpdmVyeVN0YXR1cxITCgtkZXN0",
-            "aW5hdGlvbhgBIAEoCRIUCgx1bmlkZW50aWZpZWQYAiABKAgaUAoIQ29udGFj",
-            "dHMSKwoEYmxvYhgBIAEoCzIdLnRleHRzZWN1cmUuQXR0YWNobWVudFBvaW50",
-            "ZXISFwoIY29tcGxldGUYAiABKAg6BWZhbHNlGjUKBkdyb3VwcxIrCgRibG9i",
-            "GAEgASgLMh0udGV4dHNlY3VyZS5BdHRhY2htZW50UG9pbnRlchosCgdCbG9j",
-            "a2VkEg8KB251bWJlcnMYASADKAkSEAoIZ3JvdXBJZHMYAiADKAwajAEKB1Jl",
-            "cXVlc3QSMgoEdHlwZRgBIAEoDjIkLnRleHRzZWN1cmUuU3luY01lc3NhZ2Uu",
-            "UmVxdWVzdC5UeXBlIk0KBFR5cGUSCwoHVU5LTk9XThAAEgwKCENPTlRBQ1RT",
-            "EAESCgoGR1JPVVBTEAISCwoHQkxPQ0tFRBADEhEKDUNPTkZJR1VSQVRJT04Q",
-            "BBopCgRSZWFkEg4KBnNlbmRlchgBIAEoCRIRCgl0aW1lc3RhbXAYAiABKAQa",
-            "fQoNQ29uZmlndXJhdGlvbhIUCgxyZWFkUmVjZWlwdHMYASABKAgSJgoedW5p",
-            "ZGVudGlmaWVkRGVsaXZlcnlJbmRpY2F0b3JzGAIgASgIEhgKEHR5cGluZ0lu",
-            "ZGljYXRvcnMYAyABKAgSFAoMbGlua1ByZXZpZXdzGAQgASgIIt8BChFBdHRh",
-            "Y2htZW50UG9pbnRlchIKCgJpZBgBIAEoBhITCgtjb250ZW50VHlwZRgCIAEo",
-            "CRILCgNrZXkYAyABKAwSDAoEc2l6ZRgEIAEoDRIRCgl0aHVtYm5haWwYBSAB",
-            "KAwSDgoGZGlnZXN0GAYgASgMEhAKCGZpbGVOYW1lGAcgASgJEg0KBWZsYWdz",
-            "GAggASgNEg0KBXdpZHRoGAkgASgNEg4KBmhlaWdodBgKIAEoDRIPCgdjYXB0",
-            "aW9uGAsgASgJIhoKBUZsYWdzEhEKDVZPSUNFX01FU1NBR0UQASLfAQoMR3Jv",
-            "dXBDb250ZXh0EgoKAmlkGAEgASgMEisKBHR5cGUYAiABKA4yHS50ZXh0c2Vj",
-            "dXJlLkdyb3VwQ29udGV4dC5UeXBlEgwKBG5hbWUYAyABKAkSDwoHbWVtYmVy",
-            "cxgEIAMoCRItCgZhdmF0YXIYBSABKAsyHS50ZXh0c2VjdXJlLkF0dGFjaG1l",
-            "bnRQb2ludGVyIkgKBFR5cGUSCwoHVU5LTk9XThAAEgoKBlVQREFURRABEgsK",
-            "B0RFTElWRVIQAhIICgRRVUlUEAMSEAoMUkVRVUVTVF9JTkZPEAQigQIKDkNv",
-            "bnRhY3REZXRhaWxzEg4KBm51bWJlchgBIAEoCRIMCgRuYW1lGAIgASgJEjEK",
-            "BmF2YXRhchgDIAEoCzIhLnRleHRzZWN1cmUuQ29udGFjdERldGFpbHMuQXZh",
-            "dGFyEg0KBWNvbG9yGAQgASgJEiYKCHZlcmlmaWVkGAUgASgLMhQudGV4dHNl",
-            "Y3VyZS5WZXJpZmllZBISCgpwcm9maWxlS2V5GAYgASgMEg8KB2Jsb2NrZWQY",
-            "ByABKAgSEwoLZXhwaXJlVGltZXIYCCABKA0aLQoGQXZhdGFyEhMKC2NvbnRl",
-            "bnRUeXBlGAEgASgJEg4KBmxlbmd0aBgCIAEoDSLkAQoMR3JvdXBEZXRhaWxz",
-            "EgoKAmlkGAEgASgMEgwKBG5hbWUYAiABKAkSDwoHbWVtYmVycxgDIAMoCRIv",
-            "CgZhdmF0YXIYBCABKAsyHy50ZXh0c2VjdXJlLkdyb3VwRGV0YWlscy5BdmF0",
-            "YXISFAoGYWN0aXZlGAUgASgIOgR0cnVlEhMKC2V4cGlyZVRpbWVyGAYgASgN",
-            "Eg0KBWNvbG9yGAcgASgJEg8KB2Jsb2NrZWQYCCABKAgaLQoGQXZhdGFyEhMK",
-            "C2NvbnRlbnRUeXBlGAEgASgJEg4KBmxlbmd0aBgCIAEoDUJaCitvcmcud2hp",
-            "c3BlcnN5c3RlbXMudGV4dHNlY3VyZS5pbnRlcm5hbC5wdXNoQhNTaWduYWxT",
-            "ZXJ2aWNlUHJvdG9zqgIVbGlic2lnbmFsc2VydmljZS5wdXNo"));
+            "YXRhTWVzc2FnZS5QcmV2aWV3EjAKB3N0aWNrZXIYCyABKAsyHy50ZXh0c2Vj",
+            "dXJlLkRhdGFNZXNzYWdlLlN0aWNrZXIa4wEKBVF1b3RlEgoKAmlkGAEgASgE",
+            "Eg4KBmF1dGhvchgCIAEoCRIMCgR0ZXh0GAMgASgJEkMKC2F0dGFjaG1lbnRz",
+            "GAQgAygLMi4udGV4dHNlY3VyZS5EYXRhTWVzc2FnZS5RdW90ZS5RdW90ZWRB",
+            "dHRhY2htZW50GmsKEFF1b3RlZEF0dGFjaG1lbnQSEwoLY29udGVudFR5cGUY",
+            "ASABKAkSEAoIZmlsZU5hbWUYAiABKAkSMAoJdGh1bWJuYWlsGAMgASgLMh0u",
+            "dGV4dHNlY3VyZS5BdHRhY2htZW50UG9pbnRlchqpCAoHQ29udGFjdBIyCgRu",
+            "YW1lGAEgASgLMiQudGV4dHNlY3VyZS5EYXRhTWVzc2FnZS5Db250YWN0Lk5h",
+            "bWUSNQoGbnVtYmVyGAMgAygLMiUudGV4dHNlY3VyZS5EYXRhTWVzc2FnZS5D",
+            "b250YWN0LlBob25lEjQKBWVtYWlsGAQgAygLMiUudGV4dHNlY3VyZS5EYXRh",
+            "TWVzc2FnZS5Db250YWN0LkVtYWlsEj4KB2FkZHJlc3MYBSADKAsyLS50ZXh0",
+            "c2VjdXJlLkRhdGFNZXNzYWdlLkNvbnRhY3QuUG9zdGFsQWRkcmVzcxI2CgZh",
+            "dmF0YXIYBiABKAsyJi50ZXh0c2VjdXJlLkRhdGFNZXNzYWdlLkNvbnRhY3Qu",
+            "QXZhdGFyEhQKDG9yZ2FuaXphdGlvbhgHIAEoCRp2CgROYW1lEhEKCWdpdmVu",
+            "TmFtZRgBIAEoCRISCgpmYW1pbHlOYW1lGAIgASgJEg4KBnByZWZpeBgDIAEo",
+            "CRIOCgZzdWZmaXgYBCABKAkSEgoKbWlkZGxlTmFtZRgFIAEoCRITCgtkaXNw",
+            "bGF5TmFtZRgGIAEoCRqTAQoFUGhvbmUSDQoFdmFsdWUYASABKAkSOAoEdHlw",
+            "ZRgCIAEoDjIqLnRleHRzZWN1cmUuRGF0YU1lc3NhZ2UuQ29udGFjdC5QaG9u",
+            "ZS5UeXBlEg0KBWxhYmVsGAMgASgJIjIKBFR5cGUSCAoESE9NRRABEgoKBk1P",
+            "QklMRRACEggKBFdPUksQAxIKCgZDVVNUT00QBBqTAQoFRW1haWwSDQoFdmFs",
+            "dWUYASABKAkSOAoEdHlwZRgCIAEoDjIqLnRleHRzZWN1cmUuRGF0YU1lc3Nh",
+            "Z2UuQ29udGFjdC5FbWFpbC5UeXBlEg0KBWxhYmVsGAMgASgJIjIKBFR5cGUS",
+            "CAoESE9NRRABEgoKBk1PQklMRRACEggKBFdPUksQAxIKCgZDVVNUT00QBBr+",
+            "AQoNUG9zdGFsQWRkcmVzcxJACgR0eXBlGAEgASgOMjIudGV4dHNlY3VyZS5E",
+            "YXRhTWVzc2FnZS5Db250YWN0LlBvc3RhbEFkZHJlc3MuVHlwZRINCgVsYWJl",
+            "bBgCIAEoCRIOCgZzdHJlZXQYAyABKAkSDQoFcG9ib3gYBCABKAkSFAoMbmVp",
+            "Z2hib3Job29kGAUgASgJEgwKBGNpdHkYBiABKAkSDgoGcmVnaW9uGAcgASgJ",
+            "EhAKCHBvc3Rjb2RlGAggASgJEg8KB2NvdW50cnkYCSABKAkiJgoEVHlwZRII",
+            "CgRIT01FEAESCAoEV09SSxACEgoKBkNVU1RPTRADGkoKBkF2YXRhchItCgZh",
+            "dmF0YXIYASABKAsyHS50ZXh0c2VjdXJlLkF0dGFjaG1lbnRQb2ludGVyEhEK",
+            "CWlzUHJvZmlsZRgCIAEoCBpTCgdQcmV2aWV3EgsKA3VybBgBIAEoCRINCgV0",
+            "aXRsZRgCIAEoCRIsCgVpbWFnZRgDIAEoCzIdLnRleHRzZWN1cmUuQXR0YWNo",
+            "bWVudFBvaW50ZXIaagoHU3RpY2tlchIOCgZwYWNrSWQYASABKAwSDwoHcGFj",
+            "a0tleRgCIAEoDBIRCglzdGlja2VySWQYAyABKA0SKwoEZGF0YRgEIAEoCzId",
+            "LnRleHRzZWN1cmUuQXR0YWNobWVudFBvaW50ZXIiTQoFRmxhZ3MSDwoLRU5E",
+            "X1NFU1NJT04QARIbChdFWFBJUkFUSU9OX1RJTUVSX1VQREFURRACEhYKElBS",
+            "T0ZJTEVfS0VZX1VQREFURRAEIh4KC051bGxNZXNzYWdlEg8KB3BhZGRpbmcY",
+            "ASABKAwicgoOUmVjZWlwdE1lc3NhZ2USLQoEdHlwZRgBIAEoDjIfLnRleHRz",
+            "ZWN1cmUuUmVjZWlwdE1lc3NhZ2UuVHlwZRIRCgl0aW1lc3RhbXAYAiADKAQi",
+            "HgoEVHlwZRIMCghERUxJVkVSWRAAEggKBFJFQUQQASKJAQoNVHlwaW5nTWVz",
+            "c2FnZRIRCgl0aW1lc3RhbXAYASABKAQSMAoGYWN0aW9uGAIgASgOMiAudGV4",
+            "dHNlY3VyZS5UeXBpbmdNZXNzYWdlLkFjdGlvbhIPCgdncm91cElkGAMgASgM",
+            "IiIKBkFjdGlvbhILCgdTVEFSVEVEEAASCwoHU1RPUFBFRBABIqgBCghWZXJp",
+            "ZmllZBITCgtkZXN0aW5hdGlvbhgBIAEoCRITCgtpZGVudGl0eUtleRgCIAEo",
+            "DBIpCgVzdGF0ZRgDIAEoDjIaLnRleHRzZWN1cmUuVmVyaWZpZWQuU3RhdGUS",
+            "EwoLbnVsbE1lc3NhZ2UYBCABKAwiMgoFU3RhdGUSCwoHREVGQVVMVBAAEgwK",
+            "CFZFUklGSUVEEAESDgoKVU5WRVJJRklFRBACIpcLCgtTeW5jTWVzc2FnZRIq",
+            "CgRzZW50GAEgASgLMhwudGV4dHNlY3VyZS5TeW5jTWVzc2FnZS5TZW50EjIK",
+            "CGNvbnRhY3RzGAIgASgLMiAudGV4dHNlY3VyZS5TeW5jTWVzc2FnZS5Db250",
+            "YWN0cxIuCgZncm91cHMYAyABKAsyHi50ZXh0c2VjdXJlLlN5bmNNZXNzYWdl",
+            "Lkdyb3VwcxIwCgdyZXF1ZXN0GAQgASgLMh8udGV4dHNlY3VyZS5TeW5jTWVz",
+            "c2FnZS5SZXF1ZXN0EioKBHJlYWQYBSADKAsyHC50ZXh0c2VjdXJlLlN5bmNN",
+            "ZXNzYWdlLlJlYWQSMAoHYmxvY2tlZBgGIAEoCzIfLnRleHRzZWN1cmUuU3lu",
+            "Y01lc3NhZ2UuQmxvY2tlZBImCgh2ZXJpZmllZBgHIAEoCzIULnRleHRzZWN1",
+            "cmUuVmVyaWZpZWQSPAoNY29uZmlndXJhdGlvbhgJIAEoCzIlLnRleHRzZWN1",
+            "cmUuU3luY01lc3NhZ2UuQ29uZmlndXJhdGlvbhIPCgdwYWRkaW5nGAggASgM",
+            "EkoKFHN0aWNrZXJQYWNrT3BlcmF0aW9uGAogAygLMiwudGV4dHNlY3VyZS5T",
+            "eW5jTWVzc2FnZS5TdGlja2VyUGFja09wZXJhdGlvbhqYAgoEU2VudBITCgtk",
+            "ZXN0aW5hdGlvbhgBIAEoCRIRCgl0aW1lc3RhbXAYAiABKAQSKAoHbWVzc2Fn",
+            "ZRgDIAEoCzIXLnRleHRzZWN1cmUuRGF0YU1lc3NhZ2USIAoYZXhwaXJhdGlv",
+            "blN0YXJ0VGltZXN0YW1wGAQgASgEElMKEnVuaWRlbnRpZmllZFN0YXR1cxgF",
+            "IAMoCzI3LnRleHRzZWN1cmUuU3luY01lc3NhZ2UuU2VudC5VbmlkZW50aWZp",
+            "ZWREZWxpdmVyeVN0YXR1cxpHChpVbmlkZW50aWZpZWREZWxpdmVyeVN0YXR1",
+            "cxITCgtkZXN0aW5hdGlvbhgBIAEoCRIUCgx1bmlkZW50aWZpZWQYAiABKAga",
+            "UAoIQ29udGFjdHMSKwoEYmxvYhgBIAEoCzIdLnRleHRzZWN1cmUuQXR0YWNo",
+            "bWVudFBvaW50ZXISFwoIY29tcGxldGUYAiABKAg6BWZhbHNlGjUKBkdyb3Vw",
+            "cxIrCgRibG9iGAEgASgLMh0udGV4dHNlY3VyZS5BdHRhY2htZW50UG9pbnRl",
+            "chosCgdCbG9ja2VkEg8KB251bWJlcnMYASADKAkSEAoIZ3JvdXBJZHMYAiAD",
+            "KAwajAEKB1JlcXVlc3QSMgoEdHlwZRgBIAEoDjIkLnRleHRzZWN1cmUuU3lu",
+            "Y01lc3NhZ2UuUmVxdWVzdC5UeXBlIk0KBFR5cGUSCwoHVU5LTk9XThAAEgwK",
+            "CENPTlRBQ1RTEAESCgoGR1JPVVBTEAISCwoHQkxPQ0tFRBADEhEKDUNPTkZJ",
+            "R1VSQVRJT04QBBopCgRSZWFkEg4KBnNlbmRlchgBIAEoCRIRCgl0aW1lc3Rh",
+            "bXAYAiABKAQafQoNQ29uZmlndXJhdGlvbhIUCgxyZWFkUmVjZWlwdHMYASAB",
+            "KAgSJgoedW5pZGVudGlmaWVkRGVsaXZlcnlJbmRpY2F0b3JzGAIgASgIEhgK",
+            "EHR5cGluZ0luZGljYXRvcnMYAyABKAgSFAoMbGlua1ByZXZpZXdzGAQgASgI",
+            "GpkBChRTdGlja2VyUGFja09wZXJhdGlvbhIOCgZwYWNrSWQYASABKAwSDwoH",
+            "cGFja0tleRgCIAEoDBI/CgR0eXBlGAMgASgOMjEudGV4dHNlY3VyZS5TeW5j",
+            "TWVzc2FnZS5TdGlja2VyUGFja09wZXJhdGlvbi5UeXBlIh8KBFR5cGUSCwoH",
+            "SU5TVEFMTBAAEgoKBlJFTU9WRRABIt8BChFBdHRhY2htZW50UG9pbnRlchIK",
+            "CgJpZBgBIAEoBhITCgtjb250ZW50VHlwZRgCIAEoCRILCgNrZXkYAyABKAwS",
+            "DAoEc2l6ZRgEIAEoDRIRCgl0aHVtYm5haWwYBSABKAwSDgoGZGlnZXN0GAYg",
+            "ASgMEhAKCGZpbGVOYW1lGAcgASgJEg0KBWZsYWdzGAggASgNEg0KBXdpZHRo",
+            "GAkgASgNEg4KBmhlaWdodBgKIAEoDRIPCgdjYXB0aW9uGAsgASgJIhoKBUZs",
+            "YWdzEhEKDVZPSUNFX01FU1NBR0UQASLfAQoMR3JvdXBDb250ZXh0EgoKAmlk",
+            "GAEgASgMEisKBHR5cGUYAiABKA4yHS50ZXh0c2VjdXJlLkdyb3VwQ29udGV4",
+            "dC5UeXBlEgwKBG5hbWUYAyABKAkSDwoHbWVtYmVycxgEIAMoCRItCgZhdmF0",
+            "YXIYBSABKAsyHS50ZXh0c2VjdXJlLkF0dGFjaG1lbnRQb2ludGVyIkgKBFR5",
+            "cGUSCwoHVU5LTk9XThAAEgoKBlVQREFURRABEgsKB0RFTElWRVIQAhIICgRR",
+            "VUlUEAMSEAoMUkVRVUVTVF9JTkZPEAQigQIKDkNvbnRhY3REZXRhaWxzEg4K",
+            "Bm51bWJlchgBIAEoCRIMCgRuYW1lGAIgASgJEjEKBmF2YXRhchgDIAEoCzIh",
+            "LnRleHRzZWN1cmUuQ29udGFjdERldGFpbHMuQXZhdGFyEg0KBWNvbG9yGAQg",
+            "ASgJEiYKCHZlcmlmaWVkGAUgASgLMhQudGV4dHNlY3VyZS5WZXJpZmllZBIS",
+            "Cgpwcm9maWxlS2V5GAYgASgMEg8KB2Jsb2NrZWQYByABKAgSEwoLZXhwaXJl",
+            "VGltZXIYCCABKA0aLQoGQXZhdGFyEhMKC2NvbnRlbnRUeXBlGAEgASgJEg4K",
+            "Bmxlbmd0aBgCIAEoDSLkAQoMR3JvdXBEZXRhaWxzEgoKAmlkGAEgASgMEgwK",
+            "BG5hbWUYAiABKAkSDwoHbWVtYmVycxgDIAMoCRIvCgZhdmF0YXIYBCABKAsy",
+            "Hy50ZXh0c2VjdXJlLkdyb3VwRGV0YWlscy5BdmF0YXISFAoGYWN0aXZlGAUg",
+            "ASgIOgR0cnVlEhMKC2V4cGlyZVRpbWVyGAYgASgNEg0KBWNvbG9yGAcgASgJ",
+            "Eg8KB2Jsb2NrZWQYCCABKAgaLQoGQXZhdGFyEhMKC2NvbnRlbnRUeXBlGAEg",
+            "ASgJEg4KBmxlbmd0aBgCIAEoDUJaCitvcmcud2hpc3BlcnN5c3RlbXMudGV4",
+            "dHNlY3VyZS5pbnRlcm5hbC5wdXNoQhNTaWduYWxTZXJ2aWNlUHJvdG9zqgIV",
+            "bGlic2lnbmFsc2VydmljZS5wdXNo"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
@@ -159,24 +168,26 @@ namespace libsignalservice.push {
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.CallMessage.Types.IceUpdate), global::libsignalservice.push.CallMessage.Types.IceUpdate.Parser, new[]{ "Id", "SdpMid", "SdpMLineIndex", "Sdp" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.CallMessage.Types.Busy), global::libsignalservice.push.CallMessage.Types.Busy.Parser, new[]{ "Id" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.CallMessage.Types.Hangup), global::libsignalservice.push.CallMessage.Types.Hangup.Parser, new[]{ "Id" }, null, null, null, null)}),
-            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.DataMessage), global::libsignalservice.push.DataMessage.Parser, new[]{ "Body", "Attachments", "Group", "Flags", "ExpireTimer", "ProfileKey", "Timestamp", "Quote", "Contact", "Preview" }, null, new[]{ typeof(global::libsignalservice.push.DataMessage.Types.Flags) }, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.DataMessage.Types.Quote), global::libsignalservice.push.DataMessage.Types.Quote.Parser, new[]{ "Id", "Author", "Text", "Attachments" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.DataMessage.Types.Quote.Types.QuotedAttachment), global::libsignalservice.push.DataMessage.Types.Quote.Types.QuotedAttachment.Parser, new[]{ "ContentType", "FileName", "Thumbnail" }, null, null, null, null)}),
+            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.DataMessage), global::libsignalservice.push.DataMessage.Parser, new[]{ "Body", "Attachments", "Group", "Flags", "ExpireTimer", "ProfileKey", "Timestamp", "Quote", "Contact", "Preview", "Sticker" }, null, new[]{ typeof(global::libsignalservice.push.DataMessage.Types.Flags) }, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.DataMessage.Types.Quote), global::libsignalservice.push.DataMessage.Types.Quote.Parser, new[]{ "Id", "Author", "Text", "Attachments" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.DataMessage.Types.Quote.Types.QuotedAttachment), global::libsignalservice.push.DataMessage.Types.Quote.Types.QuotedAttachment.Parser, new[]{ "ContentType", "FileName", "Thumbnail" }, null, null, null, null)}),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.DataMessage.Types.Contact), global::libsignalservice.push.DataMessage.Types.Contact.Parser, new[]{ "Name", "Number", "Email", "Address", "Avatar", "Organization" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.DataMessage.Types.Contact.Types.Name), global::libsignalservice.push.DataMessage.Types.Contact.Types.Name.Parser, new[]{ "GivenName", "FamilyName", "Prefix", "Suffix", "MiddleName", "DisplayName" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.DataMessage.Types.Contact.Types.Phone), global::libsignalservice.push.DataMessage.Types.Contact.Types.Phone.Parser, new[]{ "Value", "Type", "Label" }, null, new[]{ typeof(global::libsignalservice.push.DataMessage.Types.Contact.Types.Phone.Types.Type) }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.DataMessage.Types.Contact.Types.Email), global::libsignalservice.push.DataMessage.Types.Contact.Types.Email.Parser, new[]{ "Value", "Type", "Label" }, null, new[]{ typeof(global::libsignalservice.push.DataMessage.Types.Contact.Types.Email.Types.Type) }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.DataMessage.Types.Contact.Types.PostalAddress), global::libsignalservice.push.DataMessage.Types.Contact.Types.PostalAddress.Parser, new[]{ "Type", "Label", "Street", "Pobox", "Neighborhood", "City", "Region", "Postcode", "Country" }, null, new[]{ typeof(global::libsignalservice.push.DataMessage.Types.Contact.Types.PostalAddress.Types.Type) }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.DataMessage.Types.Contact.Types.Avatar), global::libsignalservice.push.DataMessage.Types.Contact.Types.Avatar.Parser, new[]{ "Avatar_", "IsProfile" }, null, null, null, null)}),
-            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.DataMessage.Types.Preview), global::libsignalservice.push.DataMessage.Types.Preview.Parser, new[]{ "Url", "Title", "Image" }, null, null, null, null)}),
+            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.DataMessage.Types.Preview), global::libsignalservice.push.DataMessage.Types.Preview.Parser, new[]{ "Url", "Title", "Image" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.DataMessage.Types.Sticker), global::libsignalservice.push.DataMessage.Types.Sticker.Parser, new[]{ "PackId", "PackKey", "StickerId", "Data" }, null, null, null, null)}),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.NullMessage), global::libsignalservice.push.NullMessage.Parser, new[]{ "Padding" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.ReceiptMessage), global::libsignalservice.push.ReceiptMessage.Parser, new[]{ "Type", "Timestamp" }, null, new[]{ typeof(global::libsignalservice.push.ReceiptMessage.Types.Type) }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.TypingMessage), global::libsignalservice.push.TypingMessage.Parser, new[]{ "Timestamp", "Action", "GroupId" }, null, new[]{ typeof(global::libsignalservice.push.TypingMessage.Types.Action) }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.Verified), global::libsignalservice.push.Verified.Parser, new[]{ "Destination", "IdentityKey", "State", "NullMessage" }, null, new[]{ typeof(global::libsignalservice.push.Verified.Types.State) }, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage), global::libsignalservice.push.SyncMessage.Parser, new[]{ "Sent", "Contacts", "Groups", "Request", "Read", "Blocked", "Verified", "Configuration", "Padding" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Sent), global::libsignalservice.push.SyncMessage.Types.Sent.Parser, new[]{ "Destination", "Timestamp", "Message", "ExpirationStartTimestamp", "UnidentifiedStatus" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Sent.Types.UnidentifiedDeliveryStatus), global::libsignalservice.push.SyncMessage.Types.Sent.Types.UnidentifiedDeliveryStatus.Parser, new[]{ "Destination", "Unidentified" }, null, null, null, null)}),
+            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage), global::libsignalservice.push.SyncMessage.Parser, new[]{ "Sent", "Contacts", "Groups", "Request", "Read", "Blocked", "Verified", "Configuration", "Padding", "StickerPackOperation" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Sent), global::libsignalservice.push.SyncMessage.Types.Sent.Parser, new[]{ "Destination", "Timestamp", "Message", "ExpirationStartTimestamp", "UnidentifiedStatus" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Sent.Types.UnidentifiedDeliveryStatus), global::libsignalservice.push.SyncMessage.Types.Sent.Types.UnidentifiedDeliveryStatus.Parser, new[]{ "Destination", "Unidentified" }, null, null, null, null)}),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Contacts), global::libsignalservice.push.SyncMessage.Types.Contacts.Parser, new[]{ "Blob", "Complete" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Groups), global::libsignalservice.push.SyncMessage.Types.Groups.Parser, new[]{ "Blob" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Blocked), global::libsignalservice.push.SyncMessage.Types.Blocked.Parser, new[]{ "Numbers", "GroupIds" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Request), global::libsignalservice.push.SyncMessage.Types.Request.Parser, new[]{ "Type" }, null, new[]{ typeof(global::libsignalservice.push.SyncMessage.Types.Request.Types.Type) }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Read), global::libsignalservice.push.SyncMessage.Types.Read.Parser, new[]{ "Sender", "Timestamp" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Configuration), global::libsignalservice.push.SyncMessage.Types.Configuration.Parser, new[]{ "ReadReceipts", "UnidentifiedDeliveryIndicators", "TypingIndicators", "LinkPreviews" }, null, null, null, null)}),
+            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Configuration), global::libsignalservice.push.SyncMessage.Types.Configuration.Parser, new[]{ "ReadReceipts", "UnidentifiedDeliveryIndicators", "TypingIndicators", "LinkPreviews" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.StickerPackOperation), global::libsignalservice.push.SyncMessage.Types.StickerPackOperation.Parser, new[]{ "PackId", "PackKey", "Type" }, null, new[]{ typeof(global::libsignalservice.push.SyncMessage.Types.StickerPackOperation.Types.Type) }, null, null)}),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.AttachmentPointer), global::libsignalservice.push.AttachmentPointer.Parser, new[]{ "Id", "ContentType", "Key", "Size", "Thumbnail", "Digest", "FileName", "Flags", "Width", "Height", "Caption" }, null, new[]{ typeof(global::libsignalservice.push.AttachmentPointer.Types.Flags) }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.GroupContext), global::libsignalservice.push.GroupContext.Parser, new[]{ "Id", "Type", "Name", "Members", "Avatar" }, null, new[]{ typeof(global::libsignalservice.push.GroupContext.Types.Type) }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.ContactDetails), global::libsignalservice.push.ContactDetails.Parser, new[]{ "Number", "Name", "Avatar", "Color", "Verified", "ProfileKey", "Blocked", "ExpireTimer" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.ContactDetails.Types.Avatar), global::libsignalservice.push.ContactDetails.Types.Avatar.Parser, new[]{ "ContentType", "Length" }, null, null, null, null)}),
@@ -2203,6 +2214,7 @@ namespace libsignalservice.push {
       quote_ = other.quote_ != null ? other.quote_.Clone() : null;
       contact_ = other.contact_.Clone();
       preview_ = other.preview_.Clone();
+      sticker_ = other.sticker_ != null ? other.sticker_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -2381,6 +2393,17 @@ namespace libsignalservice.push {
       get { return preview_; }
     }
 
+    /// <summary>Field number for the "sticker" field.</summary>
+    public const int StickerFieldNumber = 11;
+    private global::libsignalservice.push.DataMessage.Types.Sticker sticker_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::libsignalservice.push.DataMessage.Types.Sticker Sticker {
+      get { return sticker_; }
+      set {
+        sticker_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as DataMessage);
@@ -2404,6 +2427,7 @@ namespace libsignalservice.push {
       if (!object.Equals(Quote, other.Quote)) return false;
       if(!contact_.Equals(other.contact_)) return false;
       if(!preview_.Equals(other.preview_)) return false;
+      if (!object.Equals(Sticker, other.Sticker)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -2420,6 +2444,7 @@ namespace libsignalservice.push {
       if (quote_ != null) hash ^= Quote.GetHashCode();
       hash ^= contact_.GetHashCode();
       hash ^= preview_.GetHashCode();
+      if (sticker_ != null) hash ^= Sticker.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -2464,6 +2489,10 @@ namespace libsignalservice.push {
       }
       contact_.WriteTo(output, _repeated_contact_codec);
       preview_.WriteTo(output, _repeated_preview_codec);
+      if (sticker_ != null) {
+        output.WriteRawTag(90);
+        output.WriteMessage(Sticker);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -2496,6 +2525,9 @@ namespace libsignalservice.push {
       }
       size += contact_.CalculateSize(_repeated_contact_codec);
       size += preview_.CalculateSize(_repeated_preview_codec);
+      if (sticker_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Sticker);
+      }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -2537,6 +2569,12 @@ namespace libsignalservice.push {
       }
       contact_.Add(other.contact_);
       preview_.Add(other.preview_);
+      if (other.sticker_ != null) {
+        if (sticker_ == null) {
+          Sticker = new global::libsignalservice.push.DataMessage.Types.Sticker();
+        }
+        Sticker.MergeFrom(other.Sticker);
+      }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -2592,6 +2630,13 @@ namespace libsignalservice.push {
           }
           case 82: {
             preview_.AddEntriesFrom(input, _repeated_preview_codec);
+            break;
+          }
+          case 90: {
+            if (sticker_ == null) {
+              Sticker = new global::libsignalservice.push.DataMessage.Types.Sticker();
+            }
+            input.ReadMessage(Sticker);
             break;
           }
         }
@@ -5037,6 +5082,264 @@ namespace libsignalservice.push {
 
       }
 
+      public sealed partial class Sticker : pb::IMessage<Sticker> {
+        private static readonly pb::MessageParser<Sticker> _parser = new pb::MessageParser<Sticker>(() => new Sticker());
+        private pb::UnknownFieldSet _unknownFields;
+        private int _hasBits0;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public static pb::MessageParser<Sticker> Parser { get { return _parser; } }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public static pbr::MessageDescriptor Descriptor {
+          get { return global::libsignalservice.push.DataMessage.Descriptor.NestedTypes[3]; }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        pbr::MessageDescriptor pb::IMessage.Descriptor {
+          get { return Descriptor; }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public Sticker() {
+          OnConstruction();
+        }
+
+        partial void OnConstruction();
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public Sticker(Sticker other) : this() {
+          _hasBits0 = other._hasBits0;
+          packId_ = other.packId_;
+          packKey_ = other.packKey_;
+          stickerId_ = other.stickerId_;
+          data_ = other.data_ != null ? other.data_.Clone() : null;
+          _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public Sticker Clone() {
+          return new Sticker(this);
+        }
+
+        /// <summary>Field number for the "packId" field.</summary>
+        public const int PackIdFieldNumber = 1;
+        private readonly static pb::ByteString PackIdDefaultValue = pb::ByteString.Empty;
+
+        private pb::ByteString packId_;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public pb::ByteString PackId {
+          get { return packId_ ?? PackIdDefaultValue; }
+          set {
+            packId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+          }
+        }
+        /// <summary>Gets whether the "packId" field is set</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public bool HasPackId {
+          get { return packId_ != null; }
+        }
+        /// <summary>Clears the value of the "packId" field</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void ClearPackId() {
+          packId_ = null;
+        }
+
+        /// <summary>Field number for the "packKey" field.</summary>
+        public const int PackKeyFieldNumber = 2;
+        private readonly static pb::ByteString PackKeyDefaultValue = pb::ByteString.Empty;
+
+        private pb::ByteString packKey_;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public pb::ByteString PackKey {
+          get { return packKey_ ?? PackKeyDefaultValue; }
+          set {
+            packKey_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+          }
+        }
+        /// <summary>Gets whether the "packKey" field is set</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public bool HasPackKey {
+          get { return packKey_ != null; }
+        }
+        /// <summary>Clears the value of the "packKey" field</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void ClearPackKey() {
+          packKey_ = null;
+        }
+
+        /// <summary>Field number for the "stickerId" field.</summary>
+        public const int StickerIdFieldNumber = 3;
+        private readonly static uint StickerIdDefaultValue = 0;
+
+        private uint stickerId_;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public uint StickerId {
+          get { if ((_hasBits0 & 1) != 0) { return stickerId_; } else { return StickerIdDefaultValue; } }
+          set {
+            _hasBits0 |= 1;
+            stickerId_ = value;
+          }
+        }
+        /// <summary>Gets whether the "stickerId" field is set</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public bool HasStickerId {
+          get { return (_hasBits0 & 1) != 0; }
+        }
+        /// <summary>Clears the value of the "stickerId" field</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void ClearStickerId() {
+          _hasBits0 &= ~1;
+        }
+
+        /// <summary>Field number for the "data" field.</summary>
+        public const int DataFieldNumber = 4;
+        private global::libsignalservice.push.AttachmentPointer data_;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public global::libsignalservice.push.AttachmentPointer Data {
+          get { return data_; }
+          set {
+            data_ = value;
+          }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public override bool Equals(object other) {
+          return Equals(other as Sticker);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public bool Equals(Sticker other) {
+          if (ReferenceEquals(other, null)) {
+            return false;
+          }
+          if (ReferenceEquals(other, this)) {
+            return true;
+          }
+          if (PackId != other.PackId) return false;
+          if (PackKey != other.PackKey) return false;
+          if (StickerId != other.StickerId) return false;
+          if (!object.Equals(Data, other.Data)) return false;
+          return Equals(_unknownFields, other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public override int GetHashCode() {
+          int hash = 1;
+          if (HasPackId) hash ^= PackId.GetHashCode();
+          if (HasPackKey) hash ^= PackKey.GetHashCode();
+          if (HasStickerId) hash ^= StickerId.GetHashCode();
+          if (data_ != null) hash ^= Data.GetHashCode();
+          if (_unknownFields != null) {
+            hash ^= _unknownFields.GetHashCode();
+          }
+          return hash;
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public override string ToString() {
+          return pb::JsonFormatter.ToDiagnosticString(this);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void WriteTo(pb::CodedOutputStream output) {
+          if (HasPackId) {
+            output.WriteRawTag(10);
+            output.WriteBytes(PackId);
+          }
+          if (HasPackKey) {
+            output.WriteRawTag(18);
+            output.WriteBytes(PackKey);
+          }
+          if (HasStickerId) {
+            output.WriteRawTag(24);
+            output.WriteUInt32(StickerId);
+          }
+          if (data_ != null) {
+            output.WriteRawTag(34);
+            output.WriteMessage(Data);
+          }
+          if (_unknownFields != null) {
+            _unknownFields.WriteTo(output);
+          }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public int CalculateSize() {
+          int size = 0;
+          if (HasPackId) {
+            size += 1 + pb::CodedOutputStream.ComputeBytesSize(PackId);
+          }
+          if (HasPackKey) {
+            size += 1 + pb::CodedOutputStream.ComputeBytesSize(PackKey);
+          }
+          if (HasStickerId) {
+            size += 1 + pb::CodedOutputStream.ComputeUInt32Size(StickerId);
+          }
+          if (data_ != null) {
+            size += 1 + pb::CodedOutputStream.ComputeMessageSize(Data);
+          }
+          if (_unknownFields != null) {
+            size += _unknownFields.CalculateSize();
+          }
+          return size;
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void MergeFrom(Sticker other) {
+          if (other == null) {
+            return;
+          }
+          if (other.HasPackId) {
+            PackId = other.PackId;
+          }
+          if (other.HasPackKey) {
+            PackKey = other.PackKey;
+          }
+          if (other.HasStickerId) {
+            StickerId = other.StickerId;
+          }
+          if (other.data_ != null) {
+            if (data_ == null) {
+              Data = new global::libsignalservice.push.AttachmentPointer();
+            }
+            Data.MergeFrom(other.Data);
+          }
+          _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void MergeFrom(pb::CodedInputStream input) {
+          uint tag;
+          while ((tag = input.ReadTag()) != 0) {
+            switch(tag) {
+              default:
+                _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+                break;
+              case 10: {
+                PackId = input.ReadBytes();
+                break;
+              }
+              case 18: {
+                PackKey = input.ReadBytes();
+                break;
+              }
+              case 24: {
+                StickerId = input.ReadUInt32();
+                break;
+              }
+              case 34: {
+                if (data_ == null) {
+                  Data = new global::libsignalservice.push.AttachmentPointer();
+                }
+                input.ReadMessage(Data);
+                break;
+              }
+            }
+          }
+        }
+
+      }
+
     }
     #endregion
 
@@ -5908,6 +6211,7 @@ namespace libsignalservice.push {
       verified_ = other.verified_ != null ? other.verified_.Clone() : null;
       configuration_ = other.configuration_ != null ? other.configuration_.Clone() : null;
       padding_ = other.padding_;
+      stickerPackOperation_ = other.stickerPackOperation_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -6026,6 +6330,16 @@ namespace libsignalservice.push {
       padding_ = null;
     }
 
+    /// <summary>Field number for the "stickerPackOperation" field.</summary>
+    public const int StickerPackOperationFieldNumber = 10;
+    private static readonly pb::FieldCodec<global::libsignalservice.push.SyncMessage.Types.StickerPackOperation> _repeated_stickerPackOperation_codec
+        = pb::FieldCodec.ForMessage(82, global::libsignalservice.push.SyncMessage.Types.StickerPackOperation.Parser);
+    private readonly pbc::RepeatedField<global::libsignalservice.push.SyncMessage.Types.StickerPackOperation> stickerPackOperation_ = new pbc::RepeatedField<global::libsignalservice.push.SyncMessage.Types.StickerPackOperation>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<global::libsignalservice.push.SyncMessage.Types.StickerPackOperation> StickerPackOperation {
+      get { return stickerPackOperation_; }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as SyncMessage);
@@ -6048,6 +6362,7 @@ namespace libsignalservice.push {
       if (!object.Equals(Verified, other.Verified)) return false;
       if (!object.Equals(Configuration, other.Configuration)) return false;
       if (Padding != other.Padding) return false;
+      if(!stickerPackOperation_.Equals(other.stickerPackOperation_)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -6063,6 +6378,7 @@ namespace libsignalservice.push {
       if (verified_ != null) hash ^= Verified.GetHashCode();
       if (configuration_ != null) hash ^= Configuration.GetHashCode();
       if (HasPadding) hash ^= Padding.GetHashCode();
+      hash ^= stickerPackOperation_.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -6109,6 +6425,7 @@ namespace libsignalservice.push {
         output.WriteRawTag(74);
         output.WriteMessage(Configuration);
       }
+      stickerPackOperation_.WriteTo(output, _repeated_stickerPackOperation_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -6142,6 +6459,7 @@ namespace libsignalservice.push {
       if (HasPadding) {
         size += 1 + pb::CodedOutputStream.ComputeBytesSize(Padding);
       }
+      size += stickerPackOperation_.CalculateSize(_repeated_stickerPackOperation_codec);
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -6199,6 +6517,7 @@ namespace libsignalservice.push {
       if (other.HasPadding) {
         Padding = other.Padding;
       }
+      stickerPackOperation_.Add(other.stickerPackOperation_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -6265,6 +6584,10 @@ namespace libsignalservice.push {
               Configuration = new global::libsignalservice.push.SyncMessage.Types.Configuration();
             }
             input.ReadMessage(Configuration);
+            break;
+          }
+          case 82: {
+            stickerPackOperation_.AddEntriesFrom(input, _repeated_stickerPackOperation_codec);
             break;
           }
         }
@@ -7806,6 +8129,242 @@ namespace libsignalservice.push {
             }
           }
         }
+
+      }
+
+      public sealed partial class StickerPackOperation : pb::IMessage<StickerPackOperation> {
+        private static readonly pb::MessageParser<StickerPackOperation> _parser = new pb::MessageParser<StickerPackOperation>(() => new StickerPackOperation());
+        private pb::UnknownFieldSet _unknownFields;
+        private int _hasBits0;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public static pb::MessageParser<StickerPackOperation> Parser { get { return _parser; } }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public static pbr::MessageDescriptor Descriptor {
+          get { return global::libsignalservice.push.SyncMessage.Descriptor.NestedTypes[7]; }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        pbr::MessageDescriptor pb::IMessage.Descriptor {
+          get { return Descriptor; }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public StickerPackOperation() {
+          OnConstruction();
+        }
+
+        partial void OnConstruction();
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public StickerPackOperation(StickerPackOperation other) : this() {
+          _hasBits0 = other._hasBits0;
+          packId_ = other.packId_;
+          packKey_ = other.packKey_;
+          type_ = other.type_;
+          _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public StickerPackOperation Clone() {
+          return new StickerPackOperation(this);
+        }
+
+        /// <summary>Field number for the "packId" field.</summary>
+        public const int PackIdFieldNumber = 1;
+        private readonly static pb::ByteString PackIdDefaultValue = pb::ByteString.Empty;
+
+        private pb::ByteString packId_;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public pb::ByteString PackId {
+          get { return packId_ ?? PackIdDefaultValue; }
+          set {
+            packId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+          }
+        }
+        /// <summary>Gets whether the "packId" field is set</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public bool HasPackId {
+          get { return packId_ != null; }
+        }
+        /// <summary>Clears the value of the "packId" field</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void ClearPackId() {
+          packId_ = null;
+        }
+
+        /// <summary>Field number for the "packKey" field.</summary>
+        public const int PackKeyFieldNumber = 2;
+        private readonly static pb::ByteString PackKeyDefaultValue = pb::ByteString.Empty;
+
+        private pb::ByteString packKey_;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public pb::ByteString PackKey {
+          get { return packKey_ ?? PackKeyDefaultValue; }
+          set {
+            packKey_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+          }
+        }
+        /// <summary>Gets whether the "packKey" field is set</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public bool HasPackKey {
+          get { return packKey_ != null; }
+        }
+        /// <summary>Clears the value of the "packKey" field</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void ClearPackKey() {
+          packKey_ = null;
+        }
+
+        /// <summary>Field number for the "type" field.</summary>
+        public const int TypeFieldNumber = 3;
+        private readonly static global::libsignalservice.push.SyncMessage.Types.StickerPackOperation.Types.Type TypeDefaultValue = global::libsignalservice.push.SyncMessage.Types.StickerPackOperation.Types.Type.Install;
+
+        private global::libsignalservice.push.SyncMessage.Types.StickerPackOperation.Types.Type type_;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public global::libsignalservice.push.SyncMessage.Types.StickerPackOperation.Types.Type Type {
+          get { if ((_hasBits0 & 1) != 0) { return type_; } else { return TypeDefaultValue; } }
+          set {
+            _hasBits0 |= 1;
+            type_ = value;
+          }
+        }
+        /// <summary>Gets whether the "type" field is set</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public bool HasType {
+          get { return (_hasBits0 & 1) != 0; }
+        }
+        /// <summary>Clears the value of the "type" field</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void ClearType() {
+          _hasBits0 &= ~1;
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public override bool Equals(object other) {
+          return Equals(other as StickerPackOperation);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public bool Equals(StickerPackOperation other) {
+          if (ReferenceEquals(other, null)) {
+            return false;
+          }
+          if (ReferenceEquals(other, this)) {
+            return true;
+          }
+          if (PackId != other.PackId) return false;
+          if (PackKey != other.PackKey) return false;
+          if (Type != other.Type) return false;
+          return Equals(_unknownFields, other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public override int GetHashCode() {
+          int hash = 1;
+          if (HasPackId) hash ^= PackId.GetHashCode();
+          if (HasPackKey) hash ^= PackKey.GetHashCode();
+          if (HasType) hash ^= Type.GetHashCode();
+          if (_unknownFields != null) {
+            hash ^= _unknownFields.GetHashCode();
+          }
+          return hash;
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public override string ToString() {
+          return pb::JsonFormatter.ToDiagnosticString(this);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void WriteTo(pb::CodedOutputStream output) {
+          if (HasPackId) {
+            output.WriteRawTag(10);
+            output.WriteBytes(PackId);
+          }
+          if (HasPackKey) {
+            output.WriteRawTag(18);
+            output.WriteBytes(PackKey);
+          }
+          if (HasType) {
+            output.WriteRawTag(24);
+            output.WriteEnum((int) Type);
+          }
+          if (_unknownFields != null) {
+            _unknownFields.WriteTo(output);
+          }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public int CalculateSize() {
+          int size = 0;
+          if (HasPackId) {
+            size += 1 + pb::CodedOutputStream.ComputeBytesSize(PackId);
+          }
+          if (HasPackKey) {
+            size += 1 + pb::CodedOutputStream.ComputeBytesSize(PackKey);
+          }
+          if (HasType) {
+            size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Type);
+          }
+          if (_unknownFields != null) {
+            size += _unknownFields.CalculateSize();
+          }
+          return size;
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void MergeFrom(StickerPackOperation other) {
+          if (other == null) {
+            return;
+          }
+          if (other.HasPackId) {
+            PackId = other.PackId;
+          }
+          if (other.HasPackKey) {
+            PackKey = other.PackKey;
+          }
+          if (other.HasType) {
+            Type = other.Type;
+          }
+          _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void MergeFrom(pb::CodedInputStream input) {
+          uint tag;
+          while ((tag = input.ReadTag()) != 0) {
+            switch(tag) {
+              default:
+                _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+                break;
+              case 10: {
+                PackId = input.ReadBytes();
+                break;
+              }
+              case 18: {
+                PackKey = input.ReadBytes();
+                break;
+              }
+              case 24: {
+                Type = (global::libsignalservice.push.SyncMessage.Types.StickerPackOperation.Types.Type) input.ReadEnum();
+                break;
+              }
+            }
+          }
+        }
+
+        #region Nested types
+        /// <summary>Container for nested types declared in the StickerPackOperation message type.</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public static partial class Types {
+          public enum Type {
+            [pbr::OriginalName("INSTALL")] Install = 0,
+            [pbr::OriginalName("REMOVE")] Remove = 1,
+          }
+
+        }
+        #endregion
 
       }
 

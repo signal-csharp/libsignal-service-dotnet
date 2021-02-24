@@ -305,6 +305,10 @@ namespace libsignalservice
             {
                 content = await CreateMultiDeviceSentTranscriptContentAsync(message.Sent, unidenfifiedAccess, token);
             }
+            else if (message.StickerPackOperations != null)
+            {
+                content = CreateMultiDeviceStickerPackOperationContent(message.StickerPackOperations);
+            }
             else if (message.Verified != null)
             {
                 await SendMessageAsync(message.Verified, unidenfifiedAccess, token);
@@ -515,6 +519,26 @@ namespace libsignalservice
 
                     dataMessage.Preview.Add(previewBuilder);
                 }
+            }
+
+            if (message.Sticker != null)
+            {
+                Sticker stickerBuilder = new Sticker();
+
+                stickerBuilder.PackId = ByteString.CopyFrom(message.Sticker.PackId);
+                stickerBuilder.PackKey = ByteString.CopyFrom(message.Sticker.PackKey);
+                stickerBuilder.StickerId = (uint)message.Sticker.StickerId;
+
+                if (message.Sticker.Attachment.IsStream())
+                {
+                    stickerBuilder.Data = await CreateAttachmentPointerAsync(message.Sticker.Attachment.AsStream(), token);
+                }
+                else
+                {
+                    stickerBuilder.Data = CreateAttachmentPointer(message.Sticker.Attachment.AsPointer());
+                }
+
+                dataMessage.Sticker = stickerBuilder;
             }
 
             dataMessage.Timestamp = (ulong)message.Timestamp;
@@ -738,6 +762,41 @@ namespace libsignalservice
             }
 
             syncMessage.Configuration = configurationMessage;
+            content.SyncMessage = syncMessage;
+            return content.ToByteArray();
+        }
+
+        private byte[] CreateMultiDeviceStickerPackOperationContent(List<StickerPackOperationMessage> stickerPackOperations)
+        {
+            Content content = new Content();
+            SyncMessage syncMessage = CreateSyncMessage();
+
+            foreach (StickerPackOperationMessage stickerPackOperation in stickerPackOperations)
+            {
+                StickerPackOperation builder = new StickerPackOperation();
+
+                if (stickerPackOperation.PackId != null)
+                {
+                    builder.PackId = ByteString.CopyFrom(stickerPackOperation.PackId);
+                }
+
+                if (stickerPackOperation.PackKey != null)
+                {
+                    builder.PackKey = ByteString.CopyFrom(stickerPackOperation.PackKey);
+                }
+
+                if (stickerPackOperation.Type != null)
+                {
+                    switch (stickerPackOperation.Type)
+                    {
+                        case StickerPackOperationMessage.OperationType.Install: builder.Type = StickerPackOperation.Types.Type.Install; break;
+                        case StickerPackOperationMessage.OperationType.Remove: builder.Type = StickerPackOperation.Types.Type.Remove; break;
+                    }
+                }
+
+                syncMessage.StickerPackOperation.Add(builder);
+            }
+
             content.SyncMessage = syncMessage;
             return content.ToByteArray();
         }

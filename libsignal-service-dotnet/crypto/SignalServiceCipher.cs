@@ -240,6 +240,7 @@ namespace libsignalservice.crypto
             SignalServiceDataMessage.SignalServiceQuote? quote = CreateQuote(content);
             List<SharedContact>? sharedContacts = CreateSharedContacts(content);
             List<SignalServiceDataMessage.SignalServicePreview>? previews = CreatePreviews(content);
+            SignalServiceDataMessage.SignalServiceSticker? sticker = CreateSticker(content);
 
             foreach (AttachmentPointer pointer in content.Attachments)
             {
@@ -264,7 +265,8 @@ namespace libsignalservice.crypto
                 profileKeyUpdate,
                 quote,
                 sharedContacts,
-                previews);
+                previews,
+                sticker);
         }
 
         /// <summary>
@@ -356,6 +358,30 @@ namespace libsignalservice.crypto
                 {
                     throw new InvalidMessageException(e);
                 }
+            }
+
+            if (content.StickerPackOperation.Count > 0)
+            {
+                List<StickerPackOperationMessage> operations = new List<StickerPackOperationMessage>();
+
+                foreach (var operation in content.StickerPackOperation)
+                {
+                    byte[]? packId = operation.HasPackId ? operation.PackId.ToByteArray() : null;
+                    byte[]? packKey = operation.HasPackKey ? operation.PackKey.ToByteArray() : null;
+                    StickerPackOperationMessage.OperationType? type = null;
+
+                    if (operation.HasType)
+                    {
+                        switch (operation.Type)
+                        {
+                            case SyncMessage.Types.StickerPackOperation.Types.Type.Install: type = StickerPackOperationMessage.OperationType.Install; break;
+                            case SyncMessage.Types.StickerPackOperation.Types.Type.Remove: type = StickerPackOperationMessage.OperationType.Remove; break;
+                        }
+                    }
+                    operations.Add(new StickerPackOperationMessage(packId, packKey, type));
+                }
+
+                return SignalServiceSyncMessage.ForStickerPackOperations(operations);
             }
 
             if (content.Blocked != null)
@@ -528,6 +554,25 @@ namespace libsignalservice.crypto
             }
 
             return results;
+        }
+
+        private SignalServiceDataMessage.SignalServiceSticker? CreateSticker(DataMessage content)
+        {
+            if (content.Sticker == null ||
+                !content.Sticker.HasPackId ||
+                !content.Sticker.HasPackKey ||
+                !content.Sticker.HasStickerId ||
+                content.Sticker.Data == null)
+            {
+                return null;
+            }
+
+            DataMessage.Types.Sticker sticker = content.Sticker;
+
+            return new SignalServiceDataMessage.SignalServiceSticker(sticker.PackId.ToByteArray(),
+                sticker.PackKey.ToByteArray(),
+                (int)sticker.StickerId,
+                CreateAttachmentPointer(sticker.Data));
         }
 
         private List<SharedContact>? CreateSharedContacts(DataMessage content)

@@ -8,7 +8,7 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace libsignalservice.util
 {
-    public class Util
+    public static class Util
     {
         public static byte[] Join(params byte[][] input)
         {
@@ -49,7 +49,7 @@ namespace libsignalservice.util
             return result;
         }
 
-        public static bool IsEmpty(String value)
+        public static bool IsEmpty(string value)
         {
             return value == null || value.Trim().Length == 0;
         }
@@ -149,7 +149,7 @@ namespace libsignalservice.util
             byte[] buffer = new byte[4096];
             int read;
 
-            while ((read = input.Read(buffer, 0, buffer.Length)) != -1)
+            while ((read = input.Read(buffer, 0, buffer.Length)) != 0)
             {
                 output.Write(buffer, 0, read);
             }

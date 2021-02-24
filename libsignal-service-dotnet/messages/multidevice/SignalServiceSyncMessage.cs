@@ -13,6 +13,7 @@ namespace libsignalservice.messages.multidevice
         public List<ReadMessage>? Reads { get; }
         public VerifiedMessage? Verified { get; }
         public ConfigurationMessage? Configuration { get; }
+        public List<StickerPackOperationMessage>? StickerPackOperations { get; }
 
         private SignalServiceSyncMessage(SentTranscriptMessage? sent,
             ContactsMessage? contacts,
@@ -21,7 +22,8 @@ namespace libsignalservice.messages.multidevice
             RequestMessage? request,
             List<ReadMessage>? reads,
             VerifiedMessage? verified,
-            ConfigurationMessage? configuration)
+            ConfigurationMessage? configuration,
+            List<StickerPackOperationMessage>? stickerPackOperations)
         {
             Sent = sent;
             Contacts = contacts;
@@ -31,11 +33,13 @@ namespace libsignalservice.messages.multidevice
             Reads = reads;
             Verified = verified;
             Configuration = configuration;
+            StickerPackOperations = stickerPackOperations;
         }
 
         public static SignalServiceSyncMessage ForSentTranscript(SentTranscriptMessage sent)
         {
             return new SignalServiceSyncMessage(sent,
+                null,
                 null,
                 null,
                 null,
@@ -54,6 +58,7 @@ namespace libsignalservice.messages.multidevice
                 null,
                 null,
                 null,
+                null,
                 null);
         }
 
@@ -62,6 +67,7 @@ namespace libsignalservice.messages.multidevice
             return new SignalServiceSyncMessage(null,
                 null,
                 groups,
+                null,
                 null,
                 null,
                 null,
@@ -78,6 +84,7 @@ namespace libsignalservice.messages.multidevice
                 request,
                 null,
                 null,
+                null,
                 null);
         }
 
@@ -89,6 +96,7 @@ namespace libsignalservice.messages.multidevice
                 null,
                 null,
                 reads,
+                null,
                 null,
                 null);
         }
@@ -104,6 +112,7 @@ namespace libsignalservice.messages.multidevice
                 null,
                 reads,
                 null,
+                null,
                 null);
         }
 
@@ -116,6 +125,7 @@ namespace libsignalservice.messages.multidevice
                 null,
                 null,
                 verifiedMessage,
+                null,
                 null);
         }
 
@@ -125,6 +135,7 @@ namespace libsignalservice.messages.multidevice
                 null,
                 null,
                 blocked,
+                null,
                 null,
                 null,
                 null,
@@ -140,12 +151,27 @@ namespace libsignalservice.messages.multidevice
                 null,
                 null,
                 null,
-                configuration);
+                configuration,
+                null);
+        }
+
+        public static SignalServiceSyncMessage ForStickerPackOperations(List<StickerPackOperationMessage> stickerPackOperations)
+        {
+            return new SignalServiceSyncMessage(null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                stickerPackOperations);
         }
 
         public static SignalServiceSyncMessage Empty()
         {
             return new SignalServiceSyncMessage(null,
+                null,
                 null,
                 null,
                 null,
