@@ -24,8 +24,10 @@ if ($version -ne $expectedVersion) {
 & $protobufPath --csharp_out=. SignalService.proto
 & $protobufPath --csharp_out=. WebSocketResources.proto
 & $protobufPath --csharp_out=. StickerResources.proto
+& $protobufPath --csharp_out=. InternalSerialization.proto
 
 Move-Item -Force Provisioning.cs ../push/ProvisioningProtos.cs
 Move-Item -Force SignalService.cs ../push/SignalServiceProtos.cs
 Move-Item -Force WebSocketResources.cs ../websocket/WebSocketProtos.cs
 Move-Item -Force StickerResources.cs ../sticker/StickerResources.cs
+Move-Item -Force InternalSerialization.cs ../serialize/protos/InternalSerialization.cs

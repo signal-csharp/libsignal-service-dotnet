@@ -255,7 +255,7 @@ namespace libsignalservice
             else
             {
                 Logger.LogTrace("Not using pipe to retrieve attachment upload attributes...");
-                uploadAttributes = await Socket.GetAttachmentUploadAttributesAsync(token);
+                uploadAttributes = await Socket.GetAttachmentV2UploadAttributesAsync(token);
             }
 
             (long, byte[]) attachmentIdAndDigest = await Socket.UploadAttachmentAsync(attachmentData, uploadAttributes, token);

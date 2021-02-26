@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 namespace libsignalservice.push
 {
-    public class AttachmentUploadAttributes
+    internal class AttachmentV2UploadAttributes
     {
         [JsonProperty("url")]
         public string? Url { get; private set; }
@@ -33,9 +33,5 @@ namespace libsignalservice.push
 
         [JsonProperty("attachmentIdString")]
         public string? AttachmentIdString { get; private set; }
-
-        public AttachmentUploadAttributes()
-        {
-        }
     }
 }

@@ -1,24 +1,22 @@
-using System;
-
 namespace libsignalservice.push
 {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     /// <summary>
     /// A class representing a message destination or origin.
     /// </summary>
     public class SignalServiceAddress
     {
+        // TODO: FINISH UUID CHANGES
         public static readonly uint DEFAULT_DEVICE_ID = 1;
 
         public string E164number { get; }
-        public string Relay { get; }
+        public string? Relay { get; }
 
         /// <summary>
         /// Construct a PushAddress.
         /// </summary>
         /// <param name="e164number">The Signal Service username of this destination (eg e164 representation of a phone number).</param>
         /// <param name="relay">The Signal Service federated server this user is registered with (if not your own server).</param>
-        public SignalServiceAddress(string e164number, string relay)
+        public SignalServiceAddress(string e164number, string? relay)
         {
             E164number = e164number;
             Relay = relay;
@@ -29,7 +27,22 @@ namespace libsignalservice.push
             E164number = e164number;
         }
 
-        public override bool Equals(Object other)
+        public string GetIdentifier()
+        {
+            return E164number;
+        }
+
+        public string GetLegacyIdentifier()
+        {
+            return E164number;
+        }
+
+        public bool Matches(SignalServiceAddress other)
+        {
+            return E164number == other.E164number;
+        }
+
+        public override bool Equals(object other)
         {
             if (other == null || !(other is SignalServiceAddress)) return false;
 
@@ -48,5 +61,4 @@ namespace libsignalservice.push
             return hashCode;
         }
     }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

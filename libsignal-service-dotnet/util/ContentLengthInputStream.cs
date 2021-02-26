@@ -1,38 +1,42 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.IO;
-using System.Text;
 
 namespace libsignalservice.util
 {
     internal class ContentLengthInputStream : Stream
     {
-        private readonly Stream InputStream;
-        private long BytesRemaining;
-        private readonly long TotalDataSize;
+        private readonly Stream inputStream;
+        private long bytesRemaining;
+        private readonly long totalDataSize;
+
         public override bool CanRead => true;
         public override bool CanSeek => false;
         public override bool CanWrite => false;
-        public override long Length => TotalDataSize;
+        public override long Length => totalDataSize;
         public override long Position { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public ContentLengthInputStream(Stream inputStream, long contentLength)
         {
-            InputStream = inputStream;
-            TotalDataSize=BytesRemaining = contentLength;
+            this.inputStream = inputStream;
+            totalDataSize = bytesRemaining = contentLength;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            inputStream.Dispose();
+            base.Dispose(disposing);
         }
 
         public override void Flush()
         {
-            throw new NotImplementedException();
         }
 
         public override int Read(byte[] buffer, int offset, int count)
         {
-            if (BytesRemaining == 0)
+            if (bytesRemaining == 0)
                 return 0;
-            int read = InputStream.Read(buffer, offset, Math.Min(count, Util.ToIntExact(BytesRemaining)));
-            BytesRemaining -= read;
+            int read = inputStream.Read(buffer, offset, Math.Min(count, Util.ToIntExact(bytesRemaining)));
+            bytesRemaining -= read;
             return read;
         }
 

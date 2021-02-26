@@ -6,11 +6,12 @@ namespace libsignalservice.messages
     /// <summary>
     /// Represents a received SignalServiceAttachment "handle."  This
     /// is a pointer to the actual attachment content, which needs to be
-    /// retrieved using <see cref="SignalServiceMessageReceiver.RetrieveAttachment(CancellationToken, SignalServiceAttachmentPointer, Stream, int, IProgressListener)"/>
+    /// retrieved using <see cref="SignalServiceMessageReceiver.RetrieveAttachmentAsync(SignalServiceAttachmentPointer, FileStream, int, CancellationToken?)"/>
     /// </summary>
     public class SignalServiceAttachmentPointer : SignalServiceAttachment
     {
-        public ulong Id { get; }
+        public int CdnNumber { get; }
+        public SignalServiceAttachmentRemoteId RemoteId { get; }
         public byte[] Key { get; }
         public uint? Size { get; }
         public byte[]? Preview { get; }
@@ -20,15 +21,20 @@ namespace libsignalservice.messages
         public int Width { get; }
         public int Height { get; }
         public string? Caption { get; }
+        public string? BlurHash { get; }
+        public long UploadTimestamp { get; }
 
-        public SignalServiceAttachmentPointer(ulong id, string contentType, byte[] key,
+        public SignalServiceAttachmentPointer(int cdnNumber, SignalServiceAttachmentRemoteId remoteId,
+            string contentType, byte[] key,
             uint? size, byte[]? preview,
             int width, int height,
             byte[]? digest, string? fileName,
-            bool voiceNote, string? caption)
+            bool voiceNote, string? caption,
+            string? blurHash, long uploadTimestamp)
             : base(contentType)
         {
-            Id = id;
+            CdnNumber = cdnNumber;
+            RemoteId = remoteId;
             Key = key;
             Size = size;
             Preview = preview;
@@ -38,6 +44,8 @@ namespace libsignalservice.messages
             Width = width;
             Height = height;
             Caption = caption;
+            BlurHash = blurHash;
+            UploadTimestamp = uploadTimestamp;
         }
 
         public override bool IsStream()

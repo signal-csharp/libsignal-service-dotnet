@@ -18,6 +18,7 @@ using libsignaldotnet.push.http;
 using libsignalservice.configuration;
 using libsignalservice.contacts.entities;
 using libsignalservice.crypto;
+using libsignalservice.messages;
 using libsignalservice.messages.multidevice;
 using libsignalservice.profiles;
 using libsignalservice.push.exceptions;
@@ -56,13 +57,15 @@ namespace libsignalservice.push
         private const string MESSAGE_PATH = "/v1/messages/{0}";
         private const string SENDER_ACK_MESSAGE_PATH = "/v1/messages/{0}/{1}";
         private const string UUID_ACK_MESSAGE_PATH     = "/v1/messages/uuid/{0}";
-        private const string ATTACHMENT_PATH = "/v2/attachments/form/upload";
+        private const string ATTACHMENT_V2_PATH = "/v2/attachments/form/upload";
+        private const string ATTACHMENT_V3_PATH = "/v3/attachments/form/upload";
 
         private const string PROFILE_PATH = "/v1/profile/%s";
 
         private const string SENDER_CERTIFICATE_PATH = "/v1/certificate/delivery";
 
-        private const string ATTACHMENT_DOWNLOAD_PATH = "attachments/{0}";
+        private const string ATTACHMENT_KEY_DOWNLOAD_PATH = "attachments/{0}";
+        private const string ATTACHMENT_ID_DOWNLOAD_PATH = "attachments/{0}";
         private const string ATTACHMENT_UPLOAD_PATH = "attachments/";
 
         private const string STICKER_MANIFEST_PATH = "stickers/{0}/manifest.proto";
@@ -73,6 +76,7 @@ namespace libsignalservice.push
         private readonly ILogger Logger = LibsignalLogging.CreateLogger<PushServiceSocket>();
         private readonly SignalServiceConfiguration SignalConnectionInformation;
         private readonly ConnectionHolder[] cdnClients;
+        private readonly ConnectionHolder[] cdn2Clients;
         private readonly ConnectionHolder[] contactDiscoveryClients;
         private readonly ICredentialsProvider CredentialsProvider;
         private readonly string UserAgent;
@@ -95,6 +99,7 @@ namespace libsignalservice.push
             this.httpClient = httpClient;
 
             cdnClients = CreateConnectionHolders(SignalConnectionInformation.SignalCdnUrls);
+            cdn2Clients = CreateConnectionHolders(SignalConnectionInformation.SignalCdn2Urls);
             contactDiscoveryClients = CreateConnectionHolders(SignalConnectionInformation.SignalContactDiscoveryUrls);
         }
 
@@ -401,7 +406,7 @@ namespace libsignalservice.push
             }
         }
 
-        public async Task<SignedPreKeyEntity> GetCurrentSignedPreKey(CancellationToken token)// throws IOException
+        public async Task<SignedPreKeyEntity?> GetCurrentSignedPreKey(CancellationToken token)// throws IOException
         {
             try
             {
@@ -424,14 +429,24 @@ namespace libsignalservice.push
             return true;
         }
 
-        public async Task RetrieveAttachmentAsync(long attachmentId, FileStream destination, int maxSizeBytes, IProgressListener? listener, CancellationToken? token = null)
+        public async Task RetrieveAttachmentAsync(int cdnNumber, SignalServiceAttachmentRemoteId cdnPath, FileStream destination, int maxSizeBytes, IProgressListener? listener, CancellationToken? token = null)
         {
             if (token == null)
             {
                 token = CancellationToken.None;
             }
 
-            await DownloadFromCdnAsync(destination, string.Format(ATTACHMENT_DOWNLOAD_PATH, attachmentId), maxSizeBytes, listener, token);
+            string path;
+            if (cdnPath.V2.HasValue)
+            {
+                path = string.Format(ATTACHMENT_ID_DOWNLOAD_PATH, cdnPath.V2.Value);
+            }
+            else
+            {
+                path = string.Format(ATTACHMENT_KEY_DOWNLOAD_PATH, cdnPath.V3);
+            }
+
+            await DownloadFromCdnAsync(destination, cdnNumber, path, maxSizeBytes, listener, token);
         }
 
         /// <summary>
@@ -452,7 +467,7 @@ namespace libsignalservice.push
             }
 
             string hexPackId = Hex.ToStringCondensed(packId);
-            await DownloadFromCdnAsync(destination, string.Format(STICKER_PATH, hexPackId, stickerId), 1024 * 1024, null, token);
+            await DownloadFromCdnAsync(destination, 0, string.Format(STICKER_PATH, hexPackId, stickerId), 1024 * 1024, null, token);
         }
 
         /// <summary>
@@ -474,7 +489,7 @@ namespace libsignalservice.push
             string hexPackId = Hex.ToStringCondensed(packId);
             MemoryStream output = new MemoryStream();
 
-            await DownloadFromCdnAsync(output, string.Format(STICKER_PATH, hexPackId, stickerId), 1024 * 1024, null, token);
+            await DownloadFromCdnAsync(output, 0, 0, string.Format(STICKER_PATH, hexPackId, stickerId), 1024 * 1024, null, token);
 
             return output.ToArray();
         }
@@ -497,7 +512,7 @@ namespace libsignalservice.push
             string hexPackId = Hex.ToStringCondensed(packId);
             MemoryStream output = new MemoryStream();
 
-            await DownloadFromCdnAsync(output, string.Format(STICKER_MANIFEST_PATH, hexPackId), 1024 * 1024, null, token);
+            await DownloadFromCdnAsync(output, 0, 0, string.Format(STICKER_MANIFEST_PATH, hexPackId), 1024 * 1024, null, token);
 
             return output.ToArray();
         }
@@ -527,7 +542,7 @@ namespace libsignalservice.push
                 token = CancellationToken.None;
             }
 
-            await DownloadFromCdnAsync(destination, path, maxSizeByzes, null, token);
+            await DownloadFromCdnAsync(destination, 0, path, maxSizeByzes, null, token);
         }
 
         public async Task SetProfileName(CancellationToken token, string name)
@@ -560,19 +575,60 @@ namespace libsignalservice.push
             }
         }
 
-        private async Task DownloadFromCdnAsync(Stream destination, string path, int maxSizeBytes, IProgressListener? listener, CancellationToken? token = null)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="destination"></param>
+        /// <param name="cdnNumber"></param>
+        /// <param name="path"></param>
+        /// <param name="maxSizeBytes"></param>
+        /// <param name="listener"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        /// <exception cref="PushNetworkException"></exception>
+        /// <exception cref="NonSuccessfulResponseCodeException"></exception>
+        private async Task DownloadFromCdnAsync(FileStream destination, int cdnNumber, string path, long maxSizeBytes, IProgressListener? listener, CancellationToken? token = null)
         {
             if (token == null)
             {
                 token = CancellationToken.None;
             }
 
-            ConnectionHolder connectionHolder = GetRandom(cdnClients);
+            await DownloadFromCdnAsync(destination, destination.Length, cdnNumber, path, maxSizeBytes, listener, token);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="destination"></param>
+        /// <param name="offset"></param>
+        /// <param name="cdnNumber"></param>
+        /// <param name="path"></param>
+        /// <param name="maxSizeBytes"></param>
+        /// <param name="listener"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        /// <exception cref="PushNetworkException"></exception>
+        /// <exception cref="NonSuccessfulResponseCodeException"></exception>
+        private async Task DownloadFromCdnAsync(Stream destination, long offset, int cdnNumber, string path, long maxSizeBytes, IProgressListener? listener, CancellationToken? token = null)
+        {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            ConnectionHolder connectionHolder = GetRandom(cdnNumber == 2 ? cdn2Clients : cdnClients);
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, new Uri($"{connectionHolder.Url}/{path}"));
             
             if (connectionHolder.HostHeader != null)
             {
                 request.Headers.Host = connectionHolder.HostHeader;
+            }
+
+            if (offset > 0)
+            {
+                Logger.LogInformation($"Starting download from CDN with offset: {offset}");
+                request.Headers.Range = new RangeHeaderValue(offset, null);
             }
 
             HttpResponseMessage response;
@@ -600,7 +656,7 @@ namespace libsignalservice.push
                     byte[] buffer = new byte[32768];
 
                     int read = 0;
-                    int totalRead = 0;
+                    long totalRead = offset;
 
                     while ((read = _in.Read(buffer, 0, buffer.Length)) != 0)
                     {
@@ -609,7 +665,7 @@ namespace libsignalservice.push
 
                         if (listener != null)
                         {
-                            listener.OnAttachmentProgress(body.Headers.ContentLength.HasValue ? body.Headers.ContentLength.Value : 0, totalRead);
+                            listener.OnAttachmentProgress(body.Headers.ContentLength.HasValue ? body.Headers.ContentLength.Value + offset : 0 + offset, totalRead);
                         }
                     }
 
@@ -657,7 +713,7 @@ namespace libsignalservice.push
 
             ConnectionHolder connectionHolder = GetRandom(cdnClients);
 
-            DigestingRequestBody file = new DigestingRequestBody(data, outputStreamFactory, contentType, length, progressListener);
+            DigestingRequestBody file = new DigestingRequestBody(data, outputStreamFactory, contentType, length, progressListener, token);
 
             MultipartFormDataContent requestBody = new MultipartFormDataContent();
             requestBody.Add(new StringContent(acl), "acl");
@@ -691,6 +747,102 @@ namespace libsignalservice.push
 
             if (response.IsSuccessStatusCode) return file.GetTransmittedDigest();
             else throw new NonSuccessfulResponseCodeException((int)response.StatusCode, $"Response: {await response.Content.ReadAsStringAsync()}");
+        }
+
+        private async Task<string> GetResumableUploadUrlAsync(string signedUrl, Dictionary<string, string> headers, CancellationToken? token = null)
+        {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            ConnectionHolder connectionHolder = GetRandom(cdn2Clients);
+            Uri endpointUrl = new Uri(connectionHolder.Url);
+            Uri signedHttpUrl;
+            try
+            {
+                signedHttpUrl = new Uri(signedUrl);
+            }
+            catch (UriFormatException ex)
+            {
+                Logger.LogTrace(new EventId(), ex, $"Server returned a malformed signed url: {signedUrl}");
+                throw new IOException("Server returned a malformed signed url", ex);
+            }
+
+            UriBuilder urlBuilder = new UriBuilder(endpointUrl.Scheme, endpointUrl.Host, endpointUrl.Port);
+            urlBuilder.Path = Path.Combine(endpointUrl.LocalPath, signedHttpUrl.LocalPath.Substring(1));
+            urlBuilder.Query = signedHttpUrl.Query;
+            urlBuilder.Fragment = signedHttpUrl.Fragment;
+
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, urlBuilder.Uri);
+            foreach (var header in headers)
+            {
+                request.Headers.Add(header.Key, header.Value);
+            }
+
+            if (connectionHolder.HostHeader != null)
+            {
+                request.Headers.Host = connectionHolder.HostHeader;
+            }
+
+            HttpResponseMessage response;
+
+            try
+            {
+                response = await httpClient.SendAsync(request, token.Value);
+            }
+            catch (Exception ex)
+            {
+                throw new PushNetworkException(ex);
+            }
+
+            if (response.IsSuccessStatusCode)
+            {
+                return response.Headers.GetValues("location").First();
+            }
+            else
+            {
+                throw new NonSuccessfulResponseCodeException((int)response.StatusCode, $"Response: {await response.Content.ReadAsStringAsync()}");
+            }
+        }
+
+        private async Task<byte[]> UploadToCdn2Async(string resumableUrl, Stream data, string contentType, long length, IOutputStreamFactory outputStreamFactory, IProgressListener? progressListener, CancellationToken? token = null)
+        {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            ConnectionHolder connectionHolder = GetRandom(cdn2Clients);
+
+            DigestingRequestBody file = new DigestingRequestBody(data, outputStreamFactory, contentType, length, progressListener, token);
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Put, resumableUrl);
+            request.Content = file;
+
+            if (connectionHolder.HostHeader != null)
+            {
+                request.Headers.Host = connectionHolder.HostHeader;
+            }
+
+            HttpResponseMessage response;
+
+            try
+            {
+                response = await httpClient.SendAsync(request);
+            }
+            catch (Exception ex)
+            {
+                throw new PushNetworkException(ex);
+            }
+
+            if (response.IsSuccessStatusCode)
+            {
+                return file.GetTransmittedDigest();
+            }
+            else
+            {
+                throw new NonSuccessfulResponseCodeException((int)response.StatusCode, $"Response: {await response.Content.ReadAsStringAsync()}");
+            }
         }
 
         public async Task<List<ContactTokenDetails>> RetrieveDirectory(CancellationToken token, ICollection<string> contactTokens) // TODO: whacky
@@ -808,23 +960,51 @@ namespace libsignalservice.push
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="token"></param>
         /// <returns></returns>
         /// <exception cref="NonSuccessfulResponseCodeException"></exception>
         /// <exception cref="PushNetworkException"></exception>
-        public async Task<AttachmentUploadAttributes> GetAttachmentUploadAttributesAsync(CancellationToken? token = null)
+        public async Task<AttachmentV2UploadAttributes> GetAttachmentV2UploadAttributesAsync(CancellationToken? token = null)
         {
             if (token == null)
             {
                 token = CancellationToken.None;
             }
 
-            string response = await MakeServiceRequestAsync(ATTACHMENT_PATH, "GET", null, token);
+            string response = await MakeServiceRequestAsync(ATTACHMENT_V2_PATH, "GET", null, token);
 
             try
             {
-                return JsonUtil.FromJson<AttachmentUploadAttributes>(response);
+                return JsonUtil.FromJson<AttachmentV2UploadAttributes>(response);
             }
-            catch (IOException ex)
+            catch (JsonParseException ex)
+            {
+                Logger.LogTrace(new EventId(), ex, string.Empty);
+                throw new NonSuccessfulResponseCodeException(500, "Unable to parse entity");
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        /// <exception cref="NonSuccessfulResponseCodeException"></exception>
+        /// <exception cref="PushNetworkException"></exception>
+        public async Task<AttachmentV3UploadAttributes> GetAttachmentV3UploadAttributesAsync(CancellationToken? token = null)
+        {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            string response = await MakeServiceRequestAsync(ATTACHMENT_V3_PATH, "GET", null, token);
+
+            try
+            {
+                return JsonUtil.FromJson<AttachmentV3UploadAttributes>(response);
+            }
+            catch (JsonParseException ex)
             {
                 Logger.LogTrace(new EventId(), ex, string.Empty);
                 throw new NonSuccessfulResponseCodeException(500, "Unable to parse entity");
@@ -840,7 +1020,7 @@ namespace libsignalservice.push
         /// <returns></returns>
         /// <exception cref="PushNetworkException"></exception>
         /// <exception cref="NonSuccessfulResponseCodeException"></exception>
-        public async Task<(long, byte[])> UploadAttachmentAsync(PushAttachmentData attachment, AttachmentUploadAttributes uploadAttributes,
+        public async Task<(long, byte[])> UploadAttachmentAsync(PushAttachmentData attachment, AttachmentV2UploadAttributes uploadAttributes,
             CancellationToken? token = null)
         {
             if (token == null)
@@ -858,6 +1038,24 @@ namespace libsignalservice.push
                 token);
 
             return (id, digest);
+        }
+
+        public async Task<byte[]> UploadAttachmentAsync(PushAttachmentData attachment, AttachmentV3UploadAttributes uploadAttributes,
+            CancellationToken? token = null)
+        {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            string resumableUploadUrl = await GetResumableUploadUrlAsync(uploadAttributes.SignedUploadLocation!, uploadAttributes.Headers!, token);
+            return await UploadToCdn2Async(resumableUploadUrl,
+                attachment.Data,
+                "application/octet-stream",
+                attachment.DataSize,
+                attachment.OutputFactory,
+                attachment.Listener,
+                token);
         }
 
         /// <summary>
@@ -988,7 +1186,7 @@ namespace libsignalservice.push
                 case 404: // HttpStatusCode.NotFound
                     throw new NotFoundException("Not found");
                 case 409: // HttpStatusCode.Conflict
-                    MismatchedDevices mismatchedDevices = null;
+                    MismatchedDevices mismatchedDevices;
                     try
                     {
                         mismatchedDevices = JsonUtil.FromJson<MismatchedDevices>(responseBody);
@@ -1000,7 +1198,7 @@ namespace libsignalservice.push
                     }
                     throw new MismatchedDevicesException(mismatchedDevices);
                 case 410: // HttpStatusCode.Gone
-                    StaleDevices staleDevices = null;
+                    StaleDevices staleDevices;
                     try
                     {
                         staleDevices = JsonUtil.FromJson<StaleDevices>(responseBody);
@@ -1012,7 +1210,7 @@ namespace libsignalservice.push
                     }
                     throw new StaleDevicesException(staleDevices);
                 case 411: //HttpStatusCode.LengthRequired
-                    DeviceLimit deviceLimit = null;
+                    DeviceLimit deviceLimit;
                     try
                     {
                         deviceLimit = JsonUtil.FromJson<DeviceLimit>(responseBody);
@@ -1286,8 +1484,6 @@ namespace libsignalservice.push
         public ulong Id { get; set; }
 
         [JsonProperty("location")]
-        public string Location { get; set; }
-
-        public AttachmentDescriptor() { }
+        public string? Location { get; set; }
     }
 }
