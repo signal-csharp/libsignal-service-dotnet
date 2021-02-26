@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.IO;
 using System.Security.Cryptography;
-using System.Text;
 
 namespace libsignalservice.crypto
 {
@@ -20,6 +18,12 @@ namespace libsignalservice.crypto
         public DigestingOutputStream(Stream outputStream)
         {
             OutputStream = outputStream;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            OutputStream.Dispose();
+            base.Dispose(disposing);
         }
 
         public override void Flush()
