@@ -1,5 +1,5 @@
 syntax = "proto2";
-package textsecure;
+package signalservice;
 option csharp_namespace = "libsignalservice.push";
 option java_package = "org.whispersystems.textsecure.internal.push";
 option java_outer_classname = "SignalServiceProtos";
@@ -168,17 +168,25 @@ message DataMessage {
     optional AttachmentPointer data      = 4;
   }
 
-  optional string             body        = 1;
-  repeated AttachmentPointer  attachments = 2;
-  optional GroupContext       group       = 3;
-  optional uint32             flags       = 4;
-  optional uint32             expireTimer = 5;
-  optional bytes              profileKey  = 6;
-  optional uint64             timestamp   = 7;
-  optional Quote              quote       = 8;
-  repeated Contact            contact     = 9;
-  repeated Preview            preview     = 10;
-  optional Sticker            sticker     = 11;
+  enum ProtocolVersion {
+    option allow_alias = true;
+
+    INITIAL = 0;
+    CURRENT = 0;
+  }
+
+  optional string             body                    = 1;
+  repeated AttachmentPointer  attachments             = 2;
+  optional GroupContext       group                   = 3;
+  optional uint32             flags                   = 4;
+  optional uint32             expireTimer             = 5;
+  optional bytes              profileKey              = 6;
+  optional uint64             timestamp               = 7;
+  optional Quote              quote                   = 8;
+  repeated Contact            contact                 = 9;
+  repeated Preview            preview                 = 10;
+  optional Sticker            sticker                 = 11;
+  optional uint32             requiredProtocolVersion = 12;
 }
 
 message NullMessage {
@@ -299,17 +307,24 @@ message AttachmentPointer {
     VOICE_MESSAGE = 1;
   }
 
-  optional fixed64 id          = 1;
-  optional string  contentType = 2;
-  optional bytes   key         = 3;
-  optional uint32  size        = 4;
-  optional bytes   thumbnail   = 5;
-  optional bytes   digest      = 6;
-  optional string  fileName    = 7;
-  optional uint32  flags       = 8;
-  optional uint32  width       = 9;
-  optional uint32  height      = 10;
-  optional string  caption     = 11;
+  oneof attachment_identifier {
+    fixed64        cdnId           = 1;
+    string         cdnKey          = 15;
+  }
+  optional string  contentType     = 2;
+  optional bytes   key             = 3;
+  optional uint32  size            = 4;
+  optional bytes   thumbnail       = 5;
+  optional bytes   digest          = 6;
+  optional string  fileName        = 7;
+  optional uint32  flags           = 8;
+  optional uint32  width           = 9;
+  optional uint32  height          = 10;
+  optional string  caption         = 11;
+  optional string  blurHash        = 12;
+  optional uint64  uploadTimestamp = 13;
+  optional uint32  cdnNumber       = 14;
+  // Next ID: 16
 }
 
 message GroupContext {

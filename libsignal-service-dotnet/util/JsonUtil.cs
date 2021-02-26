@@ -1,16 +1,16 @@
-using Newtonsoft.Json;
 using System;
+using Newtonsoft.Json;
 
 namespace libsignalservice.util
 {
     internal class JsonUtil
     {
-        public static String ToJson(Object obje)
+        public static string ToJson(object obje)
         {
             return JsonConvert.SerializeObject(obje);
         }
 
-        public static T FromJson<T>(String json)
+        public static T FromJson<T>(string json)
         {
             try
             {
@@ -18,16 +18,7 @@ namespace libsignalservice.util
             }
             catch (Exception e)
             {
-                //Log.w(TAG, e);
                 throw new JsonParseException(e);
-            }
-        }
-
-        public class JsonParseException : Exception
-        {
-            public JsonParseException(Exception e)
-                : base(e.Message)
-            {
             }
         }
     }
