@@ -70,8 +70,8 @@ namespace libsignalservice.messages.multidevice
 
         internal class LimitedInputStream : Stream
         {
-            private Stream InputStream;
-            private long Left;
+            private Stream inputStream;
+            private long left;
 
             public override bool CanRead => true;
             public override bool CanSeek => false;
@@ -81,24 +81,29 @@ namespace libsignalservice.messages.multidevice
 
             internal LimitedInputStream(Stream inputStream, long limit)
             {
-                InputStream = inputStream;
-                Left = limit;
+                this.inputStream = inputStream;
+                left = limit;
+            }
+
+            protected override void Dispose(bool disposing)
+            {
+                inputStream.Dispose();
+                base.Dispose(disposing);
             }
 
             public override void Flush()
             {
-                throw new NotImplementedException();
             }
 
             public override int Read(byte[] buffer, int offset, int count)
             {
-                if (Left == 0)
+                if (left == 0)
                     return 0;
 
-                count = (int) Math.Min(count, Left);
-                int result = InputStream.Read(buffer, offset, count);
+                count = (int) Math.Min(count, left);
+                int result = inputStream.Read(buffer, offset, count);
                 if (result > 0)
-                    Left -= result;
+                    left -= result;
                 return result;
             }
 

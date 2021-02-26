@@ -19,10 +19,30 @@ namespace libsignal_service_dotnet_tests.crypto
             byte[] plaintextInput = Encoding.UTF8.GetBytes("Peter Parker");
             EncryptResult encryptResult = EncryptData(plaintextInput, key);
             string cipherFile = WriteToFile(encryptResult.ciphertext);
-            Stream inputStream = AttachmentCipherInputStream.CreateForAttachment(File.Open(cipherFile, FileMode.Open), plaintextInput.Length, key, encryptResult.digest);
+            using Stream inputStream = AttachmentCipherInputStream.CreateForAttachment(File.Open(cipherFile, FileMode.Open), plaintextInput.Length, key, encryptResult.digest);
             byte[] plaintextOutput = ReadInputStreamFully(inputStream);
 
             CollectionAssert.AreEqual(plaintextInput, plaintextOutput);
+
+            DeleteFile(cipherFile);
+        }
+
+        [TestMethod]
+        public void Test_Attachment_EncryptDecryptMultipleTimes()
+        {
+            // Test that the file passed to AttachmentCipherInputStream can be reused.
+            byte[] key = Util.GetSecretBytes(64);
+            byte[] plaintextInput = Encoding.UTF8.GetBytes("Peter Parker");
+            EncryptResult encryptResult = EncryptData(plaintextInput, key);
+            string cipherFile = WriteToFile(encryptResult.ciphertext);
+
+            for (int i = 0; i < 10; i++)
+            {
+                using Stream inputStream = AttachmentCipherInputStream.CreateForAttachment(File.Open(cipherFile, FileMode.Open), plaintextInput.Length, key, encryptResult.digest);
+                byte[] plaintextOutput = ReadInputStreamFully(inputStream);
+
+                CollectionAssert.AreEqual(plaintextInput, plaintextOutput);
+            }
 
             DeleteFile(cipherFile);
         }
@@ -34,11 +54,30 @@ namespace libsignal_service_dotnet_tests.crypto
             byte[] plaintextInput = Encoding.UTF8.GetBytes(string.Empty);
             EncryptResult encryptResult = EncryptData(plaintextInput, key);
             string cipherFile = WriteToFile(encryptResult.ciphertext);
-            Stream inputStream = AttachmentCipherInputStream.CreateForAttachment(File.Open(cipherFile, FileMode.Open), plaintextInput.Length, key, encryptResult.digest);
+            using Stream inputStream = AttachmentCipherInputStream.CreateForAttachment(File.Open(cipherFile, FileMode.Open), plaintextInput.Length, key, encryptResult.digest);
             byte[] plaintextOutput = ReadInputStreamFully(inputStream);
 
             CollectionAssert.AreEqual(plaintextInput, plaintextOutput);
 
+            DeleteFile(cipherFile);
+        }
+
+        [TestMethod]
+        public void Test_Attachment_EncryptDecryptEmptyMultipleTimes()
+        {
+            byte[] key = Util.GetSecretBytes(64);
+            byte[] plaintextInput = Encoding.UTF8.GetBytes(string.Empty);
+            EncryptResult encryptResult = EncryptData(plaintextInput, key);
+            string cipherFile = WriteToFile(encryptResult.ciphertext);
+
+            for (int i = 0; i < 10; i++)
+            {
+                using Stream inputStream = AttachmentCipherInputStream.CreateForAttachment(File.Open(cipherFile, FileMode.Open), plaintextInput.Length, key, encryptResult.digest);
+                byte[] plaintextOutput = ReadInputStreamFully(inputStream);
+
+                CollectionAssert.AreEqual(plaintextInput, plaintextOutput);
+            }
+            
             DeleteFile(cipherFile);
         }
 
@@ -57,7 +96,8 @@ namespace libsignal_service_dotnet_tests.crypto
 
                 cipherFile = WriteToFile(encryptResult.ciphertext);
 
-                AttachmentCipherInputStream.CreateForAttachment(File.Open(cipherFile, FileMode.Open), plaintextInput.Length, badKey, encryptResult.digest);
+                using FileStream fileStream = File.Open(cipherFile, FileMode.Open);
+                AttachmentCipherInputStream.CreateForAttachment(fileStream, plaintextInput.Length, badKey, encryptResult.digest);
             }
             catch (InvalidMessageException)
             {
@@ -89,7 +129,8 @@ namespace libsignal_service_dotnet_tests.crypto
 
                 cipherFile = WriteToFile(encryptResult.ciphertext);
 
-                AttachmentCipherInputStream.CreateForAttachment(File.Open(cipherFile, FileMode.Open), plaintextInput.Length, key, badDigest);
+                using FileStream fileStream = File.Open(cipherFile, FileMode.Open);
+                AttachmentCipherInputStream.CreateForAttachment(fileStream, plaintextInput.Length, key, badDigest);
             }
             catch (InvalidMessageException)
             {
@@ -120,7 +161,8 @@ namespace libsignal_service_dotnet_tests.crypto
 
                 cipherFile = WriteToFile(encryptResult.ciphertext);
 
-                AttachmentCipherInputStream.CreateForAttachment(File.Open(cipherFile, FileMode.Open), plaintextInput.Length, key, null);
+                using FileStream fileStream = File.Open(cipherFile, FileMode.Open);
+                AttachmentCipherInputStream.CreateForAttachment(fileStream, plaintextInput.Length, key, null);
             }
             catch (InvalidMessageException)
             {
@@ -155,7 +197,8 @@ namespace libsignal_service_dotnet_tests.crypto
 
                 cipherFile = WriteToFile(badMacCiphertext);
 
-                AttachmentCipherInputStream.CreateForAttachment(File.Open(cipherFile, FileMode.Open), plaintextInput.Length, key, encryptResult.digest);
+                using FileStream fileStream = File.Open(cipherFile, FileMode.Open);
+                AttachmentCipherInputStream.CreateForAttachment(fileStream, plaintextInput.Length, key, encryptResult.digest);
             }
             catch (InvalidMessageException)
             {
@@ -178,7 +221,7 @@ namespace libsignal_service_dotnet_tests.crypto
             byte[] packKey = Util.GetSecretBytes(32);
             byte[] plaintextInput = Encoding.UTF8.GetBytes("Peter Parker");
             EncryptResult encryptResult = EncryptData(plaintextInput, ExpandPackKey(packKey));
-            Stream inputStream = AttachmentCipherInputStream.CreateForStickerData(encryptResult.ciphertext, packKey);
+            using Stream inputStream = AttachmentCipherInputStream.CreateForStickerData(encryptResult.ciphertext, packKey);
             byte[] plaintextOutput = ReadInputStreamFully(inputStream);
 
             CollectionAssert.AreEqual(plaintextInput, plaintextOutput);
@@ -190,7 +233,7 @@ namespace libsignal_service_dotnet_tests.crypto
             byte[] packKey = Util.GetSecretBytes(32);
             byte[] plaintextInput = Encoding.UTF8.GetBytes(string.Empty);
             EncryptResult encryptResult = EncryptData(plaintextInput, ExpandPackKey(packKey));
-            Stream inputStream = AttachmentCipherInputStream.CreateForStickerData(encryptResult.ciphertext, packKey);
+            using Stream inputStream = AttachmentCipherInputStream.CreateForStickerData(encryptResult.ciphertext, packKey);
             byte[] plaintextOutput = ReadInputStreamFully(inputStream);
 
             CollectionAssert.AreEqual(plaintextInput, plaintextOutput);
@@ -270,14 +313,7 @@ namespace libsignal_service_dotnet_tests.crypto
         {
             if (File.Exists(path))
             {
-                try
-                {
-                    File.Delete(path);
-                }
-                catch (IOException)
-                {
-                    // for some reason this fails
-                }
+                File.Delete(path);
             }
         }
 

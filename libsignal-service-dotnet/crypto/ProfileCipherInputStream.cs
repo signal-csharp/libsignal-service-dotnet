@@ -11,7 +11,7 @@ namespace libsignalservice.crypto
     public class ProfileCipherInputStream : Stream
     {
         private readonly GcmBlockCipher cipher;
-        private readonly Stream InputStream;
+        private readonly Stream inputStream;
 
         private bool finished = false;
 
@@ -28,12 +28,17 @@ namespace libsignalservice.crypto
             byte[] nonce = new byte[12];
             Util.ReadFully(inputStream, nonce);
             cipher.Init(false, new AeadParameters(new KeyParameter(key), 128, nonce));
-            InputStream = inputStream;
+            this.inputStream = inputStream;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            inputStream.Dispose();
+            base.Dispose(disposing);
         }
 
         public override void Flush()
         {
-            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -50,7 +55,7 @@ namespace libsignalservice.crypto
             try
             {
                 byte[] ciphertext = new byte[count / 2];
-                int read = InputStream.Read(ciphertext, 0, ciphertext.Length);
+                int read = inputStream.Read(ciphertext, 0, ciphertext.Length);
 
                 if (read <= 0)
                 {

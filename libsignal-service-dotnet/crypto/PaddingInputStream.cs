@@ -6,36 +6,41 @@ namespace libsignalservice.crypto
 {
     internal class PaddingInputStream : Stream
     {
-        private readonly Stream InputStream;
-        private long PaddingRemaining;
+        private readonly Stream inputStream;
+        private long paddingRemaining;
 
         public override bool CanRead => true;
         public override bool CanSeek => false;
         public override bool CanWrite => false;
-        public override long Length { get => InputStream.Length + Util.ToIntExact(PaddingRemaining); }
+        public override long Length { get => inputStream.Length + Util.ToIntExact(paddingRemaining); }
         public override long Position { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public PaddingInputStream(Stream inputStream, long plainTextLength)
         {
-            InputStream = inputStream;
-            PaddingRemaining = GetPaddedSize(plainTextLength) - plainTextLength;
+            this.inputStream = inputStream;
+            paddingRemaining = GetPaddedSize(plainTextLength) - plainTextLength;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            inputStream.Dispose();
+            base.Dispose(disposing);
         }
 
         public override void Flush()
         {
-            throw new NotImplementedException();
         }
 
         public override int Read(byte[] buffer, int offset, int count)
         {
-            int result = InputStream.Read(buffer, offset, count);
+            int result = inputStream.Read(buffer, offset, count);
             if (result >= 0)
                 return result;
 
-            if (PaddingRemaining > 0)
+            if (paddingRemaining > 0)
             {
-                count = Math.Min(count, Util.ToIntExact(PaddingRemaining));
-                PaddingRemaining -= count;
+                count = Math.Min(count, Util.ToIntExact(paddingRemaining));
+                paddingRemaining -= count;
                 return count;
             }
             return 0;

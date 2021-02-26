@@ -20,6 +20,8 @@ namespace libsignalservice.crypto
         private readonly Aes aes;
         private readonly CryptoStream cipher;
         private readonly ICryptoTransform decryptor;
+        private readonly byte[] mac;
+        private bool disposed = false;
 
         private readonly long totalDataSize;
         private long totalRead = 0;
@@ -59,12 +61,8 @@ namespace libsignalservice.crypto
 
                 VerifyMac(inputStream, inputStream.Length, mac, digest);
                 inputStream.Seek(0, SeekOrigin.Begin);
-                // We need to truncate the MAC off the end of the input stream or CryptoStream will fail to decrypt
-                // correctly because it will think there's more data to decrypt when the MAC isn't actually part of
-                // what needs to be decrypted.
-                inputStream.SetLength(inputStream.Length - MacLength);
 
-                Stream stream = new AttachmentCipherInputStream(inputStream, parts[0], inputStream.Length - BLOCK_SIZE);
+                Stream stream = new AttachmentCipherInputStream(inputStream, parts[0], inputStream.Length - BLOCK_SIZE - MacLength);
 
                 if (plaintextLength > 0)
                 {
@@ -103,12 +101,8 @@ namespace libsignalservice.crypto
                 MemoryStream inputStream = new MemoryStream(data);
                 VerifyMac(inputStream, data.Length, mac, null);
                 inputStream.Seek(0, SeekOrigin.Begin);
-                // We need to truncate the MAC off the end of the input stream or CryptoStream will fail to decrypt
-                // correctly because it will think there's more data to decrypt when the MAC isn't actually part of
-                // what needs to be decrypted.
-                inputStream.SetLength(inputStream.Length - MacLength);
 
-                return new AttachmentCipherInputStream(inputStream, parts[0], data.Length - BLOCK_SIZE);
+                return new AttachmentCipherInputStream(inputStream, parts[0], data.Length - BLOCK_SIZE - MacLength);
             }
             catch (InvalidMacException ex)
             {
@@ -119,6 +113,14 @@ namespace libsignalservice.crypto
         private AttachmentCipherInputStream(Stream inputStream, byte[] key, long totalDataSize)
         {
             this.inputStream = inputStream;
+
+            // We need to truncate the MAC off the end of the input stream or CryptoStream will fail to decrypt
+            // correctly because it will think there's more data to decrypt when the MAC isn't actually part of
+            // what needs to be decrypted. Truncating the MAC off the end of the stream however will make the
+            // stream not reusable so store the MAC so we can add it back before we dispose the stream.
+            const int MacLength = 32;
+            mac = GetMac(inputStream, MacLength);
+            inputStream.SetLength(inputStream.Length - MacLength);
 
             byte[] iv = new byte[BLOCK_SIZE];
             ReadFully(iv);
@@ -135,9 +137,20 @@ namespace libsignalservice.crypto
             this.totalDataSize = totalDataSize;
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                disposed = true;
+                inputStream.Seek(0, SeekOrigin.End);
+                inputStream.Write(mac, 0, mac.Length);
+            }
+            inputStream.Dispose();
+            base.Dispose(disposing);
+        }
+
         public override void Flush()
         {
-            throw new NotImplementedException();
         }
 
         public override int Read(byte[] buffer, int offset, int count)
@@ -205,6 +218,15 @@ namespace libsignalservice.crypto
             {
                 throw new InvalidMacException("Digest doesn't match!");
             }
+        }
+
+        private byte[] GetMac(Stream inputStream, int macLength)
+        {
+            byte[] mac = new byte[macLength];
+            inputStream.Seek(-macLength, SeekOrigin.End);
+            Util.ReadFully(inputStream, mac);
+            inputStream.Seek(0, SeekOrigin.Begin);
+            return mac;
         }
 
         private void ReadFully(byte[] buffer)
