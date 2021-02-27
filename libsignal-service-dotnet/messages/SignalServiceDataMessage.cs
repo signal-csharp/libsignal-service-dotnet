@@ -22,6 +22,7 @@ namespace libsignalservice.messages
         public List<SharedContact>? SharedContacts { get; set; }
         public List<SignalServicePreview>? Previews { get; set; }
         public SignalServiceSticker? Sticker { get; set; }
+        public int MessageTimerInSeconds { get; set; }
 
         /// <summary>
         /// Construct a SignalServiceDataMessage with a body and no attachments.
@@ -93,7 +94,7 @@ namespace libsignalservice.messages
         /// <param name="body">The message contents.</param>
         /// <param name="expiresInSeconds"></param>
         public SignalServiceDataMessage(long timestamp, SignalServiceGroup? group, List<SignalServiceAttachment>? attachments, string body, int expiresInSeconds) :
-            this(timestamp, group, attachments, body, false, expiresInSeconds, false, null, false, null, null, null, null)
+            this(timestamp, group, attachments, body, false, expiresInSeconds, false, null, false, null, null, null, null, 0)
         {
         }
 
@@ -102,7 +103,7 @@ namespace libsignalservice.messages
             string body, bool endSession, int expiresInSeconds,
             bool expirationUpdate, byte[]? profileKey, bool profileKeyUpdate,
             SignalServiceQuote? quote, List<SharedContact>? sharedContacts, List<SignalServicePreview>? previews,
-            SignalServiceSticker? sticker)
+            SignalServiceSticker? sticker, int messageTimerInSeconds)
         {
             Timestamp = timestamp;
             Body = body;
@@ -113,6 +114,8 @@ namespace libsignalservice.messages
             ProfileKey = profileKey;
             ProfileKeyUpdate = profileKeyUpdate;
             Quote = quote;
+            Sticker = sticker;
+            MessageTimerInSeconds = messageTimerInSeconds;
 
             if (attachments != null && attachments.Count > 0)
             {

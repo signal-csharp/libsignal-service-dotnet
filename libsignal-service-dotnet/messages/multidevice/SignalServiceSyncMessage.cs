@@ -11,6 +11,7 @@ namespace libsignalservice.messages.multidevice
         public BlockedListMessage? BlockedList { get; }
         public RequestMessage? Request { get; }
         public List<ReadMessage>? Reads { get; }
+        public MessageTimerReadMessage? MessageTimerRead { get; }
         public VerifiedMessage? Verified { get; }
         public ConfigurationMessage? Configuration { get; }
         public List<StickerPackOperationMessage>? StickerPackOperations { get; }
@@ -21,6 +22,7 @@ namespace libsignalservice.messages.multidevice
             BlockedListMessage? blockedList,
             RequestMessage? request,
             List<ReadMessage>? reads,
+            MessageTimerReadMessage? timerRead,
             VerifiedMessage? verified,
             ConfigurationMessage? configuration,
             List<StickerPackOperationMessage>? stickerPackOperations)
@@ -31,6 +33,7 @@ namespace libsignalservice.messages.multidevice
             BlockedList = blockedList;
             Request = request;
             Reads = reads;
+            MessageTimerRead = timerRead;
             Verified = verified;
             Configuration = configuration;
             StickerPackOperations = stickerPackOperations;
@@ -39,6 +42,7 @@ namespace libsignalservice.messages.multidevice
         public static SignalServiceSyncMessage ForSentTranscript(SentTranscriptMessage sent)
         {
             return new SignalServiceSyncMessage(sent,
+                null,
                 null,
                 null,
                 null,
@@ -59,6 +63,7 @@ namespace libsignalservice.messages.multidevice
                 null,
                 null,
                 null,
+                null,
                 null);
         }
 
@@ -67,6 +72,7 @@ namespace libsignalservice.messages.multidevice
             return new SignalServiceSyncMessage(null,
                 null,
                 groups,
+                null,
                 null,
                 null,
                 null,
@@ -85,6 +91,7 @@ namespace libsignalservice.messages.multidevice
                 null,
                 null,
                 null,
+                null,
                 null);
         }
 
@@ -96,6 +103,7 @@ namespace libsignalservice.messages.multidevice
                 null,
                 null,
                 reads,
+                null,
                 null,
                 null,
                 null);
@@ -113,12 +121,28 @@ namespace libsignalservice.messages.multidevice
                 reads,
                 null,
                 null,
+                null,
+                null);
+        }
+
+        public static SignalServiceSyncMessage ForMessageTimerRead(MessageTimerReadMessage timerRead)
+        {
+            return new SignalServiceSyncMessage(null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                timerRead,
+                null,
+                null,
                 null);
         }
 
         public static SignalServiceSyncMessage ForVerified(VerifiedMessage verifiedMessage)
         {
             return new SignalServiceSyncMessage(null,
+                null,
                 null,
                 null,
                 null,
@@ -139,12 +163,14 @@ namespace libsignalservice.messages.multidevice
                 null,
                 null,
                 null,
+                null,
                 null);
         }
 
         public static SignalServiceSyncMessage ForConfiguration(ConfigurationMessage configuration)
         {
             return new SignalServiceSyncMessage(null,
+                null,
                 null,
                 null,
                 null,
@@ -165,12 +191,14 @@ namespace libsignalservice.messages.multidevice
                 null,
                 null,
                 null,
+                null,
                 stickerPackOperations);
         }
 
         public static SignalServiceSyncMessage Empty()
         {
             return new SignalServiceSyncMessage(null,
+                null,
                 null,
                 null,
                 null,

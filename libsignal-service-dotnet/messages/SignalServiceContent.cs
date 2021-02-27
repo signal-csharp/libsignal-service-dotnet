@@ -252,7 +252,8 @@ namespace libsignalservice.messages
                 quote,
                 sharedContacts,
                 previews,
-                sticker);
+                sticker,
+                (int)content.MessageTimer);
         }
 
         /// <summary>
@@ -298,6 +299,13 @@ namespace libsignalservice.messages
                 }
 
                 return SignalServiceSyncMessage.ForRead(readMessages);
+            }
+
+            if (content.MessageTimerRead != null)
+            {
+                MessageTimerReadMessage timerRead = new MessageTimerReadMessage(content.MessageTimerRead.Sender,
+                    (long)content.MessageTimerRead.Timestamp);
+                return SignalServiceSyncMessage.ForMessageTimerRead(timerRead);
             }
 
             if (content.Contacts != null)
