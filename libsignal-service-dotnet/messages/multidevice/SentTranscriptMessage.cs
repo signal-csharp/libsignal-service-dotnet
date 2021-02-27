@@ -9,15 +9,18 @@ namespace libsignalservice.messages.multidevice
         public long ExpirationStartTimestamp { get; }
         public SignalServiceDataMessage Message { get; }
         public Dictionary<string, bool> UnidentifiedStatus { get; }
+        public bool IsRecipientUpdate { get; }
 
         public SentTranscriptMessage(string destination, long timestamp, SignalServiceDataMessage message,
-            long expirationStartTimestamp, Dictionary<string, bool> unidentifiedStatus)
+            long expirationStartTimestamp, Dictionary<string, bool> unidentifiedStatus,
+            bool isRecipientUpdate)
         {
             Destination = destination;
             Timestamp = timestamp;
             Message = message;
             ExpirationStartTimestamp = expirationStartTimestamp;
             UnidentifiedStatus = unidentifiedStatus;
+            IsRecipientUpdate = isRecipientUpdate;
         }
 
         public SentTranscriptMessage(long timestamp, SignalServiceDataMessage message)
@@ -27,6 +30,7 @@ namespace libsignalservice.messages.multidevice
             Message = message;
             ExpirationStartTimestamp = 0;
             UnidentifiedStatus = new Dictionary<string, bool>();
+            IsRecipientUpdate = false;
         }
 
         public bool IsUnidentified(string destination)
@@ -36,6 +40,11 @@ namespace libsignalservice.messages.multidevice
                 return UnidentifiedStatus[destination];
             }
             return false;
+        }
+
+        public HashSet<string> GetRecipients()
+        {
+            return new HashSet<string>(UnidentifiedStatus.Keys);
         }
     }
 }
