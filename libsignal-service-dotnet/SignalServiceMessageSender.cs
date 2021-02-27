@@ -246,14 +246,23 @@ namespace libsignalservice
                                                                        new AttachmentCipherOutputStreamFactory(attachmentKey),
                                                                        attachment.Listener);
 
-            AttachmentUploadAttributes uploadAttributes;
+            AttachmentUploadAttributes? uploadAttributes = null;
 
             if (Pipe != null)
             {
                 Logger.LogTrace("Using pipe to retrieve attachment upload attributes...");
-                uploadAttributes = await Pipe.GetAttachmentUploadAttributesAsync();
+                try
+                {
+                    uploadAttributes = await Pipe.GetAttachmentUploadAttributesAsync();
+                }
+                catch (IOException)
+                {
+                    Logger.LogWarning("Failed to retrieve attachment upload attributes using pipe. Falling back...");
+                }
+                
             }
-            else
+
+            if (uploadAttributes == null)
             {
                 Logger.LogTrace("Not using pipe to retrieve attachment upload attributes...");
                 uploadAttributes = await Socket.GetAttachmentV2UploadAttributesAsync(token);
