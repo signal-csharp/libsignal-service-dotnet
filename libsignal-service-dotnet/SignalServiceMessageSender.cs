@@ -565,7 +565,7 @@ namespace libsignalservice
             if (message.ViewOnce)
             {
                 dataMessage.IsViewOnce = message.ViewOnce;
-                dataMessage.RequiredProtocolVersion = Math.Max((int)DataMessage.Types.ProtocolVersion.ViewOnce, dataMessage.RequiredProtocolVersion);
+                dataMessage.RequiredProtocolVersion = Math.Max((int)DataMessage.Types.ProtocolVersion.ViewOnceVideo, dataMessage.RequiredProtocolVersion);
             }
 
             dataMessage.Timestamp = (ulong)message.Timestamp;
