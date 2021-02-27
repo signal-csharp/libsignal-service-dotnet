@@ -253,7 +253,7 @@ namespace libsignalservice.messages
                 sharedContacts,
                 previews,
                 sticker,
-                (int)content.MessageTimer);
+                content.IsViewOnce);
         }
 
         /// <summary>
@@ -301,11 +301,11 @@ namespace libsignalservice.messages
                 return SignalServiceSyncMessage.ForRead(readMessages);
             }
 
-            if (content.MessageTimerRead != null)
+            if (content.ViewOnceOpen != null)
             {
-                MessageTimerReadMessage timerRead = new MessageTimerReadMessage(content.MessageTimerRead.Sender,
-                    (long)content.MessageTimerRead.Timestamp);
-                return SignalServiceSyncMessage.ForMessageTimerRead(timerRead);
+                ViewOnceOpenMessage timerRead = new ViewOnceOpenMessage(content.ViewOnceOpen.Sender,
+                    (long)content.ViewOnceOpen.Timestamp);
+                return SignalServiceSyncMessage.ForViewOnceOpen(timerRead);
             }
 
             if (content.Contacts != null)

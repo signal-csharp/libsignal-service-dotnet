@@ -11,7 +11,7 @@ namespace libsignalservice.messages.multidevice
         public BlockedListMessage? BlockedList { get; }
         public RequestMessage? Request { get; }
         public List<ReadMessage>? Reads { get; }
-        public MessageTimerReadMessage? MessageTimerRead { get; }
+        public ViewOnceOpenMessage? ViewOnceOpen { get; }
         public VerifiedMessage? Verified { get; }
         public ConfigurationMessage? Configuration { get; }
         public List<StickerPackOperationMessage>? StickerPackOperations { get; }
@@ -22,7 +22,7 @@ namespace libsignalservice.messages.multidevice
             BlockedListMessage? blockedList,
             RequestMessage? request,
             List<ReadMessage>? reads,
-            MessageTimerReadMessage? timerRead,
+            ViewOnceOpenMessage? viewOnceOpen,
             VerifiedMessage? verified,
             ConfigurationMessage? configuration,
             List<StickerPackOperationMessage>? stickerPackOperations)
@@ -33,7 +33,7 @@ namespace libsignalservice.messages.multidevice
             BlockedList = blockedList;
             Request = request;
             Reads = reads;
-            MessageTimerRead = timerRead;
+            ViewOnceOpen = viewOnceOpen;
             Verified = verified;
             Configuration = configuration;
             StickerPackOperations = stickerPackOperations;
@@ -125,7 +125,7 @@ namespace libsignalservice.messages.multidevice
                 null);
         }
 
-        public static SignalServiceSyncMessage ForMessageTimerRead(MessageTimerReadMessage timerRead)
+        public static SignalServiceSyncMessage ForViewOnceOpen(ViewOnceOpenMessage timerRead)
         {
             return new SignalServiceSyncMessage(null,
                 null,

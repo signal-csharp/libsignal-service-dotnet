@@ -307,9 +307,9 @@ namespace libsignalservice
             {
                 content = CreateMultiDeviceReadContent(message.Reads);
             }
-            else if (message.MessageTimerRead != null)
+            else if (message.ViewOnceOpen != null)
             {
-                content = CreateMultiDeviceMessageTimerReadContent(message.MessageTimerRead);
+                content = CreateMultiDeviceViewOnceOpenContent(message.ViewOnceOpen);
             }
             else if (message.BlockedList != null)
             {
@@ -562,10 +562,10 @@ namespace libsignalservice
                 dataMessage.Sticker = stickerBuilder;
             }
 
-            if (message.MessageTimerInSeconds > 0)
+            if (message.ViewOnce)
             {
-                dataMessage.MessageTimer = (uint)message.MessageTimerInSeconds;
-                dataMessage.RequiredProtocolVersion = Math.Max((int)DataMessage.Types.ProtocolVersion.MessageTimers, dataMessage.RequiredProtocolVersion);
+                dataMessage.IsViewOnce = message.ViewOnce;
+                dataMessage.RequiredProtocolVersion = Math.Max((int)DataMessage.Types.ProtocolVersion.ViewOnce, dataMessage.RequiredProtocolVersion);
             }
 
             dataMessage.Timestamp = (ulong)message.Timestamp;
@@ -713,7 +713,7 @@ namespace libsignalservice
                     sentMessage.ExpirationStartTimestamp = (ulong)Util.CurrentTimeMillis();
                 }
 
-                if (dataMessage.MessageTimer > 0)
+                if (dataMessage.IsViewOnce)
                 {
                     dataMessage.Attachments.Clear();
                     sentMessage.Message = dataMessage;
@@ -758,12 +758,12 @@ namespace libsignalservice
             return content.ToByteArray();
         }
 
-        private byte[] CreateMultiDeviceMessageTimerReadContent(MessageTimerReadMessage readMessage)
+        private byte[] CreateMultiDeviceViewOnceOpenContent(ViewOnceOpenMessage readMessage)
         {
             Content container = new Content();
             SyncMessage builder = CreateSyncMessage();
 
-            builder.MessageTimerRead = new SyncMessage.Types.MessageTimerRead()
+            builder.ViewOnceOpen = new SyncMessage.Types.ViewOnceOpen()
             {
                 Timestamp = (ulong)readMessage.Timestamp,
                 Sender = readMessage.Sender
