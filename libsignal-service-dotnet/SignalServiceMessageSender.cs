@@ -328,7 +328,10 @@ namespace libsignalservice
                 throw new Exception("Unsupported sync message!");
             }
 
-            await SendMessageAsync(LocalAddress, unidenfifiedAccess?.SelfUnidentifiedAccess, Util.CurrentTimeMillis(), content, false, token);
+            long timestamp = message.Sent != null ? message.Sent.Timestamp :
+                Util.CurrentTimeMillis();
+
+            await SendMessageAsync(LocalAddress, unidenfifiedAccess?.SelfUnidentifiedAccess, timestamp, content, false, token);
         }
 
         /// <summary>
