@@ -42,6 +42,7 @@ namespace libsignalservice.messages
             private int Width;
             private int Height;
             private string? Caption;
+            private string? BlurHash;
 
             internal Builder()
             {
@@ -101,6 +102,12 @@ namespace libsignalservice.messages
                 return this;
             }
 
+            public Builder WithBlurHash(string blurHash)
+            {
+                BlurHash = blurHash;
+                return this;
+            }
+
             public SignalServiceAttachmentStream Build()
             {
                 if (InputStream == null)
@@ -116,7 +123,17 @@ namespace libsignalservice.messages
                     throw new ArgumentException("No length specified!");
                 }
 
-                return new SignalServiceAttachmentStream(InputStream, ContentType, (uint)Length, FileName, VoiceNote, null, Width, Height, Caption, Listener);
+                return new SignalServiceAttachmentStream(InputStream,
+                    ContentType,
+                    (uint)Length,
+                    FileName,
+                    VoiceNote,
+                    null,
+                    Width,
+                    Height,
+                    Caption,
+                    BlurHash,
+                    Listener);
             }
         }
 
