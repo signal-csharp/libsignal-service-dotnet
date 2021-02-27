@@ -18,14 +18,23 @@ namespace libsignal_service_dotnet_tests.util
         [TestMethod]
         public void TestIsValidNumber()
         {
+            Assert.IsTrue(PhoneNumberFormatter.IsValidNumber("+6831234", "683"));
+            Assert.IsTrue(PhoneNumberFormatter.IsValidNumber("+35851234", "358"));
+            Assert.IsTrue(PhoneNumberFormatter.IsValidNumber("+358512345", "358"));
+
             Assert.IsTrue(PhoneNumberFormatter.IsValidNumber("+5521912345678", "55"));
             Assert.IsTrue(PhoneNumberFormatter.IsValidNumber("+552112345678", "55"));
             Assert.IsTrue(PhoneNumberFormatter.IsValidNumber("+16105880522", "1"));
 
+            Assert.IsFalse(PhoneNumberFormatter.IsValidNumber("+014085041212", "0"));
+            Assert.IsFalse(PhoneNumberFormatter.IsValidNumber("+014085041212", "1"));
             Assert.IsFalse(PhoneNumberFormatter.IsValidNumber("+5512345678", "55"));
             Assert.IsFalse(PhoneNumberFormatter.IsValidNumber("+161058805220", "1"));
             Assert.IsFalse(PhoneNumberFormatter.IsValidNumber("+1610588052", "1"));
             Assert.IsFalse(PhoneNumberFormatter.IsValidNumber("+15880522", "1"));
+
+            Assert.IsTrue(PhoneNumberFormatter.IsValidNumber("+971812345678901", "971"));
+            Assert.IsFalse(PhoneNumberFormatter.IsValidNumber("+9718123456789012", "971"));
         }
 
         [TestMethod]

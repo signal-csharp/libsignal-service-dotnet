@@ -1,6 +1,6 @@
-using PhoneNumbers;
 using System;
 using System.Text.RegularExpressions;
+using PhoneNumbers;
 
 namespace CustomExtensions
 {
@@ -36,27 +36,19 @@ namespace libsignalservice.util
                 return false;
             }
 
-            if (COUNTRY_CODE_US == countryCode && !new Regex("^\\+1\\d{10}$").Match(e164Number).Success)
+            if (COUNTRY_CODE_US == countryCode && !new Regex("^\\+1[0-9]{10}$").Match(e164Number).Success)
             {
                 Logger.LogError("Failed US number format check");
                 return false;
             }
 
-            if (COUNTRY_CODE_BR == countryCode && !new Regex("^\\+55\\d{2}9?\\d{8}$").Match(e164Number).Success)
+            if (COUNTRY_CODE_BR == countryCode && !new Regex("^\\+55[0-9]{2}9?[0-9]{8}$").Match(e164Number).Success)
             {
                 Logger.LogError("Failed Brazil number format check");
                 return false;
             }
 
-            return (new Regex("^\\+[0-9]{10,}").Match(e164Number)).Success ||
-                (new Regex("^\\+685[0-9]{5}").Match(e164Number)).Success ||
-                (new Regex("^\\+376[0-9]{6}").Match(e164Number)).Success ||
-                (new Regex("^\\+299[0-9]{6}").Match(e164Number)).Success ||
-                (new Regex("^\\+597[0-9]{6}").Match(e164Number)).Success ||
-                (new Regex("^\\+298[0-9]{6}").Match(e164Number)).Success ||
-                (new Regex("^\\+240[0-9]{6}").Match(e164Number)).Success ||
-                (new Regex("^\\+687[0-9]{6}").Match(e164Number)).Success ||
-                (new Regex("^\\+689[0-9]{6}").Match(e164Number)).Success;
+            return (new Regex("^\\+[1-9][0-9]{6,14}$").Match(e164Number)).Success;
         }
 
         private static string ImpreciseFormatNumber(string number, string localNumber)
