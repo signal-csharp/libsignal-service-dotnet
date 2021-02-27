@@ -307,6 +307,10 @@ namespace libsignalservice
             {
                 content = CreateMultiDeviceReadContent(message.Reads);
             }
+            else if (message.MessageTimerRead != null)
+            {
+                content = CreateMultiDeviceMessageTimerReadContent(message.MessageTimerRead);
+            }
             else if (message.BlockedList != null)
             {
                 content = CreateMultiDeviceBlockedContent(message.BlockedList);
@@ -558,6 +562,12 @@ namespace libsignalservice
                 dataMessage.Sticker = stickerBuilder;
             }
 
+            if (message.MessageTimerInSeconds > 0)
+            {
+                dataMessage.MessageTimer = (uint)message.MessageTimerInSeconds;
+                dataMessage.RequiredProtocolVersion = Math.Max((int)DataMessage.Types.ProtocolVersion.MessageTimers, dataMessage.RequiredProtocolVersion);
+            }
+
             dataMessage.Timestamp = (ulong)message.Timestamp;
 
             content.DataMessage = dataMessage;
@@ -703,6 +713,12 @@ namespace libsignalservice
                     sentMessage.ExpirationStartTimestamp = (ulong)Util.CurrentTimeMillis();
                 }
 
+                if (dataMessage.MessageTimer > 0)
+                {
+                    dataMessage.Attachments.Clear();
+                    sentMessage.Message = dataMessage;
+                }
+
                 sentMessage.IsRecipientUpdate = isRecipientUpdate;
 
                 syncMessage.Sent = sentMessage;
@@ -740,6 +756,21 @@ namespace libsignalservice
             syncMessage.Request = request.Request;
             content.SyncMessage = syncMessage;
             return content.ToByteArray();
+        }
+
+        private byte[] CreateMultiDeviceMessageTimerReadContent(MessageTimerReadMessage readMessage)
+        {
+            Content container = new Content();
+            SyncMessage builder = CreateSyncMessage();
+
+            builder.MessageTimerRead = new SyncMessage.Types.MessageTimerRead()
+            {
+                Timestamp = (ulong)readMessage.Timestamp,
+                Sender = readMessage.Sender
+            };
+
+            container.SyncMessage = builder;
+            return container.ToByteArray();
         }
 
         private byte[] CreateMultiDeviceBlockedContent(BlockedListMessage blocked)
