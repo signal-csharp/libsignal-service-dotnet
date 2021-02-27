@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -253,12 +254,12 @@ namespace libsignalservice.push
 
         public async Task AcknowledgeMessage(CancellationToken token, string sender, ulong timestamp)// throws IOException
         {
-            await MakeServiceRequestAsync(token, string.Format(SENDER_ACK_MESSAGE_PATH, sender, timestamp), "DELETE", null, NO_HEADERS);
+            await MakeServiceRequestAsync(token, string.Format(new CultureInfo("en-US"), SENDER_ACK_MESSAGE_PATH, sender, timestamp), "DELETE", null, NO_HEADERS);
         }
 
         public async Task AcknowledgeMessage(CancellationToken token, string uuid)
         {
-            await MakeServiceRequestAsync(token, string.Format(UUID_ACK_MESSAGE_PATH, uuid), "DELETE", null, NO_HEADERS);
+            await MakeServiceRequestAsync(token, string.Format(new CultureInfo("en-US"), UUID_ACK_MESSAGE_PATH, uuid), "DELETE", null, NO_HEADERS);
         }
 
     public async Task<bool> RegisterPreKeys(CancellationToken token, IdentityKey identityKey, SignedPreKeyRecord signedPreKey, IList<PreKeyRecord> records)
@@ -439,11 +440,11 @@ namespace libsignalservice.push
             string path;
             if (cdnPath.V2.HasValue)
             {
-                path = string.Format(ATTACHMENT_ID_DOWNLOAD_PATH, cdnPath.V2.Value);
+                path = string.Format(new CultureInfo("en-US"), ATTACHMENT_ID_DOWNLOAD_PATH, cdnPath.V2.Value);
             }
             else
             {
-                path = string.Format(ATTACHMENT_KEY_DOWNLOAD_PATH, cdnPath.V3);
+                path = string.Format(new CultureInfo("en-US"), ATTACHMENT_KEY_DOWNLOAD_PATH, cdnPath.V3);
             }
 
             await DownloadFromCdnAsync(destination, cdnNumber, path, maxSizeBytes, listener, token);
@@ -467,7 +468,7 @@ namespace libsignalservice.push
             }
 
             string hexPackId = Hex.ToStringCondensed(packId);
-            await DownloadFromCdnAsync(destination, 0, string.Format(STICKER_PATH, hexPackId, stickerId), 1024 * 1024, null, token);
+            await DownloadFromCdnAsync(destination, 0, string.Format(new CultureInfo("en-US"), STICKER_PATH, hexPackId, stickerId), 1024 * 1024, null, token);
         }
 
         /// <summary>
@@ -489,7 +490,7 @@ namespace libsignalservice.push
             string hexPackId = Hex.ToStringCondensed(packId);
             MemoryStream output = new MemoryStream();
 
-            await DownloadFromCdnAsync(output, 0, 0, string.Format(STICKER_PATH, hexPackId, stickerId), 1024 * 1024, null, token);
+            await DownloadFromCdnAsync(output, 0, 0, string.Format(new CultureInfo("en-US"), STICKER_PATH, hexPackId, stickerId), 1024 * 1024, null, token);
 
             return output.ToArray();
         }
