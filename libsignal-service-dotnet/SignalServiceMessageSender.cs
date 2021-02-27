@@ -276,7 +276,8 @@ namespace libsignalservice
                 attachmentIdAndDigest.Item2,
                 attachment.FileName,
                 attachment.VoiceNote,
-                attachment.Caption);
+                attachment.Caption,
+                attachment.BlurHash);
         }
 
         /// <summary>
@@ -1240,6 +1241,11 @@ namespace libsignalservice
             if (attachment.Caption != null)
             {
                 attachmentPointer.Caption = attachment.Caption;
+            }
+
+            if (attachment.BlurHash != null)
+            {
+                attachmentPointer.BlurHash = attachment.BlurHash;
             }
 
             return attachmentPointer;

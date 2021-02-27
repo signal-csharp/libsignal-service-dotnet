@@ -684,7 +684,8 @@ namespace libsignalservice.messages
                 pointer.HasDigest ? pointer.Digest.ToByteArray() : null,
                 pointer.HasFileName ? pointer.FileName : null,
                 (pointer.Flags & (uint)AttachmentPointer.Types.Flags.VoiceMessage) != 0,
-                pointer.HasCaption ? pointer.Caption : null);
+                pointer.HasCaption ? pointer.Caption : null,
+                pointer.HasBlurHash ? pointer.BlurHash : null);
         }
 
         private static SignalServiceGroup? CreateGroupInfo(DataMessage content)
@@ -729,6 +730,7 @@ namespace libsignalservice.messages
                         pointer.HasDigest ? pointer.Digest.ToByteArray() : null,
                         null,
                         false,
+                        null,
                         null);
                 }
 
