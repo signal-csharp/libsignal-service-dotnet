@@ -175,7 +175,7 @@ namespace libsignalservice
 
             if ((result.Success != null && result.Success.NeedsSync) || (unidentifiedAccess != null && IsMultiDevice))
             {
-                byte[] syncMessage = CreateMultiDeviceSentTranscriptContent(content, recipient, (ulong)timestamp, new List<SendMessageResult>() { result });
+                byte[] syncMessage = CreateMultiDeviceSentTranscriptContent(content, recipient, (ulong)timestamp, new List<SendMessageResult>() { result }, false);
                 await SendMessageAsync(LocalAddress, unidentifiedAccess?.SelfUnidentifiedAccess, timestamp, syncMessage, false, token);
             }
 
@@ -201,6 +201,7 @@ namespace libsignalservice
         public async Task<List<SendMessageResult>> SendMessage(CancellationToken token,
             List<SignalServiceAddress> recipients,
             List<UnidentifiedAccessPair?> unidentifiedAccess,
+            bool isRecipientUpdate,
             SignalServiceDataMessage message)
         {
             byte[] content = await CreateMessageContentAsync(message, token);
@@ -218,7 +219,7 @@ namespace libsignalservice
             }
             if (needsSyncInResults || IsMultiDevice)
             {
-                byte[] syncMessage = CreateMultiDeviceSentTranscriptContent(content, null, (ulong) timestamp, results);
+                byte[] syncMessage = CreateMultiDeviceSentTranscriptContent(content, null, (ulong) timestamp, results, isRecipientUpdate);
                 await SendMessageAsync(LocalAddress, null, timestamp, syncMessage, false, token);
             }
             return results;
@@ -650,17 +651,20 @@ namespace libsignalservice
             return CreateMultiDeviceSentTranscriptContent(await CreateMessageContentAsync(transcript.Message, token),
                 address,
                 (ulong)transcript.Timestamp,
-                new List<SendMessageResult>() { result });
+                new List<SendMessageResult>() { result },
+                false);
         }
 
-        private byte[] CreateMultiDeviceSentTranscriptContent(byte[] rawContent, SignalServiceAddress? recipient, ulong timestamp, List<SendMessageResult> sendMessageResults)
+        private byte[] CreateMultiDeviceSentTranscriptContent(byte[] content, SignalServiceAddress? recipient,
+            ulong timestamp, List<SendMessageResult> sendMessageResults,
+            bool isRecipientUpdate)
         {
             try
             {
-                Content content = new Content { };
+                Content container = new Content { };
                 SyncMessage syncMessage = CreateSyncMessage();
                 SyncMessage.Types.Sent sentMessage = new SyncMessage.Types.Sent { };
-                DataMessage dataMessage = Content.Parser.ParseFrom(rawContent).DataMessage;
+                DataMessage dataMessage = Content.Parser.ParseFrom(content).DataMessage;
 
                 sentMessage.Timestamp = timestamp;
                 sentMessage.Message = dataMessage;
@@ -686,9 +690,12 @@ namespace libsignalservice
                 {
                     sentMessage.ExpirationStartTimestamp = (ulong)Util.CurrentTimeMillis();
                 }
+
+                sentMessage.IsRecipientUpdate = isRecipientUpdate;
+
                 syncMessage.Sent = sentMessage;
-                content.SyncMessage = syncMessage;
-                return content.ToByteArray();
+                container.SyncMessage = syncMessage;
+                return container.ToByteArray();
             }
             catch (InvalidProtocolBufferException e)
             {

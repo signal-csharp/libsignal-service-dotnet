@@ -279,7 +279,8 @@ namespace libsignalservice.messages
                                                                            (long)sentContent.Timestamp,
                                                                            CreateSignalServiceMessage(metadata, sentContent.Message),
                                                                            (long)sentContent.ExpirationStartTimestamp,
-                                                                           unidentifiedStatuses));
+                                                                           unidentifiedStatuses,
+                                                                           sentContent.IsRecipientUpdate));
             }
 
             if (content.Request != null)

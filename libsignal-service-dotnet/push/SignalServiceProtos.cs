@@ -106,7 +106,7 @@ namespace libsignalservice.push {
             "VmVyaWZpZWQSEwoLZGVzdGluYXRpb24YASABKAkSEwoLaWRlbnRpdHlLZXkY",
             "AiABKAwSLAoFc3RhdGUYAyABKA4yHS5zaWduYWxzZXJ2aWNlLlZlcmlmaWVk",
             "LlN0YXRlEhMKC251bGxNZXNzYWdlGAQgASgMIjIKBVN0YXRlEgsKB0RFRkFV",
-            "TFQQABIMCghWRVJJRklFRBABEg4KClVOVkVSSUZJRUQQAiLECwoLU3luY01l",
+            "TFQQABIMCghWRVJJRklFRBABEg4KClVOVkVSSUZJRUQQAiLmCwoLU3luY01l",
             "c3NhZ2USLQoEc2VudBgBIAEoCzIfLnNpZ25hbHNlcnZpY2UuU3luY01lc3Nh",
             "Z2UuU2VudBI1Cghjb250YWN0cxgCIAEoCzIjLnNpZ25hbHNlcnZpY2UuU3lu",
             "Y01lc3NhZ2UuQ29udGFjdHMSMQoGZ3JvdXBzGAMgASgLMiEuc2lnbmFsc2Vy",
@@ -118,54 +118,55 @@ namespace libsignalservice.push {
             "bmZpZ3VyYXRpb24YCSABKAsyKC5zaWduYWxzZXJ2aWNlLlN5bmNNZXNzYWdl",
             "LkNvbmZpZ3VyYXRpb24SDwoHcGFkZGluZxgIIAEoDBJNChRzdGlja2VyUGFj",
             "a09wZXJhdGlvbhgKIAMoCzIvLnNpZ25hbHNlcnZpY2UuU3luY01lc3NhZ2Uu",
-            "U3RpY2tlclBhY2tPcGVyYXRpb24angIKBFNlbnQSEwoLZGVzdGluYXRpb24Y",
+            "U3RpY2tlclBhY2tPcGVyYXRpb24awAIKBFNlbnQSEwoLZGVzdGluYXRpb24Y",
             "ASABKAkSEQoJdGltZXN0YW1wGAIgASgEEisKB21lc3NhZ2UYAyABKAsyGi5z",
             "aWduYWxzZXJ2aWNlLkRhdGFNZXNzYWdlEiAKGGV4cGlyYXRpb25TdGFydFRp",
             "bWVzdGFtcBgEIAEoBBJWChJ1bmlkZW50aWZpZWRTdGF0dXMYBSADKAsyOi5z",
             "aWduYWxzZXJ2aWNlLlN5bmNNZXNzYWdlLlNlbnQuVW5pZGVudGlmaWVkRGVs",
-            "aXZlcnlTdGF0dXMaRwoaVW5pZGVudGlmaWVkRGVsaXZlcnlTdGF0dXMSEwoL",
-            "ZGVzdGluYXRpb24YASABKAkSFAoMdW5pZGVudGlmaWVkGAIgASgIGlMKCENv",
-            "bnRhY3RzEi4KBGJsb2IYASABKAsyIC5zaWduYWxzZXJ2aWNlLkF0dGFjaG1l",
-            "bnRQb2ludGVyEhcKCGNvbXBsZXRlGAIgASgIOgVmYWxzZRo4CgZHcm91cHMS",
-            "LgoEYmxvYhgBIAEoCzIgLnNpZ25hbHNlcnZpY2UuQXR0YWNobWVudFBvaW50",
-            "ZXIaLAoHQmxvY2tlZBIPCgdudW1iZXJzGAEgAygJEhAKCGdyb3VwSWRzGAIg",
-            "AygMGo8BCgdSZXF1ZXN0EjUKBHR5cGUYASABKA4yJy5zaWduYWxzZXJ2aWNl",
-            "LlN5bmNNZXNzYWdlLlJlcXVlc3QuVHlwZSJNCgRUeXBlEgsKB1VOS05PV04Q",
-            "ABIMCghDT05UQUNUUxABEgoKBkdST1VQUxACEgsKB0JMT0NLRUQQAxIRCg1D",
-            "T05GSUdVUkFUSU9OEAQaKQoEUmVhZBIOCgZzZW5kZXIYASABKAkSEQoJdGlt",
-            "ZXN0YW1wGAIgASgEGn0KDUNvbmZpZ3VyYXRpb24SFAoMcmVhZFJlY2VpcHRz",
-            "GAEgASgIEiYKHnVuaWRlbnRpZmllZERlbGl2ZXJ5SW5kaWNhdG9ycxgCIAEo",
-            "CBIYChB0eXBpbmdJbmRpY2F0b3JzGAMgASgIEhQKDGxpbmtQcmV2aWV3cxgE",
-            "IAEoCBqcAQoUU3RpY2tlclBhY2tPcGVyYXRpb24SDgoGcGFja0lkGAEgASgM",
-            "Eg8KB3BhY2tLZXkYAiABKAwSQgoEdHlwZRgDIAEoDjI0LnNpZ25hbHNlcnZp",
-            "Y2UuU3luY01lc3NhZ2UuU3RpY2tlclBhY2tPcGVyYXRpb24uVHlwZSIfCgRU",
-            "eXBlEgsKB0lOU1RBTEwQABIKCgZSRU1PVkUQASLNAgoRQXR0YWNobWVudFBv",
-            "aW50ZXISDwoFY2RuSWQYASABKAZIABIQCgZjZG5LZXkYDyABKAlIABITCgtj",
-            "b250ZW50VHlwZRgCIAEoCRILCgNrZXkYAyABKAwSDAoEc2l6ZRgEIAEoDRIR",
-            "Cgl0aHVtYm5haWwYBSABKAwSDgoGZGlnZXN0GAYgASgMEhAKCGZpbGVOYW1l",
-            "GAcgASgJEg0KBWZsYWdzGAggASgNEg0KBXdpZHRoGAkgASgNEg4KBmhlaWdo",
-            "dBgKIAEoDRIPCgdjYXB0aW9uGAsgASgJEhAKCGJsdXJIYXNoGAwgASgJEhcK",
-            "D3VwbG9hZFRpbWVzdGFtcBgNIAEoBBIRCgljZG5OdW1iZXIYDiABKA0iGgoF",
-            "RmxhZ3MSEQoNVk9JQ0VfTUVTU0FHRRABQhcKFWF0dGFjaG1lbnRfaWRlbnRp",
-            "ZmllciLlAQoMR3JvdXBDb250ZXh0EgoKAmlkGAEgASgMEi4KBHR5cGUYAiAB",
-            "KA4yIC5zaWduYWxzZXJ2aWNlLkdyb3VwQ29udGV4dC5UeXBlEgwKBG5hbWUY",
-            "AyABKAkSDwoHbWVtYmVycxgEIAMoCRIwCgZhdmF0YXIYBSABKAsyIC5zaWdu",
-            "YWxzZXJ2aWNlLkF0dGFjaG1lbnRQb2ludGVyIkgKBFR5cGUSCwoHVU5LTk9X",
-            "ThAAEgoKBlVQREFURRABEgsKB0RFTElWRVIQAhIICgRRVUlUEAMSEAoMUkVR",
-            "VUVTVF9JTkZPEAQihwIKDkNvbnRhY3REZXRhaWxzEg4KBm51bWJlchgBIAEo",
-            "CRIMCgRuYW1lGAIgASgJEjQKBmF2YXRhchgDIAEoCzIkLnNpZ25hbHNlcnZp",
-            "Y2UuQ29udGFjdERldGFpbHMuQXZhdGFyEg0KBWNvbG9yGAQgASgJEikKCHZl",
-            "cmlmaWVkGAUgASgLMhcuc2lnbmFsc2VydmljZS5WZXJpZmllZBISCgpwcm9m",
-            "aWxlS2V5GAYgASgMEg8KB2Jsb2NrZWQYByABKAgSEwoLZXhwaXJlVGltZXIY",
-            "CCABKA0aLQoGQXZhdGFyEhMKC2NvbnRlbnRUeXBlGAEgASgJEg4KBmxlbmd0",
-            "aBgCIAEoDSLnAQoMR3JvdXBEZXRhaWxzEgoKAmlkGAEgASgMEgwKBG5hbWUY",
-            "AiABKAkSDwoHbWVtYmVycxgDIAMoCRIyCgZhdmF0YXIYBCABKAsyIi5zaWdu",
-            "YWxzZXJ2aWNlLkdyb3VwRGV0YWlscy5BdmF0YXISFAoGYWN0aXZlGAUgASgI",
-            "OgR0cnVlEhMKC2V4cGlyZVRpbWVyGAYgASgNEg0KBWNvbG9yGAcgASgJEg8K",
-            "B2Jsb2NrZWQYCCABKAgaLQoGQXZhdGFyEhMKC2NvbnRlbnRUeXBlGAEgASgJ",
-            "Eg4KBmxlbmd0aBgCIAEoDUJaCitvcmcud2hpc3BlcnN5c3RlbXMudGV4dHNl",
-            "Y3VyZS5pbnRlcm5hbC5wdXNoQhNTaWduYWxTZXJ2aWNlUHJvdG9zqgIVbGli",
-            "c2lnbmFsc2VydmljZS5wdXNo"));
+            "aXZlcnlTdGF0dXMSIAoRaXNSZWNpcGllbnRVcGRhdGUYBiABKAg6BWZhbHNl",
+            "GkcKGlVuaWRlbnRpZmllZERlbGl2ZXJ5U3RhdHVzEhMKC2Rlc3RpbmF0aW9u",
+            "GAEgASgJEhQKDHVuaWRlbnRpZmllZBgCIAEoCBpTCghDb250YWN0cxIuCgRi",
+            "bG9iGAEgASgLMiAuc2lnbmFsc2VydmljZS5BdHRhY2htZW50UG9pbnRlchIX",
+            "Cghjb21wbGV0ZRgCIAEoCDoFZmFsc2UaOAoGR3JvdXBzEi4KBGJsb2IYASAB",
+            "KAsyIC5zaWduYWxzZXJ2aWNlLkF0dGFjaG1lbnRQb2ludGVyGiwKB0Jsb2Nr",
+            "ZWQSDwoHbnVtYmVycxgBIAMoCRIQCghncm91cElkcxgCIAMoDBqPAQoHUmVx",
+            "dWVzdBI1CgR0eXBlGAEgASgOMicuc2lnbmFsc2VydmljZS5TeW5jTWVzc2Fn",
+            "ZS5SZXF1ZXN0LlR5cGUiTQoEVHlwZRILCgdVTktOT1dOEAASDAoIQ09OVEFD",
+            "VFMQARIKCgZHUk9VUFMQAhILCgdCTE9DS0VEEAMSEQoNQ09ORklHVVJBVElP",
+            "ThAEGikKBFJlYWQSDgoGc2VuZGVyGAEgASgJEhEKCXRpbWVzdGFtcBgCIAEo",
+            "BBp9Cg1Db25maWd1cmF0aW9uEhQKDHJlYWRSZWNlaXB0cxgBIAEoCBImCh51",
+            "bmlkZW50aWZpZWREZWxpdmVyeUluZGljYXRvcnMYAiABKAgSGAoQdHlwaW5n",
+            "SW5kaWNhdG9ycxgDIAEoCBIUCgxsaW5rUHJldmlld3MYBCABKAganAEKFFN0",
+            "aWNrZXJQYWNrT3BlcmF0aW9uEg4KBnBhY2tJZBgBIAEoDBIPCgdwYWNrS2V5",
+            "GAIgASgMEkIKBHR5cGUYAyABKA4yNC5zaWduYWxzZXJ2aWNlLlN5bmNNZXNz",
+            "YWdlLlN0aWNrZXJQYWNrT3BlcmF0aW9uLlR5cGUiHwoEVHlwZRILCgdJTlNU",
+            "QUxMEAASCgoGUkVNT1ZFEAEizQIKEUF0dGFjaG1lbnRQb2ludGVyEg8KBWNk",
+            "bklkGAEgASgGSAASEAoGY2RuS2V5GA8gASgJSAASEwoLY29udGVudFR5cGUY",
+            "AiABKAkSCwoDa2V5GAMgASgMEgwKBHNpemUYBCABKA0SEQoJdGh1bWJuYWls",
+            "GAUgASgMEg4KBmRpZ2VzdBgGIAEoDBIQCghmaWxlTmFtZRgHIAEoCRINCgVm",
+            "bGFncxgIIAEoDRINCgV3aWR0aBgJIAEoDRIOCgZoZWlnaHQYCiABKA0SDwoH",
+            "Y2FwdGlvbhgLIAEoCRIQCghibHVySGFzaBgMIAEoCRIXCg91cGxvYWRUaW1l",
+            "c3RhbXAYDSABKAQSEQoJY2RuTnVtYmVyGA4gASgNIhoKBUZsYWdzEhEKDVZP",
+            "SUNFX01FU1NBR0UQAUIXChVhdHRhY2htZW50X2lkZW50aWZpZXIi5QEKDEdy",
+            "b3VwQ29udGV4dBIKCgJpZBgBIAEoDBIuCgR0eXBlGAIgASgOMiAuc2lnbmFs",
+            "c2VydmljZS5Hcm91cENvbnRleHQuVHlwZRIMCgRuYW1lGAMgASgJEg8KB21l",
+            "bWJlcnMYBCADKAkSMAoGYXZhdGFyGAUgASgLMiAuc2lnbmFsc2VydmljZS5B",
+            "dHRhY2htZW50UG9pbnRlciJICgRUeXBlEgsKB1VOS05PV04QABIKCgZVUERB",
+            "VEUQARILCgdERUxJVkVSEAISCAoEUVVJVBADEhAKDFJFUVVFU1RfSU5GTxAE",
+            "IocCCg5Db250YWN0RGV0YWlscxIOCgZudW1iZXIYASABKAkSDAoEbmFtZRgC",
+            "IAEoCRI0CgZhdmF0YXIYAyABKAsyJC5zaWduYWxzZXJ2aWNlLkNvbnRhY3RE",
+            "ZXRhaWxzLkF2YXRhchINCgVjb2xvchgEIAEoCRIpCgh2ZXJpZmllZBgFIAEo",
+            "CzIXLnNpZ25hbHNlcnZpY2UuVmVyaWZpZWQSEgoKcHJvZmlsZUtleRgGIAEo",
+            "DBIPCgdibG9ja2VkGAcgASgIEhMKC2V4cGlyZVRpbWVyGAggASgNGi0KBkF2",
+            "YXRhchITCgtjb250ZW50VHlwZRgBIAEoCRIOCgZsZW5ndGgYAiABKA0i5wEK",
+            "DEdyb3VwRGV0YWlscxIKCgJpZBgBIAEoDBIMCgRuYW1lGAIgASgJEg8KB21l",
+            "bWJlcnMYAyADKAkSMgoGYXZhdGFyGAQgASgLMiIuc2lnbmFsc2VydmljZS5H",
+            "cm91cERldGFpbHMuQXZhdGFyEhQKBmFjdGl2ZRgFIAEoCDoEdHJ1ZRITCgtl",
+            "eHBpcmVUaW1lchgGIAEoDRINCgVjb2xvchgHIAEoCRIPCgdibG9ja2VkGAgg",
+            "ASgIGi0KBkF2YXRhchITCgtjb250ZW50VHlwZRgBIAEoCRIOCgZsZW5ndGgY",
+            "AiABKA1CWgorb3JnLndoaXNwZXJzeXN0ZW1zLnRleHRzZWN1cmUuaW50ZXJu",
+            "YWwucHVzaEITU2lnbmFsU2VydmljZVByb3Rvc6oCFWxpYnNpZ25hbHNlcnZp",
+            "Y2UucHVzaA=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
@@ -188,7 +189,7 @@ namespace libsignalservice.push {
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.ReceiptMessage), global::libsignalservice.push.ReceiptMessage.Parser, new[]{ "Type", "Timestamp" }, null, new[]{ typeof(global::libsignalservice.push.ReceiptMessage.Types.Type) }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.TypingMessage), global::libsignalservice.push.TypingMessage.Parser, new[]{ "Timestamp", "Action", "GroupId" }, null, new[]{ typeof(global::libsignalservice.push.TypingMessage.Types.Action) }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.Verified), global::libsignalservice.push.Verified.Parser, new[]{ "Destination", "IdentityKey", "State", "NullMessage" }, null, new[]{ typeof(global::libsignalservice.push.Verified.Types.State) }, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage), global::libsignalservice.push.SyncMessage.Parser, new[]{ "Sent", "Contacts", "Groups", "Request", "Read", "Blocked", "Verified", "Configuration", "Padding", "StickerPackOperation" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Sent), global::libsignalservice.push.SyncMessage.Types.Sent.Parser, new[]{ "Destination", "Timestamp", "Message", "ExpirationStartTimestamp", "UnidentifiedStatus" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Sent.Types.UnidentifiedDeliveryStatus), global::libsignalservice.push.SyncMessage.Types.Sent.Types.UnidentifiedDeliveryStatus.Parser, new[]{ "Destination", "Unidentified" }, null, null, null, null)}),
+            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage), global::libsignalservice.push.SyncMessage.Parser, new[]{ "Sent", "Contacts", "Groups", "Request", "Read", "Blocked", "Verified", "Configuration", "Padding", "StickerPackOperation" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Sent), global::libsignalservice.push.SyncMessage.Types.Sent.Parser, new[]{ "Destination", "Timestamp", "Message", "ExpirationStartTimestamp", "UnidentifiedStatus", "IsRecipientUpdate" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Sent.Types.UnidentifiedDeliveryStatus), global::libsignalservice.push.SyncMessage.Types.Sent.Types.UnidentifiedDeliveryStatus.Parser, new[]{ "Destination", "Unidentified" }, null, null, null, null)}),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Contacts), global::libsignalservice.push.SyncMessage.Types.Contacts.Parser, new[]{ "Blob", "Complete" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Groups), global::libsignalservice.push.SyncMessage.Types.Groups.Parser, new[]{ "Blob" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Blocked), global::libsignalservice.push.SyncMessage.Types.Blocked.Parser, new[]{ "Numbers", "GroupIds" }, null, null, null, null),
@@ -6684,6 +6685,7 @@ namespace libsignalservice.push {
           message_ = other.message_ != null ? other.message_.Clone() : null;
           expirationStartTimestamp_ = other.expirationStartTimestamp_;
           unidentifiedStatus_ = other.unidentifiedStatus_.Clone();
+          isRecipientUpdate_ = other.isRecipientUpdate_;
           _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
         }
 
@@ -6784,6 +6786,30 @@ namespace libsignalservice.push {
           get { return unidentifiedStatus_; }
         }
 
+        /// <summary>Field number for the "isRecipientUpdate" field.</summary>
+        public const int IsRecipientUpdateFieldNumber = 6;
+        private readonly static bool IsRecipientUpdateDefaultValue = false;
+
+        private bool isRecipientUpdate_;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public bool IsRecipientUpdate {
+          get { if ((_hasBits0 & 4) != 0) { return isRecipientUpdate_; } else { return IsRecipientUpdateDefaultValue; } }
+          set {
+            _hasBits0 |= 4;
+            isRecipientUpdate_ = value;
+          }
+        }
+        /// <summary>Gets whether the "isRecipientUpdate" field is set</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public bool HasIsRecipientUpdate {
+          get { return (_hasBits0 & 4) != 0; }
+        }
+        /// <summary>Clears the value of the "isRecipientUpdate" field</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void ClearIsRecipientUpdate() {
+          _hasBits0 &= ~4;
+        }
+
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public override bool Equals(object other) {
           return Equals(other as Sent);
@@ -6802,6 +6828,7 @@ namespace libsignalservice.push {
           if (!object.Equals(Message, other.Message)) return false;
           if (ExpirationStartTimestamp != other.ExpirationStartTimestamp) return false;
           if(!unidentifiedStatus_.Equals(other.unidentifiedStatus_)) return false;
+          if (IsRecipientUpdate != other.IsRecipientUpdate) return false;
           return Equals(_unknownFields, other._unknownFields);
         }
 
@@ -6813,6 +6840,7 @@ namespace libsignalservice.push {
           if (message_ != null) hash ^= Message.GetHashCode();
           if (HasExpirationStartTimestamp) hash ^= ExpirationStartTimestamp.GetHashCode();
           hash ^= unidentifiedStatus_.GetHashCode();
+          if (HasIsRecipientUpdate) hash ^= IsRecipientUpdate.GetHashCode();
           if (_unknownFields != null) {
             hash ^= _unknownFields.GetHashCode();
           }
@@ -6843,6 +6871,10 @@ namespace libsignalservice.push {
             output.WriteUInt64(ExpirationStartTimestamp);
           }
           unidentifiedStatus_.WriteTo(output, _repeated_unidentifiedStatus_codec);
+          if (HasIsRecipientUpdate) {
+            output.WriteRawTag(48);
+            output.WriteBool(IsRecipientUpdate);
+          }
           if (_unknownFields != null) {
             _unknownFields.WriteTo(output);
           }
@@ -6864,6 +6896,9 @@ namespace libsignalservice.push {
             size += 1 + pb::CodedOutputStream.ComputeUInt64Size(ExpirationStartTimestamp);
           }
           size += unidentifiedStatus_.CalculateSize(_repeated_unidentifiedStatus_codec);
+          if (HasIsRecipientUpdate) {
+            size += 1 + 1;
+          }
           if (_unknownFields != null) {
             size += _unknownFields.CalculateSize();
           }
@@ -6891,6 +6926,9 @@ namespace libsignalservice.push {
             ExpirationStartTimestamp = other.ExpirationStartTimestamp;
           }
           unidentifiedStatus_.Add(other.unidentifiedStatus_);
+          if (other.HasIsRecipientUpdate) {
+            IsRecipientUpdate = other.IsRecipientUpdate;
+          }
           _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
         }
 
@@ -6923,6 +6961,10 @@ namespace libsignalservice.push {
               }
               case 42: {
                 unidentifiedStatus_.AddEntriesFrom(input, _repeated_unidentifiedStatus_codec);
+                break;
+              }
+              case 48: {
+                IsRecipientUpdate = input.ReadBool();
                 break;
               }
             }
