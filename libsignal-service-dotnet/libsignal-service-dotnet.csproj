@@ -27,7 +27,7 @@
     <PackageReference Include="Google.Protobuf" Version="3.12.4" />
     <PackageReference Include="Google.Protobuf.Tools" Version="3.12.4" />
     <PackageReference Include="libphonenumber-csharp" Version="8.10.7" />
-    <PackageReference Include="libsignal-metadata-dotnet" Version="0.0.3" />
+    <PackageReference Include="libsignal-metadata-dotnet" Version="0.0.5.1" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="1.1.2" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <!-- Do not upgrade! 1.8.5 is the last version that supports .NETStandard 1.4 -->

@@ -1,9 +1,8 @@
-using System;
 using System.Collections.Generic;
+using libsignalservice.push;
 
 namespace libsignalservice.messages
 {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     /// <summary>
     /// Group information to include in SignalServiceMessages destined to groups.
     ///
@@ -29,8 +28,35 @@ namespace libsignalservice.messages
         public byte[] GroupId { get; set; }
         public GroupType Type { get; set; }
         public string? Name { get; set; }
-        public IList<string>? Members { get; set; }
+        public List<SignalServiceAddress>? Members { get; set; }
         public SignalServiceAttachment? Avatar { get; set; }
+
+        /// <summary>
+        /// Construct a DELIVER group context.
+        /// </summary>
+        /// <param name="groupId"></param>
+        public SignalServiceGroup(byte[] groupId) :
+            this(GroupType.DELIVER, groupId, null, null, null)
+        {
+        }
+
+        /// <summary>
+        /// Construct a group context.
+        /// </summary>
+        /// <param name="type">The group message type (update, deliver, quit).</param>
+        /// <param name="groupId">The group ID.</param>
+        /// <param name="name">The group title.</param>
+        /// <param name="members">The group membership list.</param>
+        /// <param name="avatar">The group avatar icon.</param>
+        public SignalServiceGroup(GroupType type, byte[] groupId, string? name,
+            List<SignalServiceAddress>? members,
+            SignalServiceAttachment? avatar)
+        {
+            Type = type;
+            GroupId = groupId;
+            Name = name;
+            Members = members;
+            Avatar = avatar;
+        }
     }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

@@ -5,21 +5,30 @@ using System.Text;
 
 namespace libsignalservice.profiles
 {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public class SignalServiceProfile
     {
         [JsonProperty("identityKey")]
-        public string IdentityKey { get; private set; }
+        public string? IdentityKey { get; private set; }
+
         [JsonProperty("name")]
-        public string Name { get; private set; }
+        public string? Name { get; private set; }
+
         [JsonProperty("avatar")]
-        public string Avatar { get; private set; }
+        public string? Avatar { get; private set; }
+
         [JsonProperty("unidentifiedAccess")]
-        public string UnidentifiedAccess { get; private set; }
+        public string? UnidentifiedAccess { get; private set; }
+
         [JsonProperty("unrestrictedUnidentifiedAccess")]
         public bool UnrestrictedUnidentifiedAccess { get; private set; }
 
-        public SignalServiceProfile() { }
+        [JsonProperty("capabilities")]
+        public Capabilities? _Capabilities { get; private set; }
+
+        public class Capabilities
+        {
+            [JsonProperty("uuid")]
+            public bool Uuid { get; private set; }
+        }
     }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace libsignalservice.push
 {
-    internal class AttachmentV3UploadAttributes
+    public class AttachmentV3UploadAttributes
     {
         [JsonProperty("cdn")]
         public int Cdn { get; private set; }

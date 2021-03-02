@@ -13,21 +13,22 @@ namespace libsignal_service_dotnet_tests
     public class ConnectionTests
     {
         public static SignalServiceUrl[] ServiceUrls = new SignalServiceUrl[] { new SignalServiceUrl("https://textsecure-service.whispersystems.org") };
-        public static SignalCdnUrl[] CdnUrls = new SignalCdnUrl[] { new SignalCdnUrl("https://cdn.signal.org"), new SignalCdnUrl("https://cdn2.signal.org") };
+        public static SignalCdnUrl[] CdnUrls = new SignalCdnUrl[] { new SignalCdnUrl("https://cdn.signal.org") };
+        public static SignalCdnUrl[] Cdn2Urls = new SignalCdnUrl[] { new SignalCdnUrl("https://cdn2.signal.org") };
         public static SignalContactDiscoveryUrl[] ContactDiscoveryUrls = new SignalContactDiscoveryUrl[] { new SignalContactDiscoveryUrl("https://api.directory.signal.org") };
 
         public static SignalServiceUrl[] ServiceStagingUrls = new SignalServiceUrl[] { new SignalServiceUrl("https://textsecure-service-staging.whispersystems.org") };
         public static SignalCdnUrl[] CdnStagingUrls = new SignalCdnUrl[] { new SignalCdnUrl("https://cdn-staging.signal.org"), new SignalCdnUrl("https://cdn2-staging.signal.org") };
         public static SignalContactDiscoveryUrl[] ContactDiscoveryStagingUrls = new SignalContactDiscoveryUrl[] { new SignalContactDiscoveryUrl("https://api-staging.directory.signal.org") };
 
-        public static SignalServiceConfiguration ServiceConfiguration = new SignalServiceConfiguration(ServiceUrls, CdnUrls, ContactDiscoveryUrls);
+        public static SignalServiceConfiguration ServiceConfiguration = new SignalServiceConfiguration(ServiceUrls, CdnUrls, Cdn2Urls, ContactDiscoveryUrls);
         public static string UserAgent = "libsignal-service-dotnet-tests";
 
         [TestMethod]
         public async Task TestConnection()
         {
             var cancelSource = new CancellationTokenSource();
-            var pushServiceSocket = new SignalServiceAccountManager(ServiceConfiguration, "A", "B", 1, UserAgent, Util.CreateHttpClient());
+            var pushServiceSocket = new SignalServiceAccountManager(ServiceConfiguration, null, "A", "B", 1, UserAgent, Util.CreateHttpClient());
             try
             {
                 var turn = await pushServiceSocket.GetTurnServerInfo(cancelSource.Token);

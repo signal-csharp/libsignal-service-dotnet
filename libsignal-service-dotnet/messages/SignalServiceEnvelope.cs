@@ -12,7 +12,7 @@ namespace libsignalservice.messages
     /// The envelope contains the wrapping information, such as the sender, the
     /// message timestamp, the encrypted message type, etc.
     /// </summary>
-    public class SignalServiceEnvelope: SignalServiceMessagePipeMessage
+    public class SignalServiceEnvelope : SignalServiceMessagePipeMessage
     {
         public Envelope Envelope { get; }
 
@@ -34,19 +34,32 @@ namespace libsignalservice.messages
             Envelope = Envelope.Parser.ParseFrom(input);
         }
 
-        public SignalServiceEnvelope(int type, string sender, int senderDevice,
+        public SignalServiceEnvelope(int type, SignalServiceAddress sender, int senderDevice,
             long timestamp, byte[] legacyMessage, byte[] content, long serverTimestamp, string? uuid)
         {
             Envelope envelope = new Envelope
             {
                 Type = (Envelope.Types.Type)type,
-                Source = sender,
                 SourceDevice = (uint)senderDevice,
                 Timestamp = (ulong)timestamp,
                 ServerTimestamp = (ulong) serverTimestamp
             };
 
-            if (uuid != null) envelope.ServerGuid = uuid;
+            if (sender.Uuid.HasValue)
+            {
+                envelope.SourceUuid = sender.Uuid.Value.ToString();
+            }
+
+            if (sender.GetNumber() != null)
+            {
+                envelope.SourceE164 = sender.GetNumber();
+            }
+
+            if (uuid != null)
+            {
+                envelope.ServerGuid = uuid;
+            }
+
             if (legacyMessage != null) envelope.LegacyMessage = ByteString.CopyFrom(legacyMessage);
             if (content != null) envelope.Content = ByteString.CopyFrom(content);
 
@@ -80,12 +93,35 @@ namespace libsignalservice.messages
         }
 
         /// <summary>
-        /// The envelope's sender.
+        /// 
         /// </summary>
-        /// <returns>The envelope's sender.</returns>
-        public string GetSource()
+        /// <returns>True if either a source E164 or UUID is present.</returns>
+        public bool HasSource()
         {
-            return Envelope.Source;
+            return Envelope.HasSourceE164 || Envelope.HasSourceUuid;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>The envelope's sender as an E164 number.</returns>
+        public string? GetSourceE164()
+        {
+            return Envelope.SourceE164;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>The envelope's sender as a UUID.</returns>
+        public string? GetSourceUuid()
+        {
+            return Envelope.SourceUuid;
+        }
+
+        public string? GetSourceIdentifier()
+        {
+            return GetSourceUuid() ?? GetSourceE164() ?? null;
         }
 
         /// <summary>
@@ -103,7 +139,7 @@ namespace libsignalservice.messages
         /// <returns>The envelope's sender as a SignalServiceAddress.</returns>
         public SignalServiceAddress GetSourceAddress()
         {
-            return new SignalServiceAddress(Envelope.Source);
+            return new SignalServiceAddress(UuidUtil.ParseOrNull(Envelope.SourceUuid), Envelope.SourceE164);
         }
 
         /// <summary>

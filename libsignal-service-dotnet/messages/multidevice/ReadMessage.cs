@@ -1,16 +1,16 @@
+using libsignalservice.push;
+
 namespace libsignalservice.messages.multidevice
 {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public class ReadMessage
     {
-        public string Sender { get; }
+        public SignalServiceAddress Sender { get; }
         public long Timestamp { get; }
 
-        public ReadMessage(string sender, long timestamp)
+        public ReadMessage(SignalServiceAddress sender, long timestamp)
         {
             Sender = sender;
             Timestamp = timestamp;
         }
     }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

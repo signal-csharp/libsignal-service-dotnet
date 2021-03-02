@@ -42,6 +42,7 @@ namespace libsignalservice.push
         private const string TURN_SERVER_INFO = "/v1/accounts/turn";
         private const string SET_ACCOUNT_ATTRIBUTES = "/v1/accounts/attributes";
         private const string PIN_PATH = "/v1/accounts/pin/";
+        private const string WHO_AM_I = "/v1/accounts/whoami";
 
         private const string PREKEY_METADATA_PATH = "/v2/keys/";
         private const string PREKEY_PATH = "/v2/keys/{0}";
@@ -63,7 +64,8 @@ namespace libsignalservice.push
 
         private const string PROFILE_PATH = "/v1/profile/%s";
 
-        private const string SENDER_CERTIFICATE_PATH = "/v1/certificate/delivery";
+        private const string SENDER_CERTIFICATE_LEGACY_PATH = "/v1/certificate/delivery";
+        private const string SENDER_CERTIFICATE_PATH = "/v1/certificate/delivery?includeUuid=true";
 
         private const string ATTACHMENT_KEY_DOWNLOAD_PATH = "attachments/{0}";
         private const string ATTACHMENT_ID_DOWNLOAD_PATH = "attachments/{0}";
@@ -111,7 +113,7 @@ namespace libsignalservice.push
                 token = CancellationToken.None;
             }
 
-            string path = string.Format(CREATE_ACCOUNT_SMS_PATH, CredentialsProvider.User);
+            string path = string.Format(CREATE_ACCOUNT_SMS_PATH, CredentialsProvider.E164);
 
             if (captchaToken != null)
             {
@@ -134,7 +136,7 @@ namespace libsignalservice.push
                 token = CancellationToken.None;
             }
 
-            string path = string.Format(CREATE_ACCOUNT_VOICE_PATH, CredentialsProvider.User);
+            string path = string.Format(CREATE_ACCOUNT_VOICE_PATH, CredentialsProvider.E164);
 
             if (captchaToken != null)
             {
@@ -150,12 +152,68 @@ namespace libsignalservice.push
             });
         }
 
-        public async Task<bool> VerifyAccountCode(CancellationToken token, string verificationCode, string signalingKey, uint registrationId, bool fetchesMessages, string pin,
-            byte[] unidentifiedAccessKey, bool unrestrictedUnidentifiedAccess)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        /// <exception cref="IOException"></exception>
+        public async Task<Guid> GetOwnUuidAsync(CancellationToken? token = null)
         {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            string body = await MakeServiceRequestAsync(WHO_AM_I, "GET", null, token);
+            WhoAmIResponse response = JsonUtil.FromJson<WhoAmIResponse>(body);
+            Guid? uuid = UuidUtil.Parse(response.Uuid);
+
+            if (uuid.HasValue)
+            {
+                return uuid.Value;
+            }
+            else
+            {
+                throw new IOException("Invalid UUID!");
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="verificationCode"></param>
+        /// <param name="signalingKey"></param>
+        /// <param name="registrationId"></param>
+        /// <param name="fetchesMessages"></param>
+        /// <param name="pin"></param>
+        /// <param name="unidentifiedAccessKey"></param>
+        /// <param name="unrestrictedUnidentifiedAccess"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        /// <exception cref="IOException"></exception>
+        public async Task<Guid> VerifyAccountCodeAsync(string verificationCode, string signalingKey, uint registrationId, bool fetchesMessages, string pin,
+            byte[] unidentifiedAccessKey, bool unrestrictedUnidentifiedAccess, CancellationToken? token = null)
+        {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
             AccountAttributes signalingKeyEntity = new AccountAttributes(signalingKey, registrationId, fetchesMessages, pin, unidentifiedAccessKey, unrestrictedUnidentifiedAccess);
-            await MakeServiceRequestAsync(token, string.Format(VERIFY_ACCOUNT_CODE_PATH, verificationCode), "PUT", JsonUtil.ToJson(signalingKeyEntity), NO_HEADERS);
-            return true;
+            string requestBody = JsonUtil.ToJson(signalingKeyEntity);
+            string responseBody = await MakeServiceRequestAsync(string.Format(VERIFY_ACCOUNT_CODE_PATH, verificationCode), "PUT", requestBody, token);
+            VerifyAccountResponse response = JsonUtil.FromJson<VerifyAccountResponse>(responseBody);
+            Guid? uuid = UuidUtil.Parse(response.Uuid);
+
+            if (uuid.HasValue)
+            {
+                return uuid.Value;
+            }
+            else
+            {
+                throw new IOException("Invalid UUID!");
+            }
         }
 
         public async Task<bool> SetAccountAttributes(CancellationToken token, string signalingKey, uint registrationId, bool fetchesMessages, string pin,
@@ -222,9 +280,25 @@ namespace libsignalservice.push
             await MakeServiceRequestAsync(token, PIN_PATH, "PUT", null, NO_HEADERS);
         }
 
-        public async Task<byte[]> GetSenderCertificate(CancellationToken token)
+        public async Task<byte[]> GetSenderCertificateLegacyAsync(CancellationToken? token = null)
         {
-            string responseText = await MakeServiceRequestAsync(token, SENDER_CERTIFICATE_PATH, "GET", null, NO_HEADERS);
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            string responseText = await MakeServiceRequestAsync(SENDER_CERTIFICATE_LEGACY_PATH, "GET", null, token);
+            return JsonUtil.FromJson<SenderCertificate>(responseText).GetUnidentifiedCertificate();
+        }
+
+        public async Task<byte[]> GetSenderCertificateAsync(CancellationToken? token = null)
+        {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            string responseText = await MakeServiceRequestAsync(SENDER_CERTIFICATE_PATH, "GET", null, token);
             return JsonUtil.FromJson<SenderCertificate>(responseText).GetUnidentifiedCertificate();
         }
 
@@ -307,7 +381,7 @@ namespace libsignalservice.push
                 if (deviceId.Equals("1"))
                     deviceId = "*";
 
-                string path = string.Format(PREKEY_DEVICE_PATH, destination.E164number, deviceId);
+                string path = string.Format(PREKEY_DEVICE_PATH, destination.GetIdentifier(), deviceId);
 
                 if (destination.Relay != null)
                 {
@@ -352,7 +426,7 @@ namespace libsignalservice.push
             }*/
             catch (NotFoundException nfe)
             {
-                throw new UnregisteredUserException(destination.E164number, nfe);
+                throw new UnregisteredUserException(destination.GetIdentifier(), nfe);
             }
         }
 
@@ -360,7 +434,7 @@ namespace libsignalservice.push
         {
             try
             {
-                string path = string.Format(PREKEY_DEVICE_PATH, destination.E164number,
+                string path = string.Format(PREKEY_DEVICE_PATH, destination.GetIdentifier(),
                                             deviceId.ToString());
 
                 if (destination.Relay != null)
@@ -403,7 +477,7 @@ namespace libsignalservice.push
             }*/
             catch (NotFoundException nfe)
             {
-                throw new UnregisteredUserException(destination.E164number, nfe);
+                throw new UnregisteredUserException(destination.GetIdentifier(), nfe);
             }
         }
 
@@ -527,7 +601,7 @@ namespace libsignalservice.push
 
             try
             {
-                string response = await MakeServiceRequestAsync(string.Format(PROFILE_PATH, target.E164number), "GET", null, NO_HEADERS, EmptyResponseCodeHandler, unidentifiedAccess, token.Value);
+                string response = await MakeServiceRequestAsync(string.Format(PROFILE_PATH, target.GetIdentifier()), "GET", null, NO_HEADERS, EmptyResponseCodeHandler, unidentifiedAccess, token.Value);
                 return JsonUtil.FromJson<SignalServiceProfile>(response);
             }
             catch (Exception e)
@@ -1409,13 +1483,14 @@ namespace libsignalservice.push
 
         private string GetAuthorizationHeader(ICredentialsProvider provider)
         {
+            string? identifier = CredentialsProvider.Uuid.HasValue ? CredentialsProvider.Uuid.Value.ToString() : CredentialsProvider.E164;
             if (provider.DeviceId == SignalServiceAddress.DEFAULT_DEVICE_ID)
             {
-                return "Basic " + Base64.EncodeBytes(Encoding.UTF8.GetBytes((provider.User + ":" + provider.Password)));
+                return "Basic " + Base64.EncodeBytes(Encoding.UTF8.GetBytes((identifier + ":" + provider.Password)));
             }
             else
             {
-                return "Basic " + Base64.EncodeBytes(Encoding.UTF8.GetBytes((provider.User + "." + provider.DeviceId + ":" + provider.Password)));
+                return "Basic " + Base64.EncodeBytes(Encoding.UTF8.GetBytes((identifier + "." + provider.DeviceId + ":" + provider.Password)));
             }
         }
 

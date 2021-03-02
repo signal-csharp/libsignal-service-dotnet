@@ -1,8 +1,8 @@
-﻿using libsignal;
+using libsignal;
+using libsignalservice.push;
 
 namespace libsignalservice.messages.multidevice
 {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public class VerifiedMessage
     {
         public enum VerifiedState
@@ -12,15 +12,15 @@ namespace libsignalservice.messages.multidevice
             Unverified
         }
 
-        public string Destination { get; private set; }
+        public SignalServiceAddress Destination { get; }
 
-        public IdentityKey IdentityKey { get; private set; }
+        public IdentityKey IdentityKey { get; }
 
-        public VerifiedState Verified { get; private set; }
+        public VerifiedState Verified { get; }
 
-        public long Timestamp { get; private set; }
+        public long Timestamp { get; }
 
-        public VerifiedMessage(string destination, IdentityKey identityKey, VerifiedState verified, long timestamp)
+        public VerifiedMessage(SignalServiceAddress destination, IdentityKey identityKey, VerifiedState verified, long timestamp)
         {
             Destination = destination;
             IdentityKey = identityKey;
@@ -28,5 +28,4 @@ namespace libsignalservice.messages.multidevice
             Timestamp = timestamp;
         }
     }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

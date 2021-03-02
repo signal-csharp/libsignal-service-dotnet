@@ -6,13 +6,13 @@ namespace libsignalservice.push
     public class UnsupportedDataMessageException : Exception
     {
         public int RequiredVersion { get; }
-        public string Sender { get; }
+        public string? Sender { get; }
         public int SenderDevice { get; }
         public SignalServiceGroup? Group { get; }
 
         public UnsupportedDataMessageException(int currentVersion,
             int requiredVersion,
-            string sender,
+            string? sender,
             int senderDevice,
             SignalServiceGroup? group) :
             base($"Required version: {requiredVersion}, Our version: {currentVersion}")

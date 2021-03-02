@@ -28,11 +28,11 @@ namespace libsignalservice.crypto
     {
         private readonly SignalProtocolStore signalProtocolStore;
         private readonly SignalServiceAddress localAddress;
-        private readonly CertificateValidator certificateValidator;
+        private readonly CertificateValidator? certificateValidator;
 
         public SignalServiceCipher(SignalServiceAddress localAddress,
             SignalProtocolStore signalProtocolStore,
-            CertificateValidator certificateValidator)
+            CertificateValidator? certificateValidator)
         {
             this.signalProtocolStore = signalProtocolStore;
             this.localAddress = localAddress;
@@ -40,11 +40,11 @@ namespace libsignalservice.crypto
         }
 
 
-        public OutgoingPushMessage Encrypt(SignalProtocolAddress destination, UnidentifiedAccess unidentifiedAccess, byte[] unpaddedMessage)
+        public OutgoingPushMessage Encrypt(SignalProtocolAddress destination, UnidentifiedAccess? unidentifiedAccess, byte[] unpaddedMessage)
         {
             if (unidentifiedAccess != null)
             {
-                SealedSessionCipher sessionCipher = new SealedSessionCipher(signalProtocolStore, new SignalProtocolAddress(localAddress.E164number, 1));
+                SealedSessionCipher sessionCipher = new SealedSessionCipher(signalProtocolStore, localAddress.Uuid, localAddress.GetNumber(), 1);
                 PushTransportDetails transportDetails = new PushTransportDetails((uint)sessionCipher.GetSessionVersion(destination));
                 byte[] ciphertext = sessionCipher.Encrypt(destination, unidentifiedAccess.UnidentifiedCertificate, transportDetails.getPaddedMessageBody(unpaddedMessage));
                 string body = Base64.EncodeBytes(ciphertext);
@@ -135,74 +135,104 @@ namespace libsignalservice.crypto
         {
             try
             {
-                SignalProtocolAddress sourceAddress = new SignalProtocolAddress(envelope.GetSource(), (uint)envelope.GetSourceDevice());
-                SessionCipher sessionCipher = new SessionCipher(signalProtocolStore, sourceAddress);
-                SealedSessionCipher sealedSessionCipher = new SealedSessionCipher(signalProtocolStore, new SignalProtocolAddress(localAddress.E164number, 1));
-
                 byte[] paddedMessage;
                 SignalServiceMetadata metadata;
                 uint sessionVersion;
 
+                if (!envelope.HasSource() && !envelope.IsUnidentifiedSender())
+                {
+                    throw new ProtocolInvalidMessageException(new InvalidMessageException("Non-UD envelope is missing a source!"), null, 0);
+                }
+
                 if (envelope.IsPreKeySignalMessage())
                 {
+                    SignalProtocolAddress sourceAddress = GetPreferredProtocolAddress(signalProtocolStore, envelope.GetSourceAddress(), envelope.GetSourceDevice());
+                    SessionCipher sessionCipher = new SessionCipher(signalProtocolStore, sourceAddress);
+
                     paddedMessage = sessionCipher.decrypt(new PreKeySignalMessage(ciphertext));
-                    metadata       = new SignalServiceMetadata(envelope.GetSourceAddress(), envelope.GetSourceDevice(), envelope.GetTimestamp(), false);
+                    metadata = new SignalServiceMetadata(envelope.GetSourceAddress(), envelope.GetSourceDevice(), envelope.GetTimestamp(), false);
                     sessionVersion = sessionCipher.getSessionVersion();
                 }
                 else if (envelope.IsSignalMessage())
                 {
+                    SignalProtocolAddress sourceAddress = GetPreferredProtocolAddress(signalProtocolStore, envelope.GetSourceAddress(), envelope.GetSourceDevice());
+                    SessionCipher sessionCipher = new SessionCipher(signalProtocolStore, sourceAddress);
+
                     paddedMessage = sessionCipher.decrypt(new SignalMessage(ciphertext));
                     metadata       = new SignalServiceMetadata(envelope.GetSourceAddress(), envelope.GetSourceDevice(), envelope.GetTimestamp(), false);
                     sessionVersion = sessionCipher.getSessionVersion();
                 }
                 else if (envelope.IsUnidentifiedSender())
                 {
-                    var results = sealedSessionCipher.Decrypt(certificateValidator, ciphertext, (long)envelope.Envelope.ServerTimestamp);
-                    paddedMessage = results.Item2;
-                    // TODO: STOPPED HERE
-                    metadata = new SignalServiceMetadata(results.Item1.Name, (int) results.Item1.DeviceId, (long) envelope.Envelope.Timestamp, true);
-                    sessionVersion = (uint) sealedSessionCipher.GetSessionVersion(new SignalProtocolAddress(metadata.Sender, (uint) metadata.SenderDevice));
+                    SealedSessionCipher sealedSessionCipher = new SealedSessionCipher(signalProtocolStore, localAddress.Uuid, localAddress.GetNumber(), 1);
+                    DecryptionResult result = sealedSessionCipher.Decrypt(certificateValidator!, ciphertext, (long)envelope.Envelope.ServerTimestamp);
+                    SignalServiceAddress resultAddress = new SignalServiceAddress(UuidUtil.Parse(result.SenderUuid), result.SenderE164);
+                    SignalProtocolAddress protocolAddress = GetPreferredProtocolAddress(signalProtocolStore, resultAddress, result.DeviceId);
+
+                    paddedMessage = result.PaddedMessage;
+                    metadata = new SignalServiceMetadata(resultAddress, result.DeviceId, envelope.GetTimestamp(), true);
+                    sessionVersion = (uint)sealedSessionCipher.GetSessionVersion(protocolAddress);
                 }
                 else
                 {
-                    throw new InvalidMessageException("Unknown type: " + envelope.GetEnvelopeType() + " from " + envelope.GetSource());
+                    throw new InvalidMessageException($"Unknown type: {envelope.GetType()}");
                 }
 
                 PushTransportDetails transportDetails = new PushTransportDetails(sessionVersion);
                 byte[] data = transportDetails.GetStrippedPaddingMessageBody(paddedMessage);
+
                 return new Plaintext(metadata, data);
             }
             catch (DuplicateMessageException e)
             {
-                throw new ProtocolDuplicateMessageException(e, envelope.GetSource(), envelope.GetSourceDevice());
+                throw new ProtocolDuplicateMessageException(e, envelope.GetSourceIdentifier(), envelope.GetSourceDevice());
             }
             catch (LegacyMessageException e)
             {
-                throw new ProtocolLegacyMessageException(e, envelope.GetSource(), envelope.GetSourceDevice());
+                throw new ProtocolLegacyMessageException(e, envelope.GetSourceIdentifier(), envelope.GetSourceDevice());
             }
             catch (InvalidMessageException e)
             {
-                throw new ProtocolInvalidMessageException(e, envelope.GetSource(), envelope.GetSourceDevice());
+                throw new ProtocolInvalidMessageException(e, envelope.GetSourceIdentifier(), envelope.GetSourceDevice());
             }
             catch (InvalidKeyIdException e)
             {
-                throw new ProtocolInvalidKeyIdException(e, envelope.GetSource(), envelope.GetSourceDevice());
+                throw new ProtocolInvalidKeyIdException(e, envelope.GetSourceIdentifier(), envelope.GetSourceDevice());
             }
             catch (InvalidKeyException e)
             {
-                throw new ProtocolInvalidKeyException(e, envelope.GetSource(), envelope.GetSourceDevice());
+                throw new ProtocolInvalidKeyException(e, envelope.GetSourceIdentifier(), envelope.GetSourceDevice());
             }
             catch (libsignal.exceptions.UntrustedIdentityException e)
             {
-                throw new ProtocolUntrustedIdentityException(e, envelope.GetSource(), envelope.GetSourceDevice());
+                throw new ProtocolUntrustedIdentityException(e, envelope.GetSourceIdentifier(), envelope.GetSourceDevice());
             }
             catch (InvalidVersionException e)
             {
-                throw new ProtocolInvalidVersionException(e, envelope.GetSource(), envelope.GetSourceDevice());
+                throw new ProtocolInvalidVersionException(e, envelope.GetSourceIdentifier(), envelope.GetSourceDevice());
             }
             catch (NoSessionException e)
             {
-                throw new ProtocolNoSessionException(e, envelope.GetSource(), envelope.GetSourceDevice());
+                throw new ProtocolNoSessionException(e, envelope.GetSourceIdentifier(), envelope.GetSourceDevice());
+            }
+        }
+
+        private static SignalProtocolAddress GetPreferredProtocolAddress(SignalProtocolStore store, SignalServiceAddress address, int sourceDevice)
+        {
+            SignalProtocolAddress? uuidAddress = address.Uuid.HasValue ? new SignalProtocolAddress(address.Uuid.Value.ToString(), (uint)sourceDevice) : null;
+            SignalProtocolAddress? e164Address = address.GetNumber() != null ? new SignalProtocolAddress(address.GetNumber(), (uint)sourceDevice) : null;
+
+            if (uuidAddress != null && store.ContainsSession(uuidAddress))
+            {
+                return uuidAddress;
+            }
+            else if (e164Address != null && store.ContainsSession(e164Address))
+            {
+                return e164Address;
+            }
+            else
+            {
+                return new SignalProtocolAddress(address.GetIdentifier(), (uint)sourceDevice);
             }
         }
     }

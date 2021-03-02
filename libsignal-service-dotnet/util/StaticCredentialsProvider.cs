@@ -1,14 +1,18 @@
+using System;
+
 namespace libsignalservice.util
 {
     public class StaticCredentialsProvider : ICredentialsProvider
     {
-        public string User { get; }
+        public Guid? Uuid { get; }
+        public string? E164 { get; }
         public string Password { get; }
         public int DeviceId { get; }
 
-        public StaticCredentialsProvider(string user, string password, int deviceId)
+        public StaticCredentialsProvider(Guid? uuid, string? e164, string password, int deviceId)
         {
-            User = user;
+            Uuid = uuid;
+            E164 = e164;
             Password = password;
             DeviceId = deviceId;
         }

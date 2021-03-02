@@ -3,7 +3,6 @@ using System.IO;
 
 namespace libsignalservice.messages.multidevice
 {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public class ChunkedOutputStream
     {
         protected readonly Stream output;
@@ -13,36 +12,37 @@ namespace libsignalservice.messages.multidevice
             this.output = output;
         }
 
-        protected void writeVarint32(int value)// throws IOException
+        protected void WriteVarint32(int value)
         {
-            /*while (true)
+            // TODO: Test by comparing to Java implementation
+            while (true)
             {
                 if ((value & ~0x7F) == 0)
                 {
-                    output.Write(value, 0);
+                    byte[] valueBytes = BitConverter.GetBytes(value);
+                    output.Write(valueBytes, 0, valueBytes.Length);
                     return;
                 }
                 else
                 {
-                    output.Write((value & 0x7F) | 0x80);
-                    value >>= 7;
+                    byte[] valueBytes = BitConverter.GetBytes((value & 0x7F) | 0x80);
+                    output.Write(valueBytes, 0, valueBytes.Length);
+                    value = (int)((uint)value >> 7);
                 }
-            }*/
-            throw new NotImplementedException();
+            }
         }
 
-        protected void writeStream(Stream input)// throws IOException
+        protected void WriteStream(Stream input)
         {
-            /*byte[] buffer = new byte[4096];
+            byte[] buffer = new byte[4096];
             int read;
 
-            while ((read = input.read(buffer)) != -1) {
-                output.write(buffer, 0, read);
+            while ((read = input.Read(buffer, 0, buffer.Length)) != 0)
+            {
+                output.Write(buffer, 0, read);
             }
 
-            input.close();*/
-            throw new NotImplementedException();
+            input.Dispose();
         }
     }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

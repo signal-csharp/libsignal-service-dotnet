@@ -1,8 +1,11 @@
+using System;
+
 namespace libsignalservice.util
 {
     public interface ICredentialsProvider
     {
-        string User { get; }
+        Guid? Uuid { get; }
+        string? E164 { get; }
         string Password { get; }
         int DeviceId { get; }
     }

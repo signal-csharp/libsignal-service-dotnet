@@ -2,17 +2,14 @@ using System;
 
 namespace libsignalservice.push.exceptions
 {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public class UnregisteredUserException : Exception
     {
-        public String e164number { get; }
+        public string? E164Number { get; }
 
-        public UnregisteredUserException(String e164number, Exception exception)
+        public UnregisteredUserException(string? e164number, Exception exception)
             : base(exception.Message)
-
         {
-            this.e164number = e164number;
+            E164Number = e164number;
         }
     }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

@@ -157,7 +157,7 @@ namespace libsignalservice
             {
                 Id = BitConverter.ToUInt64(Util.GetSecretBytes(sizeof(long)), 0),
                 Verb = "GET",
-                Path = $"/v1/profile/{address.E164number}"
+                Path = $"/v1/profile/{address.GetIdentifier()}"
             };
 
             var sendTask = (await Websocket.SendRequest(requestMessage)).Task;
@@ -183,7 +183,7 @@ namespace libsignalservice
         /// </summary>
         /// <returns></returns>
         /// <exception cref="IOException"></exception>
-        public async Task<AttachmentUploadAttributes> GetAttachmentUploadAttributesAsync()
+        public async Task<AttachmentV2UploadAttributes> GetAttachmentV2UploadAttributesAsync()
         {
             WebSocketRequestMessage requestMessage = new WebSocketRequestMessage()
             {
@@ -203,7 +203,40 @@ namespace libsignalservice
                     throw new IOException($"Non-successful response: {status}");
                 }
 
-                return JsonUtil.FromJson<AttachmentUploadAttributes>(body);
+                return JsonUtil.FromJson<AttachmentV2UploadAttributes>(body);
+            }
+            else
+            {
+                throw new IOException("Timeout reached while waiting for attachment upload attributes.");
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="IOException"></exception>
+        public async Task<AttachmentV3UploadAttributes> GetAttachmentV3UploadAttributesAsync()
+        {
+            WebSocketRequestMessage requestMessage = new WebSocketRequestMessage()
+            {
+                Id = BitConverter.ToUInt64(Util.GetSecretBytes(sizeof(long)), 0),
+                Verb = "GET",
+                Path = "/v3/attachments/form/upload"
+            };
+
+            var sendTask = (await Websocket.SendRequest(requestMessage)).Task;
+            var timerCancelSource = new CancellationTokenSource();
+            if (await Task.WhenAny(sendTask, Task.Delay(TimeSpan.FromSeconds(10), timerCancelSource.Token)) == sendTask)
+            {
+                timerCancelSource.Cancel();
+                var (status, body) = sendTask.Result;
+                if (status < 200 || status >= 300)
+                {
+                    throw new IOException($"Non-successful response: {status}");
+                }
+
+                return JsonUtil.FromJson<AttachmentV3UploadAttributes>(body);
             }
             else
             {

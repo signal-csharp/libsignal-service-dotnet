@@ -34,51 +34,67 @@ namespace libsignalservice
     {
         private readonly ILogger Logger = LibsignalLogging.CreateLogger<SignalServiceMessageSender>();
 
-        private readonly PushServiceSocket Socket;
-        private readonly SignalProtocolStore Store;
-        private readonly SignalServiceAddress LocalAddress;
-        private readonly IEventListener EventListener;
-        private readonly CancellationToken Token;
-        private readonly StaticCredentialsProvider CredentialsProvider;
+        private readonly PushServiceSocket socket;
+        private readonly SignalProtocolStore store;
+        private readonly SignalServiceAddress localAddress;
+        private readonly IEventListener? eventListener;
+        private readonly ICredentialsProvider credentialsProvider;
 
-        private readonly SignalServiceMessagePipe? Pipe;
-        private readonly SignalServiceMessagePipe? UnidentifiedPipe;
-        private bool IsMultiDevice;
+        private SignalServiceMessagePipe? pipe;
+        private SignalServiceMessagePipe? unidentifiedPipe;
+        private bool isMultiDevice;
+        private bool attachmentsV3;
 
         /// <summary>
         /// Construct a SignalServiceMessageSender
         /// </summary>
-        /// <param name="token">A CancellationToken to cancel the sender's operations</param>
         /// <param name="urls">The URL of the Signal Service.</param>
-        /// <param name="user">The Signal Service username (eg phone number).</param>
+        /// <param name="uuid">The Signal Service UUID.</param>
+        /// <param name="e164">The Signal Service phone number.</param>
         /// <param name="password">The Signal Service user password</param>
         /// <param name="deviceId">The Signal Service device id</param>
         /// <param name="store">The SignalProtocolStore.</param>
+        /// <param name="userAgent"></param>
+        /// <param name="httpClient">HttpClient</param>
+        /// <param name="isMultiDevice"></param>
         /// <param name="pipe">An optional SignalServiceMessagePipe</param>
         /// <param name="unidentifiedPipe"></param>
         /// <param name="eventListener">An optional event listener, which fires whenever sessions are
         /// setup or torn down for a recipient.</param>
-        /// <param name="userAgent"></param>
-        /// <param name="isMultiDevice"></param>
-        public SignalServiceMessageSender(CancellationToken token, SignalServiceConfiguration urls,
-                                       string user, string password, int deviceId,
+        public SignalServiceMessageSender(SignalServiceConfiguration urls,
+                                       Guid uuid, string e164, string password, int deviceId,
                                        SignalProtocolStore store,
                                        string userAgent,
                                        HttpClient httpClient,
                                        bool isMultiDevice,
+                                       bool attachmentsV3,
                                        SignalServiceMessagePipe? pipe,
                                        SignalServiceMessagePipe? unidentifiedPipe,
-                                       IEventListener eventListener)
+                                       IEventListener eventListener) :
+            this(urls, new StaticCredentialsProvider(uuid, e164, password, deviceId), store, userAgent, httpClient, isMultiDevice, attachmentsV3, pipe, unidentifiedPipe, eventListener)
         {
-            Token = token;
-            CredentialsProvider = new StaticCredentialsProvider(user, password, deviceId);
-            Socket = new PushServiceSocket(urls, CredentialsProvider, userAgent, httpClient);
-            Store = store;
-            LocalAddress = new SignalServiceAddress(user);
-            Pipe = pipe;
-            UnidentifiedPipe = unidentifiedPipe;
-            IsMultiDevice = isMultiDevice;
-            EventListener = eventListener;
+        }
+
+        public SignalServiceMessageSender(SignalServiceConfiguration urls,
+            ICredentialsProvider credentialsProvider,
+            SignalProtocolStore store,
+            string userAgent,
+            HttpClient httpClient,
+            bool isMultiDevice,
+            bool attachmentsV3,
+            SignalServiceMessagePipe? pipe,
+            SignalServiceMessagePipe? unidentifiedPipe,
+            IEventListener? eventListener)
+        {
+            this.credentialsProvider = credentialsProvider;
+            socket = new PushServiceSocket(urls, credentialsProvider, userAgent, httpClient);
+            this.store = store;
+            localAddress = new SignalServiceAddress(credentialsProvider.Uuid, credentialsProvider.E164);
+            this.pipe = pipe;
+            this.unidentifiedPipe = unidentifiedPipe;
+            this.isMultiDevice = isMultiDevice;
+            this.attachmentsV3 = attachmentsV3;
+            this.eventListener = eventListener;
         }
 
         /// <summary>
@@ -173,19 +189,26 @@ namespace libsignalservice
             long timestamp = message.Timestamp;
             SendMessageResult result = await SendMessageAsync(recipient, unidentifiedAccess?.TargetUnidentifiedAccess, timestamp, content, false, token);
 
-            if ((result.Success != null && result.Success.NeedsSync) || (unidentifiedAccess != null && IsMultiDevice))
+            if ((result.Success != null && result.Success.NeedsSync) || (unidentifiedAccess != null && isMultiDevice))
             {
                 byte[] syncMessage = CreateMultiDeviceSentTranscriptContent(content, recipient, (ulong)timestamp, new List<SendMessageResult>() { result }, false);
-                await SendMessageAsync(LocalAddress, unidentifiedAccess?.SelfUnidentifiedAccess, timestamp, syncMessage, false, token);
+                await SendMessageAsync(localAddress, unidentifiedAccess?.SelfUnidentifiedAccess, timestamp, syncMessage, false, token);
             }
 
             if (message.EndSession)
             {
-                Store.DeleteAllSessions(recipient.E164number);
-
-                if (EventListener != null)
+                if (recipient.Uuid.HasValue)
                 {
-                    EventListener.OnSecurityEvent(recipient);
+                    store.DeleteAllSessions(recipient.Uuid.Value.ToString());
+                }
+                if (recipient.GetNumber() != null)
+                {
+                    store.DeleteAllSessions(recipient.GetNumber());
+                }
+
+                if (eventListener != null)
+                {
+                    eventListener.OnSecurityEvent(recipient);
                 }
             }
             return result;
@@ -217,15 +240,23 @@ namespace libsignalservice
                     break;
                 }
             }
-            if (needsSyncInResults || IsMultiDevice)
+            if (needsSyncInResults || isMultiDevice)
             {
                 byte[] syncMessage = CreateMultiDeviceSentTranscriptContent(content, null, (ulong) timestamp, results, isRecipientUpdate);
-                await SendMessageAsync(LocalAddress, null, timestamp, syncMessage, false, token);
+                await SendMessageAsync(localAddress, null, timestamp, syncMessage, false, token);
             }
             return results;
         }
 
-        public async Task<SignalServiceAttachmentPointer> UploadAttachmentAsync(SignalServiceAttachmentStream attachment,
+        public void Update(SignalServiceMessagePipe pipe, SignalServiceMessagePipe unidentifiedPipe, bool isMultiDevice, bool attachmentsV3)
+        {
+            this.pipe = pipe;
+            this.unidentifiedPipe = unidentifiedPipe;
+            this.isMultiDevice = isMultiDevice;
+            this.attachmentsV3 = attachmentsV3;
+        }
+
+        public async Task<SignalServiceAttachmentPointer> UploadAttachmentV2Async(SignalServiceAttachmentStream attachment,
             CancellationToken? token = null)
         {
             if (token == null)
@@ -243,31 +274,55 @@ namespace libsignalservice
                                                                        new AttachmentCipherOutputStreamFactory(attachmentKey),
                                                                        attachment.Listener);
 
-            AttachmentUploadAttributes? uploadAttributes = null;
-
-            if (Pipe != null)
+            if (attachmentsV3)
             {
-                Logger.LogTrace("Using pipe to retrieve attachment upload attributes...");
+                return await UploadAttachmentV3Async(attachment, attachmentKey, attachmentData, token);
+            }
+            else
+            {
+                return await UploadAttachmentV2Async(attachment, attachmentKey, attachmentData, token);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="attachment"></param>
+        /// <param name="attachmentKey"></param>
+        /// <param name="attachmentData"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        /// <exception cref="NonSuccessfulResponseCodeException"></exception>
+        /// <exception cref="PushNetworkException"></exception>
+        public async Task<SignalServiceAttachmentPointer> UploadAttachmentV2Async(SignalServiceAttachmentStream attachment, byte[] attachmentKey, PushAttachmentData attachmentData,
+            CancellationToken? token = null)
+        {
+            AttachmentV2UploadAttributes? v2UploadAttributes = null;
+            SignalServiceMessagePipe? localPipe = pipe;
+
+            if (localPipe != null)
+            {
+                Logger.LogDebug("Using pipe to retrieve attachment upload attributes...");
                 try
                 {
-                    uploadAttributes = await Pipe.GetAttachmentUploadAttributesAsync();
+                    v2UploadAttributes = await localPipe.GetAttachmentV2UploadAttributesAsync();
                 }
                 catch (IOException)
                 {
                     Logger.LogWarning("Failed to retrieve attachment upload attributes using pipe. Falling back...");
                 }
-                
             }
 
-            if (uploadAttributes == null)
+            if (v2UploadAttributes == null)
             {
-                Logger.LogTrace("Not using pipe to retrieve attachment upload attributes...");
-                uploadAttributes = await Socket.GetAttachmentV2UploadAttributesAsync(token);
+                Logger.LogDebug("Not using pipe to retrieve attachment upload attributes...");
+                v2UploadAttributes = await socket.GetAttachmentV2UploadAttributesAsync(token);
             }
 
-            (long, byte[]) attachmentIdAndDigest = await Socket.UploadAttachmentAsync(attachmentData, uploadAttributes, token);
+            (long, byte[]) attachmentIdAndDigest = await socket.UploadAttachmentAsync(attachmentData, v2UploadAttributes, token);
 
-            return new SignalServiceAttachmentPointer((ulong)attachmentIdAndDigest.Item1,
+            return new SignalServiceAttachmentPointer(0,
+                new SignalServiceAttachmentRemoteId(attachmentIdAndDigest.Item1),
                 attachment.ContentType,
                 attachmentKey,
                 (uint)Util.ToIntExact(attachment.Length),
@@ -277,7 +332,56 @@ namespace libsignalservice
                 attachment.FileName,
                 attachment.VoiceNote,
                 attachment.Caption,
-                attachment.BlurHash);
+                attachment.BlurHash,
+                attachment.UploadTimestamp);
+        }
+
+
+        public async Task<SignalServiceAttachmentPointer> UploadAttachmentV3Async(SignalServiceAttachmentStream attachment, byte[] attachmentKey, PushAttachmentData attachmentData,
+            CancellationToken? token = null)
+        {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            AttachmentV3UploadAttributes? v3UploadAttributes = null;
+            SignalServiceMessagePipe? localPipe = pipe;
+
+            if (localPipe != null)
+            {
+                Logger.LogDebug("Using pipe to retrieve attachment upload attributes...");
+                try
+                {
+                    v3UploadAttributes = await localPipe.GetAttachmentV3UploadAttributesAsync();
+                }
+                catch (IOException)
+                {
+                    Logger.LogWarning("Failed to retrieve attachment upload attributes using pipe. Falling back...");
+                }
+            }
+
+            if (v3UploadAttributes == null)
+            {
+                Logger.LogDebug("Not using pipe to retrieve attachment upload attributes...");
+                v3UploadAttributes = await socket.GetAttachmentV3UploadAttributesAsync(token);
+            }
+
+            byte[] digest = await socket.UploadAttachmentAsync(attachmentData, v3UploadAttributes, token);
+            return new SignalServiceAttachmentPointer(v3UploadAttributes.Cdn,
+                new SignalServiceAttachmentRemoteId(v3UploadAttributes.Key!),
+                attachment.ContentType,
+                attachmentKey,
+                (uint)Util.ToIntExact(attachment.Length),
+                attachment.Preview,
+                attachment.Width,
+                attachment.Height,
+                digest,
+                attachment.FileName,
+                attachment.VoiceNote,
+                attachment.Caption,
+                attachment.BlurHash,
+                attachment.UploadTimestamp);
         }
 
         /// <summary>
@@ -342,7 +446,7 @@ namespace libsignalservice
             long timestamp = message.Sent != null ? message.Sent.Timestamp :
                 Util.CurrentTimeMillis();
 
-            await SendMessageAsync(LocalAddress, unidenfifiedAccess?.SelfUnidentifiedAccess, timestamp, content, false, token);
+            await SendMessageAsync(localAddress, unidenfifiedAccess?.SelfUnidentifiedAccess, timestamp, content, false, token);
         }
 
         /// <summary>
@@ -351,7 +455,7 @@ namespace libsignalservice
         /// <param name="soTimeoutMillis"></param>
         public void SetSoTimeoutMillis(long soTimeoutMillis)
         {
-            Socket.SetSoTimeoutMillis(soTimeoutMillis);
+            socket.SetSoTimeoutMillis(soTimeoutMillis);
         }
 
         /// <summary>
@@ -359,7 +463,7 @@ namespace libsignalservice
         /// </summary>
         public void CancelInFlightRequests()
         {
-            Socket.CancelInFlightRequests();
+            socket.CancelInFlightRequests();
         }
 
         private async Task SendMessageAsync(VerifiedMessage message, UnidentifiedAccessPair? unidentifiedAccessPair, CancellationToken? token = null)
@@ -384,12 +488,12 @@ namespace libsignalservice
                 NullMessage = nullMessage
             }.ToByteArray();
 
-            SendMessageResult result = await SendMessageAsync(new SignalServiceAddress(message.Destination), unidentifiedAccessPair?.TargetUnidentifiedAccess, message.Timestamp, content, false, token);
+            SendMessageResult result = await SendMessageAsync(message.Destination, unidentifiedAccessPair?.TargetUnidentifiedAccess, message.Timestamp, content, false, token);
 
-            if (result.Success.NeedsSync)
+            if (result.Success!.NeedsSync)
             {
                 byte[] syncMessage = CreateMultiDeviceVerifiedContent(message, nullMessage.ToByteArray());
-                await SendMessageAsync(LocalAddress, unidentifiedAccessPair?.SelfUnidentifiedAccess, message.Timestamp, syncMessage, false, token);
+                await SendMessageAsync(localAddress, unidentifiedAccessPair?.SelfUnidentifiedAccess, message.Timestamp, syncMessage, false, token);
             }
         }
 
@@ -487,12 +591,22 @@ namespace libsignalservice
 
             if (message.Quote != null)
             {
-                var quote = new DataMessage.Types.Quote()
+                var quoteBuilder = new DataMessage.Types.Quote()
                 {
                     Id = (ulong)message.Quote.Id,
-                    Author = message.Quote.Author.E164number,
                     Text = message.Quote.Text
                 };
+
+                if (message.Quote.Author.Uuid.HasValue)
+                {
+                    quoteBuilder.AuthorUuid = message.Quote.Author.Uuid.Value.ToString();
+                }
+
+                if (message.Quote.Author.GetNumber() != null)
+                {
+                    quoteBuilder.AuthorE164 = message.Quote.Author.GetNumber();
+                }
+
                 foreach (SignalServiceQuotedAttachment attachment in message.Quote.Attachments)
                 {
                     QuotedAttachment protoAttachment = new QuotedAttachment()
@@ -508,9 +622,9 @@ namespace libsignalservice
                     {
                         protoAttachment.Thumbnail = await CreateAttachmentPointerAsync(attachment.Thumbnail.AsStream(), token);
                     }
-                    quote.Attachments.Add(protoAttachment);
+                    quoteBuilder.Attachments.Add(protoAttachment);
                 }
-                dataMessage.Quote = quote;
+                dataMessage.Quote = quoteBuilder;
             }
 
             if (message.SharedContacts != null)
@@ -665,8 +779,13 @@ namespace libsignalservice
         private async Task<byte[]> CreateMultiDeviceSentTranscriptContentAsync(SentTranscriptMessage transcript, UnidentifiedAccessPair? unidentifiedAccess,
             CancellationToken? token = null)
         {
-            SignalServiceAddress address = new SignalServiceAddress(transcript.Destination!);
-            SendMessageResult result = SendMessageResult.NewSuccess(address, unidentifiedAccess != null, true);
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            SignalServiceAddress? address = transcript.Destination;
+            SendMessageResult result = SendMessageResult.NewSuccess(address!, unidentifiedAccess != null, true);
 
             return CreateMultiDeviceSentTranscriptContent(await CreateMessageContentAsync(transcript.Message, token),
                 address,
@@ -693,17 +812,28 @@ namespace libsignalservice
                 {
                     if (result.Success != null)
                     {
-                        sentMessage.UnidentifiedStatus.Add(new Sent.Types.UnidentifiedDeliveryStatus()
+                        SyncMessage.Types.Sent.Types.UnidentifiedDeliveryStatus builder = new Sent.Types.UnidentifiedDeliveryStatus();
+
+                        if (result.Address.Uuid.HasValue)
                         {
-                            Destination = result.Address.E164number,
-                            Unidentified = result.Success.Unidentified
-                        });
+                            builder.DestinationUuid = result.Address.Uuid.Value.ToString();
+                        }
+
+                        if (result.Address.GetNumber() != null)
+                        {
+                            builder.DestinationE164 = result.Address.GetNumber();
+                        }
+
+                        builder.Unidentified = result.Success.Unidentified;
+
+                        sentMessage.UnidentifiedStatus.Add(builder);
                     }
                 }
 
                 if (recipient != null)
                 {
-                    sentMessage.Destination = recipient.E164number;
+                    if (recipient.Uuid.HasValue) sentMessage.DestinationUuid = recipient.Uuid.Value.ToString();
+                    if (recipient.GetNumber() != null) sentMessage.DestinationE164 = recipient.GetNumber();
                 }
 
                 if (dataMessage.ExpireTimer > 0)
@@ -736,12 +866,22 @@ namespace libsignalservice
 
             foreach (ReadMessage readMessage in readMessages)
             {
-                syncMessage.Read.Add(new SyncMessage.Types.Read
+                SyncMessage.Types.Read readBuilder = new Read()
                 {
-                    Timestamp = (ulong)readMessage.Timestamp,
-                    Sender = readMessage.Sender
-                });
+                    Timestamp = (ulong)readMessage.Timestamp
+                };
+
+                if (readMessage.Sender.Uuid.HasValue)
+                {
+                    readBuilder.SenderUuid = readMessage.Sender.Uuid.Value.ToString();
+                }
+
+                if (readMessage.Sender.GetNumber() != null)
+                {
+                    readBuilder.SenderE164 = readMessage.Sender.GetNumber();
+                }
             }
+
             content.SyncMessage = syncMessage;
             return content.ToByteArray();
         }
@@ -760,12 +900,22 @@ namespace libsignalservice
         {
             Content container = new Content();
             SyncMessage builder = CreateSyncMessage();
-
-            builder.ViewOnceOpen = new SyncMessage.Types.ViewOnceOpen()
+            ViewOnceOpen viewOnceBuilder = new ViewOnceOpen()
             {
-                Timestamp = (ulong)readMessage.Timestamp,
-                Sender = readMessage.Sender
+                Timestamp = (ulong)readMessage.Timestamp
             };
+
+            if (readMessage.Sender.Uuid.HasValue)
+            {
+                viewOnceBuilder.SenderUuid = readMessage.Sender.Uuid.Value.ToString();
+            }
+
+            if (readMessage.Sender.GetNumber() != null)
+            {
+                viewOnceBuilder.SenderE164 = readMessage.Sender.GetNumber();
+            }
+
+            builder.ViewOnceOpen = viewOnceBuilder;
 
             container.SyncMessage = builder;
             return container.ToByteArray();
@@ -777,7 +927,18 @@ namespace libsignalservice
             SyncMessage syncMessage = new SyncMessage { };
             Blocked blockedMessage = new Blocked { };
 
-            blockedMessage.Numbers.AddRange(blocked.Numbers);
+            foreach (SignalServiceAddress address in blocked.Addresses)
+            {
+                if (address.Uuid.HasValue)
+                {
+                    blockedMessage.Uuids.Add(address.Uuid.Value.ToString());
+                }
+                if (address.GetNumber() != null)
+                {
+                    blockedMessage.Numbers.Add(address.GetNumber());
+                }
+            }
+
             foreach (var groupId in blocked.GroupIds)
             {
                 blockedMessage.GroupIds.Add(ByteString.CopyFrom(groupId));
@@ -860,9 +1021,18 @@ namespace libsignalservice
             Verified verifiedMessageBuilder = new Verified
             {
                 NullMessage = ByteString.CopyFrom(nullMessage),
-                Destination = verifiedMessage.Destination,
                 IdentityKey = ByteString.CopyFrom(verifiedMessage.IdentityKey.serialize())
             };
+
+            if (verifiedMessage.Destination.Uuid.HasValue)
+            {
+                verifiedMessageBuilder.DestinationUuid = verifiedMessage.Destination.Uuid.Value.ToString();
+            }
+
+            if (verifiedMessage.Destination.GetNumber() != null)
+            {
+                verifiedMessageBuilder.DestinationE164 = verifiedMessage.Destination.GetNumber();
+            }
 
             switch (verifiedMessage.Verified)
             {
@@ -876,7 +1046,7 @@ namespace libsignalservice
                     verifiedMessageBuilder.State = Verified.Types.State.Unverified;
                     break;
                 default:
-                    throw new Exception("Unknown: " + verifiedMessage.Verified);
+                    throw new ArgumentException("Unknown: " + verifiedMessage.Verified);
             }
 
             syncMessage.Verified = verifiedMessageBuilder;
@@ -899,37 +1069,64 @@ namespace libsignalservice
                 token = CancellationToken.None;
             }
 
-            GroupContext groupContext = new GroupContext { };
-            groupContext.Id = ByteString.CopyFrom(group.GroupId);
+            GroupContext builder = new GroupContext();
+            builder.Id = ByteString.CopyFrom(group.GroupId);
 
             if (group.Type != SignalServiceGroup.GroupType.DELIVER)
             {
-                if (group.Type == SignalServiceGroup.GroupType.UPDATE) groupContext.Type = GroupContext.Types.Type.Update;
-                else if (group.Type == SignalServiceGroup.GroupType.QUIT) groupContext.Type = GroupContext.Types.Type.Quit;
-                else if (group.Type == SignalServiceGroup.GroupType.REQUEST_INFO) groupContext.Type = GroupContext.Types.Type.RequestInfo;
+                if (group.Type == SignalServiceGroup.GroupType.UPDATE) builder.Type = GroupContext.Types.Type.Update;
+                else if (group.Type == SignalServiceGroup.GroupType.QUIT) builder.Type = GroupContext.Types.Type.Quit;
+                else if (group.Type == SignalServiceGroup.GroupType.REQUEST_INFO) builder.Type = GroupContext.Types.Type.RequestInfo;
                 else throw new Exception("Unknown type: " + group.Type);
 
-                if (group.Name != null) groupContext.Name = group.Name;
-                if (group.Members != null) groupContext.Members.AddRange(group.Members);
+                if (group.Name != null)
+                {
+                    builder.Name = group.Name;
+                }
+
+                if (group.Members != null)
+                {
+                    foreach (SignalServiceAddress address in group.Members)
+                    {
+                        if (address.GetNumber() != null)
+                        {
+                            builder.MembersE164.Add(address.GetNumber());
+                        }
+
+                        GroupContext.Types.Member memberBuilder = new GroupContext.Types.Member();
+
+                        if (address.Uuid.HasValue)
+                        {
+                            memberBuilder.Uuid = address.Uuid.Value.ToString();
+                        }
+
+                        if (address.GetNumber() != null)
+                        {
+                            memberBuilder.E164 = address.GetNumber();
+                        }
+
+                        builder.Members.Add(memberBuilder);
+                    }
+                }
 
                 if (group.Avatar != null)
                 {
                     if (group.Avatar.IsStream())
                     {
-                        groupContext.Avatar = await CreateAttachmentPointerAsync(group.Avatar.AsStream(), token);
+                        builder.Avatar = await CreateAttachmentPointerAsync(group.Avatar.AsStream(), token);
                     }
                     else
                     {
-                        groupContext.Avatar = CreateAttachmentPointer(group.Avatar.AsPointer());
+                        builder.Avatar = CreateAttachmentPointer(group.Avatar.AsPointer());
                     }
                 }
             }
             else
             {
-                groupContext.Type = GroupContext.Types.Type.Deliver;
+                builder.Type = GroupContext.Types.Type.Deliver;
             }
 
-            return groupContext;
+            return builder;
         }
 
         private async Task<List<Contact>> CreateSharedContactContentAsync(List<SharedContact> contacts,
@@ -1130,15 +1327,15 @@ namespace libsignalservice
             {
                 try
                 {
-                    OutgoingPushMessageList messages = await GetEncryptedMessages(token.Value, Socket, recipient, unidentifiedAccess, timestamp, content, online);
-                    var pipe = Pipe;
-                    var unidentifiedPipe = UnidentifiedPipe;
-                    if (Pipe != null && unidentifiedAccess == null)
+                    OutgoingPushMessageList messages = await GetEncryptedMessagesAsync(socket, recipient, unidentifiedAccess, timestamp, content, online, token);
+                    var pipe = this.pipe;
+                    var unidentifiedPipe = this.unidentifiedPipe;
+                    if (this.pipe != null && unidentifiedAccess == null)
                     {
                         try
                         {
                             Logger.LogTrace("Transmitting over pipe...");
-                            var response = await Pipe.Send(messages, null);
+                            var response = await this.pipe.Send(messages, null);
                             return SendMessageResult.NewSuccess(recipient, false, response.NeedsSync);
                         }
                         catch (Exception e)
@@ -1153,12 +1350,12 @@ namespace libsignalservice
                     }
 
                     Logger.LogTrace("Not transmitting over pipe...");
-                    SendMessageResponse resp = await Socket.SendMessage(messages, unidentifiedAccess, token);
+                    SendMessageResponse resp = await socket.SendMessage(messages, unidentifiedAccess, token);
                     return SendMessageResult.NewSuccess(recipient, unidentifiedAccess != null, resp.NeedsSync);
                 }
                 catch (MismatchedDevicesException mde)
                 {
-                    await HandleMismatchedDevices(token.Value, Socket, recipient, mde.MismatchedDevices);
+                    await HandleMismatchedDevicesAsync(socket, recipient, mde.MismatchedDevices, token);
                 }
                 catch (StaleDevicesException ste)
                 {
@@ -1195,7 +1392,7 @@ namespace libsignalservice
                 else if (attachment.IsPointer())
                 {
                     Logger.LogTrace("Including existing attachment pointer...");
-                    pointers.Add(CreateAttachmentPointerFromPointer(attachment.AsPointer()));
+                    pointers.Add(CreateAttachmentPointer(attachment.AsPointer()));
                 }
             }
 
@@ -1204,75 +1401,61 @@ namespace libsignalservice
 
         private AttachmentPointer CreateAttachmentPointer(SignalServiceAttachmentPointer attachment)
         {
-            var attachmentPointer = new AttachmentPointer
+            var builder = new AttachmentPointer
             {
+                CdnNumber = (uint)attachment.CdnNumber,
                 ContentType = attachment.ContentType,
-                Id = attachment.Id,
                 Key = ByteString.CopyFrom(attachment.Key),
                 Digest = ByteString.CopyFrom(attachment.Digest),
                 Size = (uint)attachment.Size
             };
 
+            if (attachment.RemoteId.V2.HasValue)
+            {
+                builder.CdnId = (ulong)attachment.RemoteId.V2.Value;
+            }
+
+            if (attachment.RemoteId.V3 != null)
+            {
+                builder.CdnKey = attachment.RemoteId.V3;
+            }
+
             if (attachment.FileName != null)
             {
-                attachmentPointer.FileName = attachment.FileName;
+                builder.FileName = attachment.FileName;
             }
 
             if (attachment.Preview != null)
             {
-                attachmentPointer.Thumbnail = ByteString.CopyFrom(attachment.Preview);
+                builder.Thumbnail = ByteString.CopyFrom(attachment.Preview);
             }
 
             if (attachment.Width > 0)
             {
-                attachmentPointer.Width = (uint)attachment.Width;
+                builder.Width = (uint)attachment.Width;
             }
 
             if (attachment.Height > 0)
             {
-                attachmentPointer.Height = (uint)attachment.Height;
+                builder.Height = (uint)attachment.Height;
             }
 
             if (attachment.VoiceNote)
             {
-                attachmentPointer.Flags = (uint)AttachmentPointer.Types.Flags.VoiceMessage;
+                builder.Flags = (uint)AttachmentPointer.Types.Flags.VoiceMessage;
             }
 
             if (attachment.Caption != null)
             {
-                attachmentPointer.Caption = attachment.Caption;
+                builder.Caption = attachment.Caption;
             }
 
             if (attachment.BlurHash != null)
             {
-                attachmentPointer.BlurHash = attachment.BlurHash;
+                builder.BlurHash = attachment.BlurHash;
             }
 
-            return attachmentPointer;
-        }
-
-        private AttachmentPointer CreateAttachmentPointerFromPointer(SignalServiceAttachmentPointer attachment)
-        {
-            var attachmentPointer = new AttachmentPointer()
-            {
-                ContentType = attachment.ContentType,
-                Id = attachment.Id,
-                Key = ByteString.CopyFrom(attachment.Key),
-                Digest = ByteString.CopyFrom(attachment.Digest),
-                Size = (uint)attachment.Size
-            };
-
-            if (attachment.FileName != null)
-            {
-                attachmentPointer.FileName = attachment.FileName;
-            }
-
-            if (attachment.VoiceNote)
-            {
-                attachmentPointer.Flags = (uint)AttachmentPointer.Types.Flags.VoiceMessage;
-            }
-
-            return attachmentPointer;
+            return builder;
         }
 
         /// <summary>
@@ -1283,7 +1466,7 @@ namespace libsignalservice
         /// <returns>The digest and the encrypted data</returns>
         public (byte[] digest, Stream encryptedData) EncryptAttachment(Stream data, byte[] key)
         {
-            return Socket.EncryptAttachment(data, key);
+            return socket.EncryptAttachment(data, key);
         }
 
         private async Task<AttachmentPointer> CreateAttachmentPointerAsync(SignalServiceAttachmentStream attachment,
@@ -1294,51 +1477,61 @@ namespace libsignalservice
                 token = CancellationToken.None;
             }
 
-            SignalServiceAttachmentPointer pointer = await UploadAttachmentAsync(attachment, token);
-            return CreateAttachmentPointer(pointer);
+            return CreateAttachmentPointer(await UploadAttachmentV2Async(attachment, token));
         }
 
-        private async Task<OutgoingPushMessageList> GetEncryptedMessages(CancellationToken token,
-            PushServiceSocket socket,
+        private async Task<OutgoingPushMessageList> GetEncryptedMessagesAsync(PushServiceSocket socket,
             SignalServiceAddress recipient,
             UnidentifiedAccess? unidentifiedAccess,
             long timestamp,
             byte[] plaintext,
-            bool online)
+            bool online,
+            CancellationToken? token = null)
         {
-            List<OutgoingPushMessage> messages = new List<OutgoingPushMessage>();
-
-            bool myself = recipient.Equals(LocalAddress);
-            if (!myself || CredentialsProvider.DeviceId != SignalServiceAddress.DEFAULT_DEVICE_ID || unidentifiedAccess != null)
+            if (token == null)
             {
-                messages.Add(await GetEncryptedMessage(token, socket, recipient, unidentifiedAccess, SignalServiceAddress.DEFAULT_DEVICE_ID, plaintext));
+                token = CancellationToken.None;
             }
 
-            foreach (uint deviceId in Store.GetSubDeviceSessions(recipient.E164number))
+            List<OutgoingPushMessage> messages = new List<OutgoingPushMessage>();
+
+            bool myself = recipient.Equals(localAddress);
+            if (!myself || credentialsProvider.DeviceId != SignalServiceAddress.DEFAULT_DEVICE_ID ||
+                !recipient.Matches(localAddress) || unidentifiedAccess != null)
             {
-                if (!myself || deviceId != CredentialsProvider.DeviceId)
+                messages.Add(await GetEncryptedMessageAsync(socket, recipient, unidentifiedAccess, SignalServiceAddress.DEFAULT_DEVICE_ID, plaintext, token));
+            }
+
+            foreach (uint deviceId in store.GetSubDeviceSessions(recipient.GetIdentifier()))
+            {
+                if (!myself || deviceId != credentialsProvider.DeviceId)
                 {
-                    if (Store.ContainsSession(new SignalProtocolAddress(recipient.E164number, deviceId)))
+                    if (store.ContainsSession(new SignalProtocolAddress(recipient.GetIdentifier(), deviceId)))
                     {
-                        messages.Add(await GetEncryptedMessage(token, socket, recipient, unidentifiedAccess, deviceId, plaintext));
+                        messages.Add(await GetEncryptedMessageAsync(socket, recipient, unidentifiedAccess, deviceId, plaintext, token));
                     }
                 }
             }
 
-            return new OutgoingPushMessageList(recipient.E164number, (ulong)timestamp, messages, online);
+            return new OutgoingPushMessageList(recipient.GetIdentifier()!, (ulong)timestamp, messages, online);
         }
 
-        private async Task<OutgoingPushMessage> GetEncryptedMessage(CancellationToken token,
-            PushServiceSocket socket,
+        private async Task<OutgoingPushMessage> GetEncryptedMessageAsync(PushServiceSocket socket,
             SignalServiceAddress recipient,
             UnidentifiedAccess? unidentifiedAccess,
             uint deviceId,
-            byte[] plaintext)
+            byte[] plaintext,
+            CancellationToken? token = null)
         {
-            SignalProtocolAddress signalProtocolAddress = new SignalProtocolAddress(recipient.E164number, deviceId);
-            SignalServiceCipher cipher = new SignalServiceCipher(LocalAddress, Store, null);
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
 
-            if (!Store.ContainsSession(signalProtocolAddress))
+            SignalProtocolAddress signalProtocolAddress = new SignalProtocolAddress(recipient.GetIdentifier(), deviceId);
+            SignalServiceCipher cipher = new SignalServiceCipher(localAddress, store, null);
+
+            if (!store.ContainsSession(signalProtocolAddress))
             {
                 try
                 {
@@ -1346,25 +1539,26 @@ namespace libsignalservice
 
                     foreach (PreKeyBundle preKey in preKeys)
                     {
-                        if (CredentialsProvider.User.Equals(recipient.E164number) && CredentialsProvider.DeviceId == preKey.getDeviceId())
+                        if ((credentialsProvider.Uuid == recipient.Uuid || credentialsProvider.E164 == recipient.E164) &&
+                            credentialsProvider.DeviceId == preKey.getDeviceId())
                         {
                             continue;
                         }
                         try
                         {
-                            SignalProtocolAddress preKeyAddress = new SignalProtocolAddress(recipient.E164number, preKey.getDeviceId());
-                            SessionBuilder sessionBuilder = new SessionBuilder(Store, preKeyAddress);
+                            SignalProtocolAddress preKeyAddress = new SignalProtocolAddress(recipient.GetIdentifier(), preKey.getDeviceId());
+                            SessionBuilder sessionBuilder = new SessionBuilder(store, preKeyAddress);
                             sessionBuilder.process(preKey);
                         }
                         catch (libsignal.exceptions.UntrustedIdentityException)
                         {
-                            throw new UntrustedIdentityException("Untrusted identity key!", recipient.E164number, preKey.getIdentityKey());
+                            throw new UntrustedIdentityException("Untrusted identity key!", recipient.GetIdentifier(), preKey.getIdentityKey());
                         }
                     }
 
-                    if (EventListener != null)
+                    if (eventListener != null)
                     {
-                        EventListener.OnSecurityEvent(recipient);
+                        eventListener.OnSecurityEvent(recipient);
                     }
                 }
                 catch (InvalidKeyException e)
@@ -1383,27 +1577,40 @@ namespace libsignalservice
             }
         }
 
-        private async Task HandleMismatchedDevices(CancellationToken token, PushServiceSocket socket, SignalServiceAddress recipient, MismatchedDevices mismatchedDevices)
+        private async Task HandleMismatchedDevicesAsync(PushServiceSocket socket, SignalServiceAddress recipient, MismatchedDevices mismatchedDevices, CancellationToken? token = null)
         {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
             try
             {
                 foreach (uint extraDeviceId in mismatchedDevices.ExtraDevices)
                 {
-                    Store.DeleteSession(new SignalProtocolAddress(recipient.E164number, extraDeviceId));
+                    if (recipient.Uuid.HasValue)
+                    {
+                        store.DeleteSession(new SignalProtocolAddress(recipient.Uuid.Value.ToString(), extraDeviceId));
+                    }
+
+                    if (recipient.GetNumber() != null)
+                    {
+                        store.DeleteSession(new SignalProtocolAddress(recipient.GetNumber(), extraDeviceId));
+                    }
                 }
 
                 foreach (uint missingDeviceId in mismatchedDevices.MissingDevices)
                 {
-                    PreKeyBundle preKey = await socket.GetPreKey(token, recipient, missingDeviceId);
+                    PreKeyBundle preKey = await socket.GetPreKey(token.Value, recipient, missingDeviceId);
 
                     try
                     {
-                        SessionBuilder sessionBuilder = new SessionBuilder(Store, new SignalProtocolAddress(recipient.E164number, missingDeviceId));
+                        SessionBuilder sessionBuilder = new SessionBuilder(store, new SignalProtocolAddress(recipient.GetIdentifier(), missingDeviceId));
                         sessionBuilder.process(preKey);
                     }
                     catch (libsignal.exceptions.UntrustedIdentityException)
                     {
-                        throw new UntrustedIdentityException("Untrusted identity key!", recipient.E164number, preKey.getIdentityKey());
+                        throw new UntrustedIdentityException("Untrusted identity key!", recipient.GetIdentifier(), preKey.getIdentityKey());
                     }
                 }
             }
@@ -1417,7 +1624,14 @@ namespace libsignalservice
         {
             foreach (uint staleDeviceId in staleDevices.Devices)
             {
-                Store.DeleteSession(new SignalProtocolAddress(recipient.E164number, staleDeviceId));
+                if (recipient.Uuid.HasValue)
+                {
+                    store.DeleteSession(new SignalProtocolAddress(recipient.Uuid.Value.ToString(), staleDeviceId));
+                }
+                if (recipient.GetNumber() != null)
+                {
+                    store.DeleteSession(new SignalProtocolAddress(recipient.GetNumber(), staleDeviceId));
+                }
             }
         }
 

@@ -1,26 +1,45 @@
+using System;
 using System.Collections.Generic;
+using libsignalservice.push;
 
 namespace libsignalservice.messages.multidevice
 {
     public class SentTranscriptMessage
     {
-        public string? Destination { get; }
+        public SignalServiceAddress? Destination { get; }
         public long Timestamp { get; }
         public long ExpirationStartTimestamp { get; }
         public SignalServiceDataMessage Message { get; }
-        public Dictionary<string, bool> UnidentifiedStatus { get; }
+        public Dictionary<string, bool> UnidentifiedStatusByUuid { get; }
+        public Dictionary<string, bool> UnidentifiedStatusByE164 { get; }
+        public HashSet<SignalServiceAddress> Recipients { get; }
         public bool IsRecipientUpdate { get; }
 
-        public SentTranscriptMessage(string destination, long timestamp, SignalServiceDataMessage message,
-            long expirationStartTimestamp, Dictionary<string, bool> unidentifiedStatus,
+        public SentTranscriptMessage(SignalServiceAddress destination, long timestamp, SignalServiceDataMessage message,
+            long expirationStartTimestamp, Dictionary<SignalServiceAddress, bool> unidentifiedStatus,
             bool isRecipientUpdate)
         {
             Destination = destination;
             Timestamp = timestamp;
             Message = message;
             ExpirationStartTimestamp = expirationStartTimestamp;
-            UnidentifiedStatus = unidentifiedStatus;
+            UnidentifiedStatusByUuid = new Dictionary<string, bool>();
+            UnidentifiedStatusByE164 = new Dictionary<string, bool>();
+            Recipients = new HashSet<SignalServiceAddress>(unidentifiedStatus.Keys);
             IsRecipientUpdate = isRecipientUpdate;
+
+            foreach (var entry in unidentifiedStatus)
+            {
+                if (entry.Key.Uuid.HasValue)
+                {
+                    UnidentifiedStatusByUuid.Add(entry.Key.Uuid.Value.ToString(), entry.Value);
+                }
+
+                if (entry.Key.GetNumber() != null)
+                {
+                    UnidentifiedStatusByE164.Add(entry.Key.GetNumber()!, entry.Value);
+                }
+            }
         }
 
         public SentTranscriptMessage(long timestamp, SignalServiceDataMessage message)
@@ -29,22 +48,31 @@ namespace libsignalservice.messages.multidevice
             Timestamp = timestamp;
             Message = message;
             ExpirationStartTimestamp = 0;
-            UnidentifiedStatus = new Dictionary<string, bool>();
+            UnidentifiedStatusByUuid = new Dictionary<string, bool>();
+            UnidentifiedStatusByE164 = new Dictionary<string, bool>();
+            Recipients = new HashSet<SignalServiceAddress>();
             IsRecipientUpdate = false;
+        }
+
+        public bool IsUnidentified(Guid uuid)
+        {
+            return IsUnidentified(uuid.ToString());
         }
 
         public bool IsUnidentified(string destination)
         {
-            if (UnidentifiedStatus.ContainsKey(destination))
+            if (UnidentifiedStatusByUuid.ContainsKey(destination))
             {
-                return UnidentifiedStatus[destination];
+                return UnidentifiedStatusByUuid[destination];
             }
-            return false;
-        }
-
-        public HashSet<string> GetRecipients()
-        {
-            return new HashSet<string>(UnidentifiedStatus.Keys);
+            else if (UnidentifiedStatusByE164.ContainsKey(destination))
+            {
+                return UnidentifiedStatusByE164[destination];
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

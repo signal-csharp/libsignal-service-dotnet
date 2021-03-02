@@ -14,7 +14,7 @@ namespace libsignalservice.messages.multidevice
 
         public DeviceContactsInputStream(Stream input) : base(input) { }
 
-        public DeviceContact? Read()// throws IOException
+        public DeviceContact? Read()
         {
             int detailsLength = ReadRawVarint32();
             if (detailsLength == -1)
@@ -22,10 +22,10 @@ namespace libsignalservice.messages.multidevice
                 return null;
             }
             byte[] detailsSerialized = new byte[(int)detailsLength];
-            Util.ReadFully(InputStream, detailsSerialized);
+            Util.ReadFully(inputStream, detailsSerialized);
 
             var details = ContactDetails.Parser.ParseFrom(detailsSerialized);
-            string number = details.Number;
+            SignalServiceAddress address = new SignalServiceAddress(UuidUtil.ParseOrNull(details.Uuid), details.Number);
             string? name = details.Name;
             SignalServiceAttachmentStream? avatar = null;
             string? color = details.HasColor ? details.Color : null;
@@ -37,7 +37,7 @@ namespace libsignalservice.messages.multidevice
             if (details.Avatar != null)
             {
                 long avatarLength = details.Avatar.Length;
-                Stream avatarStream = new LimitedInputStream(InputStream, avatarLength);
+                Stream avatarStream = new LimitedInputStream(inputStream, avatarLength);
                 string avatarContentType = details.Avatar.ContentType;
                 avatar = new SignalServiceAttachmentStream(avatarStream, avatarContentType, avatarLength, null, false, null);
             }
@@ -46,8 +46,9 @@ namespace libsignalservice.messages.multidevice
             {
                 try
                 {
-                    string destination = details.Verified.Destination;
                     IdentityKey identityKey = new IdentityKey(details.Verified.IdentityKey.ToByteArray(), 0);
+                    SignalServiceAddress destination = new SignalServiceAddress(UuidUtil.ParseOrNull(details.Verified.DestinationUuid),
+                        details.Verified.DestinationE164);
 
                     VerifiedState state;
                     switch (details.Verified.State)
@@ -84,7 +85,7 @@ namespace libsignalservice.messages.multidevice
                 expireTimer = details.ExpireTimer;
             }
 
-            return new DeviceContact(number, name, avatar, color, verified, profileKey, blocked, expireTimer);
+            return new DeviceContact(address, name, avatar, color, verified, profileKey, blocked, expireTimer);
         }
     }
 }

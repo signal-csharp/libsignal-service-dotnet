@@ -1,4 +1,7 @@
+using System;
+using Google.Protobuf;
 using libsignalservice.push;
+using libsignalservice.util;
 using serialize.protos;
 
 namespace libsignalservice.serialize
@@ -8,25 +11,27 @@ namespace libsignalservice.serialize
         public static AddressProto ToProtobuf(SignalServiceAddress signalServiceAddress)
         {
             AddressProto builder = new AddressProto();
-            if (signalServiceAddress.E164number != null)
+            if (signalServiceAddress.GetNumber() != null)
             {
-                builder.E164 = signalServiceAddress.E164number;
+                builder.E164 = signalServiceAddress.E164;
             }
-            // TODO: Finish the UUID changes
+            if (signalServiceAddress.Uuid.HasValue)
+            {
+                builder.Uuid = ByteString.CopyFrom(UuidUtil.ToByteArray(signalServiceAddress.Uuid.Value));
+            }
             if (signalServiceAddress.Relay != null)
             {
                 builder.Relay = signalServiceAddress.Relay;
             }
-
             return builder;
         }
 
         public static SignalServiceAddress FromProtobuf(AddressProto addressProto)
         {
-            // TODO: Finish the UUID changes
+            Guid? uuid = addressProto.HasUuid ? UuidUtil.ParseOrThrow(addressProto.Uuid.ToByteArray()) : (Guid?)null;
             string? number = addressProto.HasE164 ? addressProto.E164 : null;
             string? relay = addressProto.HasRelay ? addressProto.Relay : null;
-            return new SignalServiceAddress(number, relay);
+            return new SignalServiceAddress(uuid, number, relay);
         }
     }
 }

@@ -43,6 +43,7 @@ namespace libsignalservice.messages
             private int Height;
             private string? Caption;
             private string? BlurHash;
+            private long UploadTimestamp;
 
             internal Builder()
             {
@@ -108,6 +109,12 @@ namespace libsignalservice.messages
                 return this;
             }
 
+            public Builder WithUploadTimestamp(long uploadTimestamp)
+            {
+                UploadTimestamp = uploadTimestamp;
+                return this;
+            }
+
             public SignalServiceAttachmentStream Build()
             {
                 if (InputStream == null)
@@ -131,6 +138,7 @@ namespace libsignalservice.messages
                     null,
                     Width,
                     Height,
+                    UploadTimestamp,
                     Caption,
                     BlurHash,
                     Listener);
