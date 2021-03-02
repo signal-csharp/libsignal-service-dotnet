@@ -1,16 +1,12 @@
-using Coe.WebSocketWrapper;
-using Google.Protobuf;
-using libsignal.util;
-using libsignalservice.push;
-using libsignalservice.util;
-using libsignalservice.websocket;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Concurrent;
-using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Google.Protobuf;
+using libsignalservice.push;
+using libsignalservice.util;
+using Microsoft.Extensions.Logging;
 
 namespace libsignalservice.websocket
 {
@@ -37,13 +33,15 @@ namespace libsignalservice.websocket
             string uri = httpUri.Replace("https://", "wss://").Replace("http://", "ws://");
             if (credentialsProvider != null)
             {
+                string identifier = credentialsProvider.Uuid != null ? credentialsProvider.Uuid.ToString() :
+                    credentialsProvider.E164!;
                 if (credentialsProvider.DeviceId == SignalServiceAddress.DEFAULT_DEVICE_ID)
                 {
-                    WsUri = uri + $"/v1/websocket/?login={credentialsProvider.User}&password={credentialsProvider.Password}";
+                    WsUri = uri + $"/v1/websocket/?login={identifier}&password={credentialsProvider.Password}";
                 }
                 else
                 {
-                    WsUri = uri + $"/v1/websocket/?login={credentialsProvider.User}.{credentialsProvider.DeviceId}&password={credentialsProvider.Password}";
+                    WsUri = uri + $"/v1/websocket/?login={identifier}.{credentialsProvider.DeviceId}&password={credentialsProvider.Password}";
                 }
             }
             else

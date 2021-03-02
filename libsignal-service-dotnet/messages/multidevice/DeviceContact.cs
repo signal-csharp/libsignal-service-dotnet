@@ -1,8 +1,10 @@
+using libsignalservice.push;
+
 namespace libsignalservice.messages.multidevice
 {
     public class DeviceContact
     {
-        public string Number { get; }
+        public SignalServiceAddress Address { get; }
         public string? Name { get; }
         public SignalServiceAttachmentStream? Avatar { get; }
         public string? Color { get; }
@@ -11,14 +13,15 @@ namespace libsignalservice.messages.multidevice
         public bool Blocked { get; }
         public uint? ExpirationTimer { get; }
 
-        public DeviceContact(string number, string? name,
+        public DeviceContact(SignalServiceAddress address, string? name,
             SignalServiceAttachmentStream? avatar,
             string? color,
             VerifiedMessage? verified,
             byte[]? profileKey,
-            bool blocked, uint? expirationTimer)
+            bool blocked,
+            uint? expirationTimer)
         {
-            Number = number;
+            Address = address;
             Name = name;
             Avatar = avatar;
             Color = color;

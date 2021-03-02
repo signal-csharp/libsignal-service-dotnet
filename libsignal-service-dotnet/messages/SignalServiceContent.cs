@@ -4,6 +4,7 @@ using System.Linq;
 using Google.Protobuf;
 using libsignal;
 using libsignal.messages.multidevice;
+using libsignal.state;
 using libsignal_service_dotnet.messages.calls;
 using libsignalmetadatadotnet;
 using libsignalservice.messages.multidevice;
@@ -11,12 +12,14 @@ using libsignalservice.messages.shared;
 using libsignalservice.push;
 using libsignalservice.serialize;
 using libsignalservice.util;
+using Microsoft.Extensions.Logging;
 using serialize.protos;
 
 namespace libsignalservice.messages
 {
     public class SignalServiceContent
     {
+        private static readonly ILogger logger = LibsignalLogging.CreateLogger<SignalServiceContent>();
         public SignalServiceAddress Sender { get; }
         public int SenderDevice { get; }
         public long Timestamp { get; }
@@ -209,7 +212,7 @@ namespace libsignalservice.messages
 
         private static SignalServiceDataMessage CreateSignalServiceMessage(SignalServiceMetadata metadata, DataMessage content)
         {
-            SignalServiceGroup? groupInfo = CreateGroupInfo(content);
+            SignalServiceGroup? groupInfo = CreateGroupV1Info(content);
             List<SignalServiceAttachment> attachments = new List<SignalServiceAttachment>();
             bool endSession = ((content.Flags & (uint)DataMessage.Types.Flags.EndSession) != 0);
             bool expirationUpdate = ((content.Flags & (uint)DataMessage.Types.Flags.ExpirationTimerUpdate) != 0);
@@ -268,20 +271,37 @@ namespace libsignalservice.messages
         {
             if (content.Sent != null)
             {
+                var unidentifiedStatuses = new Dictionary<SignalServiceAddress, bool>();
                 SyncMessage.Types.Sent sentContent = content.Sent;
-                var unidentifiedStatuses = new Dictionary<string, bool>();
+                SignalServiceDataMessage dataMessage = CreateSignalServiceMessage(metadata, sentContent.Message);
+                SignalServiceAddress? address = SignalServiceAddress.IsValidAddress(sentContent.DestinationUuid, sentContent.DestinationE164) ?
+                    new SignalServiceAddress(UuidUtil.ParseOrNull(sentContent.DestinationUuid), sentContent.DestinationE164) :
+                    null;
+
+                if (address == null && dataMessage.Group == null)
+                {
+                    throw new ProtocolInvalidMessageException(new InvalidMessageException("SyncMessage missing both destination and group ID!"), null, 0);
+                }
 
                 foreach (var status in sentContent.UnidentifiedStatus)
                 {
-                    unidentifiedStatuses[status.Destination] = status.Unidentified;
+                    if (SignalServiceAddress.IsValidAddress(status.DestinationUuid, status.DestinationE164))
+                    {
+                        SignalServiceAddress recipient = new SignalServiceAddress(UuidUtil.ParseOrNull(status.DestinationUuid), status.DestinationE164);
+                        unidentifiedStatuses.Add(recipient, status.Unidentified);
+                    }
+                    else
+                    {
+                        logger.LogWarning("Encountered an invalid UnidentifiedDeliveryStatus in a SentTranscript! Ignoring.");
+                    }
                 }
 
-                return SignalServiceSyncMessage.ForSentTranscript(new SentTranscriptMessage(sentContent.Destination,
-                                                                           (long)sentContent.Timestamp,
-                                                                           CreateSignalServiceMessage(metadata, sentContent.Message),
-                                                                           (long)sentContent.ExpirationStartTimestamp,
-                                                                           unidentifiedStatuses,
-                                                                           sentContent.IsRecipientUpdate));
+                return SignalServiceSyncMessage.ForSentTranscript(new SentTranscriptMessage(address!,
+                    (long)sentContent.Timestamp,
+                    CreateSignalServiceMessage(metadata, sentContent.Message),
+                    (long)sentContent.ExpirationStartTimestamp,
+                    unidentifiedStatuses,
+                    sentContent.IsRecipientUpdate));
             }
 
             if (content.Request != null)
@@ -295,7 +315,15 @@ namespace libsignalservice.messages
 
                 foreach (SyncMessage.Types.Read read in content.Read)
                 {
-                    readMessages.Add(new ReadMessage(read.Sender, (long)read.Timestamp));
+                    if (SignalServiceAddress.IsValidAddress(read.SenderUuid, read.SenderE164))
+                    {
+                        SignalServiceAddress address = new SignalServiceAddress(UuidUtil.ParseOrNull(read.SenderUuid), read.SenderE164);
+                        readMessages.Add(new ReadMessage(address, (long)read.Timestamp));
+                    }
+                    else
+                    {
+                        logger.LogWarning("Encountered an invalid ReadMessage! Ignoring.");
+                    }
                 }
 
                 return SignalServiceSyncMessage.ForRead(readMessages);
@@ -303,9 +331,16 @@ namespace libsignalservice.messages
 
             if (content.ViewOnceOpen != null)
             {
-                ViewOnceOpenMessage timerRead = new ViewOnceOpenMessage(content.ViewOnceOpen.Sender,
-                    (long)content.ViewOnceOpen.Timestamp);
-                return SignalServiceSyncMessage.ForViewOnceOpen(timerRead);
+                if (SignalServiceAddress.IsValidAddress(content.ViewOnceOpen.SenderUuid, content.ViewOnceOpen.SenderE164))
+                {
+                    SignalServiceAddress address = new SignalServiceAddress(UuidUtil.ParseOrNull(content.ViewOnceOpen.SenderUuid), content.ViewOnceOpen.SenderE164);
+                    ViewOnceOpenMessage timerRead = new ViewOnceOpenMessage(address, (long)content.ViewOnceOpen.Timestamp);
+                    return SignalServiceSyncMessage.ForViewOnceOpen(timerRead);
+                }
+                else
+                {
+                    throw new ProtocolInvalidMessageException(new InvalidMessageException("ViewOnceOpen message has no sender!"), null, 0);
+                }
             }
 
             if (content.Contacts != null)
@@ -322,36 +357,44 @@ namespace libsignalservice.messages
 
             if (content.Verified != null)
             {
-                try
+                if (SignalServiceAddress.IsValidAddress(content.Verified.DestinationUuid, content.Verified.DestinationE164))
                 {
-                    Verified verified = content.Verified;
-                    string destination = verified.Destination;
-                    IdentityKey identityKey = new IdentityKey(verified.IdentityKey.ToByteArray(), 0);
+                    try
+                    {
+                        Verified verified = content.Verified;
+                        SignalServiceAddress destination = new SignalServiceAddress(UuidUtil.ParseOrNull(verified.DestinationUuid), verified.DestinationE164);
+                        IdentityKey identityKey = new IdentityKey(verified.IdentityKey.ToByteArray(), 0);
 
-                    VerifiedMessage.VerifiedState verifiedState;
+                        VerifiedMessage.VerifiedState verifiedState;
 
-                    if (verified.State == Verified.Types.State.Default)
-                    {
-                        verifiedState = VerifiedMessage.VerifiedState.Default;
-                    }
-                    else if (verified.State == Verified.Types.State.Verified)
-                    {
-                        verifiedState = VerifiedMessage.VerifiedState.Verified;
-                    }
-                    else if (verified.State == Verified.Types.State.Unverified)
-                    {
-                        verifiedState = VerifiedMessage.VerifiedState.Unverified;
-                    }
-                    else
-                    {
-                        throw new InvalidMessageException("Unknown state: " + verified.State);
-                    }
+                        if (verified.State == Verified.Types.State.Default)
+                        {
+                            verifiedState = VerifiedMessage.VerifiedState.Default;
+                        }
+                        else if (verified.State == Verified.Types.State.Verified)
+                        {
+                            verifiedState = VerifiedMessage.VerifiedState.Verified;
+                        }
+                        else if (verified.State == Verified.Types.State.Unverified)
+                        {
+                            verifiedState = VerifiedMessage.VerifiedState.Unverified;
+                        }
+                        else
+                        {
+                            throw new ProtocolInvalidMessageException(new InvalidMessageException($"Unknown state: {(int)verified.State}"),
+                                metadata.Sender.GetIdentifier(), metadata.SenderDevice);
+                        }
 
-                    return SignalServiceSyncMessage.ForVerified(new VerifiedMessage(destination, identityKey, verifiedState, Util.CurrentTimeMillis()));
+                        return SignalServiceSyncMessage.ForVerified(new VerifiedMessage(destination, identityKey, verifiedState, Util.CurrentTimeMillis()));
+                    }
+                    catch (InvalidKeyException ex)
+                    {
+                        throw new ProtocolInvalidKeyException(ex, metadata.Sender.GetIdentifier(), metadata.SenderDevice);
+                    }
                 }
-                catch (InvalidKeyException e)
+                else
                 {
-                    throw new InvalidMessageException(e);
+                    throw new ProtocolInvalidMessageException(new InvalidMessageException("Verified message has no sender!"), null, 0);
                 }
             }
 
@@ -381,12 +424,45 @@ namespace libsignalservice.messages
 
             if (content.Blocked != null)
             {
-                List<string> blockedNumbers = new List<string>(content.Blocked.Numbers.Count);
-                foreach (var blocked in content.Blocked.Numbers)
+                List<string> numbers = content.Blocked.Numbers.ToList();
+                List<string> uuids = content.Blocked.Uuids.ToList();
+                List<SignalServiceAddress> addresses = new List<SignalServiceAddress>(numbers.Count + uuids.Count);
+                List<byte[]> groupIds = new List<byte[]>(content.Blocked.GroupIds.Count);
+                
+                foreach (string e164 in numbers)
                 {
-                    blockedNumbers.Add(blocked);
+                    SignalServiceAddress? address = SignalServiceAddress.FromRaw(null, e164);
+                    if (address != null)
+                    {
+                        addresses.Add(address);
+                    }
                 }
-                return SignalServiceSyncMessage.ForBlocked(new BlockedListMessage(blockedNumbers, content.Blocked.GroupIds.Select(gid => gid.ToByteArray()).ToList()));
+
+                foreach (string uuid in uuids)
+                {
+                    SignalServiceAddress? address = SignalServiceAddress.FromRaw(uuid, null);
+                    if (address != null)
+                    {
+                        addresses.Add(address);
+                    }
+                }
+
+                foreach (ByteString groupId in content.Blocked.GroupIds)
+                {
+                    groupIds.Add(groupId.ToByteArray());
+                }
+
+                return SignalServiceSyncMessage.ForBlocked(new BlockedListMessage(addresses, groupIds));
+            }
+
+            if (content.Configuration != null)
+            {
+                bool? readReceipts = content.Configuration.HasReadReceipts ? content.Configuration.ReadReceipts : (bool?)null;
+                bool? unidentifiedDeliveryIndicators = content.Configuration.HasUnidentifiedDeliveryIndicators ? content.Configuration.UnidentifiedDeliveryIndicators : (bool?)null;
+                bool? typingIndicators = content.Configuration.HasTypingIndicators ? content.Configuration.TypingIndicators : (bool?)null;
+                bool? linkPreviews = content.Configuration.HasLinkPreviews ? content.Configuration.LinkPreviews : (bool?)null;
+
+                return SignalServiceSyncMessage.ForConfiguration(new ConfigurationMessage(readReceipts, unidentifiedDeliveryIndicators, typingIndicators, linkPreviews));
             }
 
             return SignalServiceSyncMessage.Empty();
@@ -522,10 +598,20 @@ namespace libsignalservice.messages
                     attachment.Thumbnail != null ? CreateAttachmentPointer(attachment.Thumbnail) : null));
             }
 
-            return new SignalServiceDataMessage.SignalServiceQuote((long)content.Quote.Id,
-                new SignalServiceAddress(content.Quote.Author),
-                content.Quote.Text,
-                attachments);
+            if (SignalServiceAddress.IsValidAddress(content.Quote.AuthorUuid, content.Quote.AuthorE164))
+            {
+                SignalServiceAddress address = new SignalServiceAddress(UuidUtil.ParseOrNull(content.Quote.AuthorUuid), content.Quote.AuthorE164);
+
+                return new SignalServiceDataMessage.SignalServiceQuote((long)content.Quote.Id,
+                    address,
+                    content.Quote.Text,
+                    attachments);
+            }
+            else
+            {
+                logger.LogWarning("Quote was missing an author! Returning null.");
+                return null;
+            }
         }
 
         private static List<SignalServiceDataMessage.SignalServicePreview>? CreatePreviews(DataMessage content)
@@ -674,7 +760,8 @@ namespace libsignalservice.messages
 
         private static SignalServiceAttachmentPointer CreateAttachmentPointer(AttachmentPointer pointer)
         {
-            return new SignalServiceAttachmentPointer(pointer.Id,
+            return new SignalServiceAttachmentPointer((int)pointer.CdnNumber,
+                SignalServiceAttachmentRemoteId.From(pointer)!,
                 pointer.ContentType,
                 pointer.Key.ToByteArray(),
                 pointer.HasSize ? pointer.Size : (uint?)null,
@@ -685,10 +772,11 @@ namespace libsignalservice.messages
                 pointer.HasFileName ? pointer.FileName : null,
                 (pointer.Flags & (uint)AttachmentPointer.Types.Flags.VoiceMessage) != 0,
                 pointer.HasCaption ? pointer.Caption : null,
-                pointer.HasBlurHash ? pointer.BlurHash : null);
+                pointer.HasBlurHash ? pointer.BlurHash : null,
+                pointer.HasUploadTimestamp ? (long)pointer.UploadTimestamp : 0);
         }
 
-        private static SignalServiceGroup? CreateGroupInfo(DataMessage content)
+        private static SignalServiceGroup? CreateGroupV1Info(DataMessage content)
         {
             if (content.Group == null) return null;
 
@@ -704,7 +792,7 @@ namespace libsignalservice.messages
             if (content.Group.Type != GroupContext.Types.Type.Deliver)
             {
                 string? name = null;
-                IList<string>? members = null;
+                List<SignalServiceAddress>? members = null;
                 SignalServiceAttachmentPointer? avatar = null;
 
                 if (content.Group.HasName)
@@ -714,14 +802,36 @@ namespace libsignalservice.messages
 
                 if (content.Group.Members.Count > 0)
                 {
-                    members = content.Group.Members;
+                    members = new List<SignalServiceAddress>(content.Group.Members.Count);
+
+                    foreach (GroupContext.Types.Member member in content.Group.Members)
+                    {
+                        if (SignalServiceAddress.IsValidAddress(member.Uuid, member.E164))
+                        {
+                            members.Add(new SignalServiceAddress(UuidUtil.ParseOrNull(member.Uuid), member.E164));
+                        }
+                        else
+                        {
+                            throw new ProtocolInvalidMessageException(new InvalidMessageException("GroupContext.Member had no address!"), null, 0);
+                        }
+                    }
+                }
+                else if (content.Group.MembersE164.Count > 0)
+                {
+                    members = new List<SignalServiceAddress>(content.Group.MembersE164.Count);
+
+                    foreach (string member in content.Group.MembersE164)
+                    {
+                        members.Add(new SignalServiceAddress(null, member));
+                    }
                 }
 
                 if (content.Group.Avatar != null)
                 {
                     AttachmentPointer pointer = content.Group.Avatar;
 
-                    avatar = new SignalServiceAttachmentPointer(pointer.Id,
+                    avatar = new SignalServiceAttachmentPointer((int)pointer.CdnNumber,
+                        SignalServiceAttachmentRemoteId.From(pointer)!,
                         pointer.ContentType,
                         pointer.Key.ToByteArray(),
                         pointer.HasSize ? pointer.Size : 0,
@@ -731,24 +841,14 @@ namespace libsignalservice.messages
                         null,
                         false,
                         null,
-                        null);
+                        null,
+                        pointer.HasUploadTimestamp ? (long)pointer.UploadTimestamp : 0);
                 }
 
-                return new SignalServiceGroup()
-                {
-                    Type = type,
-                    GroupId = content.Group.Id.ToByteArray(),
-                    Name = name,
-                    Members = members,
-                    Avatar = avatar
-                };
+                return new SignalServiceGroup(type, content.Group.Id.ToByteArray(), name, members, avatar);
             }
 
-            return new SignalServiceGroup()
-            {
-                GroupId = content.Group.Id.ToByteArray(),
-                Type = type
-            };
+            return new SignalServiceGroup(content.Group.Id.ToByteArray());
         }
     }
 }

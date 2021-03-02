@@ -172,26 +172,6 @@ namespace libsignalservice.util
             return (DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).Ticks / TimeSpan.TicksPerMillisecond;
         }
 
-        /// <summary>
-        /// Converts the expected Java UUID constructor parameters into a C# Guid
-        /// </summary>
-        /// <param name="mostSigBits">The most significant bits of the UUID</param>
-        /// <param name="leastSigBits">The least significant bits of the UUID</param>
-        /// <returns>A Guid</returns>
-        public static Guid JavaUUIDToCSharpGuid(long mostSigBits, long leastSigBits)
-        {
-            byte[] ms = BitConverter.GetBytes(mostSigBits);
-            byte[] ls = BitConverter.GetBytes(leastSigBits);
-
-            byte[] guidBytes = new byte[16]
-            {
-                ms[4], ms[5], ms[6], ms[7], ms[2], ms[3], ms[0], ms[1],
-                ls[7], ls[6], ls[5], ls[4], ls[3], ls[2], ls[1], ls[0]
-            };
-
-            return new Guid(guidBytes);
-        }
-
         public static HttpClient CreateHttpClient()
         {
             HttpClient client;

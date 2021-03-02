@@ -1,18 +1,17 @@
 using System.Collections.Generic;
+using libsignalservice.push;
 
 namespace libsignalservice.messages.multidevice
 {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public class BlockedListMessage
     {
-        public List<string> Numbers { get; }
+        public List<SignalServiceAddress> Addresses { get; }
         public List<byte[]> GroupIds { get; }
 
-        public BlockedListMessage(List<string> numbers, List<byte[]> groupIds)
+        public BlockedListMessage(List<SignalServiceAddress> addresses, List<byte[]> groupIds)
         {
-            Numbers = numbers;
+            Addresses = addresses;
             GroupIds = groupIds;
         }
     }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

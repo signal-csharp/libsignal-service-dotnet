@@ -1,20 +1,22 @@
-using libsignal;
 using System;
+using libsignal;
 
 namespace libsignalservice.crypto
 {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public class UntrustedIdentityException : Exception
     {
         public IdentityKey IdentityKey { get; }
-        public String E164number { get; }
+        public string? Identifier { get; }
 
-        public UntrustedIdentityException(String s, String e164number, IdentityKey identityKey)
-                  : base(s)
+        public UntrustedIdentityException(string s, string? identifier, IdentityKey identityKey) : base(s)
         {
-            E164number = e164number;
+            Identifier = identifier;
             IdentityKey = identityKey;
         }
+
+        public UntrustedIdentityException(UntrustedIdentityException ex) :
+            this(ex.Message, ex.Identifier, ex.IdentityKey)
+        {
+        }
     }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

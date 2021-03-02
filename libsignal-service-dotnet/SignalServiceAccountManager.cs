@@ -38,6 +38,8 @@ namespace libsignalservice
         private static ProvisioningSocket? ProvisioningSocket;
 
         private PushServiceSocket pushServiceSocket;
+        private readonly Guid? userUuid;
+        private readonly string? userE164;
         private ICredentialsProvider credentials;
         private readonly SignalServiceConfiguration configuration;
         private readonly string userAgent;
@@ -47,13 +49,15 @@ namespace libsignalservice
         /// Construct a SignalServivceAccountManager
         /// </summary>
         /// <param name="configuration">The URL configuration for the Signal Service</param>
-        /// <param name="user">A Signal Service phone number</param>
+        /// <param name="uuid">The Signal Service Guid.</param>
+        /// <param name="e164">The Signal Service phone number</param>
         /// <param name="password">A Signal Service password</param>
         /// <param name="deviceId">A Signal Service device id</param>
         /// <param name="userAgent">A string which identifies the client software</param>
+        /// <param name="httpClient">HttpClient</param>
         public SignalServiceAccountManager(SignalServiceConfiguration configuration,
-            string user, string password, int deviceId, string userAgent, HttpClient httpClient) :
-            this(configuration, new StaticCredentialsProvider(user, password, deviceId), userAgent, httpClient)
+            Guid? uuid, string e164, string password, int deviceId, string userAgent, HttpClient httpClient) :
+            this(configuration, new StaticCredentialsProvider(uuid, e164, password, deviceId), userAgent, httpClient)
         {
         }
 
@@ -68,7 +72,7 @@ namespace libsignalservice
             this.httpClient = httpClient;
             this.configuration = configuration;
             this.userAgent = userAgent;
-            credentials = new StaticCredentialsProvider(null, null, (int)SignalServiceAddress.DEFAULT_DEVICE_ID);
+            credentials = new StaticCredentialsProvider(null, null, null!, (int)SignalServiceAddress.DEFAULT_DEVICE_ID);
             pushServiceSocket = new PushServiceSocket(configuration, credentials, userAgent, httpClient);
         }
 
@@ -78,15 +82,32 @@ namespace libsignalservice
             HttpClient httpClient)
         {
             this.pushServiceSocket = new PushServiceSocket(configuration, credentialsProvider, signalAgent, httpClient);
+            this.userUuid = credentialsProvider.Uuid;
+            this.userE164 = credentialsProvider.E164;
             this.configuration = configuration;
             this.credentials = credentialsProvider;
             this.userAgent = signalAgent;
             this.httpClient = httpClient;
         }
 
-        public async Task<byte[]> GetSenderCertificate(CancellationToken token)
+        public async Task<byte[]> GetSenderCertificate(CancellationToken? token = null)
         {
-            return await pushServiceSocket.GetSenderCertificate(token);
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            return await pushServiceSocket.GetSenderCertificateAsync(token);
+        }
+
+        public async Task<byte[]> GetSenderCertificateLegacyAsync(CancellationToken? token = null)
+        {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            return await pushServiceSocket.GetSenderCertificateLegacyAsync(token);
         }
 
         /// <summary>
@@ -102,6 +123,22 @@ namespace libsignalservice
             {
                 await pushServiceSocket.RemovePin(token);
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        /// <exception cref="IOException"></exception>
+        public async Task<Guid> GetOwnUuid(CancellationToken? token = null)
+        {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            return await pushServiceSocket.GetOwnUuidAsync(token);
         }
 
         /// <summary>
@@ -167,14 +204,20 @@ namespace libsignalservice
         /// <param name="pin"></param>
         /// <param name="unidentifiedAccessKey"></param>
         /// <param name="unrestrictedUnidentifiedAccess"></param>
-        /// <returns></returns>
-        public async Task VerifyAccountWithCode(CancellationToken token, string verificationCode, string signalingKey,
-                                   uint signalProtocolRegistrationId, bool fetchesMessages, string pin,
-                                   byte[] unidentifiedAccessKey, bool unrestrictedUnidentifiedAccess)
+        /// <returns>The UUID of the user that was registered.</returns>
+        public async Task<Guid> VerifyAccountWithCodeAsync(string verificationCode, string signalingKey,
+            uint signalProtocolRegistrationId, bool fetchesMessages, string pin,
+            byte[] unidentifiedAccessKey, bool unrestrictedUnidentifiedAccess,
+            CancellationToken? token = null)
         {
-            await pushServiceSocket.VerifyAccountCode(token, verificationCode, signalingKey,
-                                                 signalProtocolRegistrationId, fetchesMessages, pin,
-                                                 unidentifiedAccessKey, unrestrictedUnidentifiedAccess);
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            return await pushServiceSocket.VerifyAccountCodeAsync(verificationCode, signalingKey,
+                signalProtocolRegistrationId, fetchesMessages, pin,
+                unidentifiedAccessKey, unrestrictedUnidentifiedAccess, token);
         }
 
         /// <summary>
@@ -316,7 +359,7 @@ namespace libsignalservice
                     long candidateUuidLow = uuidInputStream.ReadInt64();
                     if (candidateUuidHigh != 0 || candidateUuidLow != 0)
                     {
-                        results.Add($"+{candidate}", Util.JavaUUIDToCSharpGuid(candidateUuidHigh, candidateUuidLow));
+                        results.Add($"+{candidate}", UuidUtil.JavaUUIDToCSharpGuid(candidateUuidHigh, candidateUuidLow));
                     }
                 }
 
@@ -398,11 +441,11 @@ namespace libsignalservice
         /// <returns>Device id</returns>
         public async Task<int> FinishNewDeviceRegistration(CancellationToken token, SignalServiceProvisionMessage provisionMessage, string signalingKey, string password, bool sms, bool fetches, int regid, string name)
         {
-            pushServiceSocket = new PushServiceSocket(configuration, new StaticCredentialsProvider(provisionMessage.Number, password, -1), userAgent, httpClient);
+            pushServiceSocket = new PushServiceSocket(configuration, new StaticCredentialsProvider(null, provisionMessage.Number, password, -1), userAgent, httpClient);
 
             // update credentials and pushServiceSocket to keep internal state consistent
             int deviceId = await pushServiceSocket.FinishNewDeviceRegistration(token, provisionMessage.Code, signalingKey, sms, fetches, regid, name);
-            credentials = new StaticCredentialsProvider(provisionMessage.Number, password, deviceId);
+            credentials = new StaticCredentialsProvider(null, provisionMessage.Number, password, deviceId);
             pushServiceSocket = new PushServiceSocket(configuration, credentials, userAgent, httpClient);
             return deviceId;
         }
@@ -428,7 +471,7 @@ namespace libsignalservice
             {
                 IdentityKeyPublic = ByteString.CopyFrom(identityKeyPair.getPublicKey().serialize()),
                 IdentityKeyPrivate = ByteString.CopyFrom(identityKeyPair.getPrivateKey().serialize()),
-                Number = credentials.User,
+                Number = credentials.E164,
                 ProvisioningCode = code
             };
 

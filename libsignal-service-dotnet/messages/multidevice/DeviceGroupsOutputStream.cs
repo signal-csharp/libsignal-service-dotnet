@@ -1,8 +1,7 @@
+using System.Collections.Generic;
+using System.IO;
 using Google.Protobuf;
 using libsignalservice.push;
-
-using System;
-using System.IO;
 
 namespace libsignalservice.messages.multidevice
 {
@@ -13,53 +12,79 @@ namespace libsignalservice.messages.multidevice
         {
         }
 
-        public void write(DeviceGroup group)
+        public void Write(DeviceGroup group)
         {
             WriteGroupDetails(group);
-            writeAvatarImage(group);
+            WriteAvatarImage(group);
         }
 
-        public void close()
+        public void Close()
         {
-            //output.close();
+            output.Dispose();
         }
 
-        private void writeAvatarImage(DeviceGroup contact)
+        private void WriteAvatarImage(DeviceGroup contact)
         {
             if (contact.Avatar != null)
             {
-                throw new NotImplementedException();
-                //contact.getAvatar().Match(e => e, () => { throw new Exception(); }).InputStream;
+                WriteStream(contact.Avatar.InputStream);
             }
         }
 
-        private void WriteGroupDetails(DeviceGroup group)// throws IOException
+        private void WriteGroupDetails(DeviceGroup group)
         {
-            GroupDetails groupDetails = new GroupDetails { };
+            GroupDetails groupDetails = new GroupDetails();
             groupDetails.Id = ByteString.CopyFrom(group.Id);
 
             if (group.Name != null)
             {
-                //groupDetails.Name = group.getName().Match(e => e, () => { throw new Exception(); });
+                groupDetails.Name = group.Name;
             }
 
             if (group.Avatar != null)
             {
-                //GroupDetails.Types.GroupAvatar avatarBuilder = new GroupDetails.Types.GroupAvatar { };
-                //SignalServiceAttachmentStream avatar = group.getAvatar().Match(e => e, () => { throw new Exception(); });
-                //avatarBuilder.ContentType = avatar.C;
-                //avatarBuilder.Length = (uint)avatar.Length;
-                //groupDetails.Avatar = avatarBuilder;
+                GroupDetails.Types.Avatar avatarBuilder = new GroupDetails.Types.Avatar();
+                avatarBuilder.ContentType = group.Avatar.ContentType;
+                avatarBuilder.Length = (uint)group.Avatar.Length;
+                groupDetails.Avatar = avatarBuilder;
             }
 
-            //if (group.ExpirationTimer
+            if (group.ExpirationTimer.HasValue)
+            {
+                groupDetails.ExpireTimer = group.ExpirationTimer.Value;
+            }
 
-            groupDetails.Members.AddRange(group.Members);
-            //groupDetails.Active = group.Active;
+            if (group.Color != null)
+            {
+                groupDetails.Color = group.Color;
+            }
+
+            List<GroupDetails.Types.Member> members = new List<GroupDetails.Types.Member>(group.Members.Count);
+
+            foreach (SignalServiceAddress address in group.Members)
+            {
+                GroupDetails.Types.Member builder = new GroupDetails.Types.Member();
+
+                if (address.Uuid.HasValue)
+                {
+                    builder.Uuid = address.Uuid.Value.ToString();
+                }
+
+                if (address.GetNumber() != null)
+                {
+                    builder.E164 = address.GetNumber();
+                }
+
+                members.Add(builder);
+            }
+
+            groupDetails.Members.AddRange(members);
+            groupDetails.Active = group.Active;
+            groupDetails.Blocked = group.Blocked;
 
             byte[] serializedContactDetails = groupDetails.ToByteArray();
 
-            writeVarint32(serializedContactDetails.Length);
+            WriteVarint32(serializedContactDetails.Length);
             output.Write(serializedContactDetails, 0, serializedContactDetails.Length);
         }
     }

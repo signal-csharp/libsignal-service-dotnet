@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
@@ -29,6 +30,13 @@ namespace libsignalservice
         private readonly SignalServiceConfiguration Urls;
         private readonly ICredentialsProvider CredentialsProvider;
         private readonly string UserAgent;
+
+        public SignalServiceMessageReceiver(SignalServiceConfiguration urls,
+            Guid uuid, string e164, string password, int deviceId,
+            string userAgent, HttpClient httpClient) :
+            this(urls, new StaticCredentialsProvider(uuid, e164, password, deviceId), userAgent, httpClient)
+        {
+        }
 
         /// <summary>
         /// Construct a SignalServiceMessageReceiver.
@@ -116,7 +124,7 @@ namespace libsignalservice
 
             if (pointer.Digest == null) throw new InvalidMessageException("No attachment digest!");
 
-            await Socket.RetrieveAttachmentAsync((long)pointer.Id, destination, maxSizeBytes, listener, token);
+            await Socket.RetrieveAttachmentAsync(pointer.CdnNumber, pointer.RemoteId, destination, maxSizeBytes, listener, token);
             destination.Position = 0;
             return AttachmentCipherInputStream.CreateForAttachment(destination, pointer.Size != null ? pointer.Size.Value : 0, pointer.Key, pointer.Digest);
         }
@@ -206,9 +214,10 @@ namespace libsignalservice
             {
                 SignalServiceEnvelope envelope;
 
-                if (entity.Source != null && entity.SourceDevice > 0)
+                if (entity.HasSource() && entity.SourceDevice > 0)
                 {
-                    envelope = new SignalServiceEnvelope((int) entity.Type, entity.Source,
+                    SignalServiceAddress address = new SignalServiceAddress(UuidUtil.ParseOrNull(entity.SourceUuid), entity.SourceE164);
+                    envelope = new SignalServiceEnvelope((int) entity.Type, address,
                                                          (int) entity.SourceDevice, (int) entity.Timestamp,
                                                          entity.Message, entity.Content,
                                                          entity.ServerTimestamp, entity.ServerUuid);
@@ -224,7 +233,7 @@ namespace libsignalservice
                 results.Add(envelope);
 
                 if (envelope.HasUuid()) await Socket.AcknowledgeMessage(token, envelope.GetUuid());
-                else await Socket.AcknowledgeMessage(token, entity.Source, entity.Timestamp);
+                else await Socket.AcknowledgeMessage(token, entity.SourceE164!, entity.Timestamp);
             }
             return results;
         }

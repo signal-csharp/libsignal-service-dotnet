@@ -3,19 +3,23 @@ using System.IO;
 
 namespace libsignalservice.messages.multidevice
 {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public class ChunkedInputStream
     {
-        protected readonly Stream InputStream;
+        protected readonly Stream inputStream;
 
         public ChunkedInputStream(Stream input)
         {
-            InputStream = input;
+            inputStream = input;
         }
 
-        public int ReadRawVarint32()// throws IOException
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="IOException"></exception>
+        public int ReadRawVarint32()
         {
-            int tmpInt = InputStream.ReadByte();
+            int tmpInt = inputStream.ReadByte();
             if (tmpInt == -1)
             {
                 return -1;
@@ -26,34 +30,34 @@ namespace libsignalservice.messages.multidevice
                 return tmp;
             }
             int result = tmp & 0x7f;
-            if ((tmp = (sbyte)InputStream.ReadByte()) >= 0)
+            if ((tmp = (sbyte)inputStream.ReadByte()) >= 0)
             {
                 result |= tmp << 7;
             }
             else
             {
                 result |= (tmp & 0x7f) << 7;
-                if ((tmp = (sbyte)InputStream.ReadByte()) >= 0)
+                if ((tmp = (sbyte)inputStream.ReadByte()) >= 0)
                 {
                     result |= tmp << 14;
                 }
                 else
                 {
                     result |= (tmp & 0x7f) << 14;
-                    if ((tmp = (sbyte)InputStream.ReadByte()) >= 0)
+                    if ((tmp = (sbyte)inputStream.ReadByte()) >= 0)
                     {
                         result |= tmp << 21;
                     }
                     else
                     {
                         result |= (tmp & 0x7f) << 21;
-                        result |= (tmp = (sbyte)InputStream.ReadByte()) << 28;
+                        result |= (tmp = (sbyte)inputStream.ReadByte()) << 28;
                         if (tmp < 0)
                         {
                             // Discard upper 32 bits.
                             for (int i = 0; i < 5; i++)
                             {
-                                if ((sbyte)InputStream.ReadByte() >= 0)
+                                if ((sbyte)inputStream.ReadByte() >= 0)
                                 {
                                     return result;
                                 }

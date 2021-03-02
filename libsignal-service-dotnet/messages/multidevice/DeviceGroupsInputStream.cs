@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using libsignalservice.push;
 using libsignalservice.util;
 
@@ -9,6 +10,11 @@ namespace libsignalservice.messages.multidevice
     {
         public DeviceGroupsInputStream(Stream input): base(input) { }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="IOException"></exception>
         public DeviceGroup? Read()
         {
             int detailsLength = ReadRawVarint32();
@@ -17,13 +23,18 @@ namespace libsignalservice.messages.multidevice
                 return null;
             }
             byte[] detailsSerialized = new byte[detailsLength];
-            Util.ReadFully(InputStream, detailsSerialized);
+            Util.ReadFully(inputStream, detailsSerialized);
 
             GroupDetails details = GroupDetails.Parser.ParseFrom(detailsSerialized);
+
+            if (!details.HasId)
+            {
+                throw new IOException("ID missing on group record!");
+            }
+
             byte[] id = details.Id.ToByteArray();
             string? name = details.HasName ? details.Name : null;
-            List<string> members = new List<string>();
-            members.AddRange(details.Members);
+            List<GroupDetails.Types.Member> members = details.Members.ToList();
             SignalServiceAttachmentStream? avatar = null;
             bool active = details.Active;
             uint? expirationTimer = null;
@@ -33,7 +44,7 @@ namespace libsignalservice.messages.multidevice
             if (details.Avatar != null)
             {
                 long avatarLength = details.Avatar.Length;
-                Stream avatarStream = new LimitedInputStream(InputStream, avatarLength);
+                Stream avatarStream = new LimitedInputStream(inputStream, avatarLength);
                 string avatarContentType = details.Avatar.ContentType;
                 avatar = new SignalServiceAttachmentStream(avatarStream, avatarContentType, avatarLength, null, false, null);
             }
@@ -43,7 +54,13 @@ namespace libsignalservice.messages.multidevice
                 expirationTimer = details.ExpireTimer;
             }
 
-            return new DeviceGroup(id, name, members, avatar, active, expirationTimer, color, blocked);
+            List<SignalServiceAddress> addressMembers = new List<SignalServiceAddress>(members.Count);
+            foreach (GroupDetails.Types.Member member in members)
+            {
+                addressMembers.Add(new SignalServiceAddress(UuidUtil.ParseOrNull(member.Uuid), member.E164));
+            }
+
+            return new DeviceGroup(id, name, addressMembers, avatar, active, expirationTimer, color, blocked);
         }
     }
 }

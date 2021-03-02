@@ -1,37 +1,42 @@
 using Newtonsoft.Json;
-using System;
 
 namespace libsignalservice.push
 {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public class SignalServiceEnvelopeEntity
     {
         [JsonProperty("type")]
-        public uint Type { get; set; }
+        public uint Type { get; private set; }
 
         [JsonProperty("relay")]
-        public string? Relay { get; set; }
+        public string? Relay { get; private set; }
 
         [JsonProperty("timestamp")]
-        public ulong Timestamp { get; set; }
+        public ulong Timestamp { get; private set; }
 
         [JsonProperty("source")]
-        public string? Source { get; set; }
+        public string? SourceE164 { get; private set; }
+
+        [JsonProperty("sourceUuid")]
+        public string? SourceUuid { get; private set; }
 
         [JsonProperty("sourceDevice")]
-        public uint SourceDevice { get; set; }
+        public uint SourceDevice { get; private set; }
 
         [JsonProperty("message")]
-        public byte[]? Message { get; set; }
+        public byte[]? Message { get; private set; }
 
         [JsonProperty("content")]
-        public byte[]? Content { get; set; }
+        public byte[]? Content { get; private set; }
 
         [JsonProperty("serverTimestamp")]
-        public long ServerTimestamp { get; set; }
+        public long ServerTimestamp { get; private set; }
 
         [JsonProperty("guid")]
-        public string? ServerUuid { get; set; }
+        public string? ServerUuid { get; private set; }
+
+        public bool HasSource()
+        {
+            return SourceE164 != null || SourceUuid != null;
+        }
     }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

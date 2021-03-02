@@ -24,164 +24,173 @@ namespace libsignalservice.push {
     static SignalServiceReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "ChNTaWduYWxTZXJ2aWNlLnByb3RvEg1zaWduYWxzZXJ2aWNlIsMCCghFbnZl",
+            "ChNTaWduYWxTZXJ2aWNlLnByb3RvEg1zaWduYWxzZXJ2aWNlItsCCghFbnZl",
             "bG9wZRIqCgR0eXBlGAEgASgOMhwuc2lnbmFsc2VydmljZS5FbnZlbG9wZS5U",
-            "eXBlEg4KBnNvdXJjZRgCIAEoCRIUCgxzb3VyY2VEZXZpY2UYByABKA0SDQoF",
-            "cmVsYXkYAyABKAkSEQoJdGltZXN0YW1wGAUgASgEEhUKDWxlZ2FjeU1lc3Nh",
-            "Z2UYBiABKAwSDwoHY29udGVudBgIIAEoDBISCgpzZXJ2ZXJHdWlkGAkgASgJ",
-            "EhcKD3NlcnZlclRpbWVzdGFtcBgKIAEoBCJuCgRUeXBlEgsKB1VOS05PV04Q",
-            "ABIOCgpDSVBIRVJURVhUEAESEAoMS0VZX0VYQ0hBTkdFEAISEQoNUFJFS0VZ",
-            "X0JVTkRMRRADEgsKB1JFQ0VJUFQQBRIXChNVTklERU5USUZJRURfU0VOREVS",
-            "EAYiuQIKB0NvbnRlbnQSLwoLZGF0YU1lc3NhZ2UYASABKAsyGi5zaWduYWxz",
-            "ZXJ2aWNlLkRhdGFNZXNzYWdlEi8KC3N5bmNNZXNzYWdlGAIgASgLMhouc2ln",
-            "bmFsc2VydmljZS5TeW5jTWVzc2FnZRIvCgtjYWxsTWVzc2FnZRgDIAEoCzIa",
-            "LnNpZ25hbHNlcnZpY2UuQ2FsbE1lc3NhZ2USLwoLbnVsbE1lc3NhZ2UYBCAB",
-            "KAsyGi5zaWduYWxzZXJ2aWNlLk51bGxNZXNzYWdlEjUKDnJlY2VpcHRNZXNz",
-            "YWdlGAUgASgLMh0uc2lnbmFsc2VydmljZS5SZWNlaXB0TWVzc2FnZRIzCg10",
-            "eXBpbmdNZXNzYWdlGAYgASgLMhwuc2lnbmFsc2VydmljZS5UeXBpbmdNZXNz",
-            "YWdlItgDCgtDYWxsTWVzc2FnZRIvCgVvZmZlchgBIAEoCzIgLnNpZ25hbHNl",
-            "cnZpY2UuQ2FsbE1lc3NhZ2UuT2ZmZXISMQoGYW5zd2VyGAIgASgLMiEuc2ln",
-            "bmFsc2VydmljZS5DYWxsTWVzc2FnZS5BbnN3ZXISNwoJaWNlVXBkYXRlGAMg",
-            "AygLMiQuc2lnbmFsc2VydmljZS5DYWxsTWVzc2FnZS5JY2VVcGRhdGUSMQoG",
-            "aGFuZ3VwGAQgASgLMiEuc2lnbmFsc2VydmljZS5DYWxsTWVzc2FnZS5IYW5n",
-            "dXASLQoEYnVzeRgFIAEoCzIfLnNpZ25hbHNlcnZpY2UuQ2FsbE1lc3NhZ2Uu",
-            "QnVzeRooCgVPZmZlchIKCgJpZBgBIAEoBBITCgtkZXNjcmlwdGlvbhgCIAEo",
-            "CRopCgZBbnN3ZXISCgoCaWQYASABKAQSEwoLZGVzY3JpcHRpb24YAiABKAka",
-            "SwoJSWNlVXBkYXRlEgoKAmlkGAEgASgEEg4KBnNkcE1pZBgCIAEoCRIVCg1z",
-            "ZHBNTGluZUluZGV4GAMgASgNEgsKA3NkcBgEIAEoCRoSCgRCdXN5EgoKAmlk",
-            "GAEgASgEGhQKBkhhbmd1cBIKCgJpZBgBIAEoBCKAEQoLRGF0YU1lc3NhZ2US",
-            "DAoEYm9keRgBIAEoCRI1CgthdHRhY2htZW50cxgCIAMoCzIgLnNpZ25hbHNl",
-            "cnZpY2UuQXR0YWNobWVudFBvaW50ZXISKgoFZ3JvdXAYAyABKAsyGy5zaWdu",
-            "YWxzZXJ2aWNlLkdyb3VwQ29udGV4dBINCgVmbGFncxgEIAEoDRITCgtleHBp",
-            "cmVUaW1lchgFIAEoDRISCgpwcm9maWxlS2V5GAYgASgMEhEKCXRpbWVzdGFt",
-            "cBgHIAEoBBIvCgVxdW90ZRgIIAEoCzIgLnNpZ25hbHNlcnZpY2UuRGF0YU1l",
-            "c3NhZ2UuUXVvdGUSMwoHY29udGFjdBgJIAMoCzIiLnNpZ25hbHNlcnZpY2Uu",
-            "RGF0YU1lc3NhZ2UuQ29udGFjdBIzCgdwcmV2aWV3GAogAygLMiIuc2lnbmFs",
-            "c2VydmljZS5EYXRhTWVzc2FnZS5QcmV2aWV3EjMKB3N0aWNrZXIYCyABKAsy",
-            "Ii5zaWduYWxzZXJ2aWNlLkRhdGFNZXNzYWdlLlN0aWNrZXISHwoXcmVxdWly",
-            "ZWRQcm90b2NvbFZlcnNpb24YDCABKA0SEgoKaXNWaWV3T25jZRgOIAEoCBrp",
-            "AQoFUXVvdGUSCgoCaWQYASABKAQSDgoGYXV0aG9yGAIgASgJEgwKBHRleHQY",
-            "AyABKAkSRgoLYXR0YWNobWVudHMYBCADKAsyMS5zaWduYWxzZXJ2aWNlLkRh",
-            "dGFNZXNzYWdlLlF1b3RlLlF1b3RlZEF0dGFjaG1lbnQabgoQUXVvdGVkQXR0",
-            "YWNobWVudBITCgtjb250ZW50VHlwZRgBIAEoCRIQCghmaWxlTmFtZRgCIAEo",
-            "CRIzCgl0aHVtYm5haWwYAyABKAsyIC5zaWduYWxzZXJ2aWNlLkF0dGFjaG1l",
-            "bnRQb2ludGVyGsQICgdDb250YWN0EjUKBG5hbWUYASABKAsyJy5zaWduYWxz",
-            "ZXJ2aWNlLkRhdGFNZXNzYWdlLkNvbnRhY3QuTmFtZRI4CgZudW1iZXIYAyAD",
-            "KAsyKC5zaWduYWxzZXJ2aWNlLkRhdGFNZXNzYWdlLkNvbnRhY3QuUGhvbmUS",
-            "NwoFZW1haWwYBCADKAsyKC5zaWduYWxzZXJ2aWNlLkRhdGFNZXNzYWdlLkNv",
-            "bnRhY3QuRW1haWwSQQoHYWRkcmVzcxgFIAMoCzIwLnNpZ25hbHNlcnZpY2Uu",
-            "RGF0YU1lc3NhZ2UuQ29udGFjdC5Qb3N0YWxBZGRyZXNzEjkKBmF2YXRhchgG",
-            "IAEoCzIpLnNpZ25hbHNlcnZpY2UuRGF0YU1lc3NhZ2UuQ29udGFjdC5BdmF0",
-            "YXISFAoMb3JnYW5pemF0aW9uGAcgASgJGnYKBE5hbWUSEQoJZ2l2ZW5OYW1l",
-            "GAEgASgJEhIKCmZhbWlseU5hbWUYAiABKAkSDgoGcHJlZml4GAMgASgJEg4K",
-            "BnN1ZmZpeBgEIAEoCRISCgptaWRkbGVOYW1lGAUgASgJEhMKC2Rpc3BsYXlO",
-            "YW1lGAYgASgJGpYBCgVQaG9uZRINCgV2YWx1ZRgBIAEoCRI7CgR0eXBlGAIg",
-            "ASgOMi0uc2lnbmFsc2VydmljZS5EYXRhTWVzc2FnZS5Db250YWN0LlBob25l",
-            "LlR5cGUSDQoFbGFiZWwYAyABKAkiMgoEVHlwZRIICgRIT01FEAESCgoGTU9C",
-            "SUxFEAISCAoEV09SSxADEgoKBkNVU1RPTRAEGpYBCgVFbWFpbBINCgV2YWx1",
-            "ZRgBIAEoCRI7CgR0eXBlGAIgASgOMi0uc2lnbmFsc2VydmljZS5EYXRhTWVz",
-            "c2FnZS5Db250YWN0LkVtYWlsLlR5cGUSDQoFbGFiZWwYAyABKAkiMgoEVHlw",
-            "ZRIICgRIT01FEAESCgoGTU9CSUxFEAISCAoEV09SSxADEgoKBkNVU1RPTRAE",
-            "GoECCg1Qb3N0YWxBZGRyZXNzEkMKBHR5cGUYASABKA4yNS5zaWduYWxzZXJ2",
-            "aWNlLkRhdGFNZXNzYWdlLkNvbnRhY3QuUG9zdGFsQWRkcmVzcy5UeXBlEg0K",
-            "BWxhYmVsGAIgASgJEg4KBnN0cmVldBgDIAEoCRINCgVwb2JveBgEIAEoCRIU",
-            "CgxuZWlnaGJvcmhvb2QYBSABKAkSDAoEY2l0eRgGIAEoCRIOCgZyZWdpb24Y",
-            "ByABKAkSEAoIcG9zdGNvZGUYCCABKAkSDwoHY291bnRyeRgJIAEoCSImCgRU",
-            "eXBlEggKBEhPTUUQARIICgRXT1JLEAISCgoGQ1VTVE9NEAMaTQoGQXZhdGFy",
-            "EjAKBmF2YXRhchgBIAEoCzIgLnNpZ25hbHNlcnZpY2UuQXR0YWNobWVudFBv",
-            "aW50ZXISEQoJaXNQcm9maWxlGAIgASgIGlYKB1ByZXZpZXcSCwoDdXJsGAEg",
-            "ASgJEg0KBXRpdGxlGAIgASgJEi8KBWltYWdlGAMgASgLMiAuc2lnbmFsc2Vy",
-            "dmljZS5BdHRhY2htZW50UG9pbnRlchptCgdTdGlja2VyEg4KBnBhY2tJZBgB",
-            "IAEoDBIPCgdwYWNrS2V5GAIgASgMEhEKCXN0aWNrZXJJZBgDIAEoDRIuCgRk",
-            "YXRhGAQgASgLMiAuc2lnbmFsc2VydmljZS5BdHRhY2htZW50UG9pbnRlciJN",
-            "CgVGbGFncxIPCgtFTkRfU0VTU0lPThABEhsKF0VYUElSQVRJT05fVElNRVJf",
-            "VVBEQVRFEAISFgoSUFJPRklMRV9LRVlfVVBEQVRFEAQiZwoPUHJvdG9jb2xW",
-            "ZXJzaW9uEgsKB0lOSVRJQUwQABISCg5NRVNTQUdFX1RJTUVSUxABEg0KCVZJ",
-            "RVdfT05DRRACEhMKD1ZJRVdfT05DRV9WSURFTxADEgsKB0NVUlJFTlQQAxoC",
-            "EAEiHgoLTnVsbE1lc3NhZ2USDwoHcGFkZGluZxgBIAEoDCJ1Cg5SZWNlaXB0",
-            "TWVzc2FnZRIwCgR0eXBlGAEgASgOMiIuc2lnbmFsc2VydmljZS5SZWNlaXB0",
-            "TWVzc2FnZS5UeXBlEhEKCXRpbWVzdGFtcBgCIAMoBCIeCgRUeXBlEgwKCERF",
-            "TElWRVJZEAASCAoEUkVBRBABIowBCg1UeXBpbmdNZXNzYWdlEhEKCXRpbWVz",
-            "dGFtcBgBIAEoBBIzCgZhY3Rpb24YAiABKA4yIy5zaWduYWxzZXJ2aWNlLlR5",
-            "cGluZ01lc3NhZ2UuQWN0aW9uEg8KB2dyb3VwSWQYAyABKAwiIgoGQWN0aW9u",
-            "EgsKB1NUQVJURUQQABILCgdTVE9QUEVEEAEiqwEKCFZlcmlmaWVkEhMKC2Rl",
-            "c3RpbmF0aW9uGAEgASgJEhMKC2lkZW50aXR5S2V5GAIgASgMEiwKBXN0YXRl",
-            "GAMgASgOMh0uc2lnbmFsc2VydmljZS5WZXJpZmllZC5TdGF0ZRITCgtudWxs",
-            "TWVzc2FnZRgEIAEoDCIyCgVTdGF0ZRILCgdERUZBVUxUEAASDAoIVkVSSUZJ",
-            "RUQQARIOCgpVTlZFUklGSUVEEAIi2AwKC1N5bmNNZXNzYWdlEi0KBHNlbnQY",
-            "ASABKAsyHy5zaWduYWxzZXJ2aWNlLlN5bmNNZXNzYWdlLlNlbnQSNQoIY29u",
-            "dGFjdHMYAiABKAsyIy5zaWduYWxzZXJ2aWNlLlN5bmNNZXNzYWdlLkNvbnRh",
-            "Y3RzEjEKBmdyb3VwcxgDIAEoCzIhLnNpZ25hbHNlcnZpY2UuU3luY01lc3Nh",
-            "Z2UuR3JvdXBzEjMKB3JlcXVlc3QYBCABKAsyIi5zaWduYWxzZXJ2aWNlLlN5",
-            "bmNNZXNzYWdlLlJlcXVlc3QSLQoEcmVhZBgFIAMoCzIfLnNpZ25hbHNlcnZp",
-            "Y2UuU3luY01lc3NhZ2UuUmVhZBIzCgdibG9ja2VkGAYgASgLMiIuc2lnbmFs",
-            "c2VydmljZS5TeW5jTWVzc2FnZS5CbG9ja2VkEikKCHZlcmlmaWVkGAcgASgL",
-            "Mhcuc2lnbmFsc2VydmljZS5WZXJpZmllZBI/Cg1jb25maWd1cmF0aW9uGAkg",
-            "ASgLMiguc2lnbmFsc2VydmljZS5TeW5jTWVzc2FnZS5Db25maWd1cmF0aW9u",
-            "Eg8KB3BhZGRpbmcYCCABKAwSTQoUc3RpY2tlclBhY2tPcGVyYXRpb24YCiAD",
-            "KAsyLy5zaWduYWxzZXJ2aWNlLlN5bmNNZXNzYWdlLlN0aWNrZXJQYWNrT3Bl",
-            "cmF0aW9uEj0KDHZpZXdPbmNlT3BlbhgLIAEoCzInLnNpZ25hbHNlcnZpY2Uu",
-            "U3luY01lc3NhZ2UuVmlld09uY2VPcGVuGsACCgRTZW50EhMKC2Rlc3RpbmF0",
-            "aW9uGAEgASgJEhEKCXRpbWVzdGFtcBgCIAEoBBIrCgdtZXNzYWdlGAMgASgL",
-            "Mhouc2lnbmFsc2VydmljZS5EYXRhTWVzc2FnZRIgChhleHBpcmF0aW9uU3Rh",
-            "cnRUaW1lc3RhbXAYBCABKAQSVgoSdW5pZGVudGlmaWVkU3RhdHVzGAUgAygL",
-            "Mjouc2lnbmFsc2VydmljZS5TeW5jTWVzc2FnZS5TZW50LlVuaWRlbnRpZmll",
-            "ZERlbGl2ZXJ5U3RhdHVzEiAKEWlzUmVjaXBpZW50VXBkYXRlGAYgASgIOgVm",
-            "YWxzZRpHChpVbmlkZW50aWZpZWREZWxpdmVyeVN0YXR1cxITCgtkZXN0aW5h",
-            "dGlvbhgBIAEoCRIUCgx1bmlkZW50aWZpZWQYAiABKAgaUwoIQ29udGFjdHMS",
+            "eXBlEhIKCnNvdXJjZUUxNjQYAiABKAkSEgoKc291cmNlVXVpZBgLIAEoCRIU",
+            "Cgxzb3VyY2VEZXZpY2UYByABKA0SDQoFcmVsYXkYAyABKAkSEQoJdGltZXN0",
+            "YW1wGAUgASgEEhUKDWxlZ2FjeU1lc3NhZ2UYBiABKAwSDwoHY29udGVudBgI",
+            "IAEoDBISCgpzZXJ2ZXJHdWlkGAkgASgJEhcKD3NlcnZlclRpbWVzdGFtcBgK",
+            "IAEoBCJuCgRUeXBlEgsKB1VOS05PV04QABIOCgpDSVBIRVJURVhUEAESEAoM",
+            "S0VZX0VYQ0hBTkdFEAISEQoNUFJFS0VZX0JVTkRMRRADEgsKB1JFQ0VJUFQQ",
+            "BRIXChNVTklERU5USUZJRURfU0VOREVSEAYiuQIKB0NvbnRlbnQSLwoLZGF0",
+            "YU1lc3NhZ2UYASABKAsyGi5zaWduYWxzZXJ2aWNlLkRhdGFNZXNzYWdlEi8K",
+            "C3N5bmNNZXNzYWdlGAIgASgLMhouc2lnbmFsc2VydmljZS5TeW5jTWVzc2Fn",
+            "ZRIvCgtjYWxsTWVzc2FnZRgDIAEoCzIaLnNpZ25hbHNlcnZpY2UuQ2FsbE1l",
+            "c3NhZ2USLwoLbnVsbE1lc3NhZ2UYBCABKAsyGi5zaWduYWxzZXJ2aWNlLk51",
+            "bGxNZXNzYWdlEjUKDnJlY2VpcHRNZXNzYWdlGAUgASgLMh0uc2lnbmFsc2Vy",
+            "dmljZS5SZWNlaXB0TWVzc2FnZRIzCg10eXBpbmdNZXNzYWdlGAYgASgLMhwu",
+            "c2lnbmFsc2VydmljZS5UeXBpbmdNZXNzYWdlItgDCgtDYWxsTWVzc2FnZRIv",
+            "CgVvZmZlchgBIAEoCzIgLnNpZ25hbHNlcnZpY2UuQ2FsbE1lc3NhZ2UuT2Zm",
+            "ZXISMQoGYW5zd2VyGAIgASgLMiEuc2lnbmFsc2VydmljZS5DYWxsTWVzc2Fn",
+            "ZS5BbnN3ZXISNwoJaWNlVXBkYXRlGAMgAygLMiQuc2lnbmFsc2VydmljZS5D",
+            "YWxsTWVzc2FnZS5JY2VVcGRhdGUSMQoGaGFuZ3VwGAQgASgLMiEuc2lnbmFs",
+            "c2VydmljZS5DYWxsTWVzc2FnZS5IYW5ndXASLQoEYnVzeRgFIAEoCzIfLnNp",
+            "Z25hbHNlcnZpY2UuQ2FsbE1lc3NhZ2UuQnVzeRooCgVPZmZlchIKCgJpZBgB",
+            "IAEoBBITCgtkZXNjcmlwdGlvbhgCIAEoCRopCgZBbnN3ZXISCgoCaWQYASAB",
+            "KAQSEwoLZGVzY3JpcHRpb24YAiABKAkaSwoJSWNlVXBkYXRlEgoKAmlkGAEg",
+            "ASgEEg4KBnNkcE1pZBgCIAEoCRIVCg1zZHBNTGluZUluZGV4GAMgASgNEgsK",
+            "A3NkcBgEIAEoCRoSCgRCdXN5EgoKAmlkGAEgASgEGhQKBkhhbmd1cBIKCgJp",
+            "ZBgBIAEoBCKYEQoLRGF0YU1lc3NhZ2USDAoEYm9keRgBIAEoCRI1CgthdHRh",
+            "Y2htZW50cxgCIAMoCzIgLnNpZ25hbHNlcnZpY2UuQXR0YWNobWVudFBvaW50",
+            "ZXISKgoFZ3JvdXAYAyABKAsyGy5zaWduYWxzZXJ2aWNlLkdyb3VwQ29udGV4",
+            "dBINCgVmbGFncxgEIAEoDRITCgtleHBpcmVUaW1lchgFIAEoDRISCgpwcm9m",
+            "aWxlS2V5GAYgASgMEhEKCXRpbWVzdGFtcBgHIAEoBBIvCgVxdW90ZRgIIAEo",
+            "CzIgLnNpZ25hbHNlcnZpY2UuRGF0YU1lc3NhZ2UuUXVvdGUSMwoHY29udGFj",
+            "dBgJIAMoCzIiLnNpZ25hbHNlcnZpY2UuRGF0YU1lc3NhZ2UuQ29udGFjdBIz",
+            "CgdwcmV2aWV3GAogAygLMiIuc2lnbmFsc2VydmljZS5EYXRhTWVzc2FnZS5Q",
+            "cmV2aWV3EjMKB3N0aWNrZXIYCyABKAsyIi5zaWduYWxzZXJ2aWNlLkRhdGFN",
+            "ZXNzYWdlLlN0aWNrZXISHwoXcmVxdWlyZWRQcm90b2NvbFZlcnNpb24YDCAB",
+            "KA0SEgoKaXNWaWV3T25jZRgOIAEoCBqBAgoFUXVvdGUSCgoCaWQYASABKAQS",
+            "EgoKYXV0aG9yRTE2NBgCIAEoCRISCgphdXRob3JVdWlkGAUgASgJEgwKBHRl",
+            "eHQYAyABKAkSRgoLYXR0YWNobWVudHMYBCADKAsyMS5zaWduYWxzZXJ2aWNl",
+            "LkRhdGFNZXNzYWdlLlF1b3RlLlF1b3RlZEF0dGFjaG1lbnQabgoQUXVvdGVk",
+            "QXR0YWNobWVudBITCgtjb250ZW50VHlwZRgBIAEoCRIQCghmaWxlTmFtZRgC",
+            "IAEoCRIzCgl0aHVtYm5haWwYAyABKAsyIC5zaWduYWxzZXJ2aWNlLkF0dGFj",
+            "aG1lbnRQb2ludGVyGsQICgdDb250YWN0EjUKBG5hbWUYASABKAsyJy5zaWdu",
+            "YWxzZXJ2aWNlLkRhdGFNZXNzYWdlLkNvbnRhY3QuTmFtZRI4CgZudW1iZXIY",
+            "AyADKAsyKC5zaWduYWxzZXJ2aWNlLkRhdGFNZXNzYWdlLkNvbnRhY3QuUGhv",
+            "bmUSNwoFZW1haWwYBCADKAsyKC5zaWduYWxzZXJ2aWNlLkRhdGFNZXNzYWdl",
+            "LkNvbnRhY3QuRW1haWwSQQoHYWRkcmVzcxgFIAMoCzIwLnNpZ25hbHNlcnZp",
+            "Y2UuRGF0YU1lc3NhZ2UuQ29udGFjdC5Qb3N0YWxBZGRyZXNzEjkKBmF2YXRh",
+            "chgGIAEoCzIpLnNpZ25hbHNlcnZpY2UuRGF0YU1lc3NhZ2UuQ29udGFjdC5B",
+            "dmF0YXISFAoMb3JnYW5pemF0aW9uGAcgASgJGnYKBE5hbWUSEQoJZ2l2ZW5O",
+            "YW1lGAEgASgJEhIKCmZhbWlseU5hbWUYAiABKAkSDgoGcHJlZml4GAMgASgJ",
+            "Eg4KBnN1ZmZpeBgEIAEoCRISCgptaWRkbGVOYW1lGAUgASgJEhMKC2Rpc3Bs",
+            "YXlOYW1lGAYgASgJGpYBCgVQaG9uZRINCgV2YWx1ZRgBIAEoCRI7CgR0eXBl",
+            "GAIgASgOMi0uc2lnbmFsc2VydmljZS5EYXRhTWVzc2FnZS5Db250YWN0LlBo",
+            "b25lLlR5cGUSDQoFbGFiZWwYAyABKAkiMgoEVHlwZRIICgRIT01FEAESCgoG",
+            "TU9CSUxFEAISCAoEV09SSxADEgoKBkNVU1RPTRAEGpYBCgVFbWFpbBINCgV2",
+            "YWx1ZRgBIAEoCRI7CgR0eXBlGAIgASgOMi0uc2lnbmFsc2VydmljZS5EYXRh",
+            "TWVzc2FnZS5Db250YWN0LkVtYWlsLlR5cGUSDQoFbGFiZWwYAyABKAkiMgoE",
+            "VHlwZRIICgRIT01FEAESCgoGTU9CSUxFEAISCAoEV09SSxADEgoKBkNVU1RP",
+            "TRAEGoECCg1Qb3N0YWxBZGRyZXNzEkMKBHR5cGUYASABKA4yNS5zaWduYWxz",
+            "ZXJ2aWNlLkRhdGFNZXNzYWdlLkNvbnRhY3QuUG9zdGFsQWRkcmVzcy5UeXBl",
+            "Eg0KBWxhYmVsGAIgASgJEg4KBnN0cmVldBgDIAEoCRINCgVwb2JveBgEIAEo",
+            "CRIUCgxuZWlnaGJvcmhvb2QYBSABKAkSDAoEY2l0eRgGIAEoCRIOCgZyZWdp",
+            "b24YByABKAkSEAoIcG9zdGNvZGUYCCABKAkSDwoHY291bnRyeRgJIAEoCSIm",
+            "CgRUeXBlEggKBEhPTUUQARIICgRXT1JLEAISCgoGQ1VTVE9NEAMaTQoGQXZh",
+            "dGFyEjAKBmF2YXRhchgBIAEoCzIgLnNpZ25hbHNlcnZpY2UuQXR0YWNobWVu",
+            "dFBvaW50ZXISEQoJaXNQcm9maWxlGAIgASgIGlYKB1ByZXZpZXcSCwoDdXJs",
+            "GAEgASgJEg0KBXRpdGxlGAIgASgJEi8KBWltYWdlGAMgASgLMiAuc2lnbmFs",
+            "c2VydmljZS5BdHRhY2htZW50UG9pbnRlchptCgdTdGlja2VyEg4KBnBhY2tJ",
+            "ZBgBIAEoDBIPCgdwYWNrS2V5GAIgASgMEhEKCXN0aWNrZXJJZBgDIAEoDRIu",
+            "CgRkYXRhGAQgASgLMiAuc2lnbmFsc2VydmljZS5BdHRhY2htZW50UG9pbnRl",
+            "ciJNCgVGbGFncxIPCgtFTkRfU0VTU0lPThABEhsKF0VYUElSQVRJT05fVElN",
+            "RVJfVVBEQVRFEAISFgoSUFJPRklMRV9LRVlfVVBEQVRFEAQiZwoPUHJvdG9j",
+            "b2xWZXJzaW9uEgsKB0lOSVRJQUwQABISCg5NRVNTQUdFX1RJTUVSUxABEg0K",
+            "CVZJRVdfT05DRRACEhMKD1ZJRVdfT05DRV9WSURFTxADEgsKB0NVUlJFTlQQ",
+            "AxoCEAEiHgoLTnVsbE1lc3NhZ2USDwoHcGFkZGluZxgBIAEoDCJ1Cg5SZWNl",
+            "aXB0TWVzc2FnZRIwCgR0eXBlGAEgASgOMiIuc2lnbmFsc2VydmljZS5SZWNl",
+            "aXB0TWVzc2FnZS5UeXBlEhEKCXRpbWVzdGFtcBgCIAMoBCIeCgRUeXBlEgwK",
+            "CERFTElWRVJZEAASCAoEUkVBRBABIowBCg1UeXBpbmdNZXNzYWdlEhEKCXRp",
+            "bWVzdGFtcBgBIAEoBBIzCgZhY3Rpb24YAiABKA4yIy5zaWduYWxzZXJ2aWNl",
+            "LlR5cGluZ01lc3NhZ2UuQWN0aW9uEg8KB2dyb3VwSWQYAyABKAwiIgoGQWN0",
+            "aW9uEgsKB1NUQVJURUQQABILCgdTVE9QUEVEEAEiyAEKCFZlcmlmaWVkEhcK",
+            "D2Rlc3RpbmF0aW9uRTE2NBgBIAEoCRIXCg9kZXN0aW5hdGlvblV1aWQYBSAB",
+            "KAkSEwoLaWRlbnRpdHlLZXkYAiABKAwSLAoFc3RhdGUYAyABKA4yHS5zaWdu",
+            "YWxzZXJ2aWNlLlZlcmlmaWVkLlN0YXRlEhMKC251bGxNZXNzYWdlGAQgASgM",
+            "IjIKBVN0YXRlEgsKB0RFRkFVTFQQABIMCghWRVJJRklFRBABEg4KClVOVkVS",
+            "SUZJRUQQAiLRDQoLU3luY01lc3NhZ2USLQoEc2VudBgBIAEoCzIfLnNpZ25h",
+            "bHNlcnZpY2UuU3luY01lc3NhZ2UuU2VudBI1Cghjb250YWN0cxgCIAEoCzIj",
+            "LnNpZ25hbHNlcnZpY2UuU3luY01lc3NhZ2UuQ29udGFjdHMSMQoGZ3JvdXBz",
+            "GAMgASgLMiEuc2lnbmFsc2VydmljZS5TeW5jTWVzc2FnZS5Hcm91cHMSMwoH",
+            "cmVxdWVzdBgEIAEoCzIiLnNpZ25hbHNlcnZpY2UuU3luY01lc3NhZ2UuUmVx",
+            "dWVzdBItCgRyZWFkGAUgAygLMh8uc2lnbmFsc2VydmljZS5TeW5jTWVzc2Fn",
+            "ZS5SZWFkEjMKB2Jsb2NrZWQYBiABKAsyIi5zaWduYWxzZXJ2aWNlLlN5bmNN",
+            "ZXNzYWdlLkJsb2NrZWQSKQoIdmVyaWZpZWQYByABKAsyFy5zaWduYWxzZXJ2",
+            "aWNlLlZlcmlmaWVkEj8KDWNvbmZpZ3VyYXRpb24YCSABKAsyKC5zaWduYWxz",
+            "ZXJ2aWNlLlN5bmNNZXNzYWdlLkNvbmZpZ3VyYXRpb24SDwoHcGFkZGluZxgI",
+            "IAEoDBJNChRzdGlja2VyUGFja09wZXJhdGlvbhgKIAMoCzIvLnNpZ25hbHNl",
+            "cnZpY2UuU3luY01lc3NhZ2UuU3RpY2tlclBhY2tPcGVyYXRpb24SPQoMdmll",
+            "d09uY2VPcGVuGAsgASgLMicuc2lnbmFsc2VydmljZS5TeW5jTWVzc2FnZS5W",
+            "aWV3T25jZU9wZW4a+gIKBFNlbnQSFwoPZGVzdGluYXRpb25FMTY0GAEgASgJ",
+            "EhcKD2Rlc3RpbmF0aW9uVXVpZBgHIAEoCRIRCgl0aW1lc3RhbXAYAiABKAQS",
+            "KwoHbWVzc2FnZRgDIAEoCzIaLnNpZ25hbHNlcnZpY2UuRGF0YU1lc3NhZ2US",
+            "IAoYZXhwaXJhdGlvblN0YXJ0VGltZXN0YW1wGAQgASgEElYKEnVuaWRlbnRp",
+            "ZmllZFN0YXR1cxgFIAMoCzI6LnNpZ25hbHNlcnZpY2UuU3luY01lc3NhZ2Uu",
+            "U2VudC5VbmlkZW50aWZpZWREZWxpdmVyeVN0YXR1cxIgChFpc1JlY2lwaWVu",
+            "dFVwZGF0ZRgGIAEoCDoFZmFsc2UaZAoaVW5pZGVudGlmaWVkRGVsaXZlcnlT",
+            "dGF0dXMSFwoPZGVzdGluYXRpb25FMTY0GAEgASgJEhcKD2Rlc3RpbmF0aW9u",
+            "VXVpZBgDIAEoCRIUCgx1bmlkZW50aWZpZWQYAiABKAgaUwoIQ29udGFjdHMS",
             "LgoEYmxvYhgBIAEoCzIgLnNpZ25hbHNlcnZpY2UuQXR0YWNobWVudFBvaW50",
             "ZXISFwoIY29tcGxldGUYAiABKAg6BWZhbHNlGjgKBkdyb3VwcxIuCgRibG9i",
-            "GAEgASgLMiAuc2lnbmFsc2VydmljZS5BdHRhY2htZW50UG9pbnRlchosCgdC",
-            "bG9ja2VkEg8KB251bWJlcnMYASADKAkSEAoIZ3JvdXBJZHMYAiADKAwajwEK",
-            "B1JlcXVlc3QSNQoEdHlwZRgBIAEoDjInLnNpZ25hbHNlcnZpY2UuU3luY01l",
-            "c3NhZ2UuUmVxdWVzdC5UeXBlIk0KBFR5cGUSCwoHVU5LTk9XThAAEgwKCENP",
-            "TlRBQ1RTEAESCgoGR1JPVVBTEAISCwoHQkxPQ0tFRBADEhEKDUNPTkZJR1VS",
-            "QVRJT04QBBopCgRSZWFkEg4KBnNlbmRlchgBIAEoCRIRCgl0aW1lc3RhbXAY",
-            "AiABKAQafQoNQ29uZmlndXJhdGlvbhIUCgxyZWFkUmVjZWlwdHMYASABKAgS",
-            "JgoedW5pZGVudGlmaWVkRGVsaXZlcnlJbmRpY2F0b3JzGAIgASgIEhgKEHR5",
-            "cGluZ0luZGljYXRvcnMYAyABKAgSFAoMbGlua1ByZXZpZXdzGAQgASgIGpwB",
-            "ChRTdGlja2VyUGFja09wZXJhdGlvbhIOCgZwYWNrSWQYASABKAwSDwoHcGFj",
-            "a0tleRgCIAEoDBJCCgR0eXBlGAMgASgOMjQuc2lnbmFsc2VydmljZS5TeW5j",
-            "TWVzc2FnZS5TdGlja2VyUGFja09wZXJhdGlvbi5UeXBlIh8KBFR5cGUSCwoH",
-            "SU5TVEFMTBAAEgoKBlJFTU9WRRABGjEKDFZpZXdPbmNlT3BlbhIOCgZzZW5k",
-            "ZXIYASABKAkSEQoJdGltZXN0YW1wGAIgASgEIs0CChFBdHRhY2htZW50UG9p",
-            "bnRlchIPCgVjZG5JZBgBIAEoBkgAEhAKBmNkbktleRgPIAEoCUgAEhMKC2Nv",
-            "bnRlbnRUeXBlGAIgASgJEgsKA2tleRgDIAEoDBIMCgRzaXplGAQgASgNEhEK",
-            "CXRodW1ibmFpbBgFIAEoDBIOCgZkaWdlc3QYBiABKAwSEAoIZmlsZU5hbWUY",
-            "ByABKAkSDQoFZmxhZ3MYCCABKA0SDQoFd2lkdGgYCSABKA0SDgoGaGVpZ2h0",
-            "GAogASgNEg8KB2NhcHRpb24YCyABKAkSEAoIYmx1ckhhc2gYDCABKAkSFwoP",
-            "dXBsb2FkVGltZXN0YW1wGA0gASgEEhEKCWNkbk51bWJlchgOIAEoDSIaCgVG",
-            "bGFncxIRCg1WT0lDRV9NRVNTQUdFEAFCFwoVYXR0YWNobWVudF9pZGVudGlm",
-            "aWVyIuUBCgxHcm91cENvbnRleHQSCgoCaWQYASABKAwSLgoEdHlwZRgCIAEo",
-            "DjIgLnNpZ25hbHNlcnZpY2UuR3JvdXBDb250ZXh0LlR5cGUSDAoEbmFtZRgD",
-            "IAEoCRIPCgdtZW1iZXJzGAQgAygJEjAKBmF2YXRhchgFIAEoCzIgLnNpZ25h",
-            "bHNlcnZpY2UuQXR0YWNobWVudFBvaW50ZXIiSAoEVHlwZRILCgdVTktOT1dO",
-            "EAASCgoGVVBEQVRFEAESCwoHREVMSVZFUhACEggKBFFVSVQQAxIQCgxSRVFV",
-            "RVNUX0lORk8QBCKHAgoOQ29udGFjdERldGFpbHMSDgoGbnVtYmVyGAEgASgJ",
-            "EgwKBG5hbWUYAiABKAkSNAoGYXZhdGFyGAMgASgLMiQuc2lnbmFsc2Vydmlj",
-            "ZS5Db250YWN0RGV0YWlscy5BdmF0YXISDQoFY29sb3IYBCABKAkSKQoIdmVy",
-            "aWZpZWQYBSABKAsyFy5zaWduYWxzZXJ2aWNlLlZlcmlmaWVkEhIKCnByb2Zp",
-            "bGVLZXkYBiABKAwSDwoHYmxvY2tlZBgHIAEoCBITCgtleHBpcmVUaW1lchgI",
-            "IAEoDRotCgZBdmF0YXISEwoLY29udGVudFR5cGUYASABKAkSDgoGbGVuZ3Ro",
-            "GAIgASgNIucBCgxHcm91cERldGFpbHMSCgoCaWQYASABKAwSDAoEbmFtZRgC",
-            "IAEoCRIPCgdtZW1iZXJzGAMgAygJEjIKBmF2YXRhchgEIAEoCzIiLnNpZ25h",
-            "bHNlcnZpY2UuR3JvdXBEZXRhaWxzLkF2YXRhchIUCgZhY3RpdmUYBSABKAg6",
-            "BHRydWUSEwoLZXhwaXJlVGltZXIYBiABKA0SDQoFY29sb3IYByABKAkSDwoH",
-            "YmxvY2tlZBgIIAEoCBotCgZBdmF0YXISEwoLY29udGVudFR5cGUYASABKAkS",
-            "DgoGbGVuZ3RoGAIgASgNQloKK29yZy53aGlzcGVyc3lzdGVtcy50ZXh0c2Vj",
-            "dXJlLmludGVybmFsLnB1c2hCE1NpZ25hbFNlcnZpY2VQcm90b3OqAhVsaWJz",
-            "aWduYWxzZXJ2aWNlLnB1c2g="));
+            "GAEgASgLMiAuc2lnbmFsc2VydmljZS5BdHRhY2htZW50UG9pbnRlcho7CgdC",
+            "bG9ja2VkEg8KB251bWJlcnMYASADKAkSDQoFdXVpZHMYAyADKAkSEAoIZ3Jv",
+            "dXBJZHMYAiADKAwajwEKB1JlcXVlc3QSNQoEdHlwZRgBIAEoDjInLnNpZ25h",
+            "bHNlcnZpY2UuU3luY01lc3NhZ2UuUmVxdWVzdC5UeXBlIk0KBFR5cGUSCwoH",
+            "VU5LTk9XThAAEgwKCENPTlRBQ1RTEAESCgoGR1JPVVBTEAISCwoHQkxPQ0tF",
+            "RBADEhEKDUNPTkZJR1VSQVRJT04QBBpBCgRSZWFkEhIKCnNlbmRlckUxNjQY",
+            "ASABKAkSEgoKc2VuZGVyVXVpZBgDIAEoCRIRCgl0aW1lc3RhbXAYAiABKAQa",
+            "fQoNQ29uZmlndXJhdGlvbhIUCgxyZWFkUmVjZWlwdHMYASABKAgSJgoedW5p",
+            "ZGVudGlmaWVkRGVsaXZlcnlJbmRpY2F0b3JzGAIgASgIEhgKEHR5cGluZ0lu",
+            "ZGljYXRvcnMYAyABKAgSFAoMbGlua1ByZXZpZXdzGAQgASgIGpwBChRTdGlj",
+            "a2VyUGFja09wZXJhdGlvbhIOCgZwYWNrSWQYASABKAwSDwoHcGFja0tleRgC",
+            "IAEoDBJCCgR0eXBlGAMgASgOMjQuc2lnbmFsc2VydmljZS5TeW5jTWVzc2Fn",
+            "ZS5TdGlja2VyUGFja09wZXJhdGlvbi5UeXBlIh8KBFR5cGUSCwoHSU5TVEFM",
+            "TBAAEgoKBlJFTU9WRRABGkkKDFZpZXdPbmNlT3BlbhISCgpzZW5kZXJFMTY0",
+            "GAEgASgJEhIKCnNlbmRlclV1aWQYAyABKAkSEQoJdGltZXN0YW1wGAIgASgE",
+            "Is0CChFBdHRhY2htZW50UG9pbnRlchIPCgVjZG5JZBgBIAEoBkgAEhAKBmNk",
+            "bktleRgPIAEoCUgAEhMKC2NvbnRlbnRUeXBlGAIgASgJEgsKA2tleRgDIAEo",
+            "DBIMCgRzaXplGAQgASgNEhEKCXRodW1ibmFpbBgFIAEoDBIOCgZkaWdlc3QY",
+            "BiABKAwSEAoIZmlsZU5hbWUYByABKAkSDQoFZmxhZ3MYCCABKA0SDQoFd2lk",
+            "dGgYCSABKA0SDgoGaGVpZ2h0GAogASgNEg8KB2NhcHRpb24YCyABKAkSEAoI",
+            "Ymx1ckhhc2gYDCABKAkSFwoPdXBsb2FkVGltZXN0YW1wGA0gASgEEhEKCWNk",
+            "bk51bWJlchgOIAEoDSIaCgVGbGFncxIRCg1WT0lDRV9NRVNTQUdFEAFCFwoV",
+            "YXR0YWNobWVudF9pZGVudGlmaWVyIsQCCgxHcm91cENvbnRleHQSCgoCaWQY",
+            "ASABKAwSLgoEdHlwZRgCIAEoDjIgLnNpZ25hbHNlcnZpY2UuR3JvdXBDb250",
+            "ZXh0LlR5cGUSDAoEbmFtZRgDIAEoCRITCgttZW1iZXJzRTE2NBgEIAMoCRIz",
+            "CgdtZW1iZXJzGAYgAygLMiIuc2lnbmFsc2VydmljZS5Hcm91cENvbnRleHQu",
+            "TWVtYmVyEjAKBmF2YXRhchgFIAEoCzIgLnNpZ25hbHNlcnZpY2UuQXR0YWNo",
+            "bWVudFBvaW50ZXIaJAoGTWVtYmVyEgwKBHV1aWQYASABKAkSDAoEZTE2NBgC",
+            "IAEoCSJICgRUeXBlEgsKB1VOS05PV04QABIKCgZVUERBVEUQARILCgdERUxJ",
+            "VkVSEAISCAoEUVVJVBADEhAKDFJFUVVFU1RfSU5GTxAEIpUCCg5Db250YWN0",
+            "RGV0YWlscxIOCgZudW1iZXIYASABKAkSDAoEdXVpZBgJIAEoCRIMCgRuYW1l",
+            "GAIgASgJEjQKBmF2YXRhchgDIAEoCzIkLnNpZ25hbHNlcnZpY2UuQ29udGFj",
+            "dERldGFpbHMuQXZhdGFyEg0KBWNvbG9yGAQgASgJEikKCHZlcmlmaWVkGAUg",
+            "ASgLMhcuc2lnbmFsc2VydmljZS5WZXJpZmllZBISCgpwcm9maWxlS2V5GAYg",
+            "ASgMEg8KB2Jsb2NrZWQYByABKAgSEwoLZXhwaXJlVGltZXIYCCABKA0aLQoG",
+            "QXZhdGFyEhMKC2NvbnRlbnRUeXBlGAEgASgJEg4KBmxlbmd0aBgCIAEoDSLG",
+            "AgoMR3JvdXBEZXRhaWxzEgoKAmlkGAEgASgMEgwKBG5hbWUYAiABKAkSEwoL",
+            "bWVtYmVyc0UxNjQYAyADKAkSMwoHbWVtYmVycxgJIAMoCzIiLnNpZ25hbHNl",
+            "cnZpY2UuR3JvdXBEZXRhaWxzLk1lbWJlchIyCgZhdmF0YXIYBCABKAsyIi5z",
+            "aWduYWxzZXJ2aWNlLkdyb3VwRGV0YWlscy5BdmF0YXISFAoGYWN0aXZlGAUg",
+            "ASgIOgR0cnVlEhMKC2V4cGlyZVRpbWVyGAYgASgNEg0KBWNvbG9yGAcgASgJ",
+            "Eg8KB2Jsb2NrZWQYCCABKAgaLQoGQXZhdGFyEhMKC2NvbnRlbnRUeXBlGAEg",
+            "ASgJEg4KBmxlbmd0aBgCIAEoDRokCgZNZW1iZXISDAoEdXVpZBgBIAEoCRIM",
+            "CgRlMTY0GAIgASgJQloKK29yZy53aGlzcGVyc3lzdGVtcy50ZXh0c2VjdXJl",
+            "LmludGVybmFsLnB1c2hCE1NpZ25hbFNlcnZpY2VQcm90b3OqAhVsaWJzaWdu",
+            "YWxzZXJ2aWNlLnB1c2g="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.Envelope), global::libsignalservice.push.Envelope.Parser, new[]{ "Type", "Source", "SourceDevice", "Relay", "Timestamp", "LegacyMessage", "Content", "ServerGuid", "ServerTimestamp" }, null, new[]{ typeof(global::libsignalservice.push.Envelope.Types.Type) }, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.Envelope), global::libsignalservice.push.Envelope.Parser, new[]{ "Type", "SourceE164", "SourceUuid", "SourceDevice", "Relay", "Timestamp", "LegacyMessage", "Content", "ServerGuid", "ServerTimestamp" }, null, new[]{ typeof(global::libsignalservice.push.Envelope.Types.Type) }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.Content), global::libsignalservice.push.Content.Parser, new[]{ "DataMessage", "SyncMessage", "CallMessage", "NullMessage", "ReceiptMessage", "TypingMessage" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.CallMessage), global::libsignalservice.push.CallMessage.Parser, new[]{ "Offer", "Answer", "IceUpdate", "Hangup", "Busy" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.CallMessage.Types.Offer), global::libsignalservice.push.CallMessage.Types.Offer.Parser, new[]{ "Id", "Description" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.CallMessage.Types.Answer), global::libsignalservice.push.CallMessage.Types.Answer.Parser, new[]{ "Id", "Description" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.CallMessage.Types.IceUpdate), global::libsignalservice.push.CallMessage.Types.IceUpdate.Parser, new[]{ "Id", "SdpMid", "SdpMLineIndex", "Sdp" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.CallMessage.Types.Busy), global::libsignalservice.push.CallMessage.Types.Busy.Parser, new[]{ "Id" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.CallMessage.Types.Hangup), global::libsignalservice.push.CallMessage.Types.Hangup.Parser, new[]{ "Id" }, null, null, null, null)}),
-            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.DataMessage), global::libsignalservice.push.DataMessage.Parser, new[]{ "Body", "Attachments", "Group", "Flags", "ExpireTimer", "ProfileKey", "Timestamp", "Quote", "Contact", "Preview", "Sticker", "RequiredProtocolVersion", "IsViewOnce" }, null, new[]{ typeof(global::libsignalservice.push.DataMessage.Types.Flags), typeof(global::libsignalservice.push.DataMessage.Types.ProtocolVersion) }, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.DataMessage.Types.Quote), global::libsignalservice.push.DataMessage.Types.Quote.Parser, new[]{ "Id", "Author", "Text", "Attachments" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.DataMessage.Types.Quote.Types.QuotedAttachment), global::libsignalservice.push.DataMessage.Types.Quote.Types.QuotedAttachment.Parser, new[]{ "ContentType", "FileName", "Thumbnail" }, null, null, null, null)}),
+            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.DataMessage), global::libsignalservice.push.DataMessage.Parser, new[]{ "Body", "Attachments", "Group", "Flags", "ExpireTimer", "ProfileKey", "Timestamp", "Quote", "Contact", "Preview", "Sticker", "RequiredProtocolVersion", "IsViewOnce" }, null, new[]{ typeof(global::libsignalservice.push.DataMessage.Types.Flags), typeof(global::libsignalservice.push.DataMessage.Types.ProtocolVersion) }, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.DataMessage.Types.Quote), global::libsignalservice.push.DataMessage.Types.Quote.Parser, new[]{ "Id", "AuthorE164", "AuthorUuid", "Text", "Attachments" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.DataMessage.Types.Quote.Types.QuotedAttachment), global::libsignalservice.push.DataMessage.Types.Quote.Types.QuotedAttachment.Parser, new[]{ "ContentType", "FileName", "Thumbnail" }, null, null, null, null)}),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.DataMessage.Types.Contact), global::libsignalservice.push.DataMessage.Types.Contact.Parser, new[]{ "Name", "Number", "Email", "Address", "Avatar", "Organization" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.DataMessage.Types.Contact.Types.Name), global::libsignalservice.push.DataMessage.Types.Contact.Types.Name.Parser, new[]{ "GivenName", "FamilyName", "Prefix", "Suffix", "MiddleName", "DisplayName" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.DataMessage.Types.Contact.Types.Phone), global::libsignalservice.push.DataMessage.Types.Contact.Types.Phone.Parser, new[]{ "Value", "Type", "Label" }, null, new[]{ typeof(global::libsignalservice.push.DataMessage.Types.Contact.Types.Phone.Types.Type) }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.DataMessage.Types.Contact.Types.Email), global::libsignalservice.push.DataMessage.Types.Contact.Types.Email.Parser, new[]{ "Value", "Type", "Label" }, null, new[]{ typeof(global::libsignalservice.push.DataMessage.Types.Contact.Types.Email.Types.Type) }, null, null),
@@ -192,20 +201,21 @@ namespace libsignalservice.push {
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.NullMessage), global::libsignalservice.push.NullMessage.Parser, new[]{ "Padding" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.ReceiptMessage), global::libsignalservice.push.ReceiptMessage.Parser, new[]{ "Type", "Timestamp" }, null, new[]{ typeof(global::libsignalservice.push.ReceiptMessage.Types.Type) }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.TypingMessage), global::libsignalservice.push.TypingMessage.Parser, new[]{ "Timestamp", "Action", "GroupId" }, null, new[]{ typeof(global::libsignalservice.push.TypingMessage.Types.Action) }, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.Verified), global::libsignalservice.push.Verified.Parser, new[]{ "Destination", "IdentityKey", "State", "NullMessage" }, null, new[]{ typeof(global::libsignalservice.push.Verified.Types.State) }, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage), global::libsignalservice.push.SyncMessage.Parser, new[]{ "Sent", "Contacts", "Groups", "Request", "Read", "Blocked", "Verified", "Configuration", "Padding", "StickerPackOperation", "ViewOnceOpen" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Sent), global::libsignalservice.push.SyncMessage.Types.Sent.Parser, new[]{ "Destination", "Timestamp", "Message", "ExpirationStartTimestamp", "UnidentifiedStatus", "IsRecipientUpdate" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Sent.Types.UnidentifiedDeliveryStatus), global::libsignalservice.push.SyncMessage.Types.Sent.Types.UnidentifiedDeliveryStatus.Parser, new[]{ "Destination", "Unidentified" }, null, null, null, null)}),
+            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.Verified), global::libsignalservice.push.Verified.Parser, new[]{ "DestinationE164", "DestinationUuid", "IdentityKey", "State", "NullMessage" }, null, new[]{ typeof(global::libsignalservice.push.Verified.Types.State) }, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage), global::libsignalservice.push.SyncMessage.Parser, new[]{ "Sent", "Contacts", "Groups", "Request", "Read", "Blocked", "Verified", "Configuration", "Padding", "StickerPackOperation", "ViewOnceOpen" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Sent), global::libsignalservice.push.SyncMessage.Types.Sent.Parser, new[]{ "DestinationE164", "DestinationUuid", "Timestamp", "Message", "ExpirationStartTimestamp", "UnidentifiedStatus", "IsRecipientUpdate" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Sent.Types.UnidentifiedDeliveryStatus), global::libsignalservice.push.SyncMessage.Types.Sent.Types.UnidentifiedDeliveryStatus.Parser, new[]{ "DestinationE164", "DestinationUuid", "Unidentified" }, null, null, null, null)}),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Contacts), global::libsignalservice.push.SyncMessage.Types.Contacts.Parser, new[]{ "Blob", "Complete" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Groups), global::libsignalservice.push.SyncMessage.Types.Groups.Parser, new[]{ "Blob" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Blocked), global::libsignalservice.push.SyncMessage.Types.Blocked.Parser, new[]{ "Numbers", "GroupIds" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Blocked), global::libsignalservice.push.SyncMessage.Types.Blocked.Parser, new[]{ "Numbers", "Uuids", "GroupIds" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Request), global::libsignalservice.push.SyncMessage.Types.Request.Parser, new[]{ "Type" }, null, new[]{ typeof(global::libsignalservice.push.SyncMessage.Types.Request.Types.Type) }, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Read), global::libsignalservice.push.SyncMessage.Types.Read.Parser, new[]{ "Sender", "Timestamp" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Read), global::libsignalservice.push.SyncMessage.Types.Read.Parser, new[]{ "SenderE164", "SenderUuid", "Timestamp" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.Configuration), global::libsignalservice.push.SyncMessage.Types.Configuration.Parser, new[]{ "ReadReceipts", "UnidentifiedDeliveryIndicators", "TypingIndicators", "LinkPreviews" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.StickerPackOperation), global::libsignalservice.push.SyncMessage.Types.StickerPackOperation.Parser, new[]{ "PackId", "PackKey", "Type" }, null, new[]{ typeof(global::libsignalservice.push.SyncMessage.Types.StickerPackOperation.Types.Type) }, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.ViewOnceOpen), global::libsignalservice.push.SyncMessage.Types.ViewOnceOpen.Parser, new[]{ "Sender", "Timestamp" }, null, null, null, null)}),
+            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.SyncMessage.Types.ViewOnceOpen), global::libsignalservice.push.SyncMessage.Types.ViewOnceOpen.Parser, new[]{ "SenderE164", "SenderUuid", "Timestamp" }, null, null, null, null)}),
             new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.AttachmentPointer), global::libsignalservice.push.AttachmentPointer.Parser, new[]{ "CdnId", "CdnKey", "ContentType", "Key", "Size", "Thumbnail", "Digest", "FileName", "Flags", "Width", "Height", "Caption", "BlurHash", "UploadTimestamp", "CdnNumber" }, new[]{ "AttachmentIdentifier" }, new[]{ typeof(global::libsignalservice.push.AttachmentPointer.Types.Flags) }, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.GroupContext), global::libsignalservice.push.GroupContext.Parser, new[]{ "Id", "Type", "Name", "Members", "Avatar" }, null, new[]{ typeof(global::libsignalservice.push.GroupContext.Types.Type) }, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.ContactDetails), global::libsignalservice.push.ContactDetails.Parser, new[]{ "Number", "Name", "Avatar", "Color", "Verified", "ProfileKey", "Blocked", "ExpireTimer" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.ContactDetails.Types.Avatar), global::libsignalservice.push.ContactDetails.Types.Avatar.Parser, new[]{ "ContentType", "Length" }, null, null, null, null)}),
-            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.GroupDetails), global::libsignalservice.push.GroupDetails.Parser, new[]{ "Id", "Name", "Members", "Avatar", "Active", "ExpireTimer", "Color", "Blocked" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.GroupDetails.Types.Avatar), global::libsignalservice.push.GroupDetails.Types.Avatar.Parser, new[]{ "ContentType", "Length" }, null, null, null, null)})
+            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.GroupContext), global::libsignalservice.push.GroupContext.Parser, new[]{ "Id", "Type", "Name", "MembersE164", "Members", "Avatar" }, null, new[]{ typeof(global::libsignalservice.push.GroupContext.Types.Type) }, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.GroupContext.Types.Member), global::libsignalservice.push.GroupContext.Types.Member.Parser, new[]{ "Uuid", "E164" }, null, null, null, null)}),
+            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.ContactDetails), global::libsignalservice.push.ContactDetails.Parser, new[]{ "Number", "Uuid", "Name", "Avatar", "Color", "Verified", "ProfileKey", "Blocked", "ExpireTimer" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.ContactDetails.Types.Avatar), global::libsignalservice.push.ContactDetails.Types.Avatar.Parser, new[]{ "ContentType", "Length" }, null, null, null, null)}),
+            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.GroupDetails), global::libsignalservice.push.GroupDetails.Parser, new[]{ "Id", "Name", "MembersE164", "Members", "Avatar", "Active", "ExpireTimer", "Color", "Blocked" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.GroupDetails.Types.Avatar), global::libsignalservice.push.GroupDetails.Types.Avatar.Parser, new[]{ "ContentType", "Length" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::libsignalservice.push.GroupDetails.Types.Member), global::libsignalservice.push.GroupDetails.Types.Member.Parser, new[]{ "Uuid", "E164" }, null, null, null, null)})
           }));
     }
     #endregion
@@ -240,7 +250,8 @@ namespace libsignalservice.push {
     public Envelope(Envelope other) : this() {
       _hasBits0 = other._hasBits0;
       type_ = other.type_;
-      source_ = other.source_;
+      sourceE164_ = other.sourceE164_;
+      sourceUuid_ = other.sourceUuid_;
       sourceDevice_ = other.sourceDevice_;
       relay_ = other.relay_;
       timestamp_ = other.timestamp_;
@@ -280,27 +291,50 @@ namespace libsignalservice.push {
       _hasBits0 &= ~1;
     }
 
-    /// <summary>Field number for the "source" field.</summary>
-    public const int SourceFieldNumber = 2;
-    private readonly static string SourceDefaultValue = "";
+    /// <summary>Field number for the "sourceE164" field.</summary>
+    public const int SourceE164FieldNumber = 2;
+    private readonly static string SourceE164DefaultValue = "";
 
-    private string source_;
+    private string sourceE164_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string Source {
-      get { return source_ ?? SourceDefaultValue; }
+    public string SourceE164 {
+      get { return sourceE164_ ?? SourceE164DefaultValue; }
       set {
-        source_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        sourceE164_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
-    /// <summary>Gets whether the "source" field is set</summary>
+    /// <summary>Gets whether the "sourceE164" field is set</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool HasSource {
-      get { return source_ != null; }
+    public bool HasSourceE164 {
+      get { return sourceE164_ != null; }
     }
-    /// <summary>Clears the value of the "source" field</summary>
+    /// <summary>Clears the value of the "sourceE164" field</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void ClearSource() {
-      source_ = null;
+    public void ClearSourceE164() {
+      sourceE164_ = null;
+    }
+
+    /// <summary>Field number for the "sourceUuid" field.</summary>
+    public const int SourceUuidFieldNumber = 11;
+    private readonly static string SourceUuidDefaultValue = "";
+
+    private string sourceUuid_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string SourceUuid {
+      get { return sourceUuid_ ?? SourceUuidDefaultValue; }
+      set {
+        sourceUuid_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+    /// <summary>Gets whether the "sourceUuid" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool HasSourceUuid {
+      get { return sourceUuid_ != null; }
+    }
+    /// <summary>Clears the value of the "sourceUuid" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearSourceUuid() {
+      sourceUuid_ = null;
     }
 
     /// <summary>Field number for the "sourceDevice" field.</summary>
@@ -487,7 +521,8 @@ namespace libsignalservice.push {
         return true;
       }
       if (Type != other.Type) return false;
-      if (Source != other.Source) return false;
+      if (SourceE164 != other.SourceE164) return false;
+      if (SourceUuid != other.SourceUuid) return false;
       if (SourceDevice != other.SourceDevice) return false;
       if (Relay != other.Relay) return false;
       if (Timestamp != other.Timestamp) return false;
@@ -502,7 +537,8 @@ namespace libsignalservice.push {
     public override int GetHashCode() {
       int hash = 1;
       if (HasType) hash ^= Type.GetHashCode();
-      if (HasSource) hash ^= Source.GetHashCode();
+      if (HasSourceE164) hash ^= SourceE164.GetHashCode();
+      if (HasSourceUuid) hash ^= SourceUuid.GetHashCode();
       if (HasSourceDevice) hash ^= SourceDevice.GetHashCode();
       if (HasRelay) hash ^= Relay.GetHashCode();
       if (HasTimestamp) hash ^= Timestamp.GetHashCode();
@@ -527,9 +563,9 @@ namespace libsignalservice.push {
         output.WriteRawTag(8);
         output.WriteEnum((int) Type);
       }
-      if (HasSource) {
+      if (HasSourceE164) {
         output.WriteRawTag(18);
-        output.WriteString(Source);
+        output.WriteString(SourceE164);
       }
       if (HasRelay) {
         output.WriteRawTag(26);
@@ -559,6 +595,10 @@ namespace libsignalservice.push {
         output.WriteRawTag(80);
         output.WriteUInt64(ServerTimestamp);
       }
+      if (HasSourceUuid) {
+        output.WriteRawTag(90);
+        output.WriteString(SourceUuid);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -570,8 +610,11 @@ namespace libsignalservice.push {
       if (HasType) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Type);
       }
-      if (HasSource) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(Source);
+      if (HasSourceE164) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(SourceE164);
+      }
+      if (HasSourceUuid) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(SourceUuid);
       }
       if (HasSourceDevice) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(SourceDevice);
@@ -608,8 +651,11 @@ namespace libsignalservice.push {
       if (other.HasType) {
         Type = other.Type;
       }
-      if (other.HasSource) {
-        Source = other.Source;
+      if (other.HasSourceE164) {
+        SourceE164 = other.SourceE164;
+      }
+      if (other.HasSourceUuid) {
+        SourceUuid = other.SourceUuid;
       }
       if (other.HasSourceDevice) {
         SourceDevice = other.SourceDevice;
@@ -648,7 +694,7 @@ namespace libsignalservice.push {
             break;
           }
           case 18: {
-            Source = input.ReadString();
+            SourceE164 = input.ReadString();
             break;
           }
           case 26: {
@@ -677,6 +723,10 @@ namespace libsignalservice.push {
           }
           case 80: {
             ServerTimestamp = input.ReadUInt64();
+            break;
+          }
+          case 90: {
+            SourceUuid = input.ReadString();
             break;
           }
         }
@@ -2785,7 +2835,8 @@ namespace libsignalservice.push {
         public Quote(Quote other) : this() {
           _hasBits0 = other._hasBits0;
           id_ = other.id_;
-          author_ = other.author_;
+          authorE164_ = other.authorE164_;
+          authorUuid_ = other.authorUuid_;
           text_ = other.text_;
           attachments_ = other.attachments_.Clone();
           _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -2820,27 +2871,50 @@ namespace libsignalservice.push {
           _hasBits0 &= ~1;
         }
 
-        /// <summary>Field number for the "author" field.</summary>
-        public const int AuthorFieldNumber = 2;
-        private readonly static string AuthorDefaultValue = "";
+        /// <summary>Field number for the "authorE164" field.</summary>
+        public const int AuthorE164FieldNumber = 2;
+        private readonly static string AuthorE164DefaultValue = "";
 
-        private string author_;
+        private string authorE164_;
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public string Author {
-          get { return author_ ?? AuthorDefaultValue; }
+        public string AuthorE164 {
+          get { return authorE164_ ?? AuthorE164DefaultValue; }
           set {
-            author_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+            authorE164_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
           }
         }
-        /// <summary>Gets whether the "author" field is set</summary>
+        /// <summary>Gets whether the "authorE164" field is set</summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public bool HasAuthor {
-          get { return author_ != null; }
+        public bool HasAuthorE164 {
+          get { return authorE164_ != null; }
         }
-        /// <summary>Clears the value of the "author" field</summary>
+        /// <summary>Clears the value of the "authorE164" field</summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public void ClearAuthor() {
-          author_ = null;
+        public void ClearAuthorE164() {
+          authorE164_ = null;
+        }
+
+        /// <summary>Field number for the "authorUuid" field.</summary>
+        public const int AuthorUuidFieldNumber = 5;
+        private readonly static string AuthorUuidDefaultValue = "";
+
+        private string authorUuid_;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public string AuthorUuid {
+          get { return authorUuid_ ?? AuthorUuidDefaultValue; }
+          set {
+            authorUuid_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+          }
+        }
+        /// <summary>Gets whether the "authorUuid" field is set</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public bool HasAuthorUuid {
+          get { return authorUuid_ != null; }
+        }
+        /// <summary>Clears the value of the "authorUuid" field</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void ClearAuthorUuid() {
+          authorUuid_ = null;
         }
 
         /// <summary>Field number for the "text" field.</summary>
@@ -2890,7 +2964,8 @@ namespace libsignalservice.push {
             return true;
           }
           if (Id != other.Id) return false;
-          if (Author != other.Author) return false;
+          if (AuthorE164 != other.AuthorE164) return false;
+          if (AuthorUuid != other.AuthorUuid) return false;
           if (Text != other.Text) return false;
           if(!attachments_.Equals(other.attachments_)) return false;
           return Equals(_unknownFields, other._unknownFields);
@@ -2900,7 +2975,8 @@ namespace libsignalservice.push {
         public override int GetHashCode() {
           int hash = 1;
           if (HasId) hash ^= Id.GetHashCode();
-          if (HasAuthor) hash ^= Author.GetHashCode();
+          if (HasAuthorE164) hash ^= AuthorE164.GetHashCode();
+          if (HasAuthorUuid) hash ^= AuthorUuid.GetHashCode();
           if (HasText) hash ^= Text.GetHashCode();
           hash ^= attachments_.GetHashCode();
           if (_unknownFields != null) {
@@ -2920,15 +2996,19 @@ namespace libsignalservice.push {
             output.WriteRawTag(8);
             output.WriteUInt64(Id);
           }
-          if (HasAuthor) {
+          if (HasAuthorE164) {
             output.WriteRawTag(18);
-            output.WriteString(Author);
+            output.WriteString(AuthorE164);
           }
           if (HasText) {
             output.WriteRawTag(26);
             output.WriteString(Text);
           }
           attachments_.WriteTo(output, _repeated_attachments_codec);
+          if (HasAuthorUuid) {
+            output.WriteRawTag(42);
+            output.WriteString(AuthorUuid);
+          }
           if (_unknownFields != null) {
             _unknownFields.WriteTo(output);
           }
@@ -2940,8 +3020,11 @@ namespace libsignalservice.push {
           if (HasId) {
             size += 1 + pb::CodedOutputStream.ComputeUInt64Size(Id);
           }
-          if (HasAuthor) {
-            size += 1 + pb::CodedOutputStream.ComputeStringSize(Author);
+          if (HasAuthorE164) {
+            size += 1 + pb::CodedOutputStream.ComputeStringSize(AuthorE164);
+          }
+          if (HasAuthorUuid) {
+            size += 1 + pb::CodedOutputStream.ComputeStringSize(AuthorUuid);
           }
           if (HasText) {
             size += 1 + pb::CodedOutputStream.ComputeStringSize(Text);
@@ -2961,8 +3044,11 @@ namespace libsignalservice.push {
           if (other.HasId) {
             Id = other.Id;
           }
-          if (other.HasAuthor) {
-            Author = other.Author;
+          if (other.HasAuthorE164) {
+            AuthorE164 = other.AuthorE164;
+          }
+          if (other.HasAuthorUuid) {
+            AuthorUuid = other.AuthorUuid;
           }
           if (other.HasText) {
             Text = other.Text;
@@ -2984,7 +3070,7 @@ namespace libsignalservice.push {
                 break;
               }
               case 18: {
-                Author = input.ReadString();
+                AuthorE164 = input.ReadString();
                 break;
               }
               case 26: {
@@ -2993,6 +3079,10 @@ namespace libsignalservice.push {
               }
               case 34: {
                 attachments_.AddEntriesFrom(input, _repeated_attachments_codec);
+                break;
+              }
+              case 42: {
+                AuthorUuid = input.ReadString();
                 break;
               }
             }
@@ -6031,7 +6121,8 @@ namespace libsignalservice.push {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Verified(Verified other) : this() {
       _hasBits0 = other._hasBits0;
-      destination_ = other.destination_;
+      destinationE164_ = other.destinationE164_;
+      destinationUuid_ = other.destinationUuid_;
       identityKey_ = other.identityKey_;
       state_ = other.state_;
       nullMessage_ = other.nullMessage_;
@@ -6043,27 +6134,50 @@ namespace libsignalservice.push {
       return new Verified(this);
     }
 
-    /// <summary>Field number for the "destination" field.</summary>
-    public const int DestinationFieldNumber = 1;
-    private readonly static string DestinationDefaultValue = "";
+    /// <summary>Field number for the "destinationE164" field.</summary>
+    public const int DestinationE164FieldNumber = 1;
+    private readonly static string DestinationE164DefaultValue = "";
 
-    private string destination_;
+    private string destinationE164_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string Destination {
-      get { return destination_ ?? DestinationDefaultValue; }
+    public string DestinationE164 {
+      get { return destinationE164_ ?? DestinationE164DefaultValue; }
       set {
-        destination_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        destinationE164_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
-    /// <summary>Gets whether the "destination" field is set</summary>
+    /// <summary>Gets whether the "destinationE164" field is set</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool HasDestination {
-      get { return destination_ != null; }
+    public bool HasDestinationE164 {
+      get { return destinationE164_ != null; }
     }
-    /// <summary>Clears the value of the "destination" field</summary>
+    /// <summary>Clears the value of the "destinationE164" field</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void ClearDestination() {
-      destination_ = null;
+    public void ClearDestinationE164() {
+      destinationE164_ = null;
+    }
+
+    /// <summary>Field number for the "destinationUuid" field.</summary>
+    public const int DestinationUuidFieldNumber = 5;
+    private readonly static string DestinationUuidDefaultValue = "";
+
+    private string destinationUuid_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string DestinationUuid {
+      get { return destinationUuid_ ?? DestinationUuidDefaultValue; }
+      set {
+        destinationUuid_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+    /// <summary>Gets whether the "destinationUuid" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool HasDestinationUuid {
+      get { return destinationUuid_ != null; }
+    }
+    /// <summary>Clears the value of the "destinationUuid" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearDestinationUuid() {
+      destinationUuid_ = null;
     }
 
     /// <summary>Field number for the "identityKey" field.</summary>
@@ -6149,7 +6263,8 @@ namespace libsignalservice.push {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (Destination != other.Destination) return false;
+      if (DestinationE164 != other.DestinationE164) return false;
+      if (DestinationUuid != other.DestinationUuid) return false;
       if (IdentityKey != other.IdentityKey) return false;
       if (State != other.State) return false;
       if (NullMessage != other.NullMessage) return false;
@@ -6159,7 +6274,8 @@ namespace libsignalservice.push {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (HasDestination) hash ^= Destination.GetHashCode();
+      if (HasDestinationE164) hash ^= DestinationE164.GetHashCode();
+      if (HasDestinationUuid) hash ^= DestinationUuid.GetHashCode();
       if (HasIdentityKey) hash ^= IdentityKey.GetHashCode();
       if (HasState) hash ^= State.GetHashCode();
       if (HasNullMessage) hash ^= NullMessage.GetHashCode();
@@ -6176,9 +6292,9 @@ namespace libsignalservice.push {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (HasDestination) {
+      if (HasDestinationE164) {
         output.WriteRawTag(10);
-        output.WriteString(Destination);
+        output.WriteString(DestinationE164);
       }
       if (HasIdentityKey) {
         output.WriteRawTag(18);
@@ -6192,6 +6308,10 @@ namespace libsignalservice.push {
         output.WriteRawTag(34);
         output.WriteBytes(NullMessage);
       }
+      if (HasDestinationUuid) {
+        output.WriteRawTag(42);
+        output.WriteString(DestinationUuid);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -6200,8 +6320,11 @@ namespace libsignalservice.push {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (HasDestination) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(Destination);
+      if (HasDestinationE164) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(DestinationE164);
+      }
+      if (HasDestinationUuid) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(DestinationUuid);
       }
       if (HasIdentityKey) {
         size += 1 + pb::CodedOutputStream.ComputeBytesSize(IdentityKey);
@@ -6223,8 +6346,11 @@ namespace libsignalservice.push {
       if (other == null) {
         return;
       }
-      if (other.HasDestination) {
-        Destination = other.Destination;
+      if (other.HasDestinationE164) {
+        DestinationE164 = other.DestinationE164;
+      }
+      if (other.HasDestinationUuid) {
+        DestinationUuid = other.DestinationUuid;
       }
       if (other.HasIdentityKey) {
         IdentityKey = other.IdentityKey;
@@ -6247,7 +6373,7 @@ namespace libsignalservice.push {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            Destination = input.ReadString();
+            DestinationE164 = input.ReadString();
             break;
           }
           case 18: {
@@ -6260,6 +6386,10 @@ namespace libsignalservice.push {
           }
           case 34: {
             NullMessage = input.ReadBytes();
+            break;
+          }
+          case 42: {
+            DestinationUuid = input.ReadString();
             break;
           }
         }
@@ -6763,7 +6893,8 @@ namespace libsignalservice.push {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public Sent(Sent other) : this() {
           _hasBits0 = other._hasBits0;
-          destination_ = other.destination_;
+          destinationE164_ = other.destinationE164_;
+          destinationUuid_ = other.destinationUuid_;
           timestamp_ = other.timestamp_;
           message_ = other.message_ != null ? other.message_.Clone() : null;
           expirationStartTimestamp_ = other.expirationStartTimestamp_;
@@ -6777,27 +6908,50 @@ namespace libsignalservice.push {
           return new Sent(this);
         }
 
-        /// <summary>Field number for the "destination" field.</summary>
-        public const int DestinationFieldNumber = 1;
-        private readonly static string DestinationDefaultValue = "";
+        /// <summary>Field number for the "destinationE164" field.</summary>
+        public const int DestinationE164FieldNumber = 1;
+        private readonly static string DestinationE164DefaultValue = "";
 
-        private string destination_;
+        private string destinationE164_;
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public string Destination {
-          get { return destination_ ?? DestinationDefaultValue; }
+        public string DestinationE164 {
+          get { return destinationE164_ ?? DestinationE164DefaultValue; }
           set {
-            destination_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+            destinationE164_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
           }
         }
-        /// <summary>Gets whether the "destination" field is set</summary>
+        /// <summary>Gets whether the "destinationE164" field is set</summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public bool HasDestination {
-          get { return destination_ != null; }
+        public bool HasDestinationE164 {
+          get { return destinationE164_ != null; }
         }
-        /// <summary>Clears the value of the "destination" field</summary>
+        /// <summary>Clears the value of the "destinationE164" field</summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public void ClearDestination() {
-          destination_ = null;
+        public void ClearDestinationE164() {
+          destinationE164_ = null;
+        }
+
+        /// <summary>Field number for the "destinationUuid" field.</summary>
+        public const int DestinationUuidFieldNumber = 7;
+        private readonly static string DestinationUuidDefaultValue = "";
+
+        private string destinationUuid_;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public string DestinationUuid {
+          get { return destinationUuid_ ?? DestinationUuidDefaultValue; }
+          set {
+            destinationUuid_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+          }
+        }
+        /// <summary>Gets whether the "destinationUuid" field is set</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public bool HasDestinationUuid {
+          get { return destinationUuid_ != null; }
+        }
+        /// <summary>Clears the value of the "destinationUuid" field</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void ClearDestinationUuid() {
+          destinationUuid_ = null;
         }
 
         /// <summary>Field number for the "timestamp" field.</summary>
@@ -6906,7 +7060,8 @@ namespace libsignalservice.push {
           if (ReferenceEquals(other, this)) {
             return true;
           }
-          if (Destination != other.Destination) return false;
+          if (DestinationE164 != other.DestinationE164) return false;
+          if (DestinationUuid != other.DestinationUuid) return false;
           if (Timestamp != other.Timestamp) return false;
           if (!object.Equals(Message, other.Message)) return false;
           if (ExpirationStartTimestamp != other.ExpirationStartTimestamp) return false;
@@ -6918,7 +7073,8 @@ namespace libsignalservice.push {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public override int GetHashCode() {
           int hash = 1;
-          if (HasDestination) hash ^= Destination.GetHashCode();
+          if (HasDestinationE164) hash ^= DestinationE164.GetHashCode();
+          if (HasDestinationUuid) hash ^= DestinationUuid.GetHashCode();
           if (HasTimestamp) hash ^= Timestamp.GetHashCode();
           if (message_ != null) hash ^= Message.GetHashCode();
           if (HasExpirationStartTimestamp) hash ^= ExpirationStartTimestamp.GetHashCode();
@@ -6937,9 +7093,9 @@ namespace libsignalservice.push {
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public void WriteTo(pb::CodedOutputStream output) {
-          if (HasDestination) {
+          if (HasDestinationE164) {
             output.WriteRawTag(10);
-            output.WriteString(Destination);
+            output.WriteString(DestinationE164);
           }
           if (HasTimestamp) {
             output.WriteRawTag(16);
@@ -6958,6 +7114,10 @@ namespace libsignalservice.push {
             output.WriteRawTag(48);
             output.WriteBool(IsRecipientUpdate);
           }
+          if (HasDestinationUuid) {
+            output.WriteRawTag(58);
+            output.WriteString(DestinationUuid);
+          }
           if (_unknownFields != null) {
             _unknownFields.WriteTo(output);
           }
@@ -6966,8 +7126,11 @@ namespace libsignalservice.push {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public int CalculateSize() {
           int size = 0;
-          if (HasDestination) {
-            size += 1 + pb::CodedOutputStream.ComputeStringSize(Destination);
+          if (HasDestinationE164) {
+            size += 1 + pb::CodedOutputStream.ComputeStringSize(DestinationE164);
+          }
+          if (HasDestinationUuid) {
+            size += 1 + pb::CodedOutputStream.ComputeStringSize(DestinationUuid);
           }
           if (HasTimestamp) {
             size += 1 + pb::CodedOutputStream.ComputeUInt64Size(Timestamp);
@@ -6993,8 +7156,11 @@ namespace libsignalservice.push {
           if (other == null) {
             return;
           }
-          if (other.HasDestination) {
-            Destination = other.Destination;
+          if (other.HasDestinationE164) {
+            DestinationE164 = other.DestinationE164;
+          }
+          if (other.HasDestinationUuid) {
+            DestinationUuid = other.DestinationUuid;
           }
           if (other.HasTimestamp) {
             Timestamp = other.Timestamp;
@@ -7024,7 +7190,7 @@ namespace libsignalservice.push {
                 _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
                 break;
               case 10: {
-                Destination = input.ReadString();
+                DestinationE164 = input.ReadString();
                 break;
               }
               case 16: {
@@ -7048,6 +7214,10 @@ namespace libsignalservice.push {
               }
               case 48: {
                 IsRecipientUpdate = input.ReadBool();
+                break;
+              }
+              case 58: {
+                DestinationUuid = input.ReadString();
                 break;
               }
             }
@@ -7085,7 +7255,8 @@ namespace libsignalservice.push {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public UnidentifiedDeliveryStatus(UnidentifiedDeliveryStatus other) : this() {
               _hasBits0 = other._hasBits0;
-              destination_ = other.destination_;
+              destinationE164_ = other.destinationE164_;
+              destinationUuid_ = other.destinationUuid_;
               unidentified_ = other.unidentified_;
               _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
             }
@@ -7095,27 +7266,50 @@ namespace libsignalservice.push {
               return new UnidentifiedDeliveryStatus(this);
             }
 
-            /// <summary>Field number for the "destination" field.</summary>
-            public const int DestinationFieldNumber = 1;
-            private readonly static string DestinationDefaultValue = "";
+            /// <summary>Field number for the "destinationE164" field.</summary>
+            public const int DestinationE164FieldNumber = 1;
+            private readonly static string DestinationE164DefaultValue = "";
 
-            private string destination_;
+            private string destinationE164_;
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-            public string Destination {
-              get { return destination_ ?? DestinationDefaultValue; }
+            public string DestinationE164 {
+              get { return destinationE164_ ?? DestinationE164DefaultValue; }
               set {
-                destination_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+                destinationE164_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
               }
             }
-            /// <summary>Gets whether the "destination" field is set</summary>
+            /// <summary>Gets whether the "destinationE164" field is set</summary>
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-            public bool HasDestination {
-              get { return destination_ != null; }
+            public bool HasDestinationE164 {
+              get { return destinationE164_ != null; }
             }
-            /// <summary>Clears the value of the "destination" field</summary>
+            /// <summary>Clears the value of the "destinationE164" field</summary>
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-            public void ClearDestination() {
-              destination_ = null;
+            public void ClearDestinationE164() {
+              destinationE164_ = null;
+            }
+
+            /// <summary>Field number for the "destinationUuid" field.</summary>
+            public const int DestinationUuidFieldNumber = 3;
+            private readonly static string DestinationUuidDefaultValue = "";
+
+            private string destinationUuid_;
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+            public string DestinationUuid {
+              get { return destinationUuid_ ?? DestinationUuidDefaultValue; }
+              set {
+                destinationUuid_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+              }
+            }
+            /// <summary>Gets whether the "destinationUuid" field is set</summary>
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+            public bool HasDestinationUuid {
+              get { return destinationUuid_ != null; }
+            }
+            /// <summary>Clears the value of the "destinationUuid" field</summary>
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+            public void ClearDestinationUuid() {
+              destinationUuid_ = null;
             }
 
             /// <summary>Field number for the "unidentified" field.</summary>
@@ -7155,7 +7349,8 @@ namespace libsignalservice.push {
               if (ReferenceEquals(other, this)) {
                 return true;
               }
-              if (Destination != other.Destination) return false;
+              if (DestinationE164 != other.DestinationE164) return false;
+              if (DestinationUuid != other.DestinationUuid) return false;
               if (Unidentified != other.Unidentified) return false;
               return Equals(_unknownFields, other._unknownFields);
             }
@@ -7163,7 +7358,8 @@ namespace libsignalservice.push {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public override int GetHashCode() {
               int hash = 1;
-              if (HasDestination) hash ^= Destination.GetHashCode();
+              if (HasDestinationE164) hash ^= DestinationE164.GetHashCode();
+              if (HasDestinationUuid) hash ^= DestinationUuid.GetHashCode();
               if (HasUnidentified) hash ^= Unidentified.GetHashCode();
               if (_unknownFields != null) {
                 hash ^= _unknownFields.GetHashCode();
@@ -7178,13 +7374,17 @@ namespace libsignalservice.push {
 
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public void WriteTo(pb::CodedOutputStream output) {
-              if (HasDestination) {
+              if (HasDestinationE164) {
                 output.WriteRawTag(10);
-                output.WriteString(Destination);
+                output.WriteString(DestinationE164);
               }
               if (HasUnidentified) {
                 output.WriteRawTag(16);
                 output.WriteBool(Unidentified);
+              }
+              if (HasDestinationUuid) {
+                output.WriteRawTag(26);
+                output.WriteString(DestinationUuid);
               }
               if (_unknownFields != null) {
                 _unknownFields.WriteTo(output);
@@ -7194,8 +7394,11 @@ namespace libsignalservice.push {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
             public int CalculateSize() {
               int size = 0;
-              if (HasDestination) {
-                size += 1 + pb::CodedOutputStream.ComputeStringSize(Destination);
+              if (HasDestinationE164) {
+                size += 1 + pb::CodedOutputStream.ComputeStringSize(DestinationE164);
+              }
+              if (HasDestinationUuid) {
+                size += 1 + pb::CodedOutputStream.ComputeStringSize(DestinationUuid);
               }
               if (HasUnidentified) {
                 size += 1 + 1;
@@ -7211,8 +7414,11 @@ namespace libsignalservice.push {
               if (other == null) {
                 return;
               }
-              if (other.HasDestination) {
-                Destination = other.Destination;
+              if (other.HasDestinationE164) {
+                DestinationE164 = other.DestinationE164;
+              }
+              if (other.HasDestinationUuid) {
+                DestinationUuid = other.DestinationUuid;
               }
               if (other.HasUnidentified) {
                 Unidentified = other.Unidentified;
@@ -7229,11 +7435,15 @@ namespace libsignalservice.push {
                     _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
                     break;
                   case 10: {
-                    Destination = input.ReadString();
+                    DestinationE164 = input.ReadString();
                     break;
                   }
                   case 16: {
                     Unidentified = input.ReadBool();
+                    break;
+                  }
+                  case 26: {
+                    DestinationUuid = input.ReadString();
                     break;
                   }
                 }
@@ -7586,6 +7796,7 @@ namespace libsignalservice.push {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public Blocked(Blocked other) : this() {
           numbers_ = other.numbers_.Clone();
+          uuids_ = other.uuids_.Clone();
           groupIds_ = other.groupIds_.Clone();
           _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
         }
@@ -7603,6 +7814,16 @@ namespace libsignalservice.push {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public pbc::RepeatedField<string> Numbers {
           get { return numbers_; }
+        }
+
+        /// <summary>Field number for the "uuids" field.</summary>
+        public const int UuidsFieldNumber = 3;
+        private static readonly pb::FieldCodec<string> _repeated_uuids_codec
+            = pb::FieldCodec.ForString(26);
+        private readonly pbc::RepeatedField<string> uuids_ = new pbc::RepeatedField<string>();
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public pbc::RepeatedField<string> Uuids {
+          get { return uuids_; }
         }
 
         /// <summary>Field number for the "groupIds" field.</summary>
@@ -7629,6 +7850,7 @@ namespace libsignalservice.push {
             return true;
           }
           if(!numbers_.Equals(other.numbers_)) return false;
+          if(!uuids_.Equals(other.uuids_)) return false;
           if(!groupIds_.Equals(other.groupIds_)) return false;
           return Equals(_unknownFields, other._unknownFields);
         }
@@ -7637,6 +7859,7 @@ namespace libsignalservice.push {
         public override int GetHashCode() {
           int hash = 1;
           hash ^= numbers_.GetHashCode();
+          hash ^= uuids_.GetHashCode();
           hash ^= groupIds_.GetHashCode();
           if (_unknownFields != null) {
             hash ^= _unknownFields.GetHashCode();
@@ -7653,6 +7876,7 @@ namespace libsignalservice.push {
         public void WriteTo(pb::CodedOutputStream output) {
           numbers_.WriteTo(output, _repeated_numbers_codec);
           groupIds_.WriteTo(output, _repeated_groupIds_codec);
+          uuids_.WriteTo(output, _repeated_uuids_codec);
           if (_unknownFields != null) {
             _unknownFields.WriteTo(output);
           }
@@ -7662,6 +7886,7 @@ namespace libsignalservice.push {
         public int CalculateSize() {
           int size = 0;
           size += numbers_.CalculateSize(_repeated_numbers_codec);
+          size += uuids_.CalculateSize(_repeated_uuids_codec);
           size += groupIds_.CalculateSize(_repeated_groupIds_codec);
           if (_unknownFields != null) {
             size += _unknownFields.CalculateSize();
@@ -7675,6 +7900,7 @@ namespace libsignalservice.push {
             return;
           }
           numbers_.Add(other.numbers_);
+          uuids_.Add(other.uuids_);
           groupIds_.Add(other.groupIds_);
           _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
         }
@@ -7693,6 +7919,10 @@ namespace libsignalservice.push {
               }
               case 18: {
                 groupIds_.AddEntriesFrom(input, _repeated_groupIds_codec);
+                break;
+              }
+              case 26: {
+                uuids_.AddEntriesFrom(input, _repeated_uuids_codec);
                 break;
               }
             }
@@ -7887,7 +8117,8 @@ namespace libsignalservice.push {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public Read(Read other) : this() {
           _hasBits0 = other._hasBits0;
-          sender_ = other.sender_;
+          senderE164_ = other.senderE164_;
+          senderUuid_ = other.senderUuid_;
           timestamp_ = other.timestamp_;
           _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
         }
@@ -7897,27 +8128,50 @@ namespace libsignalservice.push {
           return new Read(this);
         }
 
-        /// <summary>Field number for the "sender" field.</summary>
-        public const int SenderFieldNumber = 1;
-        private readonly static string SenderDefaultValue = "";
+        /// <summary>Field number for the "senderE164" field.</summary>
+        public const int SenderE164FieldNumber = 1;
+        private readonly static string SenderE164DefaultValue = "";
 
-        private string sender_;
+        private string senderE164_;
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public string Sender {
-          get { return sender_ ?? SenderDefaultValue; }
+        public string SenderE164 {
+          get { return senderE164_ ?? SenderE164DefaultValue; }
           set {
-            sender_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+            senderE164_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
           }
         }
-        /// <summary>Gets whether the "sender" field is set</summary>
+        /// <summary>Gets whether the "senderE164" field is set</summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public bool HasSender {
-          get { return sender_ != null; }
+        public bool HasSenderE164 {
+          get { return senderE164_ != null; }
         }
-        /// <summary>Clears the value of the "sender" field</summary>
+        /// <summary>Clears the value of the "senderE164" field</summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public void ClearSender() {
-          sender_ = null;
+        public void ClearSenderE164() {
+          senderE164_ = null;
+        }
+
+        /// <summary>Field number for the "senderUuid" field.</summary>
+        public const int SenderUuidFieldNumber = 3;
+        private readonly static string SenderUuidDefaultValue = "";
+
+        private string senderUuid_;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public string SenderUuid {
+          get { return senderUuid_ ?? SenderUuidDefaultValue; }
+          set {
+            senderUuid_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+          }
+        }
+        /// <summary>Gets whether the "senderUuid" field is set</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public bool HasSenderUuid {
+          get { return senderUuid_ != null; }
+        }
+        /// <summary>Clears the value of the "senderUuid" field</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void ClearSenderUuid() {
+          senderUuid_ = null;
         }
 
         /// <summary>Field number for the "timestamp" field.</summary>
@@ -7957,7 +8211,8 @@ namespace libsignalservice.push {
           if (ReferenceEquals(other, this)) {
             return true;
           }
-          if (Sender != other.Sender) return false;
+          if (SenderE164 != other.SenderE164) return false;
+          if (SenderUuid != other.SenderUuid) return false;
           if (Timestamp != other.Timestamp) return false;
           return Equals(_unknownFields, other._unknownFields);
         }
@@ -7965,7 +8220,8 @@ namespace libsignalservice.push {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public override int GetHashCode() {
           int hash = 1;
-          if (HasSender) hash ^= Sender.GetHashCode();
+          if (HasSenderE164) hash ^= SenderE164.GetHashCode();
+          if (HasSenderUuid) hash ^= SenderUuid.GetHashCode();
           if (HasTimestamp) hash ^= Timestamp.GetHashCode();
           if (_unknownFields != null) {
             hash ^= _unknownFields.GetHashCode();
@@ -7980,13 +8236,17 @@ namespace libsignalservice.push {
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public void WriteTo(pb::CodedOutputStream output) {
-          if (HasSender) {
+          if (HasSenderE164) {
             output.WriteRawTag(10);
-            output.WriteString(Sender);
+            output.WriteString(SenderE164);
           }
           if (HasTimestamp) {
             output.WriteRawTag(16);
             output.WriteUInt64(Timestamp);
+          }
+          if (HasSenderUuid) {
+            output.WriteRawTag(26);
+            output.WriteString(SenderUuid);
           }
           if (_unknownFields != null) {
             _unknownFields.WriteTo(output);
@@ -7996,8 +8256,11 @@ namespace libsignalservice.push {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public int CalculateSize() {
           int size = 0;
-          if (HasSender) {
-            size += 1 + pb::CodedOutputStream.ComputeStringSize(Sender);
+          if (HasSenderE164) {
+            size += 1 + pb::CodedOutputStream.ComputeStringSize(SenderE164);
+          }
+          if (HasSenderUuid) {
+            size += 1 + pb::CodedOutputStream.ComputeStringSize(SenderUuid);
           }
           if (HasTimestamp) {
             size += 1 + pb::CodedOutputStream.ComputeUInt64Size(Timestamp);
@@ -8013,8 +8276,11 @@ namespace libsignalservice.push {
           if (other == null) {
             return;
           }
-          if (other.HasSender) {
-            Sender = other.Sender;
+          if (other.HasSenderE164) {
+            SenderE164 = other.SenderE164;
+          }
+          if (other.HasSenderUuid) {
+            SenderUuid = other.SenderUuid;
           }
           if (other.HasTimestamp) {
             Timestamp = other.Timestamp;
@@ -8031,11 +8297,15 @@ namespace libsignalservice.push {
                 _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
                 break;
               case 10: {
-                Sender = input.ReadString();
+                SenderE164 = input.ReadString();
                 break;
               }
               case 16: {
                 Timestamp = input.ReadUInt64();
+                break;
+              }
+              case 26: {
+                SenderUuid = input.ReadString();
                 break;
               }
             }
@@ -8574,7 +8844,8 @@ namespace libsignalservice.push {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public ViewOnceOpen(ViewOnceOpen other) : this() {
           _hasBits0 = other._hasBits0;
-          sender_ = other.sender_;
+          senderE164_ = other.senderE164_;
+          senderUuid_ = other.senderUuid_;
           timestamp_ = other.timestamp_;
           _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
         }
@@ -8584,27 +8855,50 @@ namespace libsignalservice.push {
           return new ViewOnceOpen(this);
         }
 
-        /// <summary>Field number for the "sender" field.</summary>
-        public const int SenderFieldNumber = 1;
-        private readonly static string SenderDefaultValue = "";
+        /// <summary>Field number for the "senderE164" field.</summary>
+        public const int SenderE164FieldNumber = 1;
+        private readonly static string SenderE164DefaultValue = "";
 
-        private string sender_;
+        private string senderE164_;
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public string Sender {
-          get { return sender_ ?? SenderDefaultValue; }
+        public string SenderE164 {
+          get { return senderE164_ ?? SenderE164DefaultValue; }
           set {
-            sender_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+            senderE164_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
           }
         }
-        /// <summary>Gets whether the "sender" field is set</summary>
+        /// <summary>Gets whether the "senderE164" field is set</summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public bool HasSender {
-          get { return sender_ != null; }
+        public bool HasSenderE164 {
+          get { return senderE164_ != null; }
         }
-        /// <summary>Clears the value of the "sender" field</summary>
+        /// <summary>Clears the value of the "senderE164" field</summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public void ClearSender() {
-          sender_ = null;
+        public void ClearSenderE164() {
+          senderE164_ = null;
+        }
+
+        /// <summary>Field number for the "senderUuid" field.</summary>
+        public const int SenderUuidFieldNumber = 3;
+        private readonly static string SenderUuidDefaultValue = "";
+
+        private string senderUuid_;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public string SenderUuid {
+          get { return senderUuid_ ?? SenderUuidDefaultValue; }
+          set {
+            senderUuid_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+          }
+        }
+        /// <summary>Gets whether the "senderUuid" field is set</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public bool HasSenderUuid {
+          get { return senderUuid_ != null; }
+        }
+        /// <summary>Clears the value of the "senderUuid" field</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void ClearSenderUuid() {
+          senderUuid_ = null;
         }
 
         /// <summary>Field number for the "timestamp" field.</summary>
@@ -8644,7 +8938,8 @@ namespace libsignalservice.push {
           if (ReferenceEquals(other, this)) {
             return true;
           }
-          if (Sender != other.Sender) return false;
+          if (SenderE164 != other.SenderE164) return false;
+          if (SenderUuid != other.SenderUuid) return false;
           if (Timestamp != other.Timestamp) return false;
           return Equals(_unknownFields, other._unknownFields);
         }
@@ -8652,7 +8947,8 @@ namespace libsignalservice.push {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public override int GetHashCode() {
           int hash = 1;
-          if (HasSender) hash ^= Sender.GetHashCode();
+          if (HasSenderE164) hash ^= SenderE164.GetHashCode();
+          if (HasSenderUuid) hash ^= SenderUuid.GetHashCode();
           if (HasTimestamp) hash ^= Timestamp.GetHashCode();
           if (_unknownFields != null) {
             hash ^= _unknownFields.GetHashCode();
@@ -8667,13 +8963,17 @@ namespace libsignalservice.push {
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public void WriteTo(pb::CodedOutputStream output) {
-          if (HasSender) {
+          if (HasSenderE164) {
             output.WriteRawTag(10);
-            output.WriteString(Sender);
+            output.WriteString(SenderE164);
           }
           if (HasTimestamp) {
             output.WriteRawTag(16);
             output.WriteUInt64(Timestamp);
+          }
+          if (HasSenderUuid) {
+            output.WriteRawTag(26);
+            output.WriteString(SenderUuid);
           }
           if (_unknownFields != null) {
             _unknownFields.WriteTo(output);
@@ -8683,8 +8983,11 @@ namespace libsignalservice.push {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         public int CalculateSize() {
           int size = 0;
-          if (HasSender) {
-            size += 1 + pb::CodedOutputStream.ComputeStringSize(Sender);
+          if (HasSenderE164) {
+            size += 1 + pb::CodedOutputStream.ComputeStringSize(SenderE164);
+          }
+          if (HasSenderUuid) {
+            size += 1 + pb::CodedOutputStream.ComputeStringSize(SenderUuid);
           }
           if (HasTimestamp) {
             size += 1 + pb::CodedOutputStream.ComputeUInt64Size(Timestamp);
@@ -8700,8 +9003,11 @@ namespace libsignalservice.push {
           if (other == null) {
             return;
           }
-          if (other.HasSender) {
-            Sender = other.Sender;
+          if (other.HasSenderE164) {
+            SenderE164 = other.SenderE164;
+          }
+          if (other.HasSenderUuid) {
+            SenderUuid = other.SenderUuid;
           }
           if (other.HasTimestamp) {
             Timestamp = other.Timestamp;
@@ -8718,11 +9024,15 @@ namespace libsignalservice.push {
                 _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
                 break;
               case 10: {
-                Sender = input.ReadString();
+                SenderE164 = input.ReadString();
                 break;
               }
               case 16: {
                 Timestamp = input.ReadUInt64();
+                break;
+              }
+              case 26: {
+                SenderUuid = input.ReadString();
                 break;
               }
             }
@@ -9520,6 +9830,7 @@ namespace libsignalservice.push {
       id_ = other.id_;
       type_ = other.type_;
       name_ = other.name_;
+      membersE164_ = other.membersE164_.Clone();
       members_ = other.members_.Clone();
       avatar_ = other.avatar_ != null ? other.avatar_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -9600,13 +9911,23 @@ namespace libsignalservice.push {
       name_ = null;
     }
 
-    /// <summary>Field number for the "members" field.</summary>
-    public const int MembersFieldNumber = 4;
-    private static readonly pb::FieldCodec<string> _repeated_members_codec
+    /// <summary>Field number for the "membersE164" field.</summary>
+    public const int MembersE164FieldNumber = 4;
+    private static readonly pb::FieldCodec<string> _repeated_membersE164_codec
         = pb::FieldCodec.ForString(34);
-    private readonly pbc::RepeatedField<string> members_ = new pbc::RepeatedField<string>();
+    private readonly pbc::RepeatedField<string> membersE164_ = new pbc::RepeatedField<string>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pbc::RepeatedField<string> Members {
+    public pbc::RepeatedField<string> MembersE164 {
+      get { return membersE164_; }
+    }
+
+    /// <summary>Field number for the "members" field.</summary>
+    public const int MembersFieldNumber = 6;
+    private static readonly pb::FieldCodec<global::libsignalservice.push.GroupContext.Types.Member> _repeated_members_codec
+        = pb::FieldCodec.ForMessage(50, global::libsignalservice.push.GroupContext.Types.Member.Parser);
+    private readonly pbc::RepeatedField<global::libsignalservice.push.GroupContext.Types.Member> members_ = new pbc::RepeatedField<global::libsignalservice.push.GroupContext.Types.Member>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<global::libsignalservice.push.GroupContext.Types.Member> Members {
       get { return members_; }
     }
 
@@ -9637,6 +9958,7 @@ namespace libsignalservice.push {
       if (Id != other.Id) return false;
       if (Type != other.Type) return false;
       if (Name != other.Name) return false;
+      if(!membersE164_.Equals(other.membersE164_)) return false;
       if(!members_.Equals(other.members_)) return false;
       if (!object.Equals(Avatar, other.Avatar)) return false;
       return Equals(_unknownFields, other._unknownFields);
@@ -9648,6 +9970,7 @@ namespace libsignalservice.push {
       if (HasId) hash ^= Id.GetHashCode();
       if (HasType) hash ^= Type.GetHashCode();
       if (HasName) hash ^= Name.GetHashCode();
+      hash ^= membersE164_.GetHashCode();
       hash ^= members_.GetHashCode();
       if (avatar_ != null) hash ^= Avatar.GetHashCode();
       if (_unknownFields != null) {
@@ -9675,11 +9998,12 @@ namespace libsignalservice.push {
         output.WriteRawTag(26);
         output.WriteString(Name);
       }
-      members_.WriteTo(output, _repeated_members_codec);
+      membersE164_.WriteTo(output, _repeated_membersE164_codec);
       if (avatar_ != null) {
         output.WriteRawTag(42);
         output.WriteMessage(Avatar);
       }
+      members_.WriteTo(output, _repeated_members_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -9697,6 +10021,7 @@ namespace libsignalservice.push {
       if (HasName) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Name);
       }
+      size += membersE164_.CalculateSize(_repeated_membersE164_codec);
       size += members_.CalculateSize(_repeated_members_codec);
       if (avatar_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Avatar);
@@ -9721,6 +10046,7 @@ namespace libsignalservice.push {
       if (other.HasName) {
         Name = other.Name;
       }
+      membersE164_.Add(other.membersE164_);
       members_.Add(other.members_);
       if (other.avatar_ != null) {
         if (avatar_ == null) {
@@ -9752,7 +10078,7 @@ namespace libsignalservice.push {
             break;
           }
           case 34: {
-            members_.AddEntriesFrom(input, _repeated_members_codec);
+            membersE164_.AddEntriesFrom(input, _repeated_membersE164_codec);
             break;
           }
           case 42: {
@@ -9760,6 +10086,10 @@ namespace libsignalservice.push {
               Avatar = new global::libsignalservice.push.AttachmentPointer();
             }
             input.ReadMessage(Avatar);
+            break;
+          }
+          case 50: {
+            members_.AddEntriesFrom(input, _repeated_members_codec);
             break;
           }
         }
@@ -9776,6 +10106,187 @@ namespace libsignalservice.push {
         [pbr::OriginalName("DELIVER")] Deliver = 2,
         [pbr::OriginalName("QUIT")] Quit = 3,
         [pbr::OriginalName("REQUEST_INFO")] RequestInfo = 4,
+      }
+
+      public sealed partial class Member : pb::IMessage<Member> {
+        private static readonly pb::MessageParser<Member> _parser = new pb::MessageParser<Member>(() => new Member());
+        private pb::UnknownFieldSet _unknownFields;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public static pb::MessageParser<Member> Parser { get { return _parser; } }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public static pbr::MessageDescriptor Descriptor {
+          get { return global::libsignalservice.push.GroupContext.Descriptor.NestedTypes[0]; }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        pbr::MessageDescriptor pb::IMessage.Descriptor {
+          get { return Descriptor; }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public Member() {
+          OnConstruction();
+        }
+
+        partial void OnConstruction();
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public Member(Member other) : this() {
+          uuid_ = other.uuid_;
+          e164_ = other.e164_;
+          _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public Member Clone() {
+          return new Member(this);
+        }
+
+        /// <summary>Field number for the "uuid" field.</summary>
+        public const int UuidFieldNumber = 1;
+        private readonly static string UuidDefaultValue = "";
+
+        private string uuid_;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public string Uuid {
+          get { return uuid_ ?? UuidDefaultValue; }
+          set {
+            uuid_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+          }
+        }
+        /// <summary>Gets whether the "uuid" field is set</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public bool HasUuid {
+          get { return uuid_ != null; }
+        }
+        /// <summary>Clears the value of the "uuid" field</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void ClearUuid() {
+          uuid_ = null;
+        }
+
+        /// <summary>Field number for the "e164" field.</summary>
+        public const int E164FieldNumber = 2;
+        private readonly static string E164DefaultValue = "";
+
+        private string e164_;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public string E164 {
+          get { return e164_ ?? E164DefaultValue; }
+          set {
+            e164_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+          }
+        }
+        /// <summary>Gets whether the "e164" field is set</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public bool HasE164 {
+          get { return e164_ != null; }
+        }
+        /// <summary>Clears the value of the "e164" field</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void ClearE164() {
+          e164_ = null;
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public override bool Equals(object other) {
+          return Equals(other as Member);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public bool Equals(Member other) {
+          if (ReferenceEquals(other, null)) {
+            return false;
+          }
+          if (ReferenceEquals(other, this)) {
+            return true;
+          }
+          if (Uuid != other.Uuid) return false;
+          if (E164 != other.E164) return false;
+          return Equals(_unknownFields, other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public override int GetHashCode() {
+          int hash = 1;
+          if (HasUuid) hash ^= Uuid.GetHashCode();
+          if (HasE164) hash ^= E164.GetHashCode();
+          if (_unknownFields != null) {
+            hash ^= _unknownFields.GetHashCode();
+          }
+          return hash;
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public override string ToString() {
+          return pb::JsonFormatter.ToDiagnosticString(this);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void WriteTo(pb::CodedOutputStream output) {
+          if (HasUuid) {
+            output.WriteRawTag(10);
+            output.WriteString(Uuid);
+          }
+          if (HasE164) {
+            output.WriteRawTag(18);
+            output.WriteString(E164);
+          }
+          if (_unknownFields != null) {
+            _unknownFields.WriteTo(output);
+          }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public int CalculateSize() {
+          int size = 0;
+          if (HasUuid) {
+            size += 1 + pb::CodedOutputStream.ComputeStringSize(Uuid);
+          }
+          if (HasE164) {
+            size += 1 + pb::CodedOutputStream.ComputeStringSize(E164);
+          }
+          if (_unknownFields != null) {
+            size += _unknownFields.CalculateSize();
+          }
+          return size;
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void MergeFrom(Member other) {
+          if (other == null) {
+            return;
+          }
+          if (other.HasUuid) {
+            Uuid = other.Uuid;
+          }
+          if (other.HasE164) {
+            E164 = other.E164;
+          }
+          _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void MergeFrom(pb::CodedInputStream input) {
+          uint tag;
+          while ((tag = input.ReadTag()) != 0) {
+            switch(tag) {
+              default:
+                _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+                break;
+              case 10: {
+                Uuid = input.ReadString();
+                break;
+              }
+              case 18: {
+                E164 = input.ReadString();
+                break;
+              }
+            }
+          }
+        }
+
       }
 
     }
@@ -9811,6 +10322,7 @@ namespace libsignalservice.push {
     public ContactDetails(ContactDetails other) : this() {
       _hasBits0 = other._hasBits0;
       number_ = other.number_;
+      uuid_ = other.uuid_;
       name_ = other.name_;
       avatar_ = other.avatar_ != null ? other.avatar_.Clone() : null;
       color_ = other.color_;
@@ -9847,6 +10359,29 @@ namespace libsignalservice.push {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void ClearNumber() {
       number_ = null;
+    }
+
+    /// <summary>Field number for the "uuid" field.</summary>
+    public const int UuidFieldNumber = 9;
+    private readonly static string UuidDefaultValue = "";
+
+    private string uuid_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Uuid {
+      get { return uuid_ ?? UuidDefaultValue; }
+      set {
+        uuid_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+    /// <summary>Gets whether the "uuid" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool HasUuid {
+      get { return uuid_ != null; }
+    }
+    /// <summary>Clears the value of the "uuid" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearUuid() {
+      uuid_ = null;
     }
 
     /// <summary>Field number for the "name" field.</summary>
@@ -10002,6 +10537,7 @@ namespace libsignalservice.push {
         return true;
       }
       if (Number != other.Number) return false;
+      if (Uuid != other.Uuid) return false;
       if (Name != other.Name) return false;
       if (!object.Equals(Avatar, other.Avatar)) return false;
       if (Color != other.Color) return false;
@@ -10016,6 +10552,7 @@ namespace libsignalservice.push {
     public override int GetHashCode() {
       int hash = 1;
       if (HasNumber) hash ^= Number.GetHashCode();
+      if (HasUuid) hash ^= Uuid.GetHashCode();
       if (HasName) hash ^= Name.GetHashCode();
       if (avatar_ != null) hash ^= Avatar.GetHashCode();
       if (HasColor) hash ^= Color.GetHashCode();
@@ -10068,6 +10605,10 @@ namespace libsignalservice.push {
         output.WriteRawTag(64);
         output.WriteUInt32(ExpireTimer);
       }
+      if (HasUuid) {
+        output.WriteRawTag(74);
+        output.WriteString(Uuid);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -10078,6 +10619,9 @@ namespace libsignalservice.push {
       int size = 0;
       if (HasNumber) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Number);
+      }
+      if (HasUuid) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Uuid);
       }
       if (HasName) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Name);
@@ -10113,6 +10657,9 @@ namespace libsignalservice.push {
       }
       if (other.HasNumber) {
         Number = other.Number;
+      }
+      if (other.HasUuid) {
+        Uuid = other.Uuid;
       }
       if (other.HasName) {
         Name = other.Name;
@@ -10188,6 +10735,10 @@ namespace libsignalservice.push {
           }
           case 64: {
             ExpireTimer = input.ReadUInt32();
+            break;
+          }
+          case 74: {
+            Uuid = input.ReadString();
             break;
           }
         }
@@ -10416,6 +10967,7 @@ namespace libsignalservice.push {
       _hasBits0 = other._hasBits0;
       id_ = other.id_;
       name_ = other.name_;
+      membersE164_ = other.membersE164_.Clone();
       members_ = other.members_.Clone();
       avatar_ = other.avatar_ != null ? other.avatar_.Clone() : null;
       active_ = other.active_;
@@ -10476,13 +11028,23 @@ namespace libsignalservice.push {
       name_ = null;
     }
 
-    /// <summary>Field number for the "members" field.</summary>
-    public const int MembersFieldNumber = 3;
-    private static readonly pb::FieldCodec<string> _repeated_members_codec
+    /// <summary>Field number for the "membersE164" field.</summary>
+    public const int MembersE164FieldNumber = 3;
+    private static readonly pb::FieldCodec<string> _repeated_membersE164_codec
         = pb::FieldCodec.ForString(26);
-    private readonly pbc::RepeatedField<string> members_ = new pbc::RepeatedField<string>();
+    private readonly pbc::RepeatedField<string> membersE164_ = new pbc::RepeatedField<string>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pbc::RepeatedField<string> Members {
+    public pbc::RepeatedField<string> MembersE164 {
+      get { return membersE164_; }
+    }
+
+    /// <summary>Field number for the "members" field.</summary>
+    public const int MembersFieldNumber = 9;
+    private static readonly pb::FieldCodec<global::libsignalservice.push.GroupDetails.Types.Member> _repeated_members_codec
+        = pb::FieldCodec.ForMessage(74, global::libsignalservice.push.GroupDetails.Types.Member.Parser);
+    private readonly pbc::RepeatedField<global::libsignalservice.push.GroupDetails.Types.Member> members_ = new pbc::RepeatedField<global::libsignalservice.push.GroupDetails.Types.Member>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<global::libsignalservice.push.GroupDetails.Types.Member> Members {
       get { return members_; }
     }
 
@@ -10607,6 +11169,7 @@ namespace libsignalservice.push {
       }
       if (Id != other.Id) return false;
       if (Name != other.Name) return false;
+      if(!membersE164_.Equals(other.membersE164_)) return false;
       if(!members_.Equals(other.members_)) return false;
       if (!object.Equals(Avatar, other.Avatar)) return false;
       if (Active != other.Active) return false;
@@ -10621,6 +11184,7 @@ namespace libsignalservice.push {
       int hash = 1;
       if (HasId) hash ^= Id.GetHashCode();
       if (HasName) hash ^= Name.GetHashCode();
+      hash ^= membersE164_.GetHashCode();
       hash ^= members_.GetHashCode();
       if (avatar_ != null) hash ^= Avatar.GetHashCode();
       if (HasActive) hash ^= Active.GetHashCode();
@@ -10648,7 +11212,7 @@ namespace libsignalservice.push {
         output.WriteRawTag(18);
         output.WriteString(Name);
       }
-      members_.WriteTo(output, _repeated_members_codec);
+      membersE164_.WriteTo(output, _repeated_membersE164_codec);
       if (avatar_ != null) {
         output.WriteRawTag(34);
         output.WriteMessage(Avatar);
@@ -10669,6 +11233,7 @@ namespace libsignalservice.push {
         output.WriteRawTag(64);
         output.WriteBool(Blocked);
       }
+      members_.WriteTo(output, _repeated_members_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -10683,6 +11248,7 @@ namespace libsignalservice.push {
       if (HasName) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Name);
       }
+      size += membersE164_.CalculateSize(_repeated_membersE164_codec);
       size += members_.CalculateSize(_repeated_members_codec);
       if (avatar_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Avatar);
@@ -10716,6 +11282,7 @@ namespace libsignalservice.push {
       if (other.HasName) {
         Name = other.Name;
       }
+      membersE164_.Add(other.membersE164_);
       members_.Add(other.members_);
       if (other.avatar_ != null) {
         if (avatar_ == null) {
@@ -10755,7 +11322,7 @@ namespace libsignalservice.push {
             break;
           }
           case 26: {
-            members_.AddEntriesFrom(input, _repeated_members_codec);
+            membersE164_.AddEntriesFrom(input, _repeated_membersE164_codec);
             break;
           }
           case 34: {
@@ -10779,6 +11346,10 @@ namespace libsignalservice.push {
           }
           case 64: {
             Blocked = input.ReadBool();
+            break;
+          }
+          case 74: {
+            members_.AddEntriesFrom(input, _repeated_members_codec);
             break;
           }
         }
@@ -10965,6 +11536,187 @@ namespace libsignalservice.push {
               }
               case 16: {
                 Length = input.ReadUInt32();
+                break;
+              }
+            }
+          }
+        }
+
+      }
+
+      public sealed partial class Member : pb::IMessage<Member> {
+        private static readonly pb::MessageParser<Member> _parser = new pb::MessageParser<Member>(() => new Member());
+        private pb::UnknownFieldSet _unknownFields;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public static pb::MessageParser<Member> Parser { get { return _parser; } }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public static pbr::MessageDescriptor Descriptor {
+          get { return global::libsignalservice.push.GroupDetails.Descriptor.NestedTypes[1]; }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        pbr::MessageDescriptor pb::IMessage.Descriptor {
+          get { return Descriptor; }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public Member() {
+          OnConstruction();
+        }
+
+        partial void OnConstruction();
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public Member(Member other) : this() {
+          uuid_ = other.uuid_;
+          e164_ = other.e164_;
+          _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public Member Clone() {
+          return new Member(this);
+        }
+
+        /// <summary>Field number for the "uuid" field.</summary>
+        public const int UuidFieldNumber = 1;
+        private readonly static string UuidDefaultValue = "";
+
+        private string uuid_;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public string Uuid {
+          get { return uuid_ ?? UuidDefaultValue; }
+          set {
+            uuid_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+          }
+        }
+        /// <summary>Gets whether the "uuid" field is set</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public bool HasUuid {
+          get { return uuid_ != null; }
+        }
+        /// <summary>Clears the value of the "uuid" field</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void ClearUuid() {
+          uuid_ = null;
+        }
+
+        /// <summary>Field number for the "e164" field.</summary>
+        public const int E164FieldNumber = 2;
+        private readonly static string E164DefaultValue = "";
+
+        private string e164_;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public string E164 {
+          get { return e164_ ?? E164DefaultValue; }
+          set {
+            e164_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+          }
+        }
+        /// <summary>Gets whether the "e164" field is set</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public bool HasE164 {
+          get { return e164_ != null; }
+        }
+        /// <summary>Clears the value of the "e164" field</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void ClearE164() {
+          e164_ = null;
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public override bool Equals(object other) {
+          return Equals(other as Member);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public bool Equals(Member other) {
+          if (ReferenceEquals(other, null)) {
+            return false;
+          }
+          if (ReferenceEquals(other, this)) {
+            return true;
+          }
+          if (Uuid != other.Uuid) return false;
+          if (E164 != other.E164) return false;
+          return Equals(_unknownFields, other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public override int GetHashCode() {
+          int hash = 1;
+          if (HasUuid) hash ^= Uuid.GetHashCode();
+          if (HasE164) hash ^= E164.GetHashCode();
+          if (_unknownFields != null) {
+            hash ^= _unknownFields.GetHashCode();
+          }
+          return hash;
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public override string ToString() {
+          return pb::JsonFormatter.ToDiagnosticString(this);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void WriteTo(pb::CodedOutputStream output) {
+          if (HasUuid) {
+            output.WriteRawTag(10);
+            output.WriteString(Uuid);
+          }
+          if (HasE164) {
+            output.WriteRawTag(18);
+            output.WriteString(E164);
+          }
+          if (_unknownFields != null) {
+            _unknownFields.WriteTo(output);
+          }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public int CalculateSize() {
+          int size = 0;
+          if (HasUuid) {
+            size += 1 + pb::CodedOutputStream.ComputeStringSize(Uuid);
+          }
+          if (HasE164) {
+            size += 1 + pb::CodedOutputStream.ComputeStringSize(E164);
+          }
+          if (_unknownFields != null) {
+            size += _unknownFields.CalculateSize();
+          }
+          return size;
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void MergeFrom(Member other) {
+          if (other == null) {
+            return;
+          }
+          if (other.HasUuid) {
+            Uuid = other.Uuid;
+          }
+          if (other.HasE164) {
+            E164 = other.E164;
+          }
+          _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public void MergeFrom(pb::CodedInputStream input) {
+          uint tag;
+          while ((tag = input.ReadTag()) != 0) {
+            switch(tag) {
+              default:
+                _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+                break;
+              case 10: {
+                Uuid = input.ReadString();
+                break;
+              }
+              case 18: {
+                E164 = input.ReadString();
                 break;
               }
             }

@@ -1,9 +1,9 @@
-using System;
 using System.IO;
+using Google.Protobuf;
+using libsignalservice.push;
 
 namespace libsignalservice.messages.multidevice
 {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public class DeviceContactsOutputStream : ChunkedOutputStream
     {
         public DeviceContactsOutputStream(Stream output)
@@ -11,49 +11,103 @@ namespace libsignalservice.messages.multidevice
         {
         }
 
-        public void write(DeviceContact contact)// throws IOException
+        public void Write(DeviceContact contact)
         {
-            writeContactDetails(contact);
-            writeAvatarImage(contact);
+            WriteContactDetails(contact);
+            WriteAvatarImage(contact);
         }
 
-        public void close()// throws IOException
+        public void Close()
         {
-            //output.close();
+            output.Dispose();
         }
 
-        private void writeAvatarImage(DeviceContact contact)// throws IOException
+        private void WriteAvatarImage(DeviceContact contact)
         {
             if (contact.Avatar != null)
             {
-                //writeStream(contact.getAvatar().get().getInputStream());
+                WriteStream(contact.Avatar.InputStream);
             }
         }
 
-        private void writeContactDetails(DeviceContact contact)// throws IOException
+        private void WriteContactDetails(DeviceContact contact)
         {
-            //SignalServiceProtos.ContactDetails.Builder contactDetails = SignalServiceProtos.ContactDetails.CreateBuilder();
-            //contactDetails.SetNumber(contact.getNumber());
+            ContactDetails contactDetails = new ContactDetails();
 
-            /*if (contact.getName().HasValue)
+            if (contact.Address.Uuid.HasValue)
             {
-                contactDetails.SetName(contact.getName().ForceGetValue());
+                contactDetails.Uuid = contact.Address.Uuid.Value.ToString();
             }
 
-            if (contact.getAvatar().HasValue)
+            if (contact.Address.GetNumber() != null)
             {
-                SignalServiceProtos.ContactDetails.Avatar.Builder avatarBuilder = ContactDetails.Avatar.CreateBuilder();
-                avatarBuilder.setContentType(contact.getAvatar().ForceGetValue().getContentType());
-                avatarBuilder.setLength((int)contact.getAvatar().ForceGetValue().getLength());
-                contactDetails.SetAvatar(avatarBuilder);
+                contactDetails.Number = contact.Address.GetNumber();
             }
 
-            byte[] serializedContactDetails = contactDetails.Build().ToByteArray();
+            if (contact.Name != null)
+            {
+                contactDetails.Name = contact.Name;
+            }
 
-            writeVarint32(serializedContactDetails.Length);
-            output.write(serializedContactDetails);*/
-            throw new NotImplementedException();
+            if (contact.Avatar != null)
+            {
+                ContactDetails.Types.Avatar avatarBuilder = new ContactDetails.Types.Avatar();
+                avatarBuilder.ContentType = contact.Avatar.ContentType;
+                avatarBuilder.Length = (uint)contact.Avatar.Length;
+                contactDetails.Avatar = avatarBuilder;
+            }
+
+            if (contact.Color != null)
+            {
+                contactDetails.Color = contact.Color;
+            }
+
+            if (contact.Verified != null)
+            {
+                Verified.Types.State state;
+
+                switch (contact.Verified.Verified)
+                {
+                    case VerifiedMessage.VerifiedState.Verified: state = Verified.Types.State.Verified; break;
+                    case VerifiedMessage.VerifiedState.Unverified: state = Verified.Types.State.Unverified; break;
+                    default: state = Verified.Types.State.Default; break;
+                }
+
+                Verified verifiedBuilder = new Verified()
+                {
+                    IdentityKey = ByteString.CopyFrom(contact.Verified.IdentityKey.serialize()),
+                    State = state
+                };
+
+                if (contact.Verified.Destination.Uuid.HasValue)
+                {
+                    verifiedBuilder.DestinationUuid = contact.Verified.Destination.Uuid.Value.ToString();
+                }
+
+                if (contact.Verified.Destination.GetNumber() != null)
+                {
+                    verifiedBuilder.DestinationE164 = contact.Verified.Destination.GetNumber();
+                }
+
+                contactDetails.Verified = verifiedBuilder;
+            }
+
+            if (contact.ProfileKey != null)
+            {
+                contactDetails.ProfileKey = ByteString.CopyFrom(contact.ProfileKey);
+            }
+
+            if (contact.ExpirationTimer.HasValue)
+            {
+                contactDetails.ExpireTimer = contact.ExpirationTimer.Value;
+            }
+
+            contactDetails.Blocked = contact.Blocked;
+
+            byte[] serializedContactDetails = contactDetails.ToByteArray();
+
+            WriteVarint32(serializedContactDetails.Length);
+            output.Write(serializedContactDetails, 0, serializedContactDetails.Length);
         }
     }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }
