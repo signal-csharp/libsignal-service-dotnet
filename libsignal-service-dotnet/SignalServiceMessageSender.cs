@@ -62,7 +62,7 @@ namespace libsignalservice
         /// <param name="eventListener">An optional event listener, which fires whenever sessions are
         /// setup or torn down for a recipient.</param>
         public SignalServiceMessageSender(SignalServiceConfiguration urls,
-                                       Guid uuid, string e164, string password, int deviceId,
+                                       Guid? uuid, string? e164, string password, int deviceId,
                                        SignalProtocolStore store,
                                        string userAgent,
                                        HttpClient httpClient,
@@ -70,7 +70,7 @@ namespace libsignalservice
                                        bool attachmentsV3,
                                        SignalServiceMessagePipe? pipe,
                                        SignalServiceMessagePipe? unidentifiedPipe,
-                                       IEventListener eventListener) :
+                                       IEventListener? eventListener) :
             this(urls, new StaticCredentialsProvider(uuid, e164, password, deviceId), store, userAgent, httpClient, isMultiDevice, attachmentsV3, pipe, unidentifiedPipe, eventListener)
         {
         }
@@ -557,6 +557,15 @@ namespace libsignalservice
             if (pointers.Count != 0)
             {
                 dataMessage.Attachments.AddRange(pointers);
+
+                foreach (AttachmentPointer pointer in pointers)
+                {
+                    if (pointer.AttachmentIdentifierCase == AttachmentPointer.AttachmentIdentifierOneofCase.CdnKey || pointer.CdnNumber != 0)
+                    {
+                        dataMessage.RequiredProtocolVersion = Math.Max((int)DataMessage.Types.ProtocolVersion.CdnSelectorAttachments, dataMessage.RequiredProtocolVersion);
+                        break;
+                    }
+                }
             }
 
             if (message.Body != null)
