@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Text.RegularExpressions;
+using Be.IO;
 
 namespace libsignalservice.util
 {
@@ -26,7 +27,8 @@ namespace libsignalservice.util
         public static Guid ParseOrThrow(byte[] bytes)
         {
             using MemoryStream stream = new MemoryStream(bytes);
-            using BinaryReader byteBuffer = new BinaryReader(stream);
+            // Needs to be big-endian because the Java ByteBuffer defaults to big-endian.
+            using BeBinaryReader byteBuffer = new BeBinaryReader(stream);
             long high = byteBuffer.ReadInt64();
             long low = byteBuffer.ReadInt64();
 
@@ -41,7 +43,8 @@ namespace libsignalservice.util
         public static byte[] ToByteArray(Guid uuid)
         {
             using MemoryStream stream = new MemoryStream(new byte[16]);
-            using BinaryWriter buffer = new BinaryWriter(stream);
+            // Needs to be big-endian because the Java ByteBuffer defaults to big-endian.
+            using BeBinaryWriter buffer = new BeBinaryWriter(stream);
             buffer.Write(uuid.GetMostSignificantBits());
             buffer.Write(uuid.GetLeastSignificantBits());
 

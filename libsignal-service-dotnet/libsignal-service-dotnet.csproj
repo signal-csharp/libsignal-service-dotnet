@@ -23,6 +23,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Be.IO-multi" Version="1.0.0" />
     <!-- Do not upgrade! 3.12.4 is the last version to not include System.Memory (Span) which does not work on Windows 10 Mobile. -->
     <PackageReference Include="Google.Protobuf" Version="3.12.4" />
     <PackageReference Include="Google.Protobuf.Tools" Version="3.12.4" />
