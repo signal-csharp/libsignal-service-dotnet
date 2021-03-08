@@ -33,9 +33,9 @@ namespace libsignalservice
     /// </summary>
     public class SignalServiceAccountManager
     {
-        private readonly ILogger Logger = LibsignalLogging.CreateLogger<SignalServiceAccountManager>();
+        private readonly ILogger logger = LibsignalLogging.CreateLogger<SignalServiceAccountManager>();
 
-        private static ProvisioningSocket? ProvisioningSocket;
+        private static ProvisioningSocket? provisioningSocket;
 
         private PushServiceSocket pushServiceSocket;
         private readonly Guid? userUuid;
@@ -90,7 +90,7 @@ namespace libsignalservice
             this.httpClient = httpClient;
         }
 
-        public async Task<byte[]> GetSenderCertificate(CancellationToken? token = null)
+        public async Task<byte[]> GetSenderCertificateAsync(CancellationToken? token = null)
         {
             if (token == null)
             {
@@ -110,18 +110,20 @@ namespace libsignalservice
             return await pushServiceSocket.GetSenderCertificateLegacyAsync(token);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public async Task SetPin(CancellationToken token, string pin)
+        public async Task SetPinAsync(string pin, CancellationToken? token = null)
         {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
             if (pin != null)
             {
-                await pushServiceSocket.SetPin(token, pin);
+                await pushServiceSocket.SetPinAsync(pin, token);
             }
             else
             {
-                await pushServiceSocket.RemovePin(token);
+                await pushServiceSocket.RemovePinAsync(token);
             }
         }
 
@@ -131,7 +133,7 @@ namespace libsignalservice
         /// <param name="token"></param>
         /// <returns></returns>
         /// <exception cref="IOException"></exception>
-        public async Task<Guid> GetOwnUuid(CancellationToken? token = null)
+        public async Task<Guid> GetOwnUuidAsync(CancellationToken? token = null)
         {
             if (token == null)
             {
@@ -144,18 +146,24 @@ namespace libsignalservice
         /// <summary>
         /// Register/Unregister a Google Cloud Messaging registration ID.
         /// </summary>
-        /// <param name="token">The cancellation token</param>
         /// <param name="gcmRegistrationId">The GCM id to register.  A call with an absent value will unregister.</param>
+        /// <param name="token">The cancellation token</param>
         /// <returns></returns>
-        public async Task SetGcmId(CancellationToken token,string gcmRegistrationId)// throws IOException
+        /// <exception cref="IOException"></exception>
+        public async Task SetGcmIdAsync(string gcmRegistrationId, CancellationToken? token = null)
         {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
             if (gcmRegistrationId != null)
             {
-                await pushServiceSocket.RegisterGcmId(token, gcmRegistrationId);
+                await pushServiceSocket.RegisterGcmIdAsync(gcmRegistrationId, token);
             }
             else
             {
-                await pushServiceSocket.UnregisterGcmId(token);
+                await pushServiceSocket.UnregisterGcmIdAsync(token);
             }
         }
 
@@ -164,7 +172,8 @@ namespace libsignalservice
         /// an SMS verification code to this Signal user.
         /// </summary>
         /// <returns></returns>
-        public async Task RequestSmsVerificationCode(string? captchaToken, CancellationToken? token = null)// throws IOException
+        /// <exception cref="IOException"></exception>
+        public async Task RequestSmsVerificationCodeAsync(string? captchaToken, CancellationToken? token = null)
         {
             if (token == null)
             {
@@ -179,7 +188,8 @@ namespace libsignalservice
         /// make a voice call to this Signal user.
         /// </summary>
         /// <returns></returns>
-        public async Task RequestVoiceVerificationCode(string? captchaToken, CancellationToken? token = null)// throws IOException
+        /// <exception cref="IOException"></exception>
+        public async Task RequestVoiceVerificationCodeAsync(string? captchaToken, CancellationToken? token = null)
         {
             if (token == null)
             {
@@ -194,7 +204,7 @@ namespace libsignalservice
         /// </summary>
         /// <param name="token">The cancellation token</param>
         /// <param name="verificationCode">The verification code received via SMS or Voice
-        /// <see cref="RequestSmsVerificationCode(CancellationToken)"/> and <see cref="RequestVoiceVerificationCode(CancellationToken)"/></param>
+        /// <see cref="RequestSmsVerificationCodeAsync(string, CancellationToken?)"/> and <see cref="RequestVoiceVerificationCodeAsync(string, CancellationToken?)"/></param>
         /// <param name="signalingKey">52 random bytes.  A 32 byte AES key and a 20 byte Hmac256 key, concatenated.</param>
         /// <param name="signalProtocolRegistrationId">A random 14-bit number that identifies this Signal install.
         /// This value should remain consistent across registrations for the
@@ -223,7 +233,6 @@ namespace libsignalservice
         /// <summary>
         /// Refresh account attributes with server.
         /// </summary>
-        /// <param name="token">The cancellation token</param>
         /// <param name="signalingKey">52 random bytes.  A 32 byte AES key and a 20 byte Hmac256 key, concatenated.</param>
         /// <param name="signalProtocolRegistrationId">A random 14-bit number that identifies this TextSecure install.
         /// This value should remain consistent across registrations for the same
@@ -233,26 +242,38 @@ namespace libsignalservice
         /// <param name="pin"></param>
         /// <param name="unidentifiedAccessKey"></param>
         /// <param name="unrestrictedUnidentifiedAccess"></param>
+        /// <param name="token">The cancellation token</param>
         /// <returns></returns>
-        public async Task SetAccountAttributes(CancellationToken token, string signalingKey, uint signalProtocolRegistrationId, bool fetchesMessages, string pin,
-            byte[] unidentifiedAccessKey, bool unrestrictedUnidentifiedAccess)
+        public async Task SetAccountAttributesAsync(string signalingKey, uint signalProtocolRegistrationId, bool fetchesMessages, string pin,
+            byte[] unidentifiedAccessKey, bool unrestrictedUnidentifiedAccess, CancellationToken? token = null)
         {
-            await pushServiceSocket.SetAccountAttributes(token, signalingKey, signalProtocolRegistrationId, fetchesMessages, pin,
-                unidentifiedAccessKey, unrestrictedUnidentifiedAccess);
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            await pushServiceSocket.SetAccountAttributesAsync(signalingKey, signalProtocolRegistrationId, fetchesMessages, pin,
+                unidentifiedAccessKey, unrestrictedUnidentifiedAccess, token);
         }
 
         /// <summary>
         /// Register an identity key, signed prekey, and list of one time prekeys
         /// with the server.
         /// </summary>
-        /// <param name="token">The cancellation token</param>
         /// <param name="identityKey">The client's long-term identity keypair.</param>
         /// <param name="signedPreKey">The client's signed prekey.</param>
         /// <param name="oneTimePreKeys">The client's list of one-time prekeys.</param>
+        /// <param name="token">The cancellation token</param>
         /// <returns></returns>
-        public async Task<bool> SetPreKeys(CancellationToken token, IdentityKey identityKey, SignedPreKeyRecord signedPreKey, IList<PreKeyRecord> oneTimePreKeys)//throws IOException
+        /// <exception cref="IOException"></exception>
+        public async Task<bool> SetPreKeysAsync(IdentityKey identityKey, SignedPreKeyRecord signedPreKey, IList<PreKeyRecord> oneTimePreKeys, CancellationToken? token = null)
         {
-            await pushServiceSocket.RegisterPreKeys(token, identityKey, signedPreKey, oneTimePreKeys);
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            await pushServiceSocket.RegisterPreKeysAsync(identityKey, signedPreKey, oneTimePreKeys, token);
             return true;
         }
 
@@ -260,40 +281,64 @@ namespace libsignalservice
         ///
         /// </summary>
         /// <returns>The server's count of currently available (eg. unused) prekeys for this user.</returns>
-        public async Task<int> GetPreKeysCount(CancellationToken token)// throws IOException
+        /// <exception cref="IOException"></exception>
+        public async Task<int> GetPreKeysCountAsync(CancellationToken? token = null)
         {
-            return await pushServiceSocket.GetAvailablePreKeys(token);
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            return await pushServiceSocket.GetAvailablePreKeysAsync(token);
         }
 
         /// <summary>
         /// Set the client's signed prekey.
         /// </summary>
-        /// <param name="token">The cancellation token</param>
         /// <param name="signedPreKey">The client's new signed prekey.</param>
-        public async Task SetSignedPreKey(CancellationToken token, SignedPreKeyRecord signedPreKey)// throws IOException
+        /// <param name="token">The cancellation token</param>
+        /// <exception cref="IOException"></exception>
+        public async Task SetSignedPreKeyAsync(SignedPreKeyRecord signedPreKey, CancellationToken? token = null)
         {
-            await pushServiceSocket.SetCurrentSignedPreKey(token, signedPreKey);
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            await pushServiceSocket.SetCurrentSignedPreKeyAsync(signedPreKey, token);
         }
 
         /// <summary>
         ///
         /// </summary>
         /// <returns>The server's view of the client's current signed prekey.</returns>
-        public async Task<SignedPreKeyEntity?> GetSignedPreKey(CancellationToken token)// throws IOException
+        /// <exception cref="IOException"></exception>
+        public async Task<SignedPreKeyEntity?> GetSignedPreKeyAsync(CancellationToken? token = null)
         {
-            return await pushServiceSocket.GetCurrentSignedPreKey(token);
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            return await pushServiceSocket.GetCurrentSignedPreKeyAsync(token);
         }
 
         /// <summary>
         /// Checks whether a contact is currently registered with the server
         /// </summary>
-        /// <param name="token">The cancellation token</param>
         /// <param name="e164number">The contact to check.</param>
+        /// <param name="token">The cancellation token</param>
         /// <returns>An optional ContactTokenDetails, present if registered, absent if not.</returns>
-        public async Task<ContactTokenDetails?> GetContact(CancellationToken token, string e164number)// throws IOException
+        /// <exception cref="IOException"></exception>
+        public async Task<ContactTokenDetails?> GetContactAsync(string e164number, CancellationToken? token = null)
         {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
             string contactToken = CreateDirectoryServerToken(e164number, true);
-            ContactTokenDetails? contactTokenDetails = await pushServiceSocket.GetContactTokenDetails(token, contactToken);
+            ContactTokenDetails? contactTokenDetails = await pushServiceSocket.GetContactTokenDetailsAsync(contactToken, token);
 
             if (contactTokenDetails != null)
             {
@@ -306,13 +351,18 @@ namespace libsignalservice
         /// <summary>
         /// Checks which contacts in a set are registered with the server
         /// </summary>
-        /// <param name="token">The cancellation token</param>
         /// <param name="e164numbers">The contacts to check.</param>
+        /// <param name="token">The cancellation token</param>
         /// <returns>A list of ContactTokenDetails for the registered users.</returns>
-        public async Task<List<ContactTokenDetails>> GetContacts(CancellationToken token, IList<string> e164numbers)
+        public async Task<List<ContactTokenDetails>> GetContactsAsync(IList<string> e164numbers, CancellationToken? token = null)
         {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
             IDictionary<string, string> contactTokensMap = CreateDirectoryServerTokenMap(e164numbers);
-            List<ContactTokenDetails> activeTokens = await pushServiceSocket.RetrieveDirectory(token, contactTokensMap.Keys);
+            List<ContactTokenDetails> activeTokens = await pushServiceSocket.RetrieveDirectoryAsync(contactTokensMap.Keys, token);
 
             foreach (ContactTokenDetails activeToken in activeTokens)
             {
@@ -329,6 +379,7 @@ namespace libsignalservice
             {
                 token = CancellationToken.None;
             }
+
             try
             {
                 string authorization = await pushServiceSocket.GetContactDiscoveryAuthorizationAsync(token);
@@ -375,13 +426,18 @@ namespace libsignalservice
         /// Request a UUID from the server for linking as a new device.
         /// Called by the new device.
         /// </summary>
+        /// <param name="webSocketFactory">A factory which creates websocket connection objects</param>
         /// <param name="token">A CancellationToken for the PrivisioningSocket's websocket connection</param>
-        /// /// <param name="webSocketFactory">A factory which creates websocket connection objects</param>
         /// <returns></returns>
-        public async Task<string> GetNewDeviceUuid(CancellationToken token, ISignalWebSocketFactory webSocketFactory)
+        public async Task<string> GetNewDeviceUuidAsync(ISignalWebSocketFactory webSocketFactory, CancellationToken? token = null)
         {
-            ProvisioningSocket = new ProvisioningSocket(configuration.SignalServiceUrls[0].Url, webSocketFactory, token);
-            return (await ProvisioningSocket.GetProvisioningUuid(token)).Uuid;
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            provisioningSocket = new ProvisioningSocket(configuration.SignalServiceUrls[0].Url, webSocketFactory, token);
+            return (await provisioningSocket.GetProvisioningUuidAsync(token)).Uuid;
         }
 
         /// <summary>
@@ -389,24 +445,35 @@ namespace libsignalservice
         /// Called by an already verified device.
         /// </summary>
         /// <returns>A verification code (String of 6 digits)</returns>
-        public async Task<string> GetNewDeviceVerificationCode(CancellationToken token)// throws IOException
+        /// <exception cref="IOException"></exception>
+        public async Task<string> GetNewDeviceVerificationCodeAsync(CancellationToken? token = null)
         {
-            return await pushServiceSocket.GetNewDeviceVerificationCode(token);
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            return await pushServiceSocket.GetNewDeviceVerificationCodeAsync(token);
         }
 
         /// <summary>
         /// Fetch a ProvisionMessage from the server.
         /// </summary>
-        /// <param name="token"></param>
         /// <param name="tempIdentity"></param>
+        /// <param name="token"></param>
         /// <returns></returns>
-        public async Task<SignalServiceProvisionMessage> GetProvisioningMessage(CancellationToken token, IdentityKeyPair tempIdentity)
+        public async Task<SignalServiceProvisionMessage> GetProvisioningMessageAsync(IdentityKeyPair tempIdentity, CancellationToken? token = null)
         {
-            if (ProvisioningSocket == null)
+            if (token == null)
             {
-                throw new NullReferenceException($"{nameof(ProvisioningSocket)} is null. Maybe you forgot to call GetNewDeviceUuid?");
+                token = CancellationToken.None;
             }
-            ProvisionMessage protoPm = await ProvisioningSocket.GetProvisioningMessage(token, tempIdentity);
+
+            if (provisioningSocket == null)
+            {
+                throw new NullReferenceException($"{nameof(provisioningSocket)} is null. Maybe you forgot to call GetNewDeviceUuid?");
+            }
+            ProvisionMessage protoPm = await provisioningSocket.GetProvisioningMessageAsync(tempIdentity, token);
             string provisioningCode = protoPm.ProvisioningCode;
             byte[] publicKeyBytes = protoPm.IdentityKeyPublic.ToByteArray();
             if (publicKeyBytes.Length == 32)
@@ -439,12 +506,17 @@ namespace libsignalservice
         /// <param name="regid"></param>
         /// <param name="name"></param>
         /// <returns>Device id</returns>
-        public async Task<int> FinishNewDeviceRegistration(CancellationToken token, SignalServiceProvisionMessage provisionMessage, string signalingKey, string password, bool sms, bool fetches, int regid, string name)
+        public async Task<int> FinishNewDeviceRegistrationAsync(SignalServiceProvisionMessage provisionMessage, string signalingKey, string password, bool sms, bool fetches, int regid, string name, CancellationToken? token = null)
         {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
             pushServiceSocket = new PushServiceSocket(configuration, new StaticCredentialsProvider(null, provisionMessage.Number, password, -1), userAgent, httpClient);
 
             // update credentials and pushServiceSocket to keep internal state consistent
-            int deviceId = await pushServiceSocket.FinishNewDeviceRegistration(token, provisionMessage.Code, signalingKey, sms, fetches, regid, name);
+            int deviceId = await pushServiceSocket.FinishNewDeviceRegistrationAsync(provisionMessage.Code!, signalingKey, sms, fetches, regid, name, token);
             credentials = new StaticCredentialsProvider(null, provisionMessage.Number, password, deviceId);
             pushServiceSocket = new PushServiceSocket(configuration, credentials, userAgent, httpClient);
             return deviceId;
@@ -453,19 +525,26 @@ namespace libsignalservice
         /// <summary>
         /// TODO
         /// </summary>
-        /// <param name="token"></param>
         /// <param name="deviceIdentifier"></param>
         /// <param name="deviceKey"></param>
         /// <param name="identityKeyPair"></param>
         /// <param name="profileKey"></param>
         /// <param name="code"></param>
-        public async Task AddDevice(CancellationToken token,
-            string deviceIdentifier,
+        /// <param name="token"></param>
+        /// <exception cref="InvalidKeyException"><</exception>
+        /// <exception cref="IOException"></exception>
+        public async Task AddDeviceAsync(string deviceIdentifier,
             ECPublicKey deviceKey,
             IdentityKeyPair identityKeyPair,
             byte[] profileKey,
-            string code)//throws InvalidKeyException, IOException
+            string code,
+            CancellationToken? token = null)
         {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
             ProvisioningCipher cipher = new ProvisioningCipher(deviceKey);
             ProvisionMessage message = new ProvisionMessage
             {
@@ -480,36 +559,51 @@ namespace libsignalservice
                 message.ProfileKey = ByteString.CopyFrom(profileKey);
             }
 
-            byte[] ciphertext = cipher.encrypt(message);
-            await pushServiceSocket.SendProvisioningMessage(token, deviceIdentifier, ciphertext);
+            byte[] ciphertext = cipher.Encrypt(message);
+            await pushServiceSocket.SendProvisioningMessageAsync(deviceIdentifier, ciphertext, token);
         }
 
         /// <summary>
         /// TODO
         /// </summary>
         /// <returns></returns>
-        public async Task<List<DeviceInfo>> GetDevices(CancellationToken token)
+        public async Task<List<DeviceInfo>> GetDevicesAsync(CancellationToken? token = null)
         {
-            return await pushServiceSocket.GetDevices(token);
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            return await pushServiceSocket.GetDevicesAsync(token);
         }
 
         /// <summary>
         /// TODO
         /// </summary>
-        /// <param name="token"></param>
         /// <param name="deviceId"></param>
-        public async Task RemoveDevice(CancellationToken token, long deviceId)
+        /// <param name="token"></param>
+        public async Task RemoveDeviceAsync(long deviceId, CancellationToken? token = null)
         {
-            await pushServiceSocket.RemoveDevice(token, deviceId);
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            await pushServiceSocket.RemoveDeviceAsync(deviceId, token);
         }
 
         /// <summary>
         /// TODO
         /// </summary>
         /// <returns></returns>
-        public async Task<TurnServerInfo> GetTurnServerInfo(CancellationToken token)
+        public async Task<TurnServerInfo> GetTurnServerInfoAsync(CancellationToken? token = null)
         {
-            return await this.pushServiceSocket.GetTurnServerInfo(token);
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            return await pushServiceSocket.GetTurnServerInfoAsync(token);
         }
 
         /// <summary>
@@ -518,27 +612,37 @@ namespace libsignalservice
         /// <param name="key"></param>
         /// <param name="name"></param>
         /// <param name="token"></param>
-        public async Task SetProfileName(CancellationToken token, byte[] key, string name)
+        public async Task SetProfileNameAsync(byte[] key, string? name, CancellationToken? token = null)
         {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
             if (name == null) name = "";
             string ciphertextName = Base64.EncodeBytesWithoutPadding(new ProfileCipher(key).EncryptName(Encoding.Unicode.GetBytes(name), ProfileCipher.NAME_PADDED_LENGTH));
-            await pushServiceSocket.SetProfileName(token, ciphertextName);
+            await pushServiceSocket.SetProfileNameAsync(ciphertextName, token);
         }
 
         /// <summary>
         /// TODO
         /// </summary>
-        /// <param name="token"></param>
         /// <param name="key"></param>
         /// <param name="avatar"></param>
-        public async Task SetProfileAvatar(CancellationToken token, byte[] key, StreamDetails avatar)
+        /// <param name="token"></param>
+        public async Task SetProfileAvatarAsync(byte[] key, StreamDetails? avatar, CancellationToken? token = null)
         {
-            ProfileAvatarData profileAvatarData = null;
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            ProfileAvatarData? profileAvatarData = null;
             if (avatar != null)
             {
                 profileAvatarData = new ProfileAvatarData(avatar.InputStream, avatar.Length, avatar.ContentType, new ProfileCipherOutputStreamFactory(key));
             }
-            await pushServiceSocket.SetProfileAvatar(token, profileAvatarData);
+            await pushServiceSocket.SetProfileAvatarAsync(profileAvatarData, token);
         }
 
         /// <summary>
@@ -547,7 +651,7 @@ namespace libsignalservice
         /// <param name="soTimeoutMillis"></param>
         public void SetSoTimeoutMillis(long soTimeoutMillis)
         {
-            this.pushServiceSocket.SetSoTimeoutMillis(soTimeoutMillis);
+            pushServiceSocket.SetSoTimeoutMillis(soTimeoutMillis);
         }
 
         /// <summary>
@@ -555,7 +659,7 @@ namespace libsignalservice
         /// </summary>
         public void CancelInFlightRequests()
         {
-            this.pushServiceSocket.CancelInFlightRequests();
+            pushServiceSocket.CancelInFlightRequests();
         }
 
         private string CreateDirectoryServerToken(string e164number, bool urlSafe)

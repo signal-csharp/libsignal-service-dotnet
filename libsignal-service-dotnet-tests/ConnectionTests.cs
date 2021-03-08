@@ -31,7 +31,7 @@ namespace libsignal_service_dotnet_tests
             var pushServiceSocket = new SignalServiceAccountManager(ServiceConfiguration, null, "A", "B", 1, UserAgent, Util.CreateHttpClient());
             try
             {
-                var turn = await pushServiceSocket.GetTurnServerInfo(cancelSource.Token);
+                var turn = await pushServiceSocket.GetTurnServerInfoAsync(cancelSource.Token);
             }
             catch (AuthorizationFailedException) { }
         }

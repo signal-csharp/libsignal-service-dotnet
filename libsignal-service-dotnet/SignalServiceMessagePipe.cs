@@ -22,20 +22,25 @@ namespace libsignalservice
     /// </summary>
     public class SignalServiceMessagePipe
     {
-        private readonly ILogger Logger = LibsignalLogging.CreateLogger<SignalServiceMessagePipe>();
-        private readonly ISignalWebSocketFactory SignalWebSocketFactory;
-        private readonly SignalWebSocketConnection Websocket;
-        private readonly ICredentialsProvider? CredentialsProvider;
-        private CancellationToken Token;
+        private readonly ILogger logger = LibsignalLogging.CreateLogger<SignalServiceMessagePipe>();
+        private readonly ISignalWebSocketFactory signalWebSocketFactory;
+        private readonly SignalWebSocketConnection websocket;
+        private readonly ICredentialsProvider? credentialsProvider;
+        private CancellationToken token;
 
-        internal SignalServiceMessagePipe(CancellationToken token, SignalWebSocketConnection websocket,
-            ICredentialsProvider? credentialsProvider, ISignalWebSocketFactory webSocketFactory)
+        internal SignalServiceMessagePipe(SignalWebSocketConnection websocket,
+            ICredentialsProvider? credentialsProvider, ISignalWebSocketFactory webSocketFactory, CancellationToken? token = null)
         {
-            Logger.LogTrace("SignalServiceMessagePipe()");
-            Token = token;
-            Websocket = websocket;
-            CredentialsProvider = credentialsProvider;
-            SignalWebSocketFactory = webSocketFactory;
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            logger.LogTrace("SignalServiceMessagePipe()");
+            this.token = token.Value;
+            this.websocket = websocket;
+            this.credentialsProvider = credentialsProvider;
+            signalWebSocketFactory = webSocketFactory;
         }
 
         /// <summary>
@@ -44,8 +49,8 @@ namespace libsignalservice
         /// <returns>Task</returns>
         public async Task Connect()
         {
-            Logger.LogTrace("Connecting to message pipe");
-            await Websocket.Connect();
+            logger.LogTrace("Connecting to message pipe");
+            await websocket.Connect();
         }
 
         /// <summary>
@@ -54,12 +59,12 @@ namespace libsignalservice
         /// <param name="callback"></param>
         public async Task ReadBlocking(IMessagePipeCallback callback)
         {
-            Logger.LogTrace("ReadBlocking()");
-            if (CredentialsProvider == null)
+            logger.LogTrace("ReadBlocking()");
+            if (credentialsProvider == null)
             {
                 throw new ArgumentException("You can't read messages if you haven't specified credentials");
             }
-            WebSocketRequestMessage request = Websocket.ReadRequestBlocking();
+            WebSocketRequestMessage request = websocket.ReadRequestBlocking();
 
             if (IsSignalServiceEnvelope(request))
             {
@@ -67,26 +72,26 @@ namespace libsignalservice
                 WebSocketResponseMessage response = CreateWebSocketResponse(request);
                 try
                 {
-                    Logger.LogDebug("Calling callback with message {0}", request.Id);
+                    logger.LogDebug("Calling callback with message {0}", request.Id);
                     await callback.OnMessage(message);
                 }
                 finally
                 {
-                    if (!Token.IsCancellationRequested)
+                    if (!token.IsCancellationRequested)
                     {
-                        Logger.LogDebug("Confirming message {0}", request.Id);
-                        Websocket.SendResponse(response);
+                        logger.LogDebug("Confirming message {0}", request.Id);
+                        websocket.SendResponse(response);
                     }
                 }
             }
             else if (IsPipeEmptyMessage(request))
             {
-                Logger.LogInformation("Calling callback with SignalServiceMessagePipeEmptyMessage");
+                logger.LogInformation("Calling callback with SignalServiceMessagePipeEmptyMessage");
                 await callback.OnMessage(new SignalServiceMessagePipeEmptyMessage());
             }
             else
             {
-                Logger.LogWarning("Unknown request: {0} {1}", request.Verb, request.Path);
+                logger.LogWarning("Unknown request: {0} {1}", request.Verb, request.Path);
             }
         }
 
@@ -98,7 +103,7 @@ namespace libsignalservice
         /// <returns></returns>
         public async Task<SendMessageResponse> Send(OutgoingPushMessageList list, UnidentifiedAccess? unidentifiedAccess)
         {
-            Logger.LogTrace("Send()");
+            logger.LogTrace("Send()");
             var headers = new List<string>()
             {
                 "content-type:application/json"
@@ -115,7 +120,7 @@ namespace libsignalservice
                 Body = ByteString.CopyFrom(Encoding.UTF8.GetBytes(JsonUtil.ToJson(list)))
             };
             requestmessage.Headers.AddRange(headers);
-            var sendTask = (await Websocket.SendRequest(requestmessage)).Task;
+            var sendTask = (await websocket.SendRequest(requestmessage)).Task;
             var timerCancelSource = new CancellationTokenSource();
             if (await Task.WhenAny(sendTask, Task.Delay(10*1000, timerCancelSource.Token)) == sendTask)
             {
@@ -131,7 +136,7 @@ namespace libsignalservice
             }
             else
             {
-                Logger.LogError("Sending message {0} failed: timeout", requestmessage.Id);
+                logger.LogError("Sending message {0} failed: timeout", requestmessage.Id);
                 throw new IOException("timeout reached while waiting for confirmation");
             }
         }
@@ -144,7 +149,7 @@ namespace libsignalservice
         /// <returns></returns>
         public async Task<SignalServiceProfile> GetProfile(SignalServiceAddress address, UnidentifiedAccess? unidentifiedAccess)
         {
-            Logger.LogTrace("GetProfile()");
+            logger.LogTrace("GetProfile()");
             var headers = new List<string>()
             {
                 "content-type:application/json"
@@ -160,7 +165,7 @@ namespace libsignalservice
                 Path = $"/v1/profile/{address.GetIdentifier()}"
             };
 
-            var sendTask = (await Websocket.SendRequest(requestMessage)).Task;
+            var sendTask = (await websocket.SendRequest(requestMessage)).Task;
             var timerCancelSource = new CancellationTokenSource();
             if (await Task.WhenAny(sendTask, Task.Delay(TimeSpan.FromSeconds(10), timerCancelSource.Token)) == sendTask)
             {
@@ -192,7 +197,7 @@ namespace libsignalservice
                 Path = "/v2/attachments/form/upload"
             };
 
-            var sendTask = (await Websocket.SendRequest(requestMessage)).Task;
+            var sendTask = (await websocket.SendRequest(requestMessage)).Task;
             var timerCancelSource = new CancellationTokenSource();
             if (await Task.WhenAny(sendTask, Task.Delay(TimeSpan.FromSeconds(10), timerCancelSource.Token)) == sendTask)
             {
@@ -225,7 +230,7 @@ namespace libsignalservice
                 Path = "/v3/attachments/form/upload"
             };
 
-            var sendTask = (await Websocket.SendRequest(requestMessage)).Task;
+            var sendTask = (await websocket.SendRequest(requestMessage)).Task;
             var timerCancelSource = new CancellationTokenSource();
             if (await Task.WhenAny(sendTask, Task.Delay(TimeSpan.FromSeconds(10), timerCancelSource.Token)) == sendTask)
             {
@@ -249,7 +254,7 @@ namespace libsignalservice
         /// </summary>
         public void Shutdown()
         {
-            Websocket.Disconnect();
+            websocket.Disconnect();
         }
 
         private bool IsSignalServiceEnvelope(WebSocketRequestMessage message)

@@ -1,15 +1,14 @@
+using System;
+using System.IO;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using Google.Protobuf;
 using libsignal;
 using libsignal.ecc;
 using libsignal.kdf;
 using libsignalservice.push;
 using libsignalservice.util;
-
-using System;
-using System.IO;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace libsignalservice.crypto
 {
@@ -43,13 +42,13 @@ namespace libsignalservice.crypto
             byte[] mac = new byte[32];
             Array.Copy(joined, joined.Length - 32, mac, 0, 32);
 
-            verifyMac(parts[1], ivAndCiphertext, mac);
+            VerifyMac(parts[1], ivAndCiphertext, mac);
             return ProvisionMessage.Parser.ParseFrom(Decrypt(parts[0], iv, ciphertext));
         }
 
-        private void verifyMac(byte[] key, byte[] message, byte[] theirMac)
+        private void VerifyMac(byte[] key, byte[] message, byte[] theirMac)
         {
-            byte[] ourMac = getMac(key, message);
+            byte[] ourMac = GetMac(key, message);
             if (!ourMac.SequenceEqual(theirMac))
             {
                 throw new Exception("Invalid MAC on provision message!");
@@ -75,7 +74,7 @@ namespace libsignalservice.crypto
             }
         }
 
-        public byte[] encrypt(ProvisionMessage message)// throws InvalidKeyException
+        public byte[] Encrypt(ProvisionMessage message)// throws InvalidKeyException
         {
             ECKeyPair ourKeyPair = Curve.generateKeyPair();
             byte[] sharedSecret = Curve.calculateAgreement(theirPublicKey, ourKeyPair.getPrivateKey());
@@ -83,8 +82,8 @@ namespace libsignalservice.crypto
             byte[][] parts = Util.Split(derivedSecret, 32, 32);
 
             byte[] version = { 0x01 };
-            byte[] ciphertext = getCiphertext(parts[0], message.ToByteArray());
-            byte[] mac = getMac(parts[1], Util.Join(version, ciphertext));
+            byte[] ciphertext = GetCiphertext(parts[0], message.ToByteArray());
+            byte[] mac = GetMac(parts[1], Util.Join(version, ciphertext));
             byte[] body = Util.Join(version, ciphertext, mac);
 
             return new ProvisionEnvelope
@@ -94,7 +93,7 @@ namespace libsignalservice.crypto
             }.ToByteArray();
         }
 
-        private byte[] getCiphertext(byte[] key, byte[] message)
+        private byte[] GetCiphertext(byte[] key, byte[] message)
         {
             try
             {
@@ -113,7 +112,7 @@ namespace libsignalservice.crypto
             }
         }
 
-        private byte[] getMac(byte[] key, byte[] message)
+        private byte[] GetMac(byte[] key, byte[] message)
         {
             try
             {

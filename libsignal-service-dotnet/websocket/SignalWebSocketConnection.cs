@@ -12,24 +12,28 @@ namespace libsignalservice.websocket
 {
     internal class SignalWebSocketConnection
     {
-        private readonly ILogger Logger = LibsignalLogging.CreateLogger<SignalWebSocketConnection>();
-        private static readonly Object obj = new Object();
+        private readonly ILogger logger = LibsignalLogging.CreateLogger<SignalWebSocketConnection>();
 
-        private readonly BlockingCollection<WebSocketRequestMessage> IncomingRequests = new BlockingCollection<WebSocketRequestMessage>(new ConcurrentQueue<WebSocketRequestMessage>());
-        private readonly ConcurrentDictionary<ulong, TaskCompletionSource<(uint, string)>> OutgoingRequests = new ConcurrentDictionary<ulong, TaskCompletionSource<(uint, string)>>();
+        private readonly BlockingCollection<WebSocketRequestMessage> incomingRequests = new BlockingCollection<WebSocketRequestMessage>(new ConcurrentQueue<WebSocketRequestMessage>());
+        private readonly ConcurrentDictionary<ulong, TaskCompletionSource<(uint, string)>> outgoingRequests = new ConcurrentDictionary<ulong, TaskCompletionSource<(uint, string)>>();
 
-        private readonly string WsUri;
-        private readonly ICredentialsProvider? CredentialsProvider;
-        private readonly string UserAgent;
-        private readonly CancellationToken Token;
-        private ISignalWebSocket SignalWebSocket;
+        private readonly string wsUri;
+        private readonly ICredentialsProvider? credentialsProvider;
+        private readonly string userAgent;
+        private readonly CancellationToken token;
+        private ISignalWebSocket signalWebSocket;
 
-        internal SignalWebSocketConnection(CancellationToken token, string httpUri, ICredentialsProvider? credentialsProvider,
-            string userAgent, ISignalWebSocketFactory webSocketFactory)
+        internal SignalWebSocketConnection(string httpUri, ICredentialsProvider? credentialsProvider,
+            string userAgent, ISignalWebSocketFactory webSocketFactory, CancellationToken? token)
         {
-            Token = token;
-            CredentialsProvider = credentialsProvider;
-            UserAgent = userAgent;
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            this.token = token.Value;
+            this.credentialsProvider = credentialsProvider;
+            this.userAgent = userAgent;
             string uri = httpUri.Replace("https://", "wss://").Replace("http://", "ws://");
             if (credentialsProvider != null)
             {
@@ -37,24 +41,24 @@ namespace libsignalservice.websocket
                     credentialsProvider.E164!;
                 if (credentialsProvider.DeviceId == SignalServiceAddress.DEFAULT_DEVICE_ID)
                 {
-                    WsUri = uri + $"/v1/websocket/?login={identifier}&password={credentialsProvider.Password}";
+                    wsUri = uri + $"/v1/websocket/?login={identifier}&password={credentialsProvider.Password}";
                 }
                 else
                 {
-                    WsUri = uri + $"/v1/websocket/?login={identifier}.{credentialsProvider.DeviceId}&password={credentialsProvider.Password}";
+                    wsUri = uri + $"/v1/websocket/?login={identifier}.{credentialsProvider.DeviceId}&password={credentialsProvider.Password}";
                 }
             }
             else
             {
-                WsUri = uri + "/v1/websocket/";
+                wsUri = uri + "/v1/websocket/";
             }
-            UserAgent = userAgent;
-            SignalWebSocket = webSocketFactory.CreateSignalWebSocket(token, new Uri(WsUri));
-            Token.Register(() =>
+            this.userAgent = userAgent;
+            signalWebSocket = webSocketFactory.CreateSignalWebSocket(new Uri(wsUri), token);
+            this.token.Register(() =>
             {
-                SignalWebSocket.Close(1000, "Shutting down");
+                signalWebSocket.Close(1000, "Shutting down");
             });
-            SignalWebSocket.MessageReceived += SignalWebSocket_MessageReceived;
+            signalWebSocket.MessageReceived += SignalWebSocket_MessageReceived;
         }
 
         private void SignalWebSocket_MessageReceived(object sender, SignalWebSocketMessageReceivedEventArgs e)
@@ -64,11 +68,11 @@ namespace libsignalservice.websocket
                 var msg = WebSocketMessage.Parser.ParseFrom(e.Message);
                 if (msg.Type == WebSocketMessage.Types.Type.Request)
                 {
-                    IncomingRequests.Add(msg.Request);
+                    incomingRequests.Add(msg.Request);
                 }
                 else if (msg.Type == WebSocketMessage.Types.Type.Response)
                 {
-                    OutgoingRequests.TryGetValue(msg.Response.Id, out TaskCompletionSource<(uint, string)> savedRequest);
+                    outgoingRequests.TryGetValue(msg.Response.Id, out TaskCompletionSource<(uint, string)> savedRequest);
                     if (savedRequest != null)
                     {
                         Task.Run(() => {
@@ -79,18 +83,18 @@ namespace libsignalservice.websocket
             }
             catch (Exception ex)
             {
-                Logger.LogError("SignalWebSocket_MessageReceived failed: {0}\n{1}", ex.Message, ex.StackTrace);
+                logger.LogError("SignalWebSocket_MessageReceived failed: {0}\n{1}", ex.Message, ex.StackTrace);
             }
         }
 
         public async Task Connect()
         {
-            await SignalWebSocket.ConnectAsync();
+            await signalWebSocket.ConnectAsync();
         }
 
         public void Disconnect()
         {
-            Logger.LogWarning("Disconnect is not supported yet");
+            logger.LogWarning("Disconnect is not supported yet");
             throw new NotImplementedException();
         }
 
@@ -104,7 +108,7 @@ namespace libsignalservice.websocket
         /// <returns>A WebSocketRequestMessage read from the websocket's pipe</returns>
         public WebSocketRequestMessage ReadRequestBlocking()
         {
-            return IncomingRequests.Take(Token);
+            return incomingRequests.Take(token);
         }
 
         /// <summary>
@@ -120,8 +124,8 @@ namespace libsignalservice.websocket
                 Request = request
             };
             var messageSendResult = new TaskCompletionSource<(uint, string)>();
-            OutgoingRequests.AddOrUpdate(request.Id, messageSendResult, (k, v) => messageSendResult);
-            await SignalWebSocket.SendMessage(message.ToByteArray());
+            outgoingRequests.AddOrUpdate(request.Id, messageSendResult, (k, v) => messageSendResult);
+            await signalWebSocket.SendMessage(message.ToByteArray());
             return messageSendResult;
         }
 
@@ -136,7 +140,7 @@ namespace libsignalservice.websocket
                 Type = WebSocketMessage.Types.Type.Response,
                 Response = response
             };
-            SignalWebSocket.SendMessage(message.ToByteArray());
+            signalWebSocket.SendMessage(message.ToByteArray());
         }
 
         private void SendKeepAlive(CancellationToken token, object state)

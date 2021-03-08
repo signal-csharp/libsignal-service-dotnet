@@ -1359,7 +1359,7 @@ namespace libsignalservice
                     }
 
                     Logger.LogTrace("Not transmitting over pipe...");
-                    SendMessageResponse resp = await socket.SendMessage(messages, unidentifiedAccess, token);
+                    SendMessageResponse resp = await socket.SendMessageAsync(messages, unidentifiedAccess, token);
                     return SendMessageResult.NewSuccess(recipient, unidentifiedAccess != null, resp.NeedsSync);
                 }
                 catch (MismatchedDevicesException mde)
@@ -1471,17 +1471,6 @@ namespace libsignalservice
             return builder;
         }
 
-        /// <summary>
-        /// Encrypts an attachment to be uploaded
-        /// </summary>
-        /// <param name="data">The data stream of the attachment</param>
-        /// <param name="key">64 random bytes</param>
-        /// <returns>The digest and the encrypted data</returns>
-        public (byte[] digest, Stream encryptedData) EncryptAttachment(Stream data, byte[] key)
-        {
-            return socket.EncryptAttachment(data, key);
-        }
-
         private async Task<AttachmentPointer> CreateAttachmentPointerAsync(SignalServiceAttachmentStream attachment,
             CancellationToken? token = null)
         {
@@ -1548,7 +1537,7 @@ namespace libsignalservice
             {
                 try
                 {
-                    List<PreKeyBundle> preKeys = await socket.GetPreKeys(recipient, unidentifiedAccess, deviceId, token);
+                    List<PreKeyBundle> preKeys = await socket.GetPreKeysAsync(recipient, unidentifiedAccess, deviceId, token);
 
                     foreach (PreKeyBundle preKey in preKeys)
                     {
@@ -1614,7 +1603,7 @@ namespace libsignalservice
 
                 foreach (uint missingDeviceId in mismatchedDevices.MissingDevices)
                 {
-                    PreKeyBundle preKey = await socket.GetPreKey(token.Value, recipient, missingDeviceId);
+                    PreKeyBundle preKey = await socket.GetPreKeyAsync(recipient, missingDeviceId, token);
 
                     try
                     {
