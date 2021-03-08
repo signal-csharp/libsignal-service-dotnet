@@ -62,7 +62,7 @@ namespace libsignalservice
         /// <returns>A Stream that streams the plaintext attachment contents.</returns>
         /// <exception cref="IOException"></exception>
         /// <exception cref="InvalidMessageException"></exception>
-        public async Task<Stream> RetrieveAttachmentAsync(SignalServiceAttachmentPointer pointer, FileStream destination, int maxSizeBytes, CancellationToken? token = null)
+        public async Task<Stream> RetrieveAttachmentAsync(SignalServiceAttachmentPointer pointer, Stream destination, int maxSizeBytes, CancellationToken? token = null)
         {
             if (token == null)
             {
@@ -92,7 +92,7 @@ namespace libsignalservice
         /// <param name="profileKey"></param>
         /// <param name="maxSizeBytes"></param>
         /// <returns></returns>
-        public async Task<Stream> RetrieveProfileAvatarAsync(string path, FileStream destination, byte[] profileKey, int maxSizeBytes, CancellationToken? token = null)
+        public async Task<Stream> RetrieveProfileAvatarAsync(string path, Stream destination, byte[] profileKey, int maxSizeBytes, CancellationToken? token = null)
         {
             if (token == null)
             {
@@ -115,7 +115,7 @@ namespace libsignalservice
         /// <param name="token"></param>
         /// <exception cref="IOException"></exception>
         /// <exception cref="InvalidMessageException"></exception>
-        public async Task<Stream> RetrieveAttachment(SignalServiceAttachmentPointer pointer, FileStream destination, int maxSizeBytes, IProgressListener? listener, CancellationToken? token = null)
+        public async Task<Stream> RetrieveAttachment(SignalServiceAttachmentPointer pointer, Stream destination, int maxSizeBytes, IProgressListener? listener, CancellationToken? token = null)
         {
             if (token == null)
             {
@@ -127,6 +127,11 @@ namespace libsignalservice
             await Socket.RetrieveAttachmentAsync(pointer.CdnNumber, pointer.RemoteId, destination, maxSizeBytes, listener, token);
             destination.Position = 0;
             return AttachmentCipherInputStream.CreateForAttachment(destination, pointer.Size != null ? pointer.Size.Value : 0, pointer.Key, pointer.Digest);
+        }
+
+        public string RetrieveAttachmentDownloadUrl(SignalServiceAttachmentPointer pointer)
+        {
+            return Socket.RetrieveAttachmentDownloadUrl(pointer.CdnNumber, pointer.RemoteId);
         }
 
         /// <summary>

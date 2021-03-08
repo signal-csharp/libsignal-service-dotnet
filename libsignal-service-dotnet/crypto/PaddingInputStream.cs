@@ -34,7 +34,7 @@ namespace libsignalservice.crypto
         public override int Read(byte[] buffer, int offset, int count)
         {
             int result = inputStream.Read(buffer, offset, count);
-            if (result >= 0)
+            if (result > 0)
                 return result;
 
             if (paddingRemaining > 0)
@@ -43,6 +43,7 @@ namespace libsignalservice.crypto
                 paddingRemaining -= count;
                 return count;
             }
+
             return 0;
         }
 
@@ -64,13 +65,6 @@ namespace libsignalservice.crypto
         public static long GetPaddedSize(long size)
         {
             return (int)Math.Max(541, Math.Floor(Math.Pow(1.05, Math.Ceiling(Math.Log(size) / Math.Log(1.05)))));
-            //return size;
-        }
-
-        private static long GetRoundedUp(long size, long interval)
-        {
-            long multiplier = (long)Math.Ceiling(((double)size) / interval);
-            return interval * multiplier;
         }
     }
 }

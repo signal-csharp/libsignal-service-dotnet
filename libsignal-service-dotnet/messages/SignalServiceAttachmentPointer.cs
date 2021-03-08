@@ -6,7 +6,7 @@ namespace libsignalservice.messages
     /// <summary>
     /// Represents a received SignalServiceAttachment "handle."  This
     /// is a pointer to the actual attachment content, which needs to be
-    /// retrieved using <see cref="SignalServiceMessageReceiver.RetrieveAttachmentAsync(SignalServiceAttachmentPointer, FileStream, int, CancellationToken?)"/>
+    /// retrieved using <see cref="SignalServiceMessageReceiver.RetrieveAttachmentAsync(SignalServiceAttachmentPointer, Stream, int, CancellationToken?)"/>
     /// </summary>
     public class SignalServiceAttachmentPointer : SignalServiceAttachment
     {

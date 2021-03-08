@@ -504,7 +504,7 @@ namespace libsignalservice.push
             return true;
         }
 
-        public async Task RetrieveAttachmentAsync(int cdnNumber, SignalServiceAttachmentRemoteId cdnPath, FileStream destination, int maxSizeBytes, IProgressListener? listener, CancellationToken? token = null)
+        public async Task RetrieveAttachmentAsync(int cdnNumber, SignalServiceAttachmentRemoteId cdnPath, Stream destination, int maxSizeBytes, IProgressListener? listener, CancellationToken? token = null)
         {
             if (token == null)
             {
@@ -534,7 +534,7 @@ namespace libsignalservice.push
         /// <returns></returns>
         /// <exception cref="NonSuccessfulResponseCodeException"></exception>
         /// <exception cref="PushNetworkException"></exception>
-        public async Task RetrieveStickerAsync(FileStream destination, byte[] packId, int stickerId, CancellationToken? token = null)
+        public async Task RetrieveStickerAsync(Stream destination, byte[] packId, int stickerId, CancellationToken? token = null)
         {
             if (token == null)
             {
@@ -592,6 +592,22 @@ namespace libsignalservice.push
             return output.ToArray();
         }
 
+        public string RetrieveAttachmentDownloadUrl(int cdnNumber, SignalServiceAttachmentRemoteId cdnPath)
+        {
+            string path;
+            if (cdnPath.V2.HasValue)
+            {
+                path = string.Format(new CultureInfo("en-US"), ATTACHMENT_ID_DOWNLOAD_PATH, cdnPath.V2.Value);
+            }
+            else
+            {
+                path = string.Format(new CultureInfo("en-US"), ATTACHMENT_KEY_DOWNLOAD_PATH, cdnPath.V3);
+            }
+
+            ConnectionHolder connectionHolder = GetRandom(cdnNumber == 2 ? cdn2Clients : cdnClients);
+            return $"{connectionHolder.Url}/{path}";
+        }
+
         public async Task<SignalServiceProfile> RetrieveProfile(SignalServiceAddress target, UnidentifiedAccess? unidentifiedAccess, CancellationToken? token = null)
         {
             if (token == null)
@@ -610,7 +626,7 @@ namespace libsignalservice.push
             }
         }
 
-        public async Task RetrieveProfileAvatarAsync(string path, FileStream destination, int maxSizeByzes, CancellationToken? token = null)
+        public async Task RetrieveProfileAvatarAsync(string path, Stream destination, int maxSizeByzes, CancellationToken? token = null)
         {
             if (token == null)
             {
@@ -662,7 +678,7 @@ namespace libsignalservice.push
         /// <returns></returns>
         /// <exception cref="PushNetworkException"></exception>
         /// <exception cref="NonSuccessfulResponseCodeException"></exception>
-        private async Task DownloadFromCdnAsync(FileStream destination, int cdnNumber, string path, long maxSizeBytes, IProgressListener? listener, CancellationToken? token = null)
+        private async Task DownloadFromCdnAsync(Stream destination, int cdnNumber, string path, long maxSizeBytes, IProgressListener? listener, CancellationToken? token = null)
         {
             if (token == null)
             {
@@ -788,6 +804,15 @@ namespace libsignalservice.push
 
             ConnectionHolder connectionHolder = GetRandom(cdnClients);
 
+            MemoryStream tmpStream = new MemoryStream();
+            DigestingOutputStream outputStream = outputStreamFactory.CreateFor(tmpStream);
+            data.CopyTo(outputStream);
+            outputStream.Flush();
+            tmpStream.Position = 0;
+            StreamContent streamContent = new StreamContent(tmpStream);
+
+            // Passing this to requestBody currently fails due to a bug in HttpClient when using UWP streams. This
+            // isn't a huge deal though because we will switch to all V3 attachments in a later commit.
             DigestingRequestBody file = new DigestingRequestBody(data, outputStreamFactory, contentType, length, progressListener, token);
 
             MultipartFormDataContent requestBody = new MultipartFormDataContent();
@@ -799,7 +824,7 @@ namespace libsignalservice.push
             requestBody.Add(new StringContent(credential), "x-amz-credential");
             requestBody.Add(new StringContent(date), "x-amz-date");
             requestBody.Add(new StringContent(signature), "x-amz-signature");
-            requestBody.Add(file, "file", "file");
+            requestBody.Add(streamContent, "file", "file");
 
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, new Uri($"{connectionHolder.Url}/{path}"));
             request.Content = requestBody;
@@ -820,7 +845,7 @@ namespace libsignalservice.push
                 throw new PushNetworkException(ex);
             }
 
-            if (response.IsSuccessStatusCode) return file.GetTransmittedDigest();
+            if (response.IsSuccessStatusCode) return outputStream.GetTransmittedDigest();
             else throw new NonSuccessfulResponseCodeException((int)response.StatusCode, $"Response: {await response.Content.ReadAsStringAsync()}");
         }
 
@@ -846,13 +871,17 @@ namespace libsignalservice.push
 
             UriBuilder urlBuilder = new UriBuilder(endpointUrl.Scheme, endpointUrl.Host, endpointUrl.Port);
             urlBuilder.Path = Path.Combine(endpointUrl.LocalPath, signedHttpUrl.LocalPath.Substring(1));
-            urlBuilder.Query = signedHttpUrl.Query;
+            urlBuilder.Query = signedHttpUrl.Query.Substring(1); // for some reason the "?" is already on the Query so setting the urlBuilder.Query will cause the url to have 2 ??s
             urlBuilder.Fragment = signedHttpUrl.Fragment;
 
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, urlBuilder.Uri);
+            request.Content = new StringContent("");
             foreach (var header in headers)
             {
-                request.Headers.Add(header.Key, header.Value);
+                if (header.Key.ToLower() != "host")
+                {
+                    request.Headers.Add(header.Key, header.Value);
+                }
             }
 
             if (connectionHolder.HostHeader != null)
@@ -903,7 +932,7 @@ namespace libsignalservice.push
 
             try
             {
-                response = await httpClient.SendAsync(request);
+                response = await httpClient.SendAsync(request, token.Value);
             }
             catch (Exception ex)
             {
@@ -1552,14 +1581,5 @@ namespace libsignalservice.push
             Url = url;
             HostHeader = hostHeader;
         }
-    }
-
-    internal class AttachmentDescriptor
-    {
-        [JsonProperty("id")]
-        public ulong Id { get; set; }
-
-        [JsonProperty("location")]
-        public string? Location { get; set; }
     }
 }

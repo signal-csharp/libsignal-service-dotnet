@@ -279,7 +279,7 @@ namespace libsignalservice
         ///
         /// </summary>
         /// <returns>The server's view of the client's current signed prekey.</returns>
-        public async Task<SignedPreKeyEntity> GetSignedPreKey(CancellationToken token)// throws IOException
+        public async Task<SignedPreKeyEntity?> GetSignedPreKey(CancellationToken token)// throws IOException
         {
             return await pushServiceSocket.GetCurrentSignedPreKey(token);
         }
