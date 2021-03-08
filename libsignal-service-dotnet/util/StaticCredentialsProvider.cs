@@ -6,10 +6,10 @@ namespace libsignalservice.util
     {
         public Guid? Uuid { get; }
         public string? E164 { get; }
-        public string Password { get; }
+        public string? Password { get; }
         public int DeviceId { get; }
 
-        public StaticCredentialsProvider(Guid? uuid, string? e164, string password, int deviceId)
+        public StaticCredentialsProvider(Guid? uuid, string? e164, string? password, int deviceId)
         {
             Uuid = uuid;
             E164 = e164;
