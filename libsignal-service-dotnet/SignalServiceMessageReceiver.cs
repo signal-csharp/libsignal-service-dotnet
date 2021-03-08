@@ -23,13 +23,10 @@ namespace libsignalservice
     /// </summary>
     public class SignalServiceMessageReceiver
     {
-        private const int BLOCK_SIZE = 16;
-        private const int CIPHER_KEY_SIZE = 32;
-        private const int MAC_KEY_SIZE = 32;
-        private readonly PushServiceSocket Socket;
-        private readonly SignalServiceConfiguration Urls;
-        private readonly ICredentialsProvider CredentialsProvider;
-        private readonly string UserAgent;
+        private readonly PushServiceSocket socket;
+        private readonly SignalServiceConfiguration urls;
+        private readonly ICredentialsProvider credentialsProvider;
+        private readonly string userAgent;
 
         public SignalServiceMessageReceiver(SignalServiceConfiguration urls,
             Guid uuid, string e164, string password, int deviceId,
@@ -46,10 +43,10 @@ namespace libsignalservice
         /// <param name="userAgent"></param>
         public SignalServiceMessageReceiver(SignalServiceConfiguration urls, ICredentialsProvider credentials, string userAgent, HttpClient httpClient)
         {
-            Urls = urls;
-            CredentialsProvider = credentials;
-            Socket = new PushServiceSocket(urls, credentials, userAgent, httpClient);
-            UserAgent = userAgent;
+            this.urls = urls;
+            credentialsProvider = credentials;
+            socket = new PushServiceSocket(urls, credentials, userAgent, httpClient);
+            this.userAgent = userAgent;
         }
 
         /// <summary>
@@ -69,19 +66,24 @@ namespace libsignalservice
                 token = CancellationToken.None;
             }
 
-            return await RetrieveAttachment(pointer, destination, maxSizeBytes, null, token);
+            return await RetrieveAttachmentAsync(pointer, destination, maxSizeBytes, null, token);
         }
 
         /// <summary>
         /// TODO
         /// </summary>
-        /// <param name="token"></param>
         /// <param name="address"></param>
         /// <param name="unidentifiedAccess"></param>
+        /// <param name="token"></param>
         /// <returns></returns>
-        public async Task<SignalServiceProfile> RetrieveProfile(CancellationToken token, SignalServiceAddress address, UnidentifiedAccess? unidentifiedAccess)
+        public async Task<SignalServiceProfile> RetrieveProfileAsync(SignalServiceAddress address, UnidentifiedAccess? unidentifiedAccess, CancellationToken? token = null)
         {
-            return await Socket.RetrieveProfile(address, unidentifiedAccess, token);
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            return await socket.RetrieveProfileAsync(address, unidentifiedAccess, token);
         }
 
         /// <summary>
@@ -91,6 +93,7 @@ namespace libsignalservice
         /// <param name="destination"></param>
         /// <param name="profileKey"></param>
         /// <param name="maxSizeBytes"></param>
+        /// <param name="token"></param>
         /// <returns></returns>
         public async Task<Stream> RetrieveProfileAvatarAsync(string path, Stream destination, byte[] profileKey, int maxSizeBytes, CancellationToken? token = null)
         {
@@ -99,7 +102,7 @@ namespace libsignalservice
                 token = CancellationToken.None;
             }
 
-            await Socket.RetrieveProfileAvatarAsync(path, destination, maxSizeBytes, token);
+            await socket.RetrieveProfileAvatarAsync(path, destination, maxSizeBytes, token);
             destination.Seek(0, SeekOrigin.Begin);
             return new ProfileCipherInputStream(destination, profileKey);
         }
@@ -115,7 +118,7 @@ namespace libsignalservice
         /// <param name="token"></param>
         /// <exception cref="IOException"></exception>
         /// <exception cref="InvalidMessageException"></exception>
-        public async Task<Stream> RetrieveAttachment(SignalServiceAttachmentPointer pointer, Stream destination, int maxSizeBytes, IProgressListener? listener, CancellationToken? token = null)
+        public async Task<Stream> RetrieveAttachmentAsync(SignalServiceAttachmentPointer pointer, Stream destination, int maxSizeBytes, IProgressListener? listener, CancellationToken? token = null)
         {
             if (token == null)
             {
@@ -124,14 +127,14 @@ namespace libsignalservice
 
             if (pointer.Digest == null) throw new InvalidMessageException("No attachment digest!");
 
-            await Socket.RetrieveAttachmentAsync(pointer.CdnNumber, pointer.RemoteId, destination, maxSizeBytes, listener, token);
+            await socket.RetrieveAttachmentAsync(pointer.CdnNumber, pointer.RemoteId, destination, maxSizeBytes, listener, token);
             destination.Position = 0;
             return AttachmentCipherInputStream.CreateForAttachment(destination, pointer.Size != null ? pointer.Size.Value : 0, pointer.Key, pointer.Digest);
         }
 
         public string RetrieveAttachmentDownloadUrl(SignalServiceAttachmentPointer pointer)
         {
-            return Socket.RetrieveAttachmentDownloadUrl(pointer.CdnNumber, pointer.RemoteId);
+            return socket.RetrieveAttachmentDownloadUrl(pointer.CdnNumber, pointer.RemoteId);
         }
 
         /// <summary>
@@ -146,7 +149,12 @@ namespace libsignalservice
         /// <exception cref="InvalidMessageException"></exception>
         public async Task<Stream> RetrieveStickerAsync(byte[] packId, byte[] packKey, int stickerId, CancellationToken? token = null)
         {
-            byte[] data = await Socket.RetrieveStickerAsync(packId, stickerId, token);
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            byte[] data = await socket.RetrieveStickerAsync(packId, stickerId, token);
             return AttachmentCipherInputStream.CreateForStickerData(data, packKey);
         }
 
@@ -161,7 +169,12 @@ namespace libsignalservice
         /// <exception cref="InvalidMessageException"></exception>
         public async Task<SignalServiceStickerManifest> RetrieveStickerManifestAsync(byte[] packId, byte[] packKey, CancellationToken? token = null)
         {
-            byte[] manifestBytes = await Socket.RetrieveStickerManifestAsync(packId, token);
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            byte[] manifestBytes = await socket.RetrieveStickerManifestAsync(packId, token);
 
             Stream cipherStream = AttachmentCipherInputStream.CreateForStickerData(manifestBytes, packKey);
             MemoryStream outputStream = new MemoryStream();
@@ -186,11 +199,16 @@ namespace libsignalservice
         /// Callers must call <see cref="SignalServiceMessagePipe.Shutdown()"/> when finished with the pipe.
         /// </summary>
         /// <returns>A SignalServiceMessagePipe for receiving Signal Service messages.</returns>
-        public async Task<SignalServiceMessagePipe> CreateMessagePipe(CancellationToken token, ISignalWebSocketFactory webSocketFactory)
+        public async Task<SignalServiceMessagePipe> CreateMessagePipeAsync(ISignalWebSocketFactory webSocketFactory, CancellationToken? token = null)
         {
-            SignalWebSocketConnection webSocket = new SignalWebSocketConnection(token, Urls.SignalServiceUrls[0].Url,
-                CredentialsProvider, UserAgent, webSocketFactory);
-            var messagePipe = new SignalServiceMessagePipe(token, webSocket, CredentialsProvider, webSocketFactory);
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            SignalWebSocketConnection webSocket = new SignalWebSocketConnection(urls.SignalServiceUrls[0].Url,
+                credentialsProvider, userAgent, webSocketFactory, token);
+            var messagePipe = new SignalServiceMessagePipe(webSocket, credentialsProvider, webSocketFactory, token);
             await messagePipe.Connect();
             return messagePipe;
         }
@@ -201,19 +219,29 @@ namespace libsignalservice
         /// Callers must call <see cref="SignalServiceMessagePipe.Shutdown()"/> when finished with the pipe.
         /// </summary>
         /// <returns>A SignalServiceMessagePipe for receiving Signal Service messages.</returns>
-        public async Task<SignalServiceMessagePipe> CreateUnidentifiedMessagePipe(CancellationToken token, ISignalWebSocketFactory webSocketFactory)
+        public async Task<SignalServiceMessagePipe> CreateUnidentifiedMessagePipeAsync(ISignalWebSocketFactory webSocketFactory, CancellationToken? token = null)
         {
-            SignalWebSocketConnection webSocket = new SignalWebSocketConnection(token, Urls.SignalServiceUrls[0].Url,
-                null, UserAgent, webSocketFactory);
-            var messagePipe = new SignalServiceMessagePipe(token, webSocket, CredentialsProvider, webSocketFactory);
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            SignalWebSocketConnection webSocket = new SignalWebSocketConnection(urls.SignalServiceUrls[0].Url,
+                null, userAgent, webSocketFactory, token);
+            var messagePipe = new SignalServiceMessagePipe(webSocket, credentialsProvider, webSocketFactory, token);
             await messagePipe.Connect();
             return messagePipe;
         }
 
-        public async Task<List<SignalServiceEnvelope>> RetrieveMessages(CancellationToken token, IMessagePipeCallback callback)
+        public async Task<List<SignalServiceEnvelope>> RetrieveMessagesAsync(IMessagePipeCallback callback, CancellationToken? token = null)
         {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
             List<SignalServiceEnvelope> results = new List<SignalServiceEnvelope>();
-            List<SignalServiceEnvelopeEntity> entities = await Socket.GetMessages(token);
+            List<SignalServiceEnvelopeEntity> entities = await socket.GetMessagesAsync(token);
 
             foreach (SignalServiceEnvelopeEntity entity in entities)
             {
@@ -237,8 +265,8 @@ namespace libsignalservice
                 await callback.OnMessage(envelope);
                 results.Add(envelope);
 
-                if (envelope.HasUuid()) await Socket.AcknowledgeMessage(token, envelope.GetUuid());
-                else await Socket.AcknowledgeMessage(token, entity.SourceE164!, entity.Timestamp);
+                if (envelope.HasUuid()) await socket.AcknowledgeMessageAsync(envelope.GetUuid(), token);
+                else await socket.AcknowledgeMessageAsync(entity.SourceE164!, entity.Timestamp, token);
             }
             return results;
         }

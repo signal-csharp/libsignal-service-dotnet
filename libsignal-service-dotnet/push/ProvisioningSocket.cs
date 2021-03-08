@@ -1,54 +1,72 @@
-using Coe.WebSocketWrapper;
+using System;
+using System.Collections.Concurrent;
+using System.Threading;
+using System.Threading.Tasks;
 using libsignalservice.crypto;
 using libsignalservice.push;
 using libsignalservice.websocket;
-using System;
-using System.Collections.Concurrent;
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace libsignal.push
 {
     internal class ProvisioningSocket
     {
-        private ISignalWebSocket SignalWebSocket;
-        private readonly string WsUri;
-        private readonly BlockingCollection<WebSocketMessage> IncomingRequests = new BlockingCollection<WebSocketMessage>(new ConcurrentQueue<WebSocketMessage>());
+        private ISignalWebSocket signalWebSocket;
+        private readonly string wsUri;
+        private readonly BlockingCollection<WebSocketMessage> incomingRequests = new BlockingCollection<WebSocketMessage>(new ConcurrentQueue<WebSocketMessage>());
 
-        public ProvisioningSocket(string httpUri, ISignalWebSocketFactory webSocketFactory, CancellationToken token)
+        public ProvisioningSocket(string httpUri, ISignalWebSocketFactory webSocketFactory, CancellationToken? token = null)
         {
-            WsUri = httpUri.Replace("https://", "wss://")
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            wsUri = httpUri.Replace("https://", "wss://")
                 .Replace("http://", "ws://") + "/v1/websocket/provisioning/";
-            SignalWebSocket = webSocketFactory.CreateSignalWebSocket(token, new Uri(WsUri));
-            SignalWebSocket.MessageReceived += SignalWebSocket_MessageReceived;
+            signalWebSocket = webSocketFactory.CreateSignalWebSocket(new Uri(wsUri), token);
+            signalWebSocket.MessageReceived += SignalWebSocket_MessageReceived;
         }
 
         private void SignalWebSocket_MessageReceived(object sender, SignalWebSocketMessageReceivedEventArgs e)
         {
             var msg = WebSocketMessage.Parser.ParseFrom(e.Message);
-            IncomingRequests.Add(msg);
+            incomingRequests.Add(msg);
         }
 
-        private async Task<WebSocketMessage> TakeAsync(CancellationToken token)
+        private async Task<WebSocketMessage> TakeAsync(CancellationToken? token = null)
         {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
             return await Task.Run(() =>
             {
-                return IncomingRequests.Take(token); //TODO don't block
+                return incomingRequests.Take(token.Value); //TODO don't block
             });
         }
 
-        public async Task<ProvisioningUuid> GetProvisioningUuid(CancellationToken token)
+        public async Task<ProvisioningUuid> GetProvisioningUuidAsync(CancellationToken? token = null)
         {
-            await SignalWebSocket.ConnectAsync();
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
+            await signalWebSocket.ConnectAsync();
             var msg = await TakeAsync(token);
             return ProvisioningUuid.Parser.ParseFrom(msg.Request.Body);
         }
 
-        public async Task<ProvisionMessage> GetProvisioningMessage(CancellationToken token, IdentityKeyPair tmpIdentity)
+        public async Task<ProvisionMessage> GetProvisioningMessageAsync(IdentityKeyPair tmpIdentity, CancellationToken? token = null)
         {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
             var msg = await TakeAsync(token);
-            return new ProvisioningCipher(null).Decrypt(tmpIdentity, msg.Request.Body.ToByteArray());
+            return new ProvisioningCipher(null!).Decrypt(tmpIdentity, msg.Request.Body.ToByteArray());
         }
     }
 }
