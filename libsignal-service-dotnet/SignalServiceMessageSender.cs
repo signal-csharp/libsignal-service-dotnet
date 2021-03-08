@@ -256,7 +256,7 @@ namespace libsignalservice
             this.attachmentsV3 = attachmentsV3;
         }
 
-        public async Task<SignalServiceAttachmentPointer> UploadAttachmentV2Async(SignalServiceAttachmentStream attachment,
+        public async Task<SignalServiceAttachmentPointer> UploadAttachmentAsync(SignalServiceAttachmentStream attachment,
             CancellationToken? token = null)
         {
             if (token == null)
@@ -267,7 +267,7 @@ namespace libsignalservice
             byte[] attachmentKey = Util.GetSecretBytes(64);
             long paddedLength = PaddingInputStream.GetPaddedSize(attachment.Length);
             Stream dataStream = new PaddingInputStream(attachment.InputStream, attachment.Length);
-            long ciphertextLength = AttachmentCipherInputStream.GetCiphertextLength(paddedLength);
+            long ciphertextLength = AttachmentCipherOutputStream.GetCiphertextLength(paddedLength);
             PushAttachmentData attachmentData = new PushAttachmentData(attachment.ContentType,
                                                                        dataStream,
                                                                        ciphertextLength,
@@ -1415,9 +1415,13 @@ namespace libsignalservice
                 CdnNumber = (uint)attachment.CdnNumber,
                 ContentType = attachment.ContentType,
                 Key = ByteString.CopyFrom(attachment.Key),
-                Digest = ByteString.CopyFrom(attachment.Digest),
-                Size = (uint)attachment.Size
+                Digest = ByteString.CopyFrom(attachment.Digest)
             };
+
+            if (attachment.Size.HasValue)
+            {
+                builder.Size = attachment.Size.Value;
+            }
 
             if (attachment.RemoteId.V2.HasValue)
             {
@@ -1486,7 +1490,7 @@ namespace libsignalservice
                 token = CancellationToken.None;
             }
 
-            return CreateAttachmentPointer(await UploadAttachmentV2Async(attachment, token));
+            return CreateAttachmentPointer(await UploadAttachmentAsync(attachment, token));
         }
 
         private async Task<OutgoingPushMessageList> GetEncryptedMessagesAsync(PushServiceSocket socket,
