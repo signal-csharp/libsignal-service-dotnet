@@ -199,7 +199,7 @@ namespace libsignalservice
             long timestamp = message.Timestamp;
             SendMessageResult result = await SendMessageAsync(recipient, unidentifiedAccess?.TargetUnidentifiedAccess, timestamp, content, false, token);
 
-            if ((result.Success != null && result.Success.NeedsSync) || (unidentifiedAccess != null && isMultiDevice))
+            if (result.Success != null && result.Success.NeedsSync)
             {
                 byte[] syncMessage = CreateMultiDeviceSentTranscriptContent(content, recipient, (ulong)timestamp, new List<SendMessageResult>() { result }, false);
                 await SendMessageAsync(localAddress, unidentifiedAccess?.SelfUnidentifiedAccess, timestamp, syncMessage, false, token);
@@ -1364,7 +1364,7 @@ namespace libsignalservice
                         {
                             logger.LogTrace("Transmitting over pipe...");
                             var response = await this.pipe.SendAsync(messages, null);
-                            return SendMessageResult.NewSuccess(recipient, false, response.NeedsSync);
+                            return SendMessageResult.NewSuccess(recipient, false, response.NeedsSync || isMultiDevice);
                         }
                         catch (Exception e)
                         {
@@ -1374,12 +1374,12 @@ namespace libsignalservice
                     else if (unidentifiedPipe != null && unidentifiedAccess != null)
                     {
                         var response = await unidentifiedPipe.SendAsync(messages, unidentifiedAccess);
-                        return SendMessageResult.NewSuccess(recipient, true, response.NeedsSync);
+                        return SendMessageResult.NewSuccess(recipient, true, response.NeedsSync || isMultiDevice);
                     }
 
                     logger.LogTrace("Not transmitting over pipe...");
                     SendMessageResponse resp = await socket.SendMessageAsync(messages, unidentifiedAccess, token);
-                    return SendMessageResult.NewSuccess(recipient, unidentifiedAccess != null, resp.NeedsSync);
+                    return SendMessageResult.NewSuccess(recipient, unidentifiedAccess != null, resp.NeedsSync || isMultiDevice);
                 }
                 catch (MismatchedDevicesException mde)
                 {
