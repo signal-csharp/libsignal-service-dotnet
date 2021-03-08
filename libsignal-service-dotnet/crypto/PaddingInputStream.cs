@@ -7,17 +7,19 @@ namespace libsignalservice.crypto
     internal class PaddingInputStream : Stream
     {
         private readonly Stream inputStream;
+        private readonly long plainTextLength;
         private long paddingRemaining;
 
         public override bool CanRead => true;
         public override bool CanSeek => false;
         public override bool CanWrite => false;
-        public override long Length { get => inputStream.Length + Util.ToIntExact(paddingRemaining); }
+        public override long Length { get => GetPaddedSize(plainTextLength); }
         public override long Position { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public PaddingInputStream(Stream inputStream, long plainTextLength)
         {
             this.inputStream = inputStream;
+            this.plainTextLength = plainTextLength;
             paddingRemaining = GetPaddedSize(plainTextLength) - plainTextLength;
         }
 

@@ -23,7 +23,6 @@ using libsignalservice.push.http;
 using libsignalservice.util;
 using libsignalservice.websocket;
 using Microsoft.Extensions.Logging;
-using Org.BouncyCastle.Crypto;
 
 namespace libsignalservice
 {
@@ -72,7 +71,7 @@ namespace libsignalservice
             this.httpClient = httpClient;
             this.configuration = configuration;
             this.userAgent = userAgent;
-            credentials = new StaticCredentialsProvider(null, null, null!, (int)SignalServiceAddress.DEFAULT_DEVICE_ID);
+            credentials = new StaticCredentialsProvider(null, null, null, (int)SignalServiceAddress.DEFAULT_DEVICE_ID);
             pushServiceSocket = new PushServiceSocket(configuration, credentials, userAgent, httpClient);
         }
 

@@ -262,7 +262,7 @@ namespace libsignalservice
                                                          entity.ServerTimestamp, entity.ServerUuid);
                 }
 
-                await callback.OnMessage(envelope);
+                await callback.OnMessageAsync(envelope);
                 results.Add(envelope);
 
                 if (envelope.HasUuid()) await socket.AcknowledgeMessageAsync(envelope.GetUuid(), token);

@@ -6,7 +6,7 @@ namespace libsignalservice.util
     {
         Guid? Uuid { get; }
         string? E164 { get; }
-        string Password { get; }
+        string? Password { get; }
         int DeviceId { get; }
     }
 }

@@ -32,7 +32,7 @@ namespace libsignalservice
     /// </summary>
     public class SignalServiceMessageSender
     {
-        private readonly ILogger Logger = LibsignalLogging.CreateLogger<SignalServiceMessageSender>();
+        private readonly ILogger logger = LibsignalLogging.CreateLogger<SignalServiceMessageSender>();
 
         private readonly PushServiceSocket socket;
         private readonly SignalProtocolStore store;
@@ -164,9 +164,14 @@ namespace libsignalservice
         /// <param name="recipient">The message's destination</param>
         /// <param name="unidentifiedAccess"></param>
         /// <param name="message">The call message</param>
-        public async Task SendCallMessage(CancellationToken token, SignalServiceAddress recipient,
-            UnidentifiedAccessPair? unidentifiedAccess, SignalServiceCallMessage message)
+        public async Task SendCallMessageAsync(SignalServiceAddress recipient,
+            UnidentifiedAccessPair? unidentifiedAccess, SignalServiceCallMessage message, CancellationToken? token = null)
         {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
             byte[] content = CreateCallContent(message);
             await SendMessageAsync(recipient, unidentifiedAccess?.TargetUnidentifiedAccess, Util.CurrentTimeMillis(), content, false, token);
         }
@@ -180,11 +185,16 @@ namespace libsignalservice
         /// <param name="message">The message.</param>
         /// <exception cref="UntrustedIdentityException"></exception>
         /// <exception cref="IOException"></exception>
-        public async Task<SendMessageResult> SendMessage(CancellationToken token,
-            SignalServiceAddress recipient,
+        public async Task<SendMessageResult> SendMessageAsync(SignalServiceAddress recipient,
             UnidentifiedAccessPair? unidentifiedAccess,
-            SignalServiceDataMessage message)
+            SignalServiceDataMessage message,
+            CancellationToken? token = null)
         {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
             byte[] content = await CreateMessageContentAsync(message, token);
             long timestamp = message.Timestamp;
             SendMessageResult result = await SendMessageAsync(recipient, unidentifiedAccess?.TargetUnidentifiedAccess, timestamp, content, false, token);
@@ -221,12 +231,17 @@ namespace libsignalservice
         /// <param name="recipients">The group members.</param>
         /// <param name="unidentifiedAccess"></param>
         /// <param name="message">The group message.</param>
-        public async Task<List<SendMessageResult>> SendMessage(CancellationToken token,
-            List<SignalServiceAddress> recipients,
+        public async Task<List<SendMessageResult>> SendMessageAsync(List<SignalServiceAddress> recipients,
             List<UnidentifiedAccessPair?> unidentifiedAccess,
             bool isRecipientUpdate,
-            SignalServiceDataMessage message)
+            SignalServiceDataMessage message,
+            CancellationToken? token = null)
         {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
             byte[] content = await CreateMessageContentAsync(message, token);
             long timestamp = message.Timestamp;
             List<SendMessageResult> results = await SendMessageAsync(recipients, GetTargetUnidentifiedAccess(unidentifiedAccess), timestamp, content, false, token);
@@ -302,20 +317,20 @@ namespace libsignalservice
 
             if (localPipe != null)
             {
-                Logger.LogDebug("Using pipe to retrieve attachment upload attributes...");
+                logger.LogDebug("Using pipe to retrieve attachment upload attributes...");
                 try
                 {
                     v2UploadAttributes = await localPipe.GetAttachmentV2UploadAttributesAsync();
                 }
                 catch (IOException)
                 {
-                    Logger.LogWarning("Failed to retrieve attachment upload attributes using pipe. Falling back...");
+                    logger.LogWarning("Failed to retrieve attachment upload attributes using pipe. Falling back...");
                 }
             }
 
             if (v2UploadAttributes == null)
             {
-                Logger.LogDebug("Not using pipe to retrieve attachment upload attributes...");
+                logger.LogDebug("Not using pipe to retrieve attachment upload attributes...");
                 v2UploadAttributes = await socket.GetAttachmentV2UploadAttributesAsync(token);
             }
 
@@ -350,20 +365,20 @@ namespace libsignalservice
 
             if (localPipe != null)
             {
-                Logger.LogDebug("Using pipe to retrieve attachment upload attributes...");
+                logger.LogDebug("Using pipe to retrieve attachment upload attributes...");
                 try
                 {
                     v3UploadAttributes = await localPipe.GetAttachmentV3UploadAttributesAsync();
                 }
                 catch (IOException)
                 {
-                    Logger.LogWarning("Failed to retrieve attachment upload attributes using pipe. Falling back...");
+                    logger.LogWarning("Failed to retrieve attachment upload attributes using pipe. Falling back...");
                 }
             }
 
             if (v3UploadAttributes == null)
             {
-                Logger.LogDebug("Not using pipe to retrieve attachment upload attributes...");
+                logger.LogDebug("Not using pipe to retrieve attachment upload attributes...");
                 v3UploadAttributes = await socket.GetAttachmentV3UploadAttributesAsync(token);
             }
 
@@ -387,12 +402,16 @@ namespace libsignalservice
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="token"></param>
         /// <param name="message"></param>
         /// <param name="unidenfifiedAccess"></param>
-        /// <exception cref=""></exception>
-        public async Task SendMessage(CancellationToken token, SignalServiceSyncMessage message, UnidentifiedAccessPair? unidenfifiedAccess)
+        /// <param name="token"></param>
+        public async Task SendMessageAsync(SignalServiceSyncMessage message, UnidentifiedAccessPair? unidenfifiedAccess, CancellationToken? token = null)
         {
+            if (token == null)
+            {
+                token = CancellationToken.None;
+            }
+
             byte[] content;
 
             if (message.Contacts != null)
@@ -1290,17 +1309,17 @@ namespace libsignalservice
                 }
                 catch (UntrustedIdentityException ex)
                 {
-                    Logger.LogError(new EventId(), ex, "");
+                    logger.LogError(new EventId(), ex, "");
                     results.Add(SendMessageResult.NewIdentityFailure(recipient, ex.IdentityKey));
                 }
                 catch (UnregisteredUserException ex)
                 {
-                    Logger.LogError(new EventId(), ex, "");
+                    logger.LogError(new EventId(), ex, "");
                     results.Add(SendMessageResult.NewUnregisteredFailure(recipient));
                 }
                 catch (PushNetworkException ex)
                 {
-                    Logger.LogError(new EventId(), ex, "");
+                    logger.LogError(new EventId(), ex, "");
                     results.Add(SendMessageResult.NewNetworkFailure(recipient));
                 }
             }
@@ -1343,22 +1362,22 @@ namespace libsignalservice
                     {
                         try
                         {
-                            Logger.LogTrace("Transmitting over pipe...");
-                            var response = await this.pipe.Send(messages, null);
+                            logger.LogTrace("Transmitting over pipe...");
+                            var response = await this.pipe.SendAsync(messages, null);
                             return SendMessageResult.NewSuccess(recipient, false, response.NeedsSync);
                         }
                         catch (Exception e)
                         {
-                            Logger.LogWarning(e.Message + " - falling back to new connection...");
+                            logger.LogWarning(e.Message + " - falling back to new connection...");
                         }
                     }
                     else if (unidentifiedPipe != null && unidentifiedAccess != null)
                     {
-                        var response = await unidentifiedPipe.Send(messages, unidentifiedAccess);
+                        var response = await unidentifiedPipe.SendAsync(messages, unidentifiedAccess);
                         return SendMessageResult.NewSuccess(recipient, true, response.NeedsSync);
                     }
 
-                    Logger.LogTrace("Not transmitting over pipe...");
+                    logger.LogTrace("Not transmitting over pipe...");
                     SendMessageResponse resp = await socket.SendMessageAsync(messages, unidentifiedAccess, token);
                     return SendMessageResult.NewSuccess(recipient, unidentifiedAccess != null, resp.NeedsSync);
                 }
@@ -1371,7 +1390,7 @@ namespace libsignalservice
                     HandleStaleDevices(recipient, ste.StaleDevices);
                 }
             }
-            Logger.LogError("Failed to resolve conflicts after 3 attempts!");
+            logger.LogError("Failed to resolve conflicts after 3 attempts!");
             throw new Exception("Failed to resolve conflicts after 3 attempts!");
         }
 
@@ -1387,7 +1406,7 @@ namespace libsignalservice
 
             if (attachments == null || attachments.Count == 0)
             {
-                Logger.LogTrace("No attachments present...");
+                logger.LogTrace("No attachments present...");
                 return pointers;
             }
 
@@ -1395,12 +1414,12 @@ namespace libsignalservice
             {
                 if (attachment.IsStream())
                 {
-                    Logger.LogTrace("Found attachment, creating pointer...");
+                    logger.LogTrace("Found attachment, creating pointer...");
                     pointers.Add(await CreateAttachmentPointerAsync(attachment.AsStream(), token));
                 }
                 else if (attachment.IsPointer())
                 {
-                    Logger.LogTrace("Including existing attachment pointer...");
+                    logger.LogTrace("Including existing attachment pointer...");
                     pointers.Add(CreateAttachmentPointer(attachment.AsPointer()));
                 }
             }

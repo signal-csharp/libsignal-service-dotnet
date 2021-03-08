@@ -57,7 +57,7 @@ namespace libsignalservice
         /// Blocks until a message was received, calls the IMessagePipeCallback and confirms the message to the server, unless the pipe's token is canceled.
         /// </summary>
         /// <param name="callback"></param>
-        public async Task ReadBlocking(IMessagePipeCallback callback)
+        public async Task ReadBlockingAsync(IMessagePipeCallback callback)
         {
             logger.LogTrace("ReadBlocking()");
             if (credentialsProvider == null)
@@ -73,7 +73,7 @@ namespace libsignalservice
                 try
                 {
                     logger.LogDebug("Calling callback with message {0}", request.Id);
-                    await callback.OnMessage(message);
+                    await callback.OnMessageAsync(message);
                 }
                 finally
                 {
@@ -87,7 +87,7 @@ namespace libsignalservice
             else if (IsPipeEmptyMessage(request))
             {
                 logger.LogInformation("Calling callback with SignalServiceMessagePipeEmptyMessage");
-                await callback.OnMessage(new SignalServiceMessagePipeEmptyMessage());
+                await callback.OnMessageAsync(new SignalServiceMessagePipeEmptyMessage());
             }
             else
             {
@@ -101,7 +101,7 @@ namespace libsignalservice
         /// <param name="list"></param>
         /// <param name="unidentifiedAccess"></param>
         /// <returns></returns>
-        public async Task<SendMessageResponse> Send(OutgoingPushMessageList list, UnidentifiedAccess? unidentifiedAccess)
+        public async Task<SendMessageResponse> SendAsync(OutgoingPushMessageList list, UnidentifiedAccess? unidentifiedAccess)
         {
             logger.LogTrace("Send()");
             var headers = new List<string>()
@@ -147,7 +147,7 @@ namespace libsignalservice
         /// <param name="address"></param>
         /// <param name="unidentifiedAccess"></param>
         /// <returns></returns>
-        public async Task<SignalServiceProfile> GetProfile(SignalServiceAddress address, UnidentifiedAccess? unidentifiedAccess)
+        public async Task<SignalServiceProfile> GetProfileAsync(SignalServiceAddress address, UnidentifiedAccess? unidentifiedAccess)
         {
             logger.LogTrace("GetProfile()");
             var headers = new List<string>()
@@ -313,7 +313,7 @@ namespace libsignalservice
             /// This message is called for every message received via the pipe.
             /// </summary>
             /// <param name="message">The received message</param>
-            Task OnMessage(SignalServiceMessagePipeMessage message);
+            Task OnMessageAsync(SignalServiceMessagePipeMessage message);
         }
     }
 }
