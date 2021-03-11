@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Be.IO;
 using Google.Protobuf;
 using libsignal;
 using libsignal.ecc;
@@ -401,7 +402,7 @@ namespace libsignalservice
                 byte[] data = ContactDiscoveryCipher.GetDiscoveryResponseData(response, attestations.Values);
 
                 Dictionary<string, Guid> results = new Dictionary<string, Guid>(addressBook.Count);
-                BinaryReader uuidInputStream = new BinaryReader(new MemoryStream(data));
+                BeBinaryReader uuidInputStream = new BeBinaryReader(new MemoryStream(data));
 
                 foreach (string candidate in addressBook)
                 {

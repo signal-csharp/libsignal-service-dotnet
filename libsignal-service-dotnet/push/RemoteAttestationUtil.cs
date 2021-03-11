@@ -75,12 +75,14 @@ namespace libsignalservice.push
 
         private static List<string> ParseCookies(HttpResponseMessage response)
         {
-            IEnumerable<string> rawCookies = response.Headers.GetValues("Set-Cookie");
             List<string> cookies = new List<string>();
-
-            foreach (string cookie in rawCookies)
+            if (response.Headers.Contains("Set-Cookie"))
             {
-                cookies.Add(cookie.Split(';')[0]);
+                IEnumerable<string> rawCookies = response.Headers.GetValues("Set-Cookie");
+                foreach (string cookie in rawCookies)
+                {
+                    cookies.Add(cookie.Split(';')[0]);
+                }
             }
 
             return cookies;
